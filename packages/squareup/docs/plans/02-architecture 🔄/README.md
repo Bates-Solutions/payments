@@ -118,11 +118,11 @@ src/
 - [x] Card input directive
 - [x] Async pipe-friendly APIs
 
-### Phase 5: Server Utilities
-- [ ] Webhook signature verification
-- [ ] Express middleware
-- [ ] Next.js API route handlers
-- [ ] Event type definitions and handlers
+### Phase 5: Server Utilities ✅
+- [x] Webhook signature verification
+- [x] Express middleware
+- [x] Next.js API route handlers
+- [x] Event type definitions and handlers
 
 ---
 
