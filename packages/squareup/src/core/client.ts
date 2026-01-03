@@ -2,6 +2,12 @@ import { SquareClient as SdkClient, SquareEnvironment as SdkEnvironment } from '
 import type { SquareEnvironment } from './types/index.js';
 import { PaymentsService } from './services/payments.service.js';
 import { OrdersService } from './services/orders.service.js';
+import { CustomersService } from './services/customers.service.js';
+import { CatalogService } from './services/catalog.service.js';
+import { InventoryService } from './services/inventory.service.js';
+import { SubscriptionsService } from './services/subscriptions.service.js';
+import { InvoicesService } from './services/invoices.service.js';
+import { LoyaltyService } from './services/loyalty.service.js';
 
 /**
  * Configuration options for the Square client
@@ -56,6 +62,12 @@ export class SquareClient {
 
   public readonly payments: PaymentsService;
   public readonly orders: OrdersService;
+  public readonly customers: CustomersService;
+  public readonly catalog: CatalogService;
+  public readonly inventory: InventoryService;
+  public readonly subscriptions: SubscriptionsService;
+  public readonly invoices: InvoicesService;
+  public readonly loyalty: LoyaltyService;
 
   constructor(config: SquareClientConfig) {
     this.config = {
@@ -76,6 +88,12 @@ export class SquareClient {
     // Initialize services
     this.payments = new PaymentsService(this.client, this.config.locationId);
     this.orders = new OrdersService(this.client, this.config.locationId);
+    this.customers = new CustomersService(this.client);
+    this.catalog = new CatalogService(this.client);
+    this.inventory = new InventoryService(this.client, this.config.locationId);
+    this.subscriptions = new SubscriptionsService(this.client, this.config.locationId);
+    this.invoices = new InvoicesService(this.client, this.config.locationId);
+    this.loyalty = new LoyaltyService(this.client, this.config.locationId);
   }
 
   /**
