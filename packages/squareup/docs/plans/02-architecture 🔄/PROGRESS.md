@@ -84,22 +84,22 @@
 - Added `@angular/core`, `@angular/common`, `rxjs`, `zone.js` dev dependencies
 - Added `experimentalDecorators` and `emitDecoratorMetadata` to tsconfig.json
 
----
+### Phase 5: Server Utilities ✅ (PR #11)
+- Webhook signature verification (HMAC-SHA256 with timing-safe comparison)
+- Express middleware (`createExpressWebhookHandler`, `rawBodyMiddleware`)
+- Next.js App Router handler (`createNextWebhookHandler`)
+- Next.js Pages Router handler (`createNextPagesWebhookHandler`)
+- Typed webhook event types for all Square events
 
-## Remaining Work
+**Key files:**
+- `src/server/types.ts` - Event type definitions
+- `src/server/webhook.ts` - Signature verification utilities
+- `src/server/middleware/express.ts` - Express middleware
+- `src/server/middleware/nextjs.ts` - Next.js handlers
+- `src/server/index.ts` - Module exports
 
-### Phase 5: Server Utilities 🔄
-- [ ] Webhook signature verification
-- [ ] Express middleware
-- [ ] Next.js API route handlers
-- [ ] Event type definitions and handlers
-
-**Planned files:**
-- `src/server/webhook.ts` - Signature verification
-- `src/server/middleware/express.ts`
-- `src/server/middleware/nextjs.ts`
-- `src/server/types.ts` - Event types
-- `src/server/index.ts`
+**Config changes:**
+- Added `@types/express` dev dependency
 
 ---
 
@@ -110,7 +110,7 @@ src/
 ├── core/           # Backend client wrapper (Phase 1-2) ✅
 ├── react/          # React hooks & components (Phase 3) ✅
 ├── angular/        # Angular services & directives (Phase 4) ✅
-└── server/         # Webhook handling & middleware (Phase 5) 🔄
+└── server/         # Webhook handling & middleware (Phase 5) ✅
 ```
 
 **Exports (package.json):**
