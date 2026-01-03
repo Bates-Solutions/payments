@@ -89,34 +89,34 @@ src/
 
 ## Implementation Phases
 
-### Phase 1: Core Foundation
-- [ ] Project setup (TypeScript, build tooling, ESLint)
-- [ ] Core client wrapper around `square` SDK
-- [ ] Error handling with typed exceptions
-- [ ] Money utility helpers (`toCents()`, `fromCents()`, `formatMoney()`)
-- [ ] Payments service with simplified API
-- [ ] Orders service with fluent builder
+### Phase 1: Core Foundation ✅
+- [x] Project setup (TypeScript, build tooling, ESLint)
+- [x] Core client wrapper around `square` SDK
+- [x] Error handling with typed exceptions
+- [x] Money utility helpers (`toCents()`, `fromCents()`, `formatMoney()`)
+- [x] Payments service with simplified API
+- [x] Orders service with fluent builder
 
-### Phase 2: Extended Core APIs
-- [ ] Customers service
-- [ ] Catalog service
-- [ ] Inventory service
-- [ ] Subscriptions service
-- [ ] Invoices service
-- [ ] Loyalty service
+### Phase 2: Extended Core APIs ✅
+- [x] Customers service
+- [x] Catalog service
+- [x] Inventory service
+- [x] Subscriptions service
+- [x] Invoices service
+- [x] Loyalty service
 
-### Phase 3: React Integration
-- [ ] SquareProvider context
-- [ ] useSquarePayment hook (Web Payments SDK wrapper)
-- [ ] usePayments, useOrders, useCustomers hooks
-- [ ] Pre-built CardInput component
-- [ ] Digital wallet payment buttons
+### Phase 3: React Integration ✅
+- [x] SquareProvider context
+- [x] useSquarePayment hook (Web Payments SDK wrapper)
+- [x] usePayments, useOrders, useCustomers hooks
+- [x] Pre-built CardInput component
+- [x] Digital wallet payment buttons
 
-### Phase 4: Angular Integration
-- [ ] SquareModule with forRoot configuration
-- [ ] Injectable services with RxJS Observables
-- [ ] Card input directive
-- [ ] Async pipe-friendly APIs
+### Phase 4: Angular Integration ✅
+- [x] SquareModule with forRoot configuration
+- [x] Injectable services with RxJS Observables
+- [x] Card input directive
+- [x] Async pipe-friendly APIs
 
 ### Phase 5: Server Utilities
 - [ ] Webhook signature verification
