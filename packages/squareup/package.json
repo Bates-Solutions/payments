@@ -1,0 +1,94 @@
+{
+  "name": "@bates/squareup",
+  "version": "0.1.0",
+  "description": "TypeScript wrapper for Square API with React & Angular integrations",
+  "type": "module",
+  "main": "./dist/core/index.js",
+  "types": "./dist/core/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/core/index.d.ts",
+      "import": "./dist/core/index.js"
+    },
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "import": "./dist/react/index.js"
+    },
+    "./angular": {
+      "types": "./dist/angular/index.d.ts",
+      "import": "./dist/angular/index.js"
+    },
+    "./server": {
+      "types": "./dist/server/index.d.ts",
+      "import": "./dist/server/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:react": "vitest run --project react",
+    "test:angular": "vitest run --project angular",
+    "docs": "typedoc",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "square",
+    "payments",
+    "react",
+    "angular",
+    "typescript",
+    "sdk",
+    "api"
+  ],
+  "author": "Bates Solutions",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BatesSolutions/squareup.git"
+  },
+  "bugs": {
+    "url": "https://github.com/BatesSolutions/squareup/issues"
+  },
+  "homepage": "https://github.com/BatesSolutions/squareup#readme",
+  "engines": {
+    "node": ">=18"
+  },
+  "peerDependencies": {
+    "@angular/core": "^17.0.0 || ^18.0.0 || ^19.0.0",
+    "react": "^18.0.0 || ^19.0.0",
+    "square": "^41.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "@angular/core": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "@types/node": "^20.11.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.0",
+    "prettier": "^3.2.0",
+    "square": "^41.0.0",
+    "typescript": "^5.3.0",
+    "typescript-eslint": "^8.51.0",
+    "vitest": "^2.0.0"
+  }
+}
