@@ -5,6 +5,7 @@ import {
   SquareAuthError,
   SquareValidationError,
   SquarePaymentError,
+  parseSquareError,
 } from '../errors.js';
 
 describe('Error Classes', () => {
@@ -94,6 +95,72 @@ describe('Error Classes', () => {
     it('should work without paymentId', () => {
       const error = new SquarePaymentError('CVV failure', 'VERIFY_CVV_FAILURE');
       expect(error.paymentId).toBeUndefined();
+    });
+  });
+
+  describe('parseSquareError', () => {
+    it('should parse SDK error with 401 status', () => {
+      const error = parseSquareError({
+        statusCode: 401,
+        body: {
+          errors: [{ category: 'AUTHENTICATION_ERROR', code: 'UNAUTHORIZED', detail: 'Invalid token' }],
+        },
+      });
+
+      expect(error).toBeInstanceOf(SquareAuthError);
+      expect(error.message).toBe('Invalid token');
+    });
+
+    it('should parse SDK error with PAYMENT_METHOD_ERROR category', () => {
+      const error = parseSquareError({
+        statusCode: 400,
+        body: {
+          errors: [{ category: 'PAYMENT_METHOD_ERROR', code: 'CARD_DECLINED', detail: 'Card was declined' }],
+        },
+      });
+
+      expect(error).toBeInstanceOf(SquarePaymentError);
+      expect(error.message).toBe('Card was declined');
+    });
+
+    it('should parse SDK error as general API error', () => {
+      const error = parseSquareError({
+        statusCode: 404,
+        body: {
+          errors: [{ category: 'INVALID_REQUEST_ERROR', code: 'NOT_FOUND', detail: 'Resource not found' }],
+        },
+      });
+
+      expect(error).toBeInstanceOf(SquareApiError);
+      expect(error.message).toBe('Resource not found');
+    });
+
+    it('should wrap standard Error', () => {
+      const error = parseSquareError(new Error('Something went wrong'));
+
+      expect(error).toBeInstanceOf(SquareError);
+      expect(error.message).toBe('Something went wrong');
+    });
+
+    it('should return unknown error for non-Error types', () => {
+      const error = parseSquareError('string error');
+
+      expect(error).toBeInstanceOf(SquareError);
+      expect(error.message).toBe('Unknown error occurred');
+    });
+
+    it('should return unknown error for null', () => {
+      const error = parseSquareError(null);
+
+      expect(error).toBeInstanceOf(SquareError);
+      expect(error.message).toBe('Unknown error occurred');
+    });
+
+    it('should return unknown error for undefined', () => {
+      const error = parseSquareError(undefined);
+
+      expect(error).toBeInstanceOf(SquareError);
+      expect(error.message).toBe('Unknown error occurred');
     });
   });
 });
