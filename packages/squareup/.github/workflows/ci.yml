@@ -1,3 +1,4 @@
+# .github/workflows/ci.yml
 name: CI
 
 on:
@@ -40,3 +41,15 @@ jobs:
 
       - name: Test
         run: npm test
+
+      - name: Test with coverage
+        if: matrix.node-version == 20
+        run: npm test -- --coverage
+
+      - name: Upload coverage
+        if: matrix.node-version == 20
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          fail_ci_if_error: false
