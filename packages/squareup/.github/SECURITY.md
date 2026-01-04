@@ -9,7 +9,7 @@
 
 ## Reporting a Vulnerability
 
-Please report security vulnerabilities to: security@bates.io
+Please report security vulnerabilities to: security@bates-solutions.com
 
 **Do NOT open a public issue for security vulnerabilities.**
 
