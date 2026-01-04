@@ -1,9 +1,9 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg" alt="React" height="60">
+  <img src="https://img.shields.io/badge/React-18+-61DAFB?logo=react&logoColor=white&style=for-the-badge" alt="React" height="28">
   &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/angularjs/angularjs-original.svg" alt="Angular" height="60">
+  <img src="https://img.shields.io/badge/Angular-17+-DD0031?logo=angular&logoColor=white&style=for-the-badge" alt="Angular" height="28">
   &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="https://cdn.worldvectorlogo.com/logos/square-2.svg" alt="Square" height="60">
+  <img src="https://img.shields.io/badge/Square-Payments-0066CC?logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iIzAwNjZDQyIvPgo8cGF0aCBkPSJNOC41IDEySDE1LjVWMTMuNUgxMC41VjE1SDE1LjVWMTYuNUgxMC41VjE4SDE1LjVWMTlIMFYxMkg4LjVWMTJIMFYxMkg4LjVWMTJaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K&style=for-the-badge" alt="Square" height="28">
 </p>
 
 <h1 align="center">@bates-solutions/squareup</h1>
@@ -51,6 +51,7 @@ Stop wrestling with Square's low-level APIs. **squareup** gives you React hooks,
   - Lines: **99.84%**
 
 Run tests with:
+
 ```bash
 npm test              # All tests
 npm run test:react    # React tests only
@@ -109,11 +110,7 @@ import { SquareProvider, useSquarePayment, useOrders } from '@bates-solutions/sq
 
 function App() {
   return (
-    <SquareProvider
-      applicationId="sq0idp-xxx"
-      locationId="LXXX"
-      environment="sandbox"
-    >
+    <SquareProvider applicationId="sq0idp-xxx" locationId="LXXX" environment="sandbox">
       <Checkout />
     </SquareProvider>
   );
@@ -195,62 +192,62 @@ export const POST = createNextWebhookHandler({
 
 ### Core Module
 
-| Export | Description |
-|--------|-------------|
-| `createSquareClient` | Factory for creating Square API client |
-| `PaymentsService` | Payment processing operations |
-| `OrdersService` | Order management with fluent builder |
-| `CustomersService` | Customer CRUD and search |
-| `CatalogService` | Product catalog operations |
-| `InventoryService` | Stock tracking and adjustments |
-| `SubscriptionsService` | Recurring billing management |
-| `InvoicesService` | Invoice generation and sending |
-| `LoyaltyService` | Loyalty program management |
+| Export                 | Description                            |
+| ---------------------- | -------------------------------------- |
+| `createSquareClient`   | Factory for creating Square API client |
+| `PaymentsService`      | Payment processing operations          |
+| `OrdersService`        | Order management with fluent builder   |
+| `CustomersService`     | Customer CRUD and search               |
+| `CatalogService`       | Product catalog operations             |
+| `InventoryService`     | Stock tracking and adjustments         |
+| `SubscriptionsService` | Recurring billing management           |
+| `InvoicesService`      | Invoice generation and sending         |
+| `LoyaltyService`       | Loyalty program management             |
 
 ### React Module (`@bates-solutions/squareup/react`)
 
-| Export | Description |
-|--------|-------------|
-| `SquareProvider` | Context provider for SDK initialization |
-| `useSquare` | Access Square context |
-| `useSquarePayment` | Card tokenization hook |
-| `usePayments` | Payments API hook |
-| `useOrders` | Orders API hook |
-| `useCustomers` | Customers API hook |
-| `useCatalog` | Catalog API hook |
-| `CardInput` | Pre-built card input component |
-| `PaymentButton` | Google Pay / Apple Pay button |
+| Export             | Description                             |
+| ------------------ | --------------------------------------- |
+| `SquareProvider`   | Context provider for SDK initialization |
+| `useSquare`        | Access Square context                   |
+| `useSquarePayment` | Card tokenization hook                  |
+| `usePayments`      | Payments API hook                       |
+| `useOrders`        | Orders API hook                         |
+| `useCustomers`     | Customers API hook                      |
+| `useCatalog`       | Catalog API hook                        |
+| `CardInput`        | Pre-built card input component          |
+| `PaymentButton`    | Google Pay / Apple Pay button           |
 
 ### Angular Module (`@bates-solutions/squareup/angular`)
 
-| Export | Description |
-|--------|-------------|
-| `SquareModule` | NgModule with `forRoot()` configuration |
-| `SquareSdkService` | SDK loading service |
-| `SquarePaymentsService` | Payment operations |
-| `SquareOrdersService` | Order operations |
-| `SquareCustomersService` | Customer operations |
-| `SquareCatalogService` | Catalog operations |
-| `SquareCardDirective` | Card input directive |
-| `PaymentButtonComponent` | Digital wallet component |
+| Export                   | Description                             |
+| ------------------------ | --------------------------------------- |
+| `SquareModule`           | NgModule with `forRoot()` configuration |
+| `SquareSdkService`       | SDK loading service                     |
+| `SquarePaymentsService`  | Payment operations                      |
+| `SquareOrdersService`    | Order operations                        |
+| `SquareCustomersService` | Customer operations                     |
+| `SquareCatalogService`   | Catalog operations                      |
+| `SquareCardDirective`    | Card input directive                    |
+| `PaymentButtonComponent` | Digital wallet component                |
 
 ### Server Module (`@bates-solutions/squareup/server`)
 
-| Export | Description |
-|--------|-------------|
-| `verifySignature` | HMAC-SHA256 signature verification |
-| `createExpressWebhookHandler` | Express middleware |
-| `createNextWebhookHandler` | Next.js App Router handler |
-| `createNextPagesWebhookHandler` | Next.js Pages Router handler |
-| `parseNextWebhook` | Manual webhook parsing |
+| Export                          | Description                        |
+| ------------------------------- | ---------------------------------- |
+| `verifySignature`               | HMAC-SHA256 signature verification |
+| `createExpressWebhookHandler`   | Express middleware                 |
+| `createNextWebhookHandler`      | Next.js App Router handler         |
+| `createNextPagesWebhookHandler` | Next.js Pages Router handler       |
+| `parseNextWebhook`              | Manual webhook parsing             |
 
 ## Money Utilities
 
 ```typescript
 import { toCents, fromCents, formatMoney } from '@bates-solutions/squareup';
 
-toCents(10.99);           // 1099
-fromCents(1099);          // 10.99
+toCents(10.99); // 1099
+fromCents(1099); // 10.99
 formatMoney(1099, 'USD'); // '$10.99'
 ```
 
@@ -279,12 +276,12 @@ try {
 
 ## Configuration
 
-| Option | Type | Required | Description |
-|--------|------|----------|-------------|
-| `accessToken` | `string` | Yes | Square API access token |
-| `environment` | `'sandbox' \| 'production'` | No | API environment (default: `'sandbox'`) |
-| `applicationId` | `string` | React/Angular | Web Payments SDK application ID |
-| `locationId` | `string` | React/Angular | Square location ID |
+| Option          | Type                        | Required      | Description                            |
+| --------------- | --------------------------- | ------------- | -------------------------------------- |
+| `accessToken`   | `string`                    | Yes           | Square API access token                |
+| `environment`   | `'sandbox' \| 'production'` | No            | API environment (default: `'sandbox'`) |
+| `applicationId` | `string`                    | React/Angular | Web Payments SDK application ID        |
+| `locationId`    | `string`                    | React/Angular | Square location ID                     |
 
 ## Contributing
 
