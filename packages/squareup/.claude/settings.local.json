@@ -15,7 +15,14 @@
       "Bash(git branch:*)",
       "Bash(git push:*)",
       "Bash(gh pr list:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(dir /b \"c:\\\\Users\\\\mike\\\\Projects\\\\BatesSolutions\\\\squareup\\\\docs\\\\plans\")",
+      "Bash(npm run test:angular:*)",
+      "Bash(npx vitest --help:*)",
+      "Bash(npm run typecheck:*)",
+      "Bash(gh api:*)",
+      "Bash(gh run view:*)",
+      "Bash(gh run list:*)"
     ]
   }
 }

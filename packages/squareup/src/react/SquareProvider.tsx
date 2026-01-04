@@ -53,7 +53,7 @@ export interface SquareProviderProps extends SquareProviderConfig {
  *
  * @example
  * ```tsx
- * import { SquareProvider } from '@bates/squareup/react';
+ * import { SquareProvider } from '@bates-solutions/squareup/react';
  *
  * function App() {
  *   return (

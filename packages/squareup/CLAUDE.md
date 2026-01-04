@@ -1,7 +1,7 @@
 # CLAUDE.md
 
 ## Project Overview
-`@bates/squareup` - TypeScript wrapper for Square API with React & Angular integrations.
+`@bates-solutions/squareup` - TypeScript wrapper for Square API with React & Angular integrations.
 
 ## Commit and PR Guidelines
 - **Never self-reference**: Do not include "Generated with Claude Code" or "Co-Authored-By: Claude" in commits or PR descriptions

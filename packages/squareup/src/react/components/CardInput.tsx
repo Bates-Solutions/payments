@@ -39,7 +39,7 @@ export interface CardInputHandle {
  *
  * @example
  * ```tsx
- * import { CardInput, CardInputHandle } from '@bates/squareup/react';
+ * import { CardInput, CardInputHandle } from '@bates-solutions/squareup/react';
  *
  * function Checkout() {
  *   const cardRef = useRef<CardInputHandle>(null);
