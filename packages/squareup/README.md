@@ -14,7 +14,7 @@
 </p>
 
 <p align="center">
-  <a href="https://npmjs.com/package/@bates-solutions/squareup"><img src="https://img.shields.io/npm/v/@bates-solutions/squareup.svg" alt="npm version"></a>
+  <img src="https://img.shields.io/badge/version-0.1.0-blue.svg" alt="version 0.1.0">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
   <a href="https://typescriptlang.org"><img src="https://img.shields.io/badge/TypeScript-5.0+-blue.svg" alt="TypeScript"></a>
   <br>
