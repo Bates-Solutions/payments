@@ -35,7 +35,7 @@ Welcome to the documentation for `@bates-solutions/squareup`, a TypeScript wrapp
 
 ## API Reference
 
-Auto-generated API documentation is available in the [api/](./api/) directory.
+Complete API reference is available in [api-reference.md](./api-reference.md).
 
 ## Additional Resources
 
