@@ -1,9 +1,9 @@
 /**
- * @bates/squareup Angular integration
+ * @bates-solutions/squareup Angular integration
  *
  * @example
  * ```typescript
- * import { SquareModule } from '@bates/squareup/angular';
+ * import { SquareModule } from '@bates-solutions/squareup/angular';
  *
  * @NgModule({
  *   imports: [
@@ -20,7 +20,7 @@
  * @example
  * ```typescript
  * // Standalone component usage
- * import { SquareCardDirective, PaymentButtonComponent } from '@bates/squareup/angular';
+ * import { SquareCardDirective, PaymentButtonComponent } from '@bates-solutions/squareup/angular';
  *
  * @Component({
  *   standalone: true,

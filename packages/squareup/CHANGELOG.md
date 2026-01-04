@@ -25,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - InvoicesService (create, send, cancel)
 - LoyaltyService (accounts, points, rewards)
 
-#### React Module (`@bates/squareup/react`)
+#### React Module (`@bates-solutions/squareup/react`)
 - `SquareProvider` context provider for SDK initialization
 - `useSquare` hook for context access
 - `useSquarePayment` hook for card tokenization
@@ -33,7 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `CardInput` component with forwardRef and imperative handle
 - `PaymentButton` component for Google Pay / Apple Pay
 
-#### Angular Module (`@bates/squareup/angular`)
+#### Angular Module (`@bates-solutions/squareup/angular`)
 - `SquareModule` with `forRoot()` configuration
 - `SquareSdkService` for SDK loading with NgZone
 - `SquarePaymentsService` for card attach, tokenize, createPayment
@@ -41,7 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `SquareCardDirective` for attaching card input to elements
 - `PaymentButtonComponent` (standalone) for digital wallets
 
-#### Server Module (`@bates/squareup/server`)
+#### Server Module (`@bates-solutions/squareup/server`)
 - Webhook signature verification (HMAC-SHA256 with timing-safe comparison)
 - `createExpressWebhookHandler` middleware for Express
 - `rawBodyMiddleware` utility for Express

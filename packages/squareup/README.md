@@ -1,8 +1,8 @@
-# @bates/squareup
+# @bates-solutions/squareup
 
 > TypeScript wrapper for Square API with React hooks & Angular services
 
-[![npm version](https://img.shields.io/npm/v/@bates/squareup.svg)](https://npmjs.com/package/@bates/squareup)
+[![npm version](https://img.shields.io/npm/v/@bates-solutions/squareup.svg)](https://npmjs.com/package/@bates-solutions/squareup)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://typescriptlang.org)
 
@@ -18,7 +18,7 @@
 ## Installation
 
 ```bash
-npm install @bates/squareup square
+npm install @bates-solutions/squareup square
 ```
 
 ### Peer Dependencies
@@ -36,7 +36,7 @@ npm install @angular/core @angular/common rxjs
 ### Core (Node.js/Backend)
 
 ```typescript
-import { createSquareClient } from '@bates/squareup';
+import { createSquareClient } from '@bates-solutions/squareup';
 
 const square = createSquareClient({
   accessToken: process.env.SQUARE_ACCESS_TOKEN!,
@@ -62,7 +62,7 @@ const order = await square.orders
 ### React
 
 ```tsx
-import { SquareProvider, useSquarePayment, useOrders } from '@bates/squareup/react';
+import { SquareProvider, useSquarePayment, useOrders } from '@bates-solutions/squareup/react';
 
 function App() {
   return (
@@ -103,7 +103,7 @@ function Checkout() {
 ### Angular
 
 ```typescript
-import { SquareModule } from '@bates/squareup/angular';
+import { SquareModule } from '@bates-solutions/squareup/angular';
 
 @NgModule({
   imports: [
@@ -132,7 +132,7 @@ export class CheckoutComponent {
 ### Server (Webhooks)
 
 ```typescript
-import { createNextWebhookHandler } from '@bates/squareup/server';
+import { createNextWebhookHandler } from '@bates-solutions/squareup/server';
 
 // Next.js App Router
 export const POST = createNextWebhookHandler({
@@ -164,7 +164,7 @@ export const POST = createNextWebhookHandler({
 | `InvoicesService` | Invoice generation and sending |
 | `LoyaltyService` | Loyalty program management |
 
-### React Module (`@bates/squareup/react`)
+### React Module (`@bates-solutions/squareup/react`)
 
 | Export | Description |
 |--------|-------------|
@@ -178,7 +178,7 @@ export const POST = createNextWebhookHandler({
 | `CardInput` | Pre-built card input component |
 | `PaymentButton` | Google Pay / Apple Pay button |
 
-### Angular Module (`@bates/squareup/angular`)
+### Angular Module (`@bates-solutions/squareup/angular`)
 
 | Export | Description |
 |--------|-------------|
@@ -191,7 +191,7 @@ export const POST = createNextWebhookHandler({
 | `SquareCardDirective` | Card input directive |
 | `PaymentButtonComponent` | Digital wallet component |
 
-### Server Module (`@bates/squareup/server`)
+### Server Module (`@bates-solutions/squareup/server`)
 
 | Export | Description |
 |--------|-------------|
@@ -204,7 +204,7 @@ export const POST = createNextWebhookHandler({
 ## Money Utilities
 
 ```typescript
-import { toCents, fromCents, formatMoney } from '@bates/squareup';
+import { toCents, fromCents, formatMoney } from '@bates-solutions/squareup';
 
 toCents(10.99);           // 1099
 fromCents(1099);          // 10.99
@@ -219,7 +219,7 @@ import {
   SquareValidationError,
   SquareNetworkError,
   SquareAuthenticationError
-} from '@bates/squareup';
+} from '@bates-solutions/squareup';
 
 try {
   await square.payments.create({ ... });

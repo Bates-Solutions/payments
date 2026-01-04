@@ -1,12 +1,12 @@
 /**
- * @bates/squareup/server
+ * @bates-solutions/squareup/server
  *
  * Server utilities for handling Square webhooks
  *
  * @example
  * ```typescript
  * // Next.js App Router
- * import { createNextWebhookHandler } from '@bates/squareup/server';
+ * import { createNextWebhookHandler } from '@bates-solutions/squareup/server';
  *
  * export const POST = createNextWebhookHandler({
  *   signatureKey: process.env.SQUARE_WEBHOOK_KEY!,
@@ -22,7 +22,7 @@
  * ```typescript
  * // Express
  * import express from 'express';
- * import { createExpressWebhookHandler } from '@bates/squareup/server';
+ * import { createExpressWebhookHandler } from '@bates-solutions/squareup/server';
  *
  * const app = express();
  * app.use('/webhook', express.raw({ type: 'application/json' }));
