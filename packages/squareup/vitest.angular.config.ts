@@ -8,6 +8,8 @@ export default defineConfig({
     setupFiles: ['src/angular/__tests__/setup.ts'],
     testTimeout: 10000,
     hookTimeout: 10000,
+    // Zone.js keeps event loop alive; force exit after tests complete
+    forceExit: true,
     deps: {
       optimizer: {
         web: {
