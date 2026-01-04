@@ -3,19 +3,19 @@
 ## npm
 
 ```bash
-npm install @bates/squareup square
+npm install @bates-solutions/squareup square
 ```
 
 ## yarn
 
 ```bash
-yarn add @bates/squareup square
+yarn add @bates-solutions/squareup square
 ```
 
 ## pnpm
 
 ```bash
-pnpm add @bates/squareup square
+pnpm add @bates-solutions/squareup square
 ```
 
 ## Peer Dependencies

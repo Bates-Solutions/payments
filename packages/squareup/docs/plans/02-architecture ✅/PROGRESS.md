@@ -1,7 +1,7 @@
 # Implementation Progress Log
 
 ## Project Overview
-`@bates/squareup` - TypeScript wrapper for Square API with React & Angular integrations.
+`@bates-solutions/squareup` - TypeScript wrapper for Square API with React & Angular integrations.
 
 **Repository:** https://github.com/mbates/squareup
 
@@ -114,10 +114,10 @@ src/
 ```
 
 **Exports (package.json):**
-- `@bates/squareup` → `./dist/core/index.js`
-- `@bates/squareup/react` → `./dist/react/index.js`
-- `@bates/squareup/angular` → `./dist/angular/index.js`
-- `@bates/squareup/server` → `./dist/server/index.js`
+- `@bates-solutions/squareup` → `./dist/core/index.js`
+- `@bates-solutions/squareup/react` → `./dist/react/index.js`
+- `@bates-solutions/squareup/angular` → `./dist/angular/index.js`
+- `@bates-solutions/squareup/server` → `./dist/server/index.js`
 
 ---
 

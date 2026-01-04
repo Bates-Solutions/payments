@@ -1,19 +1,19 @@
 # .github/CODEOWNERS
 
 # Default owners for everything
-* @bates/squareup-maintainers
+* @bates-solutions/squareup-maintainers
 
 # Core library
-/src/core/ @bates/core-team
+/src/core/ @bates-solutions/core-team
 
 # React integration
-/src/react/ @bates/react-team
+/src/react/ @bates-solutions/react-team
 
 # Angular integration
-/src/angular/ @bates/angular-team
+/src/angular/ @bates-solutions/angular-team
 
 # Documentation
-/docs/ @bates/docs-team
+/docs/ @bates-solutions/docs-team
 
 # CI/CD configuration
-/.github/ @bates/devops-team
+/.github/ @bates-solutions/devops-team

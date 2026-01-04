@@ -12,7 +12,7 @@
   "excludePrivate": true,
   "excludeInternal": true,
   "excludeExternals": true,
-  "name": "@bates/squareup API Reference",
+  "name": "@bates-solutions/squareup API Reference",
   "includeVersion": true,
   "categorizeByGroup": true,
   "categoryOrder": ["Core", "React", "Angular", "Server", "*"],

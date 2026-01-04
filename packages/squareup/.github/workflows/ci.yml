@@ -39,12 +39,19 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Test
+      - name: Test core
         run: npm test
+
+      - name: Test Angular
+        run: npm run test:angular
 
       - name: Test with coverage
         if: matrix.node-version == 20
         run: npm test -- --coverage
+
+      - name: Test Angular with coverage
+        if: matrix.node-version == 20
+        run: npm run test:angular -- --coverage
 
       - name: Upload coverage
         if: matrix.node-version == 20

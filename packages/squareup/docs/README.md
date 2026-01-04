@@ -1,6 +1,6 @@
-# @bates/squareup Documentation
+# @bates-solutions/squareup Documentation
 
-Welcome to the documentation for `@bates/squareup`, a TypeScript wrapper for the Square API with React hooks and Angular services.
+Welcome to the documentation for `@bates-solutions/squareup`, a TypeScript wrapper for the Square API with React hooks and Angular services.
 
 ## Getting Started
 
