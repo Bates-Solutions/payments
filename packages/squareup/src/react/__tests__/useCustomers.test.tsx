@@ -111,7 +111,7 @@ describe('useCustomers', () => {
       });
 
       const call = vi.mocked(fetch).mock.calls[0];
-      const body = JSON.parse(call[1]?.body as string);
+      const body = JSON.parse(call?.[1]?.body as string);
 
       expect(body.givenName).toBe('John');
       expect(body.familyName).toBe('Doe');
@@ -344,8 +344,8 @@ describe('useCustomers', () => {
       });
 
       const call = vi.mocked(fetch).mock.calls[0];
-      expect(call[0]).toContain('email=test%40example.com');
-      expect(call[0]).toContain('phone=%2B1234567890');
+      expect(call?.[0]).toContain('email=test%40example.com');
+      expect(call?.[0]).toContain('phone=%2B1234567890');
     });
 
     it('should handle search error', async () => {

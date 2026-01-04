@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, waitFor, act } from '@testing-library/react';
-import React from 'react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { SquareProvider, useSquare } from '../SquareProvider.js';
 
 // Mock Square SDK
@@ -52,11 +51,7 @@ describe('SquareProvider', () => {
 
     it('should use production environment when specified', () => {
       render(
-        <SquareProvider
-          applicationId="app-id"
-          locationId="loc-id"
-          environment="production"
-        >
+        <SquareProvider applicationId="app-id" locationId="loc-id" environment="production">
           <div>Content</div>
         </SquareProvider>
       );
@@ -77,9 +72,7 @@ describe('SquareProvider', () => {
       );
 
       const scripts = document.querySelectorAll('script');
-      const squareScript = Array.from(scripts).find((s) =>
-        s.src.includes('squarecdn.com')
-      );
+      const squareScript = Array.from(scripts).find((s) => s.src.includes('squarecdn.com'));
       expect(squareScript).toBeTruthy();
     });
 
@@ -95,9 +88,7 @@ describe('SquareProvider', () => {
         </SquareProvider>
       );
 
-      const scripts = document.querySelectorAll(
-        'script[src*="squarecdn.com"]'
-      );
+      const scripts = document.querySelectorAll('script[src*="squarecdn.com"]');
       expect(scripts.length).toBe(1);
     });
 
