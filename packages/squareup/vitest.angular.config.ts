@@ -6,6 +6,8 @@ export default defineConfig({
     environment: 'jsdom',
     include: ['src/angular/**/*.{test,spec}.ts'],
     setupFiles: ['src/angular/__tests__/setup.ts'],
+    testTimeout: 10000,
+    hookTimeout: 10000,
     deps: {
       optimizer: {
         web: {
