@@ -1,5 +1,4 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { TestBed } from '@angular/core/testing';
 import { SquareCustomersService } from '../services/square-customers.service.js';
 import { firstValueFrom } from 'rxjs';
 
@@ -16,10 +15,8 @@ describe('SquareCustomersService', () => {
   });
 
   function createService(): SquareCustomersService {
-    TestBed.configureTestingModule({
-      providers: [SquareCustomersService],
-    });
-    return TestBed.inject(SquareCustomersService);
+    // Create service directly - no DI dependencies
+    return new SquareCustomersService();
   }
 
   describe('initialization', () => {
