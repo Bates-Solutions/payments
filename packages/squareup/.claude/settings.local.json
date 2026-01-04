@@ -21,7 +21,8 @@
       "Bash(npx vitest --help:*)",
       "Bash(npm run typecheck:*)",
       "Bash(gh api:*)",
-      "Bash(gh run view:*)"
+      "Bash(gh run view:*)",
+      "Bash(gh run list:*)"
     ]
   }
 }
