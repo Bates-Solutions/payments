@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { toCents, fromCents, formatMoney, createIdempotencyKey } from '../utils.js';
+import { toCents, fromCents, formatMoney, createIdempotencyKey, toSquareMoney } from '../utils.js';
 
 describe('Money Utilities', () => {
   describe('toCents', () => {
@@ -95,5 +95,46 @@ describe('createIdempotencyKey', () => {
     const key = createIdempotencyKey();
     // UUID format: 8-4-4-4-12
     expect(key).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
+  });
+});
+
+describe('toSquareMoney', () => {
+  it('should convert number amount to Square money format', () => {
+    const result = toSquareMoney(10.5);
+    expect(result).toEqual({
+      amount: BigInt(1050),
+      currency: 'USD',
+    });
+  });
+
+  it('should use default USD currency', () => {
+    const result = toSquareMoney(100);
+    expect(result.currency).toBe('USD');
+  });
+
+  it('should use provided currency', () => {
+    const result = toSquareMoney(100, 'EUR');
+    expect(result.currency).toBe('EUR');
+  });
+
+  it('should handle bigint input directly', () => {
+    const result = toSquareMoney(BigInt(1500), 'USD');
+    expect(result).toEqual({
+      amount: BigInt(1500),
+      currency: 'USD',
+    });
+  });
+
+  it('should handle zero amount', () => {
+    const result = toSquareMoney(0);
+    expect(result.amount).toBe(BigInt(0));
+  });
+
+  it('should handle JPY (zero-decimal currency)', () => {
+    const result = toSquareMoney(1000, 'JPY');
+    expect(result).toEqual({
+      amount: BigInt(1000),
+      currency: 'JPY',
+    });
   });
 });

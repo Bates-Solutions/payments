@@ -1,0 +1,384 @@
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import type { SquareClient } from 'square';
+import { OrdersService } from '../services/orders.service.js';
+import { SquareValidationError, SquareApiError } from '../errors.js';
+
+// Create mock Square client
+function createMockClient(overrides: Record<string, unknown> = {}): SquareClient {
+  return {
+    orders: {
+      create: vi.fn(),
+      get: vi.fn(),
+      update: vi.fn(),
+      pay: vi.fn(),
+      search: vi.fn(),
+      ...overrides,
+    },
+  } as unknown as SquareClient;
+}
+
+describe('OrdersService', () => {
+  const defaultLocationId = 'LOC_123';
+
+  describe('builder', () => {
+    it('should create an order builder', () => {
+      const client = createMockClient();
+      const service = new OrdersService(client, defaultLocationId);
+      const builder = service.builder();
+
+      expect(builder).toBeDefined();
+      expect(typeof builder.addItem).toBe('function');
+      expect(typeof builder.build).toBe('function');
+    });
+
+    it('should use provided locationId over default', () => {
+      const client = createMockClient();
+      const service = new OrdersService(client, defaultLocationId);
+      const builder = service.builder('CUSTOM_LOC');
+
+      expect(builder).toBeDefined();
+    });
+
+    it('should throw SquareValidationError for missing locationId', () => {
+      const client = createMockClient();
+      const service = new OrdersService(client); // No default location
+
+      expect(() => service.builder()).toThrow(SquareValidationError);
+    });
+  });
+
+  describe('create', () => {
+    it('should create an order with line items', async () => {
+      const mockOrder = { id: 'ORDER_123', state: 'OPEN' };
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: mockOrder }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      const result = await service.create({
+        lineItems: [{ name: 'Coffee', amount: 350 }],
+      });
+
+      expect(result).toEqual(mockOrder);
+    });
+
+    it('should pass customerId', async () => {
+      const mockOrder = { id: 'ORDER_123' };
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: mockOrder }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      await service.create({
+        lineItems: [{ name: 'Coffee', amount: 350 }],
+        customerId: 'CUST_123',
+      });
+
+      expect(client.orders.create).toHaveBeenCalled();
+    });
+
+    it('should pass referenceId', async () => {
+      const mockOrder = { id: 'ORDER_123' };
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: mockOrder }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      await service.create({
+        lineItems: [{ name: 'Coffee', amount: 350 }],
+        referenceId: 'REF_123',
+      });
+
+      expect(client.orders.create).toHaveBeenCalled();
+    });
+
+    it('should use custom locationId', async () => {
+      const mockOrder = { id: 'ORDER_123' };
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: mockOrder }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      await service.create({ lineItems: [{ name: 'Coffee', amount: 350 }] }, 'CUSTOM_LOC');
+
+      expect(client.orders.create).toHaveBeenCalled();
+    });
+
+    it('should throw SquareValidationError for missing locationId', async () => {
+      const client = createMockClient();
+      const service = new OrdersService(client); // No default location
+
+      await expect(
+        service.create({ lineItems: [{ name: 'Coffee', amount: 350 }] })
+      ).rejects.toThrow(SquareValidationError);
+    });
+
+    it('should throw SquareValidationError for empty lineItems', async () => {
+      const client = createMockClient();
+      const service = new OrdersService(client, defaultLocationId);
+
+      await expect(service.create({ lineItems: [] })).rejects.toThrow(SquareValidationError);
+    });
+  });
+
+  describe('get', () => {
+    it('should get an order by ID', async () => {
+      const mockOrder = { id: 'ORDER_123', state: 'OPEN' };
+      const client = createMockClient({
+        get: vi.fn().mockResolvedValue({ order: mockOrder }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      const result = await service.get('ORDER_123');
+
+      expect(result).toEqual(mockOrder);
+      expect(client.orders.get).toHaveBeenCalledWith({ orderId: 'ORDER_123' });
+    });
+
+    it('should throw if order not found', async () => {
+      const client = createMockClient({
+        get: vi.fn().mockResolvedValue({}),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+
+      await expect(service.get('ORDER_123')).rejects.toThrow('Order not found');
+    });
+
+    it('should parse and rethrow API errors', async () => {
+      const client = createMockClient({
+        get: vi.fn().mockRejectedValue({
+          statusCode: 404,
+          body: { errors: [{ category: 'INVALID_REQUEST_ERROR', code: 'NOT_FOUND' }] },
+        }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+
+      await expect(service.get('ORDER_123')).rejects.toThrow();
+    });
+  });
+
+  describe('update', () => {
+    it('should update an order', async () => {
+      const mockOrder = { id: 'ORDER_123', version: 2 };
+      const client = createMockClient({
+        update: vi.fn().mockResolvedValue({ order: mockOrder }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      const result = await service.update('ORDER_123', { version: 1 });
+
+      expect(result).toEqual(mockOrder);
+      expect(client.orders.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          orderId: 'ORDER_123',
+          order: expect.objectContaining({
+            locationId: defaultLocationId,
+            version: 1,
+          }),
+        })
+      );
+    });
+
+    it('should pass referenceId', async () => {
+      const mockOrder = { id: 'ORDER_123' };
+      const client = createMockClient({
+        update: vi.fn().mockResolvedValue({ order: mockOrder }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      await service.update('ORDER_123', { version: 1, referenceId: 'REF_123' });
+
+      expect(client.orders.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          order: expect.objectContaining({
+            referenceId: 'REF_123',
+          }),
+        })
+      );
+    });
+
+    it('should use custom locationId', async () => {
+      const mockOrder = { id: 'ORDER_123' };
+      const client = createMockClient({
+        update: vi.fn().mockResolvedValue({ order: mockOrder }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      await service.update('ORDER_123', { version: 1 }, 'CUSTOM_LOC');
+
+      expect(client.orders.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          order: expect.objectContaining({
+            locationId: 'CUSTOM_LOC',
+          }),
+        })
+      );
+    });
+
+    it('should throw SquareValidationError for missing locationId', async () => {
+      const client = createMockClient();
+      const service = new OrdersService(client); // No default location
+
+      await expect(service.update('ORDER_123', { version: 1 })).rejects.toThrow(
+        SquareValidationError
+      );
+    });
+
+    it('should throw if update fails', async () => {
+      const client = createMockClient({
+        update: vi.fn().mockResolvedValue({}),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+
+      await expect(service.update('ORDER_123', { version: 1 })).rejects.toThrow(
+        'Order update failed'
+      );
+    });
+
+    it('should parse and rethrow API errors', async () => {
+      const client = createMockClient({
+        update: vi.fn().mockRejectedValue({
+          statusCode: 400,
+          body: { errors: [{ category: 'INVALID_REQUEST_ERROR', code: 'BAD_REQUEST' }] },
+        }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+
+      await expect(service.update('ORDER_123', { version: 1 })).rejects.toThrow();
+    });
+  });
+
+  describe('pay', () => {
+    it('should pay for an order', async () => {
+      const mockOrder = { id: 'ORDER_123', state: 'COMPLETED' };
+      const client = createMockClient({
+        pay: vi.fn().mockResolvedValue({ order: mockOrder }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      const result = await service.pay('ORDER_123', ['PAY_456']);
+
+      expect(result).toEqual(mockOrder);
+      expect(client.orders.pay).toHaveBeenCalledWith(
+        expect.objectContaining({
+          orderId: 'ORDER_123',
+          paymentIds: ['PAY_456'],
+        })
+      );
+    });
+
+    it('should throw if payment fails', async () => {
+      const client = createMockClient({
+        pay: vi.fn().mockResolvedValue({}),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+
+      await expect(service.pay('ORDER_123', ['PAY_456'])).rejects.toThrow('Order payment failed');
+    });
+
+    it('should parse and rethrow API errors', async () => {
+      const client = createMockClient({
+        pay: vi.fn().mockRejectedValue({
+          statusCode: 400,
+          body: { errors: [{ category: 'INVALID_REQUEST_ERROR', code: 'BAD_REQUEST' }] },
+        }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+
+      await expect(service.pay('ORDER_123', ['PAY_456'])).rejects.toThrow();
+    });
+  });
+
+  describe('search', () => {
+    it('should search for orders', async () => {
+      const mockOrders = [{ id: 'ORDER_1' }, { id: 'ORDER_2' }];
+      const client = createMockClient({
+        search: vi.fn().mockResolvedValue({ orders: mockOrders, cursor: 'next_cursor' }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      const result = await service.search();
+
+      expect(result.data).toEqual(mockOrders);
+      expect(result.cursor).toBe('next_cursor');
+      expect(client.orders.search).toHaveBeenCalledWith(
+        expect.objectContaining({
+          locationIds: [defaultLocationId],
+        })
+      );
+    });
+
+    it('should use custom locationIds', async () => {
+      const mockOrders = [{ id: 'ORDER_1' }];
+      const client = createMockClient({
+        search: vi.fn().mockResolvedValue({ orders: mockOrders }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      await service.search({ locationIds: ['LOC_A', 'LOC_B'] });
+
+      expect(client.orders.search).toHaveBeenCalledWith(
+        expect.objectContaining({
+          locationIds: ['LOC_A', 'LOC_B'],
+        })
+      );
+    });
+
+    it('should pass cursor and limit', async () => {
+      const client = createMockClient({
+        search: vi.fn().mockResolvedValue({ orders: [] }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      await service.search({ cursor: 'some_cursor', limit: 10 });
+
+      expect(client.orders.search).toHaveBeenCalledWith(
+        expect.objectContaining({
+          cursor: 'some_cursor',
+          limit: 10,
+        })
+      );
+    });
+
+    it('should return empty array when no orders', async () => {
+      const client = createMockClient({
+        search: vi.fn().mockResolvedValue({}),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      const result = await service.search();
+
+      expect(result.data).toEqual([]);
+      expect(result.cursor).toBeUndefined();
+    });
+
+    it('should throw error for missing locationId', async () => {
+      const client = createMockClient({
+        search: vi.fn(), // Won't be called since validation fails first
+      });
+      const service = new OrdersService(client); // No default location
+
+      // searchOptions with empty locationIds array should fail
+      await expect(service.search({ locationIds: [] })).rejects.toThrow();
+    });
+
+    it('should parse and rethrow API errors', async () => {
+      const client = createMockClient({
+        search: vi.fn().mockRejectedValue({
+          statusCode: 401,
+          body: { errors: [{ category: 'AUTHENTICATION_ERROR', code: 'UNAUTHORIZED' }] },
+        }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+
+      await expect(service.search()).rejects.toThrow();
+    });
+  });
+});
