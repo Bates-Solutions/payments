@@ -8,8 +8,6 @@ export default defineConfig({
     setupFiles: ['src/angular/__tests__/setup.ts'],
     testTimeout: 10000,
     hookTimeout: 10000,
-    // Use threads pool for consistent behavior across Node versions
-    pool: 'threads',
     deps: {
       optimizer: {
         web: {
