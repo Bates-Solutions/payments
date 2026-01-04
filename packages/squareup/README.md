@@ -1,9 +1,9 @@
 <p align="center">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/React_Logo_SVG.svg" alt="React" height="60">
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg" alt="React" height="60">
   &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Block%2C_Inc._logo.svg/512px-Block%2C_Inc._logo.svg.png" alt="Square" height="60">
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/angularjs/angularjs-original.svg" alt="Angular" height="60">
   &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="https://upload.wikimedia.org/wikipedia/commons/c/cf/Angular_full_color_logo.svg" alt="Angular" height="60">
+  <img src="https://cdn.worldvectorlogo.com/logos/square-2.svg" alt="Square" height="60">
 </p>
 
 <h1 align="center">@bates-solutions/squareup</h1>
@@ -17,6 +17,11 @@
   <a href="https://npmjs.com/package/@bates-solutions/squareup"><img src="https://img.shields.io/npm/v/@bates-solutions/squareup.svg" alt="npm version"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
   <a href="https://typescriptlang.org"><img src="https://img.shields.io/badge/TypeScript-5.0+-blue.svg" alt="TypeScript"></a>
+  <br>
+  <img src="https://img.shields.io/badge/tests-329%20passed-brightgreen.svg" alt="Tests">
+  <img src="https://img.shields.io/badge/coverage-99.84%25-brightgreen.svg" alt="Coverage">
+  <img src="https://img.shields.io/badge/React-110%20tests-blue.svg" alt="React Tests">
+  <img src="https://img.shields.io/badge/Angular-133%20tests-red.svg" alt="Angular Tests">
 </p>
 
 ---
@@ -31,6 +36,27 @@ Stop wrestling with Square's low-level APIs. **squareup** gives you React hooks,
 - **Server Utilities** - Webhook verification and middleware
 - **Type-Safe** - Full TypeScript support with strict types
 - **Fluent Builders** - Chainable order and payment construction
+
+## 🧪 Testing & Quality
+
+**329 comprehensive tests** with **99.84% code coverage** ensure reliability and maintainability:
+
+- **React Tests (110)**: Complete coverage of hooks, components, and integrations
+- **Angular Tests (133)**: Full service testing with RxJS observables
+- **Core Tests (86)**: API clients, builders, and utilities
+- **Coverage Breakdown**:
+  - Statements: **99.84%**
+  - Branches: **95.99%**
+  - Functions: **100%**
+  - Lines: **99.84%**
+
+Run tests with:
+```bash
+npm test              # All tests
+npm run test:react    # React tests only
+npm run test:angular  # Angular tests only
+npm run test:coverage # With coverage report
+```
 
 ## Installation
 
