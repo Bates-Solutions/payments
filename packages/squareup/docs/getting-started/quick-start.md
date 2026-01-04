@@ -1,6 +1,6 @@
 # Quick Start
 
-Get up and running with `@bates/squareup` in 5 minutes.
+Get up and running with `@bates-solutions/squareup` in 5 minutes.
 
 ## Prerequisites
 
@@ -13,13 +13,13 @@ Get up and running with `@bates/squareup` in 5 minutes.
 ### 1. Install the package
 
 ```bash
-npm install @bates/squareup square
+npm install @bates-solutions/squareup square
 ```
 
 ### 2. Create the client
 
 ```typescript
-import { createSquareClient } from '@bates/squareup';
+import { createSquareClient } from '@bates-solutions/squareup';
 
 const square = createSquareClient({
   accessToken: process.env.SQUARE_ACCESS_TOKEN!,
@@ -45,7 +45,7 @@ console.log('Status:', payment.status);
 ### 1. Wrap your app with SquareProvider
 
 ```tsx
-import { SquareProvider } from '@bates/squareup/react';
+import { SquareProvider } from '@bates-solutions/squareup/react';
 
 function App() {
   return (
@@ -63,7 +63,7 @@ function App() {
 ### 2. Use payment hooks
 
 ```tsx
-import { useSquarePayment } from '@bates/squareup/react';
+import { useSquarePayment } from '@bates-solutions/squareup/react';
 
 function CheckoutForm() {
   const { cardRef, tokenize, ready, loading, error } = useSquarePayment();
@@ -94,7 +94,7 @@ function CheckoutForm() {
 ### 1. Import the module
 
 ```typescript
-import { SquareModule } from '@bates/squareup/angular';
+import { SquareModule } from '@bates-solutions/squareup/angular';
 
 @NgModule({
   imports: [
@@ -111,7 +111,7 @@ export class AppModule {}
 ### 2. Inject the service
 
 ```typescript
-import { SquarePaymentsService } from '@bates/squareup/angular';
+import { SquarePaymentsService } from '@bates-solutions/squareup/angular';
 
 @Component({...})
 export class CheckoutComponent {

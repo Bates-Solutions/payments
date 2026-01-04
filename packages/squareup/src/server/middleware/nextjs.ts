@@ -48,7 +48,7 @@ interface NextPagesResponse {
  * @example
  * ```typescript
  * // app/api/webhook/route.ts
- * import { createNextWebhookHandler } from '@bates/squareup/server';
+ * import { createNextWebhookHandler } from '@bates-solutions/squareup/server';
  *
  * export const POST = createNextWebhookHandler({
  *   signatureKey: process.env.SQUARE_WEBHOOK_KEY!,
@@ -119,7 +119,7 @@ export function createNextWebhookHandler(config: WebhookConfig) {
  * @example
  * ```typescript
  * // pages/api/webhook.ts
- * import { createNextPagesWebhookHandler } from '@bates/squareup/server';
+ * import { createNextPagesWebhookHandler } from '@bates-solutions/squareup/server';
  *
  * export const config = {
  *   api: { bodyParser: false }, // Required for raw body
@@ -217,7 +217,7 @@ function getRawBody(req: NodeReadable): Promise<string> {
  * @example
  * ```typescript
  * // app/api/webhook/route.ts
- * import { parseNextWebhook } from '@bates/squareup/server';
+ * import { parseNextWebhook } from '@bates-solutions/squareup/server';
  *
  * export async function POST(request: Request) {
  *   const event = await parseNextWebhook(

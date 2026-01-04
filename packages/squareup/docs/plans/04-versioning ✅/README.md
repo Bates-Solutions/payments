@@ -129,7 +129,7 @@ Maintain a `CHANGELOG.md` following [Keep a Changelog](https://keepachangelog.co
  */
 export function createSquareClient(config: Config): SquareClient {
   console.warn(
-    '[@bates/squareup] createSquareClient is deprecated. Use createClient() instead.'
+    '[@bates-solutions/squareup] createSquareClient is deprecated. Use createClient() instead.'
   );
   return createClient(config);
 }
@@ -139,7 +139,7 @@ export function createSquareClient(config: Config): SquareClient {
 
 ## Version Compatibility Matrix
 
-| @bates/squareup | square SDK | Node.js | React | Angular |
+| @bates-solutions/squareup | square SDK | Node.js | React | Angular |
 |-----------------|------------|---------|-------|---------|
 | 1.x | ^41.0.0 | >=18 | ^18.0 \|\| ^19.0 | ^17.0 \|\| ^18.0 \|\| ^19.0 |
 | 0.x (pre-release) | ^41.0.0 | >=18 | ^18.0 \|\| ^19.0 | ^17.0 \|\| ^18.0 \|\| ^19.0 |

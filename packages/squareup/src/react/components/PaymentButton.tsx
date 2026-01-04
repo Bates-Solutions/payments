@@ -38,7 +38,7 @@ export interface PaymentButtonProps {
  *
  * @example
  * ```tsx
- * import { PaymentButton } from '@bates/squareup/react';
+ * import { PaymentButton } from '@bates-solutions/squareup/react';
  *
  * function Checkout() {
  *   const handlePayment = async (token: string) => {

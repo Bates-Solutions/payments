@@ -4,7 +4,7 @@
 
 ```json
 {
-  "name": "@bates/squareup",
+  "name": "@bates-solutions/squareup",
   "exports": {
     ".": "./dist/core/index.js",
     "./react": "./dist/react/index.js",
@@ -150,7 +150,7 @@ src/
 ### Core (Node.js/Backend)
 
 ```typescript
-import { createSquareClient } from '@bates/squareup';
+import { createSquareClient } from '@bates-solutions/squareup';
 
 const square = createSquareClient({
   accessToken: process.env.SQUARE_ACCESS_TOKEN,
@@ -176,7 +176,7 @@ const order = await square.orders
 ### React
 
 ```tsx
-import { SquareProvider, useSquarePayment, useOrders } from '@bates/squareup/react';
+import { SquareProvider, useSquarePayment, useOrders } from '@bates-solutions/squareup/react';
 
 function App() {
   return (
@@ -216,7 +216,7 @@ function Checkout() {
 ### Angular
 
 ```typescript
-import { SquareModule } from '@bates/squareup/angular';
+import { SquareModule } from '@bates-solutions/squareup/angular';
 
 @NgModule({
   imports: [
@@ -245,7 +245,7 @@ export class CheckoutComponent {
 ### Server (Webhooks)
 
 ```typescript
-import { createWebhookHandler } from '@bates/squareup/server';
+import { createWebhookHandler } from '@bates-solutions/squareup/server';
 
 // Next.js App Router
 export const POST = createWebhookHandler({

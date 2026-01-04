@@ -17,7 +17,7 @@ export const SQUARE_CONFIG = new InjectionToken<SquareConfig>('SQUARE_CONFIG');
  *
  * @example
  * ```typescript
- * import { SquareModule } from '@bates/squareup/angular';
+ * import { SquareModule } from '@bates-solutions/squareup/angular';
  *
  * @NgModule({
  *   imports: [

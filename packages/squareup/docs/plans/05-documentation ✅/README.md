@@ -45,11 +45,11 @@ docs/
 The root README should include:
 
 ```markdown
-# @bates/squareup
+# @bates-solutions/squareup
 
 > TypeScript wrapper for Square API with React & Angular integrations
 
-[![npm version](https://img.shields.io/npm/v/@bates/squareup.svg)](https://npmjs.com/package/@bates/squareup)
+[![npm version](https://img.shields.io/npm/v/@bates-solutions/squareup.svg)](https://npmjs.com/package/@bates-solutions/squareup)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://typescriptlang.org)
 

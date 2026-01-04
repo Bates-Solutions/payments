@@ -4,7 +4,7 @@
 
 A TypeScript wrapper library for the Square API, designed for easy integration with React and Angular projects.
 
-**Package Name:** `@bates/squareup`
+**Package Name:** `@bates-solutions/squareup`
 
 ---
 
@@ -36,7 +36,7 @@ Square already has a Node.js SDK (`square` npm package), but it:
 
 Based on project requirements:
 
-1. **Package Structure:** Single package with subpath exports (`@bates/squareup/react`, `@bates/squareup/angular`)
+1. **Package Structure:** Single package with subpath exports (`@bates-solutions/squareup/react`, `@bates-solutions/squareup/angular`)
 2. **Target Use Case:** Single-merchant apps (personal access tokens) - simpler auth, your own Square account
 3. **React State Management:** Built-in React Context only - zero dependencies, works everywhere
 

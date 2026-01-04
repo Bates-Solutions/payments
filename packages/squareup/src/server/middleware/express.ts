@@ -48,7 +48,7 @@ export interface ExpressWebhookOptions extends WebhookConfig {
  * @example
  * ```typescript
  * import express from 'express';
- * import { createExpressWebhookHandler } from '@bates/squareup/server';
+ * import { createExpressWebhookHandler } from '@bates-solutions/squareup/server';
  *
  * const app = express();
  *
@@ -153,7 +153,7 @@ export function createExpressWebhookHandler(
  * @example
  * ```typescript
  * import express from 'express';
- * import { rawBodyMiddleware } from '@bates/squareup/server';
+ * import { rawBodyMiddleware } from '@bates-solutions/squareup/server';
  *
  * const app = express();
  * app.use('/webhook', rawBodyMiddleware);

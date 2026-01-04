@@ -2,7 +2,7 @@
 
 ## Overview
 
-Strategy for promoting `@bates/squareup` to the developer community after launch. Focus is on reaching developers who are already working with Square or building payment integrations.
+Strategy for promoting `@bates-solutions/squareup` to the developer community after launch. Focus is on reaching developers who are already working with Square or building payment integrations.
 
 ---
 
@@ -51,7 +51,7 @@ Strategy for promoting `@bates/squareup` to the developer community after launch
 The README is the primary conversion tool. Structure for scanning:
 
 ```markdown
-# @bates/squareup
+# @bates-solutions/squareup
 
 > Square API wrapper with React hooks & Angular services
 
@@ -59,7 +59,7 @@ The README is the primary conversion tool. Structure for scanning:
 
 ## Why This Library?
 
-[Side-by-side code comparison: Square SDK vs @bates/squareup]
+[Side-by-side code comparison: Square SDK vs @bates-solutions/squareup]
 
 ## Features
 - List with checkmarks
@@ -85,7 +85,7 @@ The README is the primary conversion tool. Structure for scanning:
 **Forums (developer.squareup.com/forums):**
 - [ ] Introduce library in "Community Tools" or "Show & Tell" section
 - [ ] Answer existing questions with solutions using the library
-- [ ] Create tutorial post: "Building a React Checkout with @bates/squareup"
+- [ ] Create tutorial post: "Building a React Checkout with @bates-solutions/squareup"
 
 **Square DevRel Outreach:**
 - [ ] Email Square Developer Relations about the library

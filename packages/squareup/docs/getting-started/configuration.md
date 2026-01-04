@@ -17,7 +17,7 @@ SQUARE_WEBHOOK_KEY=your_webhook_signature_key
 ## Core Client Configuration
 
 ```typescript
-import { createSquareClient } from '@bates/squareup';
+import { createSquareClient } from '@bates-solutions/squareup';
 
 const square = createSquareClient({
   // Required: Your Square API access token
@@ -36,7 +36,7 @@ const square = createSquareClient({
 ## React Configuration
 
 ```tsx
-import { SquareProvider } from '@bates/squareup/react';
+import { SquareProvider } from '@bates-solutions/squareup/react';
 
 <SquareProvider
   applicationId="sq0idp-xxx"
@@ -58,7 +58,7 @@ import { SquareProvider } from '@bates/squareup/react';
 ## Angular Configuration
 
 ```typescript
-import { SquareModule } from '@bates/squareup/angular';
+import { SquareModule } from '@bates-solutions/squareup/angular';
 
 @NgModule({
   imports: [

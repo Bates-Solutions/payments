@@ -22,7 +22,7 @@ export const SIGNATURE_HEADER = 'x-square-hmacsha256-signature';
  *
  * @example
  * ```typescript
- * import { verifySignature } from '@bates/squareup/server';
+ * import { verifySignature } from '@bates-solutions/squareup/server';
  *
  * const result = verifySignature(
  *   rawBody,
