@@ -33,35 +33,11 @@ function createMockPayments(overrides: Partial<Payments> = {}): Payments {
 
 function createWrapper(contextValue: SquareContextValue) {
   return function Wrapper({ children }: { children: React.ReactNode }) {
-    return (
-      <SquareContext.Provider value={contextValue}>{children}</SquareContext.Provider>
-    );
+    return <SquareContext.Provider value={contextValue}>{children}</SquareContext.Provider>;
   };
 }
 
 // Test component that uses the hook in a realistic way
-interface TestComponentProps {
-  contextValue: SquareContextValue;
-  options?: Parameters<typeof useSquarePayment>[0];
-  onHookResult?: (result: ReturnType<typeof useSquarePayment>) => void;
-}
-
-function TestComponent({ contextValue, options, onHookResult }: TestComponentProps) {
-  const result = useSquarePayment(options);
-
-  useEffect(() => {
-    onHookResult?.(result);
-  }, [result, onHookResult]);
-
-  return (
-    <SquareContext.Provider value={contextValue}>
-      <div data-testid="card-container" ref={result.cardRef} />
-      <div data-testid="ready">{result.ready.toString()}</div>
-      <div data-testid="loading">{result.loading.toString()}</div>
-      <div data-testid="error">{result.error?.message ?? 'null'}</div>
-    </SquareContext.Provider>
-  );
-}
 
 // Wrapper that sets up context before using hook
 function TestWrapper({
@@ -252,9 +228,7 @@ describe('useSquarePayment', () => {
       render(<TestWrapper contextValue={contextValue} options={{ onError }} />);
 
       await waitFor(() => {
-        expect(screen.getByTestId('error').textContent).toBe(
-          'Card initialization failed'
-        );
+        expect(screen.getByTestId('error').textContent).toBe('Card initialization failed');
       });
 
       expect(screen.getByTestId('ready').textContent).toBe('false');
@@ -302,9 +276,7 @@ describe('useSquarePayment', () => {
         wrapper: createWrapper(contextValue),
       });
 
-      await expect(result.current.tokenize()).rejects.toThrow(
-        'Card input not initialized'
-      );
+      await expect(result.current.tokenize()).rejects.toThrow('Card input not initialized');
     });
 
     it('should tokenize successfully and return token', async () => {
@@ -473,9 +445,7 @@ describe('useSquarePayment', () => {
         }
       });
 
-      expect(error?.message).toBe(
-        'Card number is invalid, Expiration date is invalid'
-      );
+      expect(error?.message).toBe('Card number is invalid, Expiration date is invalid');
     });
 
     it('should handle tokenization with no errors array', async () => {

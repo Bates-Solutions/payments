@@ -87,9 +87,7 @@ describe('useOrders', () => {
         json: () => Promise.resolve({ id: 'ORD_123' }),
       });
 
-      const { result } = renderHook(() =>
-        useOrders({ apiEndpoint: '/custom/orders' })
-      );
+      const { result } = renderHook(() => useOrders({ apiEndpoint: '/custom/orders' }));
 
       await act(async () => {
         await result.current.create({ lineItems: [{ name: 'Test' }] });
@@ -119,7 +117,7 @@ describe('useOrders', () => {
       });
 
       const call = vi.mocked(fetch).mock.calls[0];
-      const body = JSON.parse(call[1]?.body as string);
+      const body = JSON.parse(call?.[1]?.body as string);
 
       expect(body.lineItems).toHaveLength(2);
       expect(body.lineItems[0].name).toBe('Latte');
@@ -191,7 +189,7 @@ describe('useOrders', () => {
       });
 
       expect(onError).toHaveBeenCalledWith(expect.any(Error));
-      expect(onError.mock.calls[0][0].message).toBe('Order failed');
+      expect(onError.mock.calls[0]?.[0]?.message).toBe('Order failed');
     });
   });
 

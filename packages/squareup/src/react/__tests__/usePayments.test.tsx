@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { renderHook, act, waitFor } from '@testing-library/react';
+import { renderHook, act } from '@testing-library/react';
 import { usePayments } from '../hooks/usePayments.js';
 
 describe('usePayments', () => {
@@ -88,9 +88,7 @@ describe('usePayments', () => {
         json: () => Promise.resolve({ id: 'PAY_123' }),
       });
 
-      const { result } = renderHook(() =>
-        usePayments({ apiEndpoint: '/custom/payments' })
-      );
+      const { result } = renderHook(() => usePayments({ apiEndpoint: '/custom/payments' }));
 
       await act(async () => {
         await result.current.create({ sourceId: 'token', amount: 500 });
@@ -121,7 +119,7 @@ describe('usePayments', () => {
       });
 
       const call = vi.mocked(fetch).mock.calls[0];
-      const body = JSON.parse(call[1]?.body as string);
+      const body = JSON.parse(call?.[1]?.body as string);
 
       expect(body.sourceId).toBe('cnon:card-nonce');
       expect(body.amount).toBe(1500);
@@ -241,7 +239,7 @@ describe('usePayments', () => {
       });
 
       expect(onError).toHaveBeenCalledWith(expect.any(Error));
-      expect(onError.mock.calls[0][0].message).toBe('Payment declined');
+      expect(onError.mock.calls[0]?.[0]?.message).toBe('Payment declined');
     });
   });
 

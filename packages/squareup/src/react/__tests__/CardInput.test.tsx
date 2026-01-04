@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
-import React, { useRef, useEffect } from 'react';
+import { render, waitFor } from '@testing-library/react';
+import React, { useRef } from 'react';
 import { SquareContext } from '../SquareProvider.js';
 import { CardInput, CardInputHandle } from '../components/CardInput.js';
 import type { SquareContextValue, Card, Payments } from '../types.js';
@@ -32,9 +32,7 @@ function createMockPayments(overrides: Partial<Payments> = {}): Payments {
 
 function createWrapper(contextValue: SquareContextValue) {
   return function Wrapper({ children }: { children: React.ReactNode }) {
-    return (
-      <SquareContext.Provider value={contextValue}>{children}</SquareContext.Provider>
-    );
+    return <SquareContext.Provider value={contextValue}>{children}</SquareContext.Provider>;
   };
 }
 
@@ -190,7 +188,7 @@ describe('CardInput', () => {
       error: null,
     };
 
-    let cardRef: React.RefObject<CardInputHandle | null>;
+    let cardRef: React.RefObject<CardInputHandle | null> = { current: null };
 
     function TestComponent() {
       cardRef = useRef<CardInputHandle>(null);
@@ -226,7 +224,7 @@ describe('CardInput', () => {
       error: null,
     };
 
-    let cardRef: React.RefObject<CardInputHandle | null>;
+    let cardRef: React.RefObject<CardInputHandle | null> = { current: null };
 
     function TestComponent() {
       cardRef = useRef<CardInputHandle>(null);
