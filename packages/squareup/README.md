@@ -1,10 +1,27 @@
-# @bates-solutions/squareup
+<p align="center">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/React_Logo_SVG.svg" alt="React" height="60">
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Block%2C_Inc._logo.svg/512px-Block%2C_Inc._logo.svg.png" alt="Square" height="60">
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="https://upload.wikimedia.org/wikipedia/commons/c/cf/Angular_full_color_logo.svg" alt="Angular" height="60">
+</p>
 
-> TypeScript wrapper for Square API with React hooks & Angular services
+<h1 align="center">@bates-solutions/squareup</h1>
 
-[![npm version](https://img.shields.io/npm/v/@bates-solutions/squareup.svg)](https://npmjs.com/package/@bates-solutions/squareup)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://typescriptlang.org)
+<p align="center">
+  <strong>The modern TypeScript SDK for Square payments</strong><br>
+  Build payment experiences in React and Angular with type-safe APIs, fluent builders, and framework-native integrations.
+</p>
+
+<p align="center">
+  <a href="https://npmjs.com/package/@bates-solutions/squareup"><img src="https://img.shields.io/npm/v/@bates-solutions/squareup.svg" alt="npm version"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+  <a href="https://typescriptlang.org"><img src="https://img.shields.io/badge/TypeScript-5.0+-blue.svg" alt="TypeScript"></a>
+</p>
+
+---
+
+Stop wrestling with Square's low-level APIs. **squareup** gives you React hooks, Angular services, and a fluent builder API that makes payment integration feel native to your framework. Tokenize cards, process payments, manage orders, and handle webhooks—all with full TypeScript support and zero boilerplate.
 
 ## Features
 
