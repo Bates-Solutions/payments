@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-01-09
+
+### Changed
+
+- CI/CD now auto-publishes to npm on merge to main using trusted publishing (OIDC)
+
 ## [0.1.0] - 2025-01-03
 
 ### Added
