@@ -36,6 +36,11 @@ temp/
 # Internal planning docs
 docs/plans/
 
-# Claude Code
+# AI assistants
 .claude/
 CLAUDE.md
+.cursor/
+.cursorrules
+.aider*
+.continue/
+.github/copilot-instructions.md
