@@ -35,3 +35,7 @@ temp/
 
 # Internal planning docs
 docs/plans/
+
+# Claude Code
+.claude/
+CLAUDE.md
