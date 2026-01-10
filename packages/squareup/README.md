@@ -1,7 +1,7 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/React-18+-61DAFB?logo=react&logoColor=white&style=for-the-badge" alt="React" height="28">
+  <img src="https://img.shields.io/badge/Node.js-18+-339933?logo=node.js&logoColor=white&style=for-the-badge" alt="Node.js" height="28">
   &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="https://img.shields.io/badge/Angular-17+-DD0031?logo=angular&logoColor=white&style=for-the-badge" alt="Angular" height="28">
+  <img src="https://img.shields.io/badge/TypeScript-5.0+-3178C6?logo=typescript&logoColor=white&style=for-the-badge" alt="TypeScript" height="28">
   &nbsp;&nbsp;&nbsp;&nbsp;
   <img src="https://img.shields.io/badge/Square-Payments-0066CC?logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iIzAwNjZDQyIvPgo8cGF0aCBkPSJNOC41IDEySDE1LjVWMTMuNUgxMC41VjE1SDE1LjVWMTYuNUgxMC41VjE4SDE1LjVWMTlIMFYxMkg4LjVWMTJIMFYxMkg4LjVWMTJaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K&style=for-the-badge" alt="Square" height="28">
 </p>
@@ -10,64 +10,33 @@
 
 <p align="center">
   <strong>The modern TypeScript SDK for Square payments</strong><br>
-  Build payment experiences in React and Angular with type-safe APIs, fluent builders, and framework-native integrations.
+  Build payment backends with type-safe APIs, fluent builders, and webhook support.
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-0.1.0-blue.svg" alt="version 0.1.0">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
   <a href="https://typescriptlang.org"><img src="https://img.shields.io/badge/TypeScript-5.0+-blue.svg" alt="TypeScript"></a>
-  <br>
-  <img src="https://img.shields.io/badge/tests-329%20passed-brightgreen.svg" alt="Tests">
-  <img src="https://img.shields.io/badge/coverage-99.84%25-brightgreen.svg" alt="Coverage">
-  <img src="https://img.shields.io/badge/React-110%20tests-blue.svg" alt="React Tests">
-  <img src="https://img.shields.io/badge/Angular-133%20tests-red.svg" alt="Angular Tests">
 </p>
 
 ---
 
-Stop wrestling with Square's low-level APIs. **squareup** gives you React hooks, Angular services, and a fluent builder API that makes payment integration feel native to your framework. Tokenize cards, process payments, manage orders, and handle webhooks—all with full TypeScript support and zero boilerplate.
+Stop wrestling with Square's low-level APIs. **squareup** gives you a simplified client API and fluent builders that make payment integration straightforward. Process payments, manage orders, handle webhooks—all with full TypeScript support and zero boilerplate.
 
 ## Features
 
 - **Simplified APIs** - Less boilerplate, more productivity
-- **React Integration** - Hooks and components for payments
-- **Angular Integration** - Services with RxJS Observables
-- **Server Utilities** - Webhook verification and middleware
 - **Type-Safe** - Full TypeScript support with strict types
 - **Fluent Builders** - Chainable order and payment construction
-
-## 🧪 Testing & Quality
-
-**329 comprehensive tests** with **99.84% code coverage** ensure reliability and maintainability:
-
-- **React Tests (110)**: Complete coverage of hooks, components, and integrations
-- **Angular Tests (133)**: Full service testing with RxJS observables
-- **Core Tests (86)**: API clients, builders, and utilities
-- **Coverage Breakdown**:
-  - Statements: **99.84%**
-  - Branches: **95.99%**
-  - Functions: **100%**
-  - Lines: **99.84%**
-
-Run tests with:
-
-```bash
-npm test              # All tests
-npm run test:react    # React tests only
-npm run test:angular  # Angular tests only
-npm run test:coverage # With coverage report
-```
+- **Webhook Support** - Signature verification and middleware for Express/Next.js
+- **Service Classes** - Payments, Orders, Customers, Catalog, Inventory, Subscriptions, Invoices, Loyalty
 
 ## Requirements
 
 | Dependency | Version |
 | ---------- | ------- |
 | Square SDK | ^43.0.0 |
-| Node.js    | 20+     |
+| Node.js    | 22+     |
 | TypeScript | 5.0+    |
-| React      | 18+ (optional) |
-| Angular    | 17+ (optional) |
 
 ## Installation
 
@@ -75,26 +44,9 @@ npm run test:coverage # With coverage report
 npm install @bates-solutions/squareup square
 ```
 
-### Peer Dependencies
-
-```bash
-# For React integration
-npm install react
-
-# For Angular integration
-npm install @angular/core @angular/common rxjs
-```
-
-## 📚 Documentation
-
-- **[Getting Started](./docs/getting-started/)** - Installation and setup guides
-- **[Guides](./docs/guides/)** - Framework-specific tutorials and examples
-- **[API Reference](./docs/api-reference.md)** - Complete API documentation
-- **[Configuration](./docs/getting-started/configuration.md)** - Environment setup
-
 ## Quick Start
 
-### Backend
+### Basic Usage
 
 ```typescript
 import { createSquareClient } from '@bates-solutions/squareup';
@@ -104,55 +56,106 @@ const client = createSquareClient({
   environment: 'sandbox',
 });
 
+// Process a payment
 const payment = await client.payments.create({
   sourceId: 'cnon:card-nonce',
   amount: 1000, // $10.00
   currency: 'USD',
 });
+
+// Create an order with the fluent builder
+const order = await client.orders.create(
+  client.orders
+    .builder()
+    .addItem({ name: 'Coffee', quantity: 2, amount: 450 })
+    .addItem({ name: 'Muffin', quantity: 1, amount: 350 })
+    .build()
+);
+
+// Manage customers
+const customer = await client.customers.create({
+  givenName: 'John',
+  familyName: 'Doe',
+  emailAddress: 'john@example.com',
+});
 ```
 
-### React
-
-```tsx
-import { SquareProvider, usePayments } from '@bates-solutions/squareup/react';
-
-function App() {
-  return (
-    <SquareProvider applicationId="sq0idp-xxx" locationId="LXXX" environment="sandbox">
-      <PaymentForm />
-    </SquareProvider>
-  );
-}
-
-function PaymentForm() {
-  const { processPayment } = usePayments();
-
-  const handlePayment = async () => {
-    const result = await processPayment({
-      sourceId: 'cnon:card-nonce',
-      amount: 1000, // $10.00
-      currency: 'USD',
-    });
-  };
-
-  return <button onClick={handlePayment}>Pay $10.00</button>;
-}
-```
-
-### Angular
+### Webhook Handling (Express)
 
 ```typescript
-import { SquareModule } from '@bates-solutions/squareup/angular';
+import express from 'express';
+import { createWebhookHandler, rawBodyMiddleware } from '@bates-solutions/squareup/server';
 
-@NgModule({
-  imports: [
-    SquareModule.forRoot({
-      accessToken: 'YOUR_ACCESS_TOKEN',
-      environment: 'sandbox',
-    }),
-  ],
-})
-export class AppModule {}
+const app = express();
+
+// Use raw body middleware before JSON parsing for webhook routes
+app.use('/webhooks/square', rawBodyMiddleware);
+app.use(express.json());
+
+const webhookHandler = createWebhookHandler({
+  signatureKey: process.env.SQUARE_WEBHOOK_SIGNATURE_KEY!,
+});
+
+app.post('/webhooks/square', (req, res) => {
+  const event = webhookHandler.verifyAndParse(req);
+
+  switch (event.type) {
+    case 'payment.completed':
+      console.log('Payment completed:', event.data);
+      break;
+    case 'order.created':
+      console.log('Order created:', event.data);
+      break;
+  }
+
+  res.sendStatus(200);
+});
+```
+
+### Webhook Handling (Next.js)
+
+```typescript
+// app/api/webhooks/square/route.ts
+import { createWebhookHandler } from '@bates-solutions/squareup/server';
+
+const webhookHandler = createWebhookHandler({
+  signatureKey: process.env.SQUARE_WEBHOOK_SIGNATURE_KEY!,
+});
+
+export async function POST(request: Request) {
+  const body = await request.text();
+  const signature = request.headers.get('x-square-hmacsha256-signature')!;
+
+  const event = webhookHandler.verifyAndParse(body, signature);
+
+  // Handle the event
+  console.log('Received event:', event.type);
+
+  return new Response('OK', { status: 200 });
+}
+```
+
+## Available Services
+
+| Service         | Description                          |
+| --------------- | ------------------------------------ |
+| `payments`      | Process and manage payments          |
+| `orders`        | Create and manage orders             |
+| `customers`     | Customer management                  |
+| `catalog`       | Product catalog operations           |
+| `inventory`     | Inventory tracking                   |
+| `subscriptions` | Subscription management              |
+| `invoices`      | Invoice operations                   |
+| `loyalty`       | Loyalty program management           |
+
+## Utilities
+
+```typescript
+import { toCents, fromCents, formatMoney } from '@bates-solutions/squareup';
+
+toCents(10.99);           // 1099
+fromCents(1099);          // 10.99
+formatMoney(1099, 'USD'); // "$10.99"
 ```
 
 ## Contributing
