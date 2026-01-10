@@ -1,6 +1,6 @@
 # @bates-solutions/squareup Documentation
 
-Welcome to the documentation for `@bates-solutions/squareup`, a TypeScript wrapper for the Square API with React hooks and Angular services.
+Welcome to the documentation for `@bates-solutions/squareup`, a TypeScript wrapper for the Square API with webhook support for Node.js backends.
 
 ## Getting Started
 
@@ -17,17 +17,6 @@ Welcome to the documentation for `@bates-solutions/squareup`, a TypeScript wrapp
 - [Customers](./guides/core/customers.md) - Customer operations
 - [Catalog](./guides/core/catalog.md) - Product catalog
 
-### React
-
-- [Setup](./guides/react/setup.md) - SquareProvider configuration
-- [Hooks](./guides/react/hooks.md) - All available hooks
-- [Components](./guides/react/components.md) - Pre-built components
-
-### Angular
-
-- [Setup](./guides/angular/setup.md) - Module configuration
-- [Services](./guides/angular/services.md) - Injectable services
-
 ### Server
 
 - [Webhooks](./guides/server/webhooks.md) - Webhook handling
@@ -38,8 +27,6 @@ Welcome to the documentation for `@bates-solutions/squareup`, a TypeScript wrapp
 Complete API reference generated from source code with TypeDoc:
 
 - [Core Module](./api/core/README.md) - Client, services, utilities, error handling
-- [React Module](./api/react/README.md) - Hooks, components, SquareProvider
-- [Angular Module](./api/angular/README.md) - Services, directives, SquareModule
 - [Server Module](./api/server/README.md) - Webhook handlers, middleware
 
 See also the [Quick Reference](./api-reference.md) for a summary of all exports.

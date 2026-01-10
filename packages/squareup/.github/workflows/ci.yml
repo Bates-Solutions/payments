@@ -13,19 +13,16 @@ concurrency:
 
 jobs:
   test:
-    name: Test (Node ${{ matrix.node-version }})
+    name: Test
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [20, 22]
 
     steps:
       - uses: actions/checkout@v6
 
-      - name: Setup Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 22
           cache: 'npm'
 
       - name: Install dependencies
@@ -40,22 +37,10 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Test core
-        run: npm test
-
-      - name: Test Angular
-        run: npm run test:angular
-
       - name: Test with coverage
-        if: matrix.node-version == 20
-        run: npm test -- --coverage
-
-      - name: Test Angular with coverage
-        if: matrix.node-version == 20
-        run: npm run test:angular -- --coverage
+        run: npm run test:coverage
 
       - name: Upload coverage
-        if: matrix.node-version == 20
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}

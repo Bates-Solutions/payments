@@ -6,9 +6,9 @@ Get up and running with `@bates-solutions/squareup` in 5 minutes.
 
 1. A Square developer account
 2. Access token from the [Square Developer Dashboard](https://developer.squareup.com/apps)
-3. Node.js 18+
+3. Node.js 22+
 
-## Backend Setup
+## Setup
 
 ### 1. Install the package
 
@@ -40,100 +40,46 @@ console.log('Payment ID:', payment.id);
 console.log('Status:', payment.status);
 ```
 
-## React Setup
-
-### 1. Wrap your app with SquareProvider
-
-```tsx
-import { SquareProvider } from '@bates-solutions/squareup/react';
-
-function App() {
-  return (
-    <SquareProvider
-      applicationId={process.env.NEXT_PUBLIC_SQUARE_APP_ID!}
-      locationId={process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID!}
-      environment="sandbox"
-    >
-      <YourApp />
-    </SquareProvider>
-  );
-}
-```
-
-### 2. Use payment hooks
-
-```tsx
-import { useSquarePayment } from '@bates-solutions/squareup/react';
-
-function CheckoutForm() {
-  const { cardRef, tokenize, ready, loading, error } = useSquarePayment();
-
-  const handleSubmit = async () => {
-    const token = await tokenize();
-    // Send token to your backend
-    await fetch('/api/pay', {
-      method: 'POST',
-      body: JSON.stringify({ token }),
-    });
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <div ref={cardRef} />
-      <button disabled={!ready || loading}>
-        {loading ? 'Processing...' : 'Pay'}
-      </button>
-      {error && <p>{error.message}</p>}
-    </form>
-  );
-}
-```
-
-## Angular Setup
-
-### 1. Import the module
+## Working with Orders
 
 ```typescript
-import { SquareModule } from '@bates-solutions/squareup/angular';
+// Use the fluent builder
+const order = await square.orders.create(
+  square.orders
+    .builder()
+    .addItem({ name: 'Coffee', quantity: 2, amount: 450 })
+    .addItem({ name: 'Muffin', quantity: 1, amount: 350 })
+    .build()
+);
 
-@NgModule({
-  imports: [
-    SquareModule.forRoot({
-      applicationId: environment.squareAppId,
-      locationId: environment.squareLocationId,
-      environment: 'sandbox',
-    })
-  ]
-})
-export class AppModule {}
+console.log('Order ID:', order.id);
+console.log('Total:', order.totalMoney);
 ```
 
-### 2. Inject the service
+## Webhook Setup (Express)
 
 ```typescript
-import { SquarePaymentsService } from '@bates-solutions/squareup/angular';
+import express from 'express';
+import { createWebhookHandler, rawBodyMiddleware } from '@bates-solutions/squareup/server';
 
-@Component({...})
-export class CheckoutComponent {
-  constructor(private payments: SquarePaymentsService) {}
+const app = express();
 
-  pay() {
-    this.payments.tokenize().pipe(
-      switchMap(token => this.payments.createPayment({
-        sourceId: token,
-        amount: 1000
-      }))
-    ).subscribe({
-      next: payment => console.log('Success:', payment),
-      error: err => console.error('Failed:', err)
-    });
-  }
-}
+app.use('/webhooks/square', rawBodyMiddleware);
+app.use(express.json());
+
+const webhookHandler = createWebhookHandler({
+  signatureKey: process.env.SQUARE_WEBHOOK_SIGNATURE_KEY!,
+});
+
+app.post('/webhooks/square', (req, res) => {
+  const event = webhookHandler.verifyAndParse(req);
+  console.log('Received event:', event.type);
+  res.sendStatus(200);
+});
 ```
 
 ## Next Steps
 
 - [Configuration Guide](./configuration.md)
 - [Payments Guide](../guides/core/payments.md)
-- [React Hooks Reference](../guides/react/hooks.md)
-- [Angular Services Reference](../guides/angular/services.md)
+- [Webhooks Guide](../guides/server/webhooks.md)
