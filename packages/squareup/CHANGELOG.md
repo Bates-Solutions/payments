@@ -1,3 +1,15 @@
+# [1.0.0](https://github.com/mbates/squareup/compare/v0.2.0...v1.0.0) (2026-01-10)
+
+
+* refactor!: remove React and Angular frontend integrations ([764f746](https://github.com/mbates/squareup/commit/764f7463b6c2c5eede5c0402e599b05bebb1fe09))
+
+
+### BREAKING CHANGES
+
+* React and Angular integrations have been removed.
+Users needing frontend payment forms should use Square's Web Payments SDK
+directly and communicate with their backend, which can use this library.
+
 # [0.2.0](https://github.com/mbates/squareup/compare/v0.1.0...v0.2.0) (2026-01-10)
 
 
