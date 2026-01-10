@@ -59,6 +59,16 @@ npm run test:angular  # Angular tests only
 npm run test:coverage # With coverage report
 ```
 
+## Requirements
+
+| Dependency | Version |
+| ---------- | ------- |
+| Square SDK | ^43.0.0 |
+| Node.js    | 20+     |
+| TypeScript | 5.0+    |
+| React      | 18+ (optional) |
+| Angular    | 17+ (optional) |
+
 ## Installation
 
 ```bash
