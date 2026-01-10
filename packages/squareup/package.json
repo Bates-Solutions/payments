@@ -58,7 +58,7 @@
   },
   "homepage": "https://github.com/mbates/squareup#readme",
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   },
   "peerDependencies": {
     "square": "^43.2.1"

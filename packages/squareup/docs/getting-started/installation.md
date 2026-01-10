@@ -28,4 +28,4 @@ This package is written in TypeScript and includes type definitions. TypeScript 
 
 ## Node.js
 
-Requires Node.js 18 or higher.
+Requires Node.js 22 or higher.
