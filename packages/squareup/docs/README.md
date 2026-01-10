@@ -35,7 +35,14 @@ Welcome to the documentation for `@bates-solutions/squareup`, a TypeScript wrapp
 
 ## API Reference
 
-Complete API reference is available in [api-reference.md](./api-reference.md).
+Complete API reference generated from source code with TypeDoc:
+
+- [Core Module](./api/core/README.md) - Client, services, utilities, error handling
+- [React Module](./api/react/README.md) - Hooks, components, SquareProvider
+- [Angular Module](./api/angular/README.md) - Services, directives, SquareModule
+- [Server Module](./api/server/README.md) - Webhook handlers, middleware
+
+See also the [Quick Reference](./api-reference.md) for a summary of all exports.
 
 ## Additional Resources
 
