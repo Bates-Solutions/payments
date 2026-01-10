@@ -22,7 +22,11 @@
       "Bash(npm run typecheck:*)",
       "Bash(gh api:*)",
       "Bash(gh run view:*)",
-      "Bash(gh run list:*)"
+      "Bash(gh run list:*)",
+      "Bash(git checkout:*)",
+      "Bash(npm run docs:*)",
+      "mcp__github__create_pull_request",
+      "Bash(git pull:*)"
     ]
   }
 }
