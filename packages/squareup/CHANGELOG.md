@@ -1,3 +1,15 @@
+# [0.2.0](https://github.com/mbates/squareup/compare/v0.1.0...v0.2.0) (2026-01-10)
+
+
+### Bug Fixes
+
+* use Node.js 22 for semantic-release ([08e8623](https://github.com/mbates/squareup/commit/08e862310242a4785a1ceaae2e8e54f77fc9d1e8))
+
+
+### Features
+
+* add semantic-release for automated versioning ([7fca26f](https://github.com/mbates/squareup/commit/7fca26f4adbf8351b28aaa89767a84c315fefa00))
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
