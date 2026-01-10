@@ -6,7 +6,7 @@ Get up and running with `@bates-solutions/squareup` in 5 minutes.
 
 1. A Square developer account
 2. Access token from the [Square Developer Dashboard](https://developer.squareup.com/apps)
-3. Node.js 18+
+3. Node.js 22+
 
 ## Setup
 
