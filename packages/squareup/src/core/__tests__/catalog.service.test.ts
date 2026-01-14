@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import type { SquareClient } from 'square';
-import { CatalogService } from '../services/catalog.service.js';
+import { CatalogService, type CatalogObject } from '../services/catalog.service.js';
 import { SquareValidationError } from '../errors.js';
 
 // Create mock Square client
@@ -192,6 +192,116 @@ describe('CatalogService', () => {
       const service = new CatalogService(client);
 
       await expect(service.createCategory({ name: 'Beverages' })).rejects.toThrow();
+    });
+  });
+
+  describe('upsert', () => {
+    it('should upsert a catalog object', async () => {
+      const mockCatalogObject = { id: 'ITEM_123', type: 'ITEM', version: BigInt(1) };
+      const client = createMockClient({
+        object: {
+          upsert: vi.fn().mockResolvedValue({ catalogObject: mockCatalogObject }),
+          get: vi.fn(),
+          delete: vi.fn(),
+        },
+      });
+
+      const service = new CatalogService(client);
+      const result = await service.upsert({
+        type: 'ITEM',
+        id: 'ITEM_123',
+        version: BigInt(1),
+        itemData: { name: 'Updated Item' },
+      });
+
+      expect(result).toEqual(mockCatalogObject);
+      expect(client.catalog.object.upsert).toHaveBeenCalled();
+    });
+
+    it('should use custom idempotency key when provided', async () => {
+      const mockCatalogObject = { id: 'ITEM_123', type: 'ITEM' };
+      const client = createMockClient({
+        object: {
+          upsert: vi.fn().mockResolvedValue({ catalogObject: mockCatalogObject }),
+          get: vi.fn(),
+          delete: vi.fn(),
+        },
+      });
+
+      const service = new CatalogService(client);
+      await service.upsert(
+        { type: 'ITEM', id: 'ITEM_123', itemData: { name: 'Test' } },
+        'custom-idempotency-key'
+      );
+
+      expect(client.catalog.object.upsert).toHaveBeenCalledWith(
+        expect.objectContaining({ idempotencyKey: 'custom-idempotency-key' })
+      );
+    });
+
+    it('should throw if catalog object not returned', async () => {
+      const client = createMockClient({
+        object: {
+          upsert: vi.fn().mockResolvedValue({}),
+          get: vi.fn(),
+          delete: vi.fn(),
+        },
+      });
+
+      const service = new CatalogService(client);
+
+      await expect(
+        service.upsert({ type: 'ITEM', id: 'ITEM_123', itemData: { name: 'Test' } })
+      ).rejects.toThrow('Catalog object was not upserted');
+    });
+
+    it('should parse and rethrow API errors', async () => {
+      const client = createMockClient({
+        object: {
+          upsert: vi.fn().mockRejectedValue({
+            statusCode: 400,
+            body: { errors: [{ category: 'INVALID_REQUEST_ERROR', code: 'BAD_REQUEST' }] },
+          }),
+          get: vi.fn(),
+          delete: vi.fn(),
+        },
+      });
+
+      const service = new CatalogService(client);
+
+      await expect(
+        service.upsert({ type: 'ITEM', id: 'ITEM_123', itemData: { name: 'Test' } })
+      ).rejects.toThrow();
+    });
+
+    it('should upsert with custom attribute values', async () => {
+      const mockCatalogObject = {
+        id: 'ITEM_123',
+        type: 'ITEM',
+        customAttributeValues: {
+          'Square:custom-key': { stringValue: 'custom value' },
+        },
+      };
+      const client = createMockClient({
+        object: {
+          upsert: vi.fn().mockResolvedValue({ catalogObject: mockCatalogObject }),
+          get: vi.fn(),
+          delete: vi.fn(),
+        },
+      });
+
+      const service = new CatalogService(client);
+      const result = await service.upsert({
+        type: 'ITEM',
+        id: 'ITEM_123',
+        customAttributeValues: {
+          'Square:custom-key': { stringValue: 'custom value' },
+        },
+        itemData: { name: 'Item with Custom Attrs' },
+      });
+
+      expect(result.customAttributeValues).toBeDefined();
+      expect(result.customAttributeValues?.['Square:custom-key']?.stringValue).toBe('custom value');
     });
   });
 

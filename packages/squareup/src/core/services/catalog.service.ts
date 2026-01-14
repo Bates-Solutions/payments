@@ -1,4 +1,4 @@
-import type { SquareClient } from 'square';
+import type { SquareClient, CatalogObject as SquareCatalogObject } from 'square';
 import { parseSquareError, SquareValidationError } from '../errors.js';
 import { createIdempotencyKey } from '../utils.js';
 import type { CurrencyCode } from '../types/index.js';
@@ -14,7 +14,35 @@ export type CatalogObjectType =
   | 'TAX'
   | 'MODIFIER'
   | 'MODIFIER_LIST'
-  | 'IMAGE';
+  | 'IMAGE'
+  | 'CUSTOM_ATTRIBUTE_DEFINITION';
+
+/**
+ * Custom attribute value for catalog items
+ */
+export interface CatalogCustomAttributeValue {
+  name?: string;
+  stringValue?: string;
+  customAttributeDefinitionId?: string;
+  type?: 'STRING' | 'BOOLEAN' | 'NUMBER' | 'SELECTION';
+  numberValue?: string;
+  booleanValue?: boolean;
+  selectionUidValues?: string[];
+  key?: string;
+}
+
+/**
+ * Custom attribute definition data
+ */
+export interface CustomAttributeDefinitionData {
+  type?: 'STRING' | 'BOOLEAN' | 'NUMBER' | 'SELECTION';
+  name?: string;
+  description?: string;
+  allowedObjectTypes?: CatalogObjectType[];
+  sellerVisibility?: 'SELLER_VISIBILITY_HIDDEN' | 'SELLER_VISIBILITY_READ_WRITE_VALUES';
+  appVisibility?: 'APP_VISIBILITY_HIDDEN' | 'APP_VISIBILITY_READ_ONLY' | 'APP_VISIBILITY_READ_WRITE_VALUES';
+  key?: string;
+}
 
 /**
  * Catalog object from Square API
@@ -27,6 +55,7 @@ export interface CatalogObject {
   isDeleted?: boolean;
   presentAtAllLocations?: boolean;
   presentAtLocationIds?: string[];
+  customAttributeValues?: Record<string, CatalogCustomAttributeValue>;
   itemData?: {
     name?: string;
     description?: string;
@@ -61,6 +90,7 @@ export interface CatalogObject {
     percentage?: string;
     inclusionType?: 'ADDITIVE' | 'INCLUSIVE';
   };
+  customAttributeDefinitionData?: CustomAttributeDefinitionData;
 }
 
 /**
@@ -221,6 +251,58 @@ export class CatalogService {
 
       if (!response.catalogObject) {
         throw new Error('Category was not created');
+      }
+
+      return response.catalogObject as CatalogObject;
+    } catch (error) {
+      throw parseSquareError(error);
+    }
+  }
+
+  /**
+   * Upsert (create or update) a catalog object
+   *
+   * @param catalogObject - The catalog object to upsert
+   * @param idempotencyKey - Optional idempotency key
+   * @returns The upserted catalog object
+   *
+   * @example
+   * ```typescript
+   * // Update an existing item's custom attributes
+   * const updatedItem = await square.catalog.upsert({
+   *   type: 'ITEM',
+   *   id: 'EXISTING_ITEM_ID',
+   *   version: existingItem.version,
+   *   customAttributeValues: {
+   *     'Square:some-key': { stringValue: 'new value' }
+   *   },
+   *   itemData: existingItem.itemData,
+   * });
+   *
+   * // Update a variation price
+   * const updatedVariation = await square.catalog.upsert({
+   *   type: 'ITEM_VARIATION',
+   *   id: 'EXISTING_VARIATION_ID',
+   *   version: existingVariation.version,
+   *   itemVariationData: {
+   *     ...existingVariation.itemVariationData,
+   *     priceMoney: { amount: BigInt(500), currency: 'USD' },
+   *   },
+   * });
+   * ```
+   */
+  async upsert(
+    catalogObject: CatalogObject,
+    idempotencyKey?: string
+  ): Promise<CatalogObject> {
+    try {
+      const response = await this.client.catalog.object.upsert({
+        idempotencyKey: idempotencyKey ?? createIdempotencyKey(),
+        object: catalogObject as unknown as SquareCatalogObject,
+      });
+
+      if (!response.catalogObject) {
+        throw new Error('Catalog object was not upserted');
       }
 
       return response.catalogObject as CatalogObject;
