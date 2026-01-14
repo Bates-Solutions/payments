@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/mbates/squareup/compare/v1.0.0...v1.1.0) (2026-01-14)
+
+
+### Features
+
+* **catalog:** add upsert method and custom attribute support ([c9aa1a4](https://github.com/mbates/squareup/commit/c9aa1a4e0e9fe2b6f378465200652c8b25cd53eb)), closes [#24](https://github.com/mbates/squareup/issues/24)
+
 # [1.0.0](https://github.com/mbates/squareup/compare/v0.2.0...v1.0.0) (2026-01-10)
 
 
