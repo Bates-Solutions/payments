@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/mbates/squareup/compare/v1.1.0...v1.2.0) (2026-01-16)
+
+
+### Features
+
+* **checkout:** add CheckoutService for payment links ([f84c4a2](https://github.com/mbates/squareup/commit/f84c4a2236bc121f108b7ae7729bf2797be5c173)), closes [#27](https://github.com/mbates/squareup/issues/27)
+
 # [1.1.0](https://github.com/mbates/squareup/compare/v1.0.0...v1.1.0) (2026-01-14)
 
 
