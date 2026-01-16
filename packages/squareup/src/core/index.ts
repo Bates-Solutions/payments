@@ -11,6 +11,7 @@ export { InventoryService } from './services/inventory.service.js';
 export { SubscriptionsService } from './services/subscriptions.service.js';
 export { InvoicesService } from './services/invoices.service.js';
 export { LoyaltyService } from './services/loyalty.service.js';
+export { CheckoutService } from './services/checkout.service.js';
 
 // Builders
 export { OrderBuilder } from './builders/order.builder.js';
