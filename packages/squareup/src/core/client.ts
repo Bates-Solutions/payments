@@ -8,6 +8,7 @@ import { InventoryService } from './services/inventory.service.js';
 import { SubscriptionsService } from './services/subscriptions.service.js';
 import { InvoicesService } from './services/invoices.service.js';
 import { LoyaltyService } from './services/loyalty.service.js';
+import { CheckoutService } from './services/checkout.service.js';
 
 /**
  * Configuration options for the Square client
@@ -68,6 +69,7 @@ export class SquareClient {
   public readonly subscriptions: SubscriptionsService;
   public readonly invoices: InvoicesService;
   public readonly loyalty: LoyaltyService;
+  public readonly checkout: CheckoutService;
 
   constructor(config: SquareClientConfig) {
     this.config = {
@@ -94,6 +96,7 @@ export class SquareClient {
     this.subscriptions = new SubscriptionsService(this.client, this.config.locationId);
     this.invoices = new InvoicesService(this.client, this.config.locationId);
     this.loyalty = new LoyaltyService(this.client, this.config.locationId);
+    this.checkout = new CheckoutService(this.client);
   }
 
   /**
