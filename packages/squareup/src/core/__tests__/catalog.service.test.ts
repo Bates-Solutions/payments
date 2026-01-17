@@ -485,43 +485,81 @@ describe('CatalogService', () => {
     it('should list catalog objects by type', async () => {
       const mockObjects = [{ id: 'ITEM_1' }, { id: 'ITEM_2' }];
       const client = createMockClient({
-        list: vi.fn().mockReturnValue({
-          [Symbol.asyncIterator]: async function* () {
-            for (const obj of mockObjects) {
-              yield obj;
-            }
-          },
-        }),
+        search: vi.fn().mockResolvedValue({ objects: mockObjects }),
       });
 
       const service = new CatalogService(client);
       const result = await service.list('ITEM');
 
       expect(result).toEqual(mockObjects);
-      expect(client.catalog.list).toHaveBeenCalledWith({ types: 'ITEM' });
+      expect(client.catalog.search).toHaveBeenCalledWith({
+        objectTypes: ['ITEM'],
+        cursor: undefined,
+      });
+    });
+
+    it('should paginate through all results', async () => {
+      const page1Objects = [{ id: 'ITEM_1' }, { id: 'ITEM_2' }];
+      const page2Objects = [{ id: 'ITEM_3' }, { id: 'ITEM_4' }];
+      const client = createMockClient({
+        search: vi
+          .fn()
+          .mockResolvedValueOnce({ objects: page1Objects, cursor: 'page2' })
+          .mockResolvedValueOnce({ objects: page2Objects }),
+      });
+
+      const service = new CatalogService(client);
+      const result = await service.list('ITEM');
+
+      expect(result).toEqual([...page1Objects, ...page2Objects]);
+      expect(client.catalog.search).toHaveBeenCalledTimes(2);
+      expect(client.catalog.search).toHaveBeenNthCalledWith(1, {
+        objectTypes: ['ITEM'],
+        cursor: undefined,
+      });
+      expect(client.catalog.search).toHaveBeenNthCalledWith(2, {
+        objectTypes: ['ITEM'],
+        cursor: 'page2',
+      });
     });
 
     it('should respect limit option', async () => {
-      const mockObjects = [{ id: 'ITEM_1' }, { id: 'ITEM_2' }, { id: 'ITEM_3' }];
+      const page1Objects = [{ id: 'ITEM_1' }, { id: 'ITEM_2' }];
+      const page2Objects = [{ id: 'ITEM_3' }, { id: 'ITEM_4' }];
       const client = createMockClient({
-        list: vi.fn().mockReturnValue({
-          [Symbol.asyncIterator]: async function* () {
-            for (const obj of mockObjects) {
-              yield obj;
-            }
-          },
-        }),
+        search: vi
+          .fn()
+          .mockResolvedValueOnce({ objects: page1Objects, cursor: 'page2' })
+          .mockResolvedValueOnce({ objects: page2Objects }),
       });
 
       const service = new CatalogService(client);
       const result = await service.list('ITEM', { limit: 2 });
 
       expect(result).toHaveLength(2);
+      expect(client.catalog.search).toHaveBeenCalledTimes(1);
+    });
+
+    it('should stop at limit across pages', async () => {
+      const page1Objects = [{ id: 'ITEM_1' }, { id: 'ITEM_2' }];
+      const page2Objects = [{ id: 'ITEM_3' }, { id: 'ITEM_4' }];
+      const client = createMockClient({
+        search: vi
+          .fn()
+          .mockResolvedValueOnce({ objects: page1Objects, cursor: 'page2' })
+          .mockResolvedValueOnce({ objects: page2Objects }),
+      });
+
+      const service = new CatalogService(client);
+      const result = await service.list('ITEM', { limit: 3 });
+
+      expect(result).toHaveLength(3);
+      expect(result).toEqual([{ id: 'ITEM_1' }, { id: 'ITEM_2' }, { id: 'ITEM_3' }]);
     });
 
     it('should parse and rethrow API errors', async () => {
       const client = createMockClient({
-        list: vi.fn().mockRejectedValue({
+        search: vi.fn().mockRejectedValue({
           statusCode: 401,
           body: { errors: [{ category: 'AUTHENTICATION_ERROR', code: 'UNAUTHORIZED' }] },
         }),
