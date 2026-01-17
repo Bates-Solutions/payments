@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/mbates/squareup/compare/v1.2.0...v1.2.1) (2026-01-17)
+
+
+### Bug Fixes
+
+* **catalog:** use explicit pagination in list() method ([a267b3e](https://github.com/mbates/squareup/commit/a267b3e597ef4222fe3ae34fe62feb4201afaf35)), closes [#29](https://github.com/mbates/squareup/issues/29)
+
 # [1.2.0](https://github.com/mbates/squareup/compare/v1.1.0...v1.2.0) (2026-01-16)
 
 
