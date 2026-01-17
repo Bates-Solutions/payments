@@ -421,18 +421,26 @@ export class CatalogService {
   ): Promise<CatalogObject[]> {
     try {
       const objects: CatalogObject[] = [];
-      const limit = options?.limit ?? 100;
+      const limit = options?.limit;
+      let cursor: string | undefined;
 
-      const page = await this.client.catalog.list({
-        types: objectType,
-      });
+      do {
+        const response = await this.client.catalog.search({
+          objectTypes: [objectType],
+          cursor,
+        });
 
-      for await (const obj of page) {
-        objects.push(obj as CatalogObject);
-        if (objects.length >= limit) {
-          break;
+        if (response.objects) {
+          for (const obj of response.objects) {
+            objects.push(obj as CatalogObject);
+            if (limit !== undefined && objects.length >= limit) {
+              return objects;
+            }
+          }
         }
-      }
+
+        cursor = response.cursor;
+      } while (cursor);
 
       return objects;
     } catch (error) {
