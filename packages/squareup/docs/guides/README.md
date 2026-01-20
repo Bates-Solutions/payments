@@ -10,6 +10,7 @@ Backend API integration guides:
 - [Managing Orders](./core/orders.md) - Order builder and order lifecycle
 - [Managing Customers](./core/customers.md) - Customer CRUD and search
 - [Managing the Catalog](./core/catalog.md) - Items, categories, and variations
+- [Checkout & Payment Links](./core/checkout.md) - Create hosted checkout pages
 
 ## Server
 

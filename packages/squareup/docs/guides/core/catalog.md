@@ -31,6 +31,7 @@ const square = createSquareClient({
 | `MODIFIER` | Add-ons (e.g., extra shot) |
 | `MODIFIER_LIST` | Groups of modifiers |
 | `IMAGE` | Product images |
+| `CUSTOM_ATTRIBUTE_DEFINITION` | Custom attribute definitions for items |
 
 ## Creating Items
 
@@ -159,8 +160,13 @@ console.log('Total items:', allItems.length);
 
 ## Listing Catalog Objects
 
+The `list()` method automatically paginates through all results from the Square API:
+
 ```typescript
-// List all items
+// List all items (fetches all pages automatically)
+const items = await square.catalog.list('ITEM');
+
+// List with a limit (stops after reaching the limit)
 const items = await square.catalog.list('ITEM', { limit: 50 });
 
 // List all categories
@@ -169,6 +175,8 @@ const categories = await square.catalog.list('CATEGORY');
 // List all discounts
 const discounts = await square.catalog.list('DISCOUNT');
 ```
+
+**Note:** The `list()` method handles pagination internally, fetching all pages until the cursor is exhausted or the specified limit is reached.
 
 ## Batch Retrieval
 
@@ -184,6 +192,58 @@ const items = await square.catalog.batchGet([
 for (const item of items) {
   console.log(item.id, item.itemData?.name);
 }
+```
+
+## Upserting Catalog Objects
+
+The `upsert()` method allows you to create or update any catalog object directly:
+
+```typescript
+// Update an existing item's custom attributes
+const existingItem = await square.catalog.get('ITEM_123');
+const updatedItem = await square.catalog.upsert({
+  type: 'ITEM',
+  id: existingItem.id,
+  version: existingItem.version,
+  customAttributeValues: {
+    'Square:some-key': { stringValue: 'new value' },
+  },
+  itemData: existingItem.itemData,
+});
+
+// Update a variation's price
+const variation = existingItem.itemData?.variations?.[0];
+if (variation) {
+  const updatedVariation = await square.catalog.upsert({
+    type: 'ITEM_VARIATION',
+    id: variation.id,
+    version: variation.version,
+    itemVariationData: {
+      ...variation.itemVariationData,
+      priceMoney: { amount: BigInt(500), currency: 'USD' },
+    },
+  });
+}
+```
+
+### Custom Attribute Definitions
+
+You can create and manage custom attribute definitions:
+
+```typescript
+// Create a custom attribute definition
+const attrDef = await square.catalog.upsert({
+  type: 'CUSTOM_ATTRIBUTE_DEFINITION',
+  id: '#attr_def_1',
+  customAttributeDefinitionData: {
+    type: 'STRING',
+    name: 'Product Code',
+    description: 'Internal product code',
+    allowedObjectTypes: ['ITEM', 'ITEM_VARIATION'],
+    sellerVisibility: 'SELLER_VISIBILITY_READ_WRITE_VALUES',
+    appVisibility: 'APP_VISIBILITY_READ_WRITE_VALUES',
+  },
+});
 ```
 
 ## Deleting Catalog Objects

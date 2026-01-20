@@ -1,5 +1,5 @@
 import type { SquareClient } from 'square';
-import type { CreateOrderOptions } from '../types/index.js';
+import type { CreateOrderOptions, SearchOrdersOptions } from '../types/index.js';
 import { parseSquareError, SquareValidationError } from '../errors.js';
 import { createIdempotencyKey } from '../utils.js';
 import { OrderBuilder, type Order } from '../builders/order.builder.js';
@@ -206,22 +206,44 @@ export class OrdersService {
   /**
    * Search for orders
    *
-   * @param options - Search options
+   * @param options - Search options including query filters and sort
    * @returns Paginated list of orders
    *
    * @example
    * ```typescript
+   * // Simple search
    * const { data, cursor } = await square.orders.search({
    *   locationIds: ['LXXX'],
    *   limit: 10,
    * });
+   *
+   * // Search with filters
+   * const { data } = await square.orders.search({
+   *   locationIds: ['LXXX'],
+   *   query: {
+   *     filter: {
+   *       dateTimeFilter: {
+   *         createdAt: {
+   *           startAt: '2024-01-01T00:00:00Z',
+   *           endAt: '2024-12-31T23:59:59Z',
+   *         },
+   *       },
+   *       stateFilter: {
+   *         states: ['OPEN', 'COMPLETED'],
+   *       },
+   *       fulfillmentFilter: {
+   *         fulfillmentTypes: ['PICKUP', 'SHIPMENT'],
+   *       },
+   *     },
+   *     sort: {
+   *       sortField: 'CREATED_AT',
+   *       sortOrder: 'DESC',
+   *     },
+   *   },
+   * });
    * ```
    */
-  async search(options?: {
-    locationIds?: string[];
-    cursor?: string;
-    limit?: number;
-  }): Promise<{ data: Order[]; cursor?: string }> {
+  async search(options?: SearchOrdersOptions): Promise<{ data: Order[]; cursor?: string }> {
     try {
       const locationIds = options?.locationIds ?? (this.defaultLocationId ? [this.defaultLocationId] : []);
 
@@ -233,6 +255,7 @@ export class OrdersService {
         locationIds,
         cursor: options?.cursor,
         limit: options?.limit,
+        query: options?.query,
       });
 
       return {
