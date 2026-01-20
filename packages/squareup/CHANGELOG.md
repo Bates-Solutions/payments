@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/mbates/squareup/compare/v1.2.1...v1.3.0) (2026-01-20)
+
+
+### Features
+
+* **orders:** add query filter support to orders.search() ([09530fa](https://github.com/mbates/squareup/commit/09530fa2e42e7574ac96380575bbfe57cd7aa33c)), closes [#28](https://github.com/mbates/squareup/issues/28) [#25](https://github.com/mbates/squareup/issues/25) [#30](https://github.com/mbates/squareup/issues/30) [#33](https://github.com/mbates/squareup/issues/33)
+
 ## [1.2.1](https://github.com/mbates/squareup/compare/v1.2.0...v1.2.1) (2026-01-17)
 
 
