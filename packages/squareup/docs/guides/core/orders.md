@@ -148,6 +148,8 @@ console.log('Customer:', order.customerId);
 
 ## Searching Orders
 
+### Basic Search
+
 ```typescript
 // Search with default location
 const { data: orders, cursor } = await square.orders.search({
@@ -175,6 +177,60 @@ do {
   nextCursor = cursor;
 } while (nextCursor);
 ```
+
+### Search with Filters
+
+Filter orders by date, state, fulfillment type, and more:
+
+```typescript
+const { data: filteredOrders } = await square.orders.search({
+  locationIds: ['LXXX'],
+  query: {
+    filter: {
+      // Filter by creation date range
+      dateTimeFilter: {
+        createdAt: {
+          startAt: '2024-01-01T00:00:00Z',
+          endAt: '2024-12-31T23:59:59Z',
+        },
+      },
+      // Filter by order state
+      stateFilter: {
+        states: ['OPEN', 'COMPLETED'],
+      },
+      // Filter by fulfillment type
+      fulfillmentFilter: {
+        fulfillmentTypes: ['PICKUP', 'SHIPMENT'],
+      },
+    },
+    // Sort results
+    sort: {
+      sortField: 'CREATED_AT',
+      sortOrder: 'DESC',
+    },
+  },
+});
+```
+
+### Filter Options
+
+| Filter | Description |
+|--------|-------------|
+| `dateTimeFilter` | Filter by `createdAt`, `updatedAt`, or `closedAt` date ranges |
+| `stateFilter` | Filter by order states: `OPEN`, `COMPLETED`, `CANCELED`, `DRAFT` |
+| `fulfillmentFilter` | Filter by fulfillment types: `PICKUP`, `SHIPMENT`, `DELIVERY` |
+| `sourceFilter` | Filter by order source names |
+| `customerFilter` | Filter by customer IDs |
+
+### Sort Options
+
+| Sort Field | Description |
+|------------|-------------|
+| `CREATED_AT` | Sort by order creation time |
+| `UPDATED_AT` | Sort by last update time |
+| `CLOSED_AT` | Sort by order close time |
+
+**Important:** When using `dateTimeFilter`, the `sortField` must match the filter field (e.g., filter by `createdAt` requires `sortField: 'CREATED_AT'`).
 
 ## Updating Orders
 

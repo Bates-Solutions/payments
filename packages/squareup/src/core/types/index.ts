@@ -73,3 +73,33 @@ export interface CreateOrderOptions {
   referenceId?: string;
   idempotencyKey?: string;
 }
+
+/**
+ * Re-export Square SDK types for SearchOrders
+ */
+export type {
+  SearchOrdersQuery,
+  SearchOrdersFilter,
+  SearchOrdersSort,
+  SearchOrdersDateTimeFilter,
+  SearchOrdersStateFilter,
+  SearchOrdersFulfillmentFilter,
+  SearchOrdersSourceFilter,
+  SearchOrdersCustomerFilter,
+  TimeRange,
+  OrderState,
+  FulfillmentType,
+  FulfillmentState,
+  SearchOrdersSortField,
+  SortOrder,
+} from 'square';
+
+/**
+ * Search orders options
+ */
+export interface SearchOrdersOptions {
+  locationIds?: string[];
+  cursor?: string;
+  limit?: number;
+  query?: import('square').SearchOrdersQuery;
+}

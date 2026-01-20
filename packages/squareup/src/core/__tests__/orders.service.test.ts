@@ -380,5 +380,183 @@ describe('OrdersService', () => {
 
       await expect(service.search()).rejects.toThrow();
     });
+
+    it('should pass query filter with dateTimeFilter', async () => {
+      const client = createMockClient({
+        search: vi.fn().mockResolvedValue({ orders: [] }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      await service.search({
+        query: {
+          filter: {
+            dateTimeFilter: {
+              createdAt: {
+                startAt: '2024-01-01T00:00:00Z',
+                endAt: '2024-12-31T23:59:59Z',
+              },
+            },
+          },
+        },
+      });
+
+      expect(client.orders.search).toHaveBeenCalledWith(
+        expect.objectContaining({
+          query: {
+            filter: {
+              dateTimeFilter: {
+                createdAt: {
+                  startAt: '2024-01-01T00:00:00Z',
+                  endAt: '2024-12-31T23:59:59Z',
+                },
+              },
+            },
+          },
+        })
+      );
+    });
+
+    it('should pass query filter with stateFilter', async () => {
+      const client = createMockClient({
+        search: vi.fn().mockResolvedValue({ orders: [] }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      await service.search({
+        query: {
+          filter: {
+            stateFilter: {
+              states: ['OPEN', 'COMPLETED'],
+            },
+          },
+        },
+      });
+
+      expect(client.orders.search).toHaveBeenCalledWith(
+        expect.objectContaining({
+          query: {
+            filter: {
+              stateFilter: {
+                states: ['OPEN', 'COMPLETED'],
+              },
+            },
+          },
+        })
+      );
+    });
+
+    it('should pass query filter with fulfillmentFilter', async () => {
+      const client = createMockClient({
+        search: vi.fn().mockResolvedValue({ orders: [] }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      await service.search({
+        query: {
+          filter: {
+            fulfillmentFilter: {
+              fulfillmentTypes: ['PICKUP', 'SHIPMENT'],
+            },
+          },
+        },
+      });
+
+      expect(client.orders.search).toHaveBeenCalledWith(
+        expect.objectContaining({
+          query: {
+            filter: {
+              fulfillmentFilter: {
+                fulfillmentTypes: ['PICKUP', 'SHIPMENT'],
+              },
+            },
+          },
+        })
+      );
+    });
+
+    it('should pass query with sort', async () => {
+      const client = createMockClient({
+        search: vi.fn().mockResolvedValue({ orders: [] }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      await service.search({
+        query: {
+          sort: {
+            sortField: 'CREATED_AT',
+            sortOrder: 'DESC',
+          },
+        },
+      });
+
+      expect(client.orders.search).toHaveBeenCalledWith(
+        expect.objectContaining({
+          query: {
+            sort: {
+              sortField: 'CREATED_AT',
+              sortOrder: 'DESC',
+            },
+          },
+        })
+      );
+    });
+
+    it('should pass full query with filters and sort', async () => {
+      const client = createMockClient({
+        search: vi.fn().mockResolvedValue({ orders: [] }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      await service.search({
+        locationIds: ['LOC_A'],
+        limit: 50,
+        query: {
+          filter: {
+            dateTimeFilter: {
+              createdAt: {
+                startAt: '2024-01-01T00:00:00Z',
+                endAt: '2024-12-31T23:59:59Z',
+              },
+            },
+            stateFilter: {
+              states: ['OPEN', 'COMPLETED'],
+            },
+            fulfillmentFilter: {
+              fulfillmentTypes: ['SHIPMENT', 'PICKUP'],
+            },
+          },
+          sort: {
+            sortField: 'CREATED_AT',
+            sortOrder: 'DESC',
+          },
+        },
+      });
+
+      expect(client.orders.search).toHaveBeenCalledWith({
+        locationIds: ['LOC_A'],
+        cursor: undefined,
+        limit: 50,
+        query: {
+          filter: {
+            dateTimeFilter: {
+              createdAt: {
+                startAt: '2024-01-01T00:00:00Z',
+                endAt: '2024-12-31T23:59:59Z',
+              },
+            },
+            stateFilter: {
+              states: ['OPEN', 'COMPLETED'],
+            },
+            fulfillmentFilter: {
+              fulfillmentTypes: ['SHIPMENT', 'PICKUP'],
+            },
+          },
+          sort: {
+            sortField: 'CREATED_AT',
+            sortOrder: 'DESC',
+          },
+        },
+      });
+    });
   });
 });
