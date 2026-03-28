@@ -1,3 +1,16 @@
+# [1.4.0](https://github.com/mbates/squareup/compare/v1.3.0...v1.4.0) (2026-03-28)
+
+
+### Bug Fixes
+
+* resolve eslint no-unnecessary-condition error ([24846a3](https://github.com/mbates/squareup/commit/24846a3cd62d75e998aeb360b843a29c45d322a6))
+* use list endpoint instead of search for customers.list() ([486a853](https://github.com/mbates/squareup/commit/486a8532c088792b2f765502f18dcb7a3b77534e))
+
+
+### Features
+
+* **customers:** add cursor passthrough support to customers.list() ([f86a23b](https://github.com/mbates/squareup/commit/f86a23b145d8cdf04fce34f0b938ef4a68e03835)), closes [#42](https://github.com/mbates/squareup/issues/42)
+
 # [1.3.0](https://github.com/mbates/squareup/compare/v1.2.1...v1.3.0) (2026-01-20)
 
 
