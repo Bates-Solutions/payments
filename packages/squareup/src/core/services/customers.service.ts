@@ -76,6 +76,14 @@ export interface UpdateCustomerOptions {
 }
 
 /**
+ * Options for listing customers
+ */
+export interface ListCustomersOptions {
+  limit?: number;
+  cursor?: string;
+}
+
+/**
  * Options for searching customers
  */
 export interface SearchCustomersOptions {
@@ -332,17 +340,17 @@ export class CustomersService {
    * ```
    */
   async list(
-    options?: { limit?: number; cursor?: string }
+    options?: ListCustomersOptions
   ): Promise<{ customers: Customer[]; cursor?: string }> {
     try {
-      const response = await this.client.customers.search({
+      const page = await this.client.customers.list({
         cursor: options?.cursor,
-        limit: options?.limit ? BigInt(options.limit) : undefined,
+        limit: options?.limit,
       });
 
       return {
-        customers: (response.customers ?? []) as Customer[],
-        cursor: response.cursor,
+        customers: (page.data ?? []) as Customer[],
+        cursor: page.response.cursor,
       };
     } catch (error) {
       throw parseSquareError(error);
