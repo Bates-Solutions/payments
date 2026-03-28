@@ -418,42 +418,71 @@ describe('CustomersService', () => {
     it('should list customers', async () => {
       const mockCustomers = [{ id: 'CUST_1' }, { id: 'CUST_2' }];
       const client = createMockClient({
-        list: vi.fn().mockReturnValue({
-          [Symbol.asyncIterator]: async function* () {
-            for (const customer of mockCustomers) {
-              yield customer;
-            }
-          },
+        search: vi.fn().mockResolvedValue({
+          customers: mockCustomers,
+          cursor: undefined,
         }),
       });
 
       const service = new CustomersService(client);
       const result = await service.list();
 
-      expect(result).toEqual(mockCustomers);
+      expect(result.customers).toEqual(mockCustomers);
+      expect(result.cursor).toBeUndefined();
     });
 
-    it('should respect limit option', async () => {
-      const mockCustomers = [{ id: 'CUST_1' }, { id: 'CUST_2' }, { id: 'CUST_3' }];
+    it('should pass cursor and limit to the API', async () => {
+      const mockCustomers = [{ id: 'CUST_1' }];
       const client = createMockClient({
-        list: vi.fn().mockReturnValue({
-          [Symbol.asyncIterator]: async function* () {
-            for (const customer of mockCustomers) {
-              yield customer;
-            }
-          },
+        search: vi.fn().mockResolvedValue({
+          customers: mockCustomers,
+          cursor: 'NEXT_PAGE_CURSOR',
         }),
       });
 
       const service = new CustomersService(client);
-      const result = await service.list({ limit: 2 });
+      const result = await service.list({ cursor: 'PAGE_CURSOR', limit: 10 });
 
-      expect(result).toHaveLength(2);
+      expect(client.customers.search).toHaveBeenCalledWith({
+        cursor: 'PAGE_CURSOR',
+        limit: BigInt(10),
+      });
+      expect(result.customers).toEqual(mockCustomers);
+      expect(result.cursor).toBe('NEXT_PAGE_CURSOR');
+    });
+
+    it('should return cursor for next page', async () => {
+      const client = createMockClient({
+        search: vi.fn().mockResolvedValue({
+          customers: [{ id: 'CUST_1' }],
+          cursor: 'NEXT_CURSOR',
+        }),
+      });
+
+      const service = new CustomersService(client);
+      const result = await service.list({ limit: 1 });
+
+      expect(result.cursor).toBe('NEXT_CURSOR');
+    });
+
+    it('should handle empty results', async () => {
+      const client = createMockClient({
+        search: vi.fn().mockResolvedValue({
+          customers: undefined,
+          cursor: undefined,
+        }),
+      });
+
+      const service = new CustomersService(client);
+      const result = await service.list();
+
+      expect(result.customers).toEqual([]);
+      expect(result.cursor).toBeUndefined();
     });
 
     it('should parse and rethrow API errors', async () => {
       const client = createMockClient({
-        list: vi.fn().mockRejectedValue({
+        search: vi.fn().mockRejectedValue({
           statusCode: 401,
           body: { errors: [{ category: 'AUTHENTICATION_ERROR', code: 'UNAUTHORIZED' }] },
         }),
