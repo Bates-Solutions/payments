@@ -317,31 +317,33 @@ export class CustomersService {
   }
 
   /**
-   * List all customers
+   * List customers with cursor-based pagination
    *
-   * @param options - List options
-   * @returns Array of customers
+   * @param options - List options including cursor for pagination
+   * @returns Customers and optional cursor for next page
    *
    * @example
    * ```typescript
-   * const customers = await square.customers.list({ limit: 50 });
+   * // Get first page
+   * const page1 = await square.customers.list({ limit: 50 });
+   *
+   * // Get next page using cursor
+   * const page2 = await square.customers.list({ cursor: page1.cursor, limit: 50 });
    * ```
    */
-  async list(options?: { limit?: number }): Promise<Customer[]> {
+  async list(
+    options?: { limit?: number; cursor?: string }
+  ): Promise<{ customers: Customer[]; cursor?: string }> {
     try {
-      const customers: Customer[] = [];
-      const limit = options?.limit ?? 100;
+      const response = await this.client.customers.search({
+        cursor: options?.cursor,
+        limit: options?.limit ? BigInt(options.limit) : undefined,
+      });
 
-      const page = await this.client.customers.list({});
-
-      for await (const customer of page) {
-        customers.push(customer as Customer);
-        if (customers.length >= limit) {
-          break;
-        }
-      }
-
-      return customers;
+      return {
+        customers: (response.customers ?? []) as Customer[],
+        cursor: response.cursor,
+      };
     } catch (error) {
       throw parseSquareError(error);
     }
