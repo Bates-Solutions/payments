@@ -415,40 +415,67 @@ describe('CustomersService', () => {
   });
 
   describe('list', () => {
+    function createListMock(data: unknown[], cursor?: string) {
+      return vi.fn().mockResolvedValue({
+        data,
+        response: { cursor },
+      });
+    }
+
     it('should list customers', async () => {
       const mockCustomers = [{ id: 'CUST_1' }, { id: 'CUST_2' }];
       const client = createMockClient({
-        list: vi.fn().mockReturnValue({
-          [Symbol.asyncIterator]: async function* () {
-            for (const customer of mockCustomers) {
-              yield customer;
-            }
-          },
+        list: createListMock(mockCustomers),
+      });
+
+      const service = new CustomersService(client);
+      const result = await service.list();
+
+      expect(result.customers).toEqual(mockCustomers);
+      expect(result.cursor).toBeUndefined();
+    });
+
+    it('should pass cursor and limit to the API', async () => {
+      const mockCustomers = [{ id: 'CUST_1' }];
+      const client = createMockClient({
+        list: createListMock(mockCustomers, 'NEXT_PAGE_CURSOR'),
+      });
+
+      const service = new CustomersService(client);
+      const result = await service.list({ cursor: 'PAGE_CURSOR', limit: 10 });
+
+      expect(client.customers.list).toHaveBeenCalledWith({
+        cursor: 'PAGE_CURSOR',
+        limit: 10,
+      });
+      expect(result.customers).toEqual(mockCustomers);
+      expect(result.cursor).toBe('NEXT_PAGE_CURSOR');
+    });
+
+    it('should return cursor for next page', async () => {
+      const client = createMockClient({
+        list: createListMock([{ id: 'CUST_1' }], 'NEXT_CURSOR'),
+      });
+
+      const service = new CustomersService(client);
+      const result = await service.list({ limit: 1 });
+
+      expect(result.cursor).toBe('NEXT_CURSOR');
+    });
+
+    it('should handle empty results', async () => {
+      const client = createMockClient({
+        list: vi.fn().mockResolvedValue({
+          data: [],
+          response: { cursor: undefined },
         }),
       });
 
       const service = new CustomersService(client);
       const result = await service.list();
 
-      expect(result).toEqual(mockCustomers);
-    });
-
-    it('should respect limit option', async () => {
-      const mockCustomers = [{ id: 'CUST_1' }, { id: 'CUST_2' }, { id: 'CUST_3' }];
-      const client = createMockClient({
-        list: vi.fn().mockReturnValue({
-          [Symbol.asyncIterator]: async function* () {
-            for (const customer of mockCustomers) {
-              yield customer;
-            }
-          },
-        }),
-      });
-
-      const service = new CustomersService(client);
-      const result = await service.list({ limit: 2 });
-
-      expect(result).toHaveLength(2);
+      expect(result.customers).toEqual([]);
+      expect(result.cursor).toBeUndefined();
     });
 
     it('should parse and rethrow API errors', async () => {
