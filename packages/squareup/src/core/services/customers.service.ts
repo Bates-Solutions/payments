@@ -349,7 +349,7 @@ export class CustomersService {
       });
 
       return {
-        customers: (page.data ?? []) as Customer[],
+        customers: page.data as Customer[],
         cursor: page.response.cursor,
       };
     } catch (error) {

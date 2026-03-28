@@ -466,7 +466,7 @@ describe('CustomersService', () => {
     it('should handle empty results', async () => {
       const client = createMockClient({
         list: vi.fn().mockResolvedValue({
-          data: undefined,
+          data: [],
           response: { cursor: undefined },
         }),
       });
