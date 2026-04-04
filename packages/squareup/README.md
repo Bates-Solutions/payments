@@ -78,6 +78,13 @@ const customer = await client.customers.create({
   familyName: 'Doe',
   emailAddress: 'john@example.com',
 });
+
+// List customers with pagination
+const page1 = await client.customers.list({ limit: 50 });
+const page2 = await client.customers.list({ cursor: page1.cursor, limit: 50 });
+
+// Search customers by name, email, company, or city
+const results = await client.customers.search({ query: 'john doe' });
 ```
 
 ### Webhook Handling (Express)
