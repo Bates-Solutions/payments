@@ -278,8 +278,9 @@ export class CustomersService {
       const hasFilters = options?.emailAddress ?? options?.phoneNumber ?? options?.referenceId;
 
       // When query is provided without specific filters, use list + client-side filtering
-      if (options?.query && !hasFilters) {
-        return await this.searchByQuery(options.query, options.cursor, options.limit);
+      const query = options?.query?.trim();
+      if (query && !hasFilters) {
+        return await this.searchByQuery(query, options?.cursor, options?.limit);
       }
 
       // Build the query filter
@@ -366,13 +367,14 @@ export class CustomersService {
       for (const customer of customers) {
         if (this.matchesQuery(customer, terms)) {
           results.push(customer);
-          if (limit && results.length >= limit) {
-            return { data: results, cursor: page.response.cursor };
-          }
         }
       }
 
       currentCursor = page.response.cursor;
+
+      if (limit && results.length >= limit) {
+        return { data: results.slice(0, limit), cursor: currentCursor };
+      }
     } while (currentCursor);
 
     return { data: results };
