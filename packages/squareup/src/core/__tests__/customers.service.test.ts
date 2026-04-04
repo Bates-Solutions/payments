@@ -555,6 +555,46 @@ describe('CustomersService', () => {
       expect(listMock).toHaveBeenCalledTimes(2);
     });
 
+    it('should not skip matches when limit is reached mid-page', async () => {
+      const listMock = vi.fn()
+        .mockResolvedValueOnce({
+          data: [
+            { id: 'CUST_1', givenName: 'Tim' },
+            { id: 'CUST_2', givenName: 'Timothy' },
+            { id: 'CUST_3', givenName: 'Timmy' },
+          ],
+          response: { cursor: 'PAGE_2' },
+        })
+        .mockResolvedValueOnce({
+          data: [{ id: 'CUST_4', givenName: 'Tim Jr' }],
+          response: { cursor: undefined },
+        });
+      const client = createMockClient({ list: listMock });
+
+      const service = new CustomersService(client);
+
+      // Limit 2 — all 3 matches are on page 1, so page should be fully processed
+      const result = await service.search({ query: 'tim', limit: 2 });
+
+      expect(result.data).toHaveLength(2);
+      // Cursor should point to page 2 so caller can resume without skipping CUST_3
+      expect(result.cursor).toBe('PAGE_2');
+      // Should NOT have fetched page 2 since limit was satisfied from page 1
+      expect(listMock).toHaveBeenCalledTimes(1);
+    });
+
+    it('should treat whitespace-only query as no query', async () => {
+      const client = createMockClient({
+        search: vi.fn().mockResolvedValue({ customers: [] }),
+      });
+
+      const service = new CustomersService(client);
+      await service.search({ query: '   ' });
+
+      // Should fall through to Square search API, not client-side filtering
+      expect(client.customers.search).toHaveBeenCalled();
+    });
+
     it('should use specific filters when provided alongside query', async () => {
       const client = createMockClient({
         search: vi.fn().mockResolvedValue({ customers: [] }),
