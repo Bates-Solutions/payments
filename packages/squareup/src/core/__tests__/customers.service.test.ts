@@ -414,6 +414,173 @@ describe('CustomersService', () => {
     });
   });
 
+  describe('search with query', () => {
+    function createListMockForSearch(data: unknown[], cursor?: string) {
+      return vi.fn().mockResolvedValue({
+        data,
+        response: { cursor },
+      });
+    }
+
+    it('should filter customers by name query', async () => {
+      const mockCustomers = [
+        { id: 'CUST_1', givenName: 'Tim', familyName: 'Larsen' },
+        { id: 'CUST_2', givenName: 'Jane', familyName: 'Smith' },
+        { id: 'CUST_3', givenName: 'Bob', familyName: 'Larsen' },
+      ];
+      const client = createMockClient({
+        list: createListMockForSearch(mockCustomers),
+      });
+
+      const service = new CustomersService(client);
+      const result = await service.search({ query: 'larsen' });
+
+      expect(result.data).toHaveLength(2);
+      expect(result.data[0].id).toBe('CUST_1');
+      expect(result.data[1].id).toBe('CUST_3');
+    });
+
+    it('should match against combined given + family name', async () => {
+      const mockCustomers = [
+        { id: 'CUST_1', givenName: 'Tim', familyName: 'Larsen' },
+        { id: 'CUST_2', givenName: 'Jane', familyName: 'Smith' },
+      ];
+      const client = createMockClient({
+        list: createListMockForSearch(mockCustomers),
+      });
+
+      const service = new CustomersService(client);
+      const result = await service.search({ query: 'tim larsen' });
+
+      expect(result.data).toHaveLength(1);
+      expect(result.data[0].id).toBe('CUST_1');
+    });
+
+    it('should match against email address', async () => {
+      const mockCustomers = [
+        { id: 'CUST_1', givenName: 'Tim', emailAddress: 'tim@example.com' },
+        { id: 'CUST_2', givenName: 'Jane', emailAddress: 'jane@example.com' },
+      ];
+      const client = createMockClient({
+        list: createListMockForSearch(mockCustomers),
+      });
+
+      const service = new CustomersService(client);
+      const result = await service.search({ query: 'tim@example' });
+
+      expect(result.data).toHaveLength(1);
+      expect(result.data[0].id).toBe('CUST_1');
+    });
+
+    it('should match against company name', async () => {
+      const mockCustomers = [
+        { id: 'CUST_1', givenName: 'Tim', companyName: 'Acme Corp' },
+        { id: 'CUST_2', givenName: 'Jane', companyName: 'Widget Inc' },
+      ];
+      const client = createMockClient({
+        list: createListMockForSearch(mockCustomers),
+      });
+
+      const service = new CustomersService(client);
+      const result = await service.search({ query: 'acme' });
+
+      expect(result.data).toHaveLength(1);
+      expect(result.data[0].id).toBe('CUST_1');
+    });
+
+    it('should match against city (address.locality)', async () => {
+      const mockCustomers = [
+        { id: 'CUST_1', givenName: 'Tim', address: { locality: 'Portland' } },
+        { id: 'CUST_2', givenName: 'Jane', address: { locality: 'Seattle' } },
+      ];
+      const client = createMockClient({
+        list: createListMockForSearch(mockCustomers),
+      });
+
+      const service = new CustomersService(client);
+      const result = await service.search({ query: 'portland' });
+
+      expect(result.data).toHaveLength(1);
+      expect(result.data[0].id).toBe('CUST_1');
+    });
+
+    it('should be case insensitive', async () => {
+      const mockCustomers = [
+        { id: 'CUST_1', givenName: 'Tim', familyName: 'Larsen' },
+      ];
+      const client = createMockClient({
+        list: createListMockForSearch(mockCustomers),
+      });
+
+      const service = new CustomersService(client);
+      const result = await service.search({ query: 'TIM LARSEN' });
+
+      expect(result.data).toHaveLength(1);
+    });
+
+    it('should respect limit', async () => {
+      const mockCustomers = [
+        { id: 'CUST_1', givenName: 'Tim' },
+        { id: 'CUST_2', givenName: 'Timothy' },
+        { id: 'CUST_3', givenName: 'Timmy' },
+      ];
+      const client = createMockClient({
+        list: createListMockForSearch(mockCustomers, 'NEXT_CURSOR'),
+      });
+
+      const service = new CustomersService(client);
+      const result = await service.search({ query: 'tim', limit: 2 });
+
+      expect(result.data).toHaveLength(2);
+      expect(result.cursor).toBe('NEXT_CURSOR');
+    });
+
+    it('should paginate through multiple pages', async () => {
+      const listMock = vi.fn()
+        .mockResolvedValueOnce({
+          data: [{ id: 'CUST_1', givenName: 'Jane' }],
+          response: { cursor: 'PAGE_2' },
+        })
+        .mockResolvedValueOnce({
+          data: [{ id: 'CUST_2', givenName: 'Tim' }],
+          response: { cursor: undefined },
+        });
+      const client = createMockClient({ list: listMock });
+
+      const service = new CustomersService(client);
+      const result = await service.search({ query: 'tim' });
+
+      expect(result.data).toHaveLength(1);
+      expect(result.data[0].id).toBe('CUST_2');
+      expect(listMock).toHaveBeenCalledTimes(2);
+    });
+
+    it('should use specific filters when provided alongside query', async () => {
+      const client = createMockClient({
+        search: vi.fn().mockResolvedValue({ customers: [] }),
+      });
+
+      const service = new CustomersService(client);
+      await service.search({ query: 'tim', emailAddress: 'tim@example.com' });
+
+      expect(client.customers.search).toHaveBeenCalled();
+    });
+
+    it('should pass cursor to list when resuming query search', async () => {
+      const listMock = createListMockForSearch([
+        { id: 'CUST_1', givenName: 'Tim' },
+      ]);
+      const client = createMockClient({ list: listMock });
+
+      const service = new CustomersService(client);
+      await service.search({ query: 'tim', cursor: 'RESUME_CURSOR' });
+
+      expect(listMock).toHaveBeenCalledWith(
+        expect.objectContaining({ cursor: 'RESUME_CURSOR' })
+      );
+    });
+  });
+
   describe('list', () => {
     function createListMock(data: unknown[], cursor?: string) {
       return vi.fn().mockResolvedValue({

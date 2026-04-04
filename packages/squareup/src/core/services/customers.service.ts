@@ -275,6 +275,13 @@ export class CustomersService {
    */
   async search(options?: SearchCustomersOptions): Promise<{ data: Customer[]; cursor?: string }> {
     try {
+      const hasFilters = options?.emailAddress ?? options?.phoneNumber ?? options?.referenceId;
+
+      // When query is provided without specific filters, use list + client-side filtering
+      if (options?.query && !hasFilters) {
+        return await this.searchByQuery(options.query, options.cursor, options.limit);
+      }
+
       // Build the query filter
       const filters: Record<string, unknown>[] = [];
 
@@ -322,6 +329,53 @@ export class CustomersService {
     } catch (error) {
       throw parseSquareError(error);
     }
+  }
+
+  private matchesQuery(customer: Customer, terms: string[]): boolean {
+    const fields = [
+      customer.givenName,
+      customer.familyName,
+      `${customer.givenName ?? ''} ${customer.familyName ?? ''}`.trim(),
+      customer.emailAddress,
+      customer.companyName,
+      customer.address?.locality,
+    ];
+
+    return terms.every((term) =>
+      fields.some((field) => field?.toLowerCase().includes(term))
+    );
+  }
+
+  private async searchByQuery(
+    query: string,
+    cursor?: string,
+    limit?: number
+  ): Promise<{ data: Customer[]; cursor?: string }> {
+    const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+    const results: Customer[] = [];
+    const pageSize = 100;
+    let currentCursor = cursor;
+
+    do {
+      const page = await this.client.customers.list({
+        cursor: currentCursor,
+        limit: pageSize,
+      });
+
+      const customers = page.data as Customer[];
+      for (const customer of customers) {
+        if (this.matchesQuery(customer, terms)) {
+          results.push(customer);
+          if (limit && results.length >= limit) {
+            return { data: results, cursor: page.response.cursor };
+          }
+        }
+      }
+
+      currentCursor = page.response.cursor;
+    } while (currentCursor);
+
+    return { data: results };
   }
 
   /**
