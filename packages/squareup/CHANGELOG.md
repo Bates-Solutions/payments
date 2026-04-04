@@ -1,3 +1,15 @@
+# [1.5.0](https://github.com/mbates/squareup/compare/v1.4.0...v1.5.0) (2026-04-04)
+
+
+### Bug Fixes
+
+* **customers:** trim whitespace query and fix mid-page cursor skip ([a378118](https://github.com/mbates/squareup/commit/a378118d5715031260506b679247b5561133ead7))
+
+
+### Features
+
+* **customers:** implement query-based search with client-side filtering ([ccd798a](https://github.com/mbates/squareup/commit/ccd798ac5c1fe9c6f0155814f612cbbbd2c955c5)), closes [#46](https://github.com/mbates/squareup/issues/46)
+
 # [1.4.0](https://github.com/mbates/squareup/compare/v1.3.0...v1.4.0) (2026-03-28)
 
 
