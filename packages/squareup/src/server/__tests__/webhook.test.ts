@@ -307,6 +307,14 @@ describe('webhook', () => {
       expect(getPaymentId(event)).toBe('PAY_1');
     });
 
+    it('should handle malformed payment payload gracefully', () => {
+      const event: WebhookEvent = {
+        event_id: 'evt_1', merchant_id: 'M1', type: 'payment.completed', created_at: '',
+        data: { type: 'payment', id: 'PAY_1', object: {} },
+      };
+      expect(getPaymentId(event)).toBe('PAY_1');
+    });
+
     it('should return undefined for unrelated event', () => {
       const event: WebhookEvent = {
         event_id: 'evt_1', merchant_id: 'M1', type: 'order.created', created_at: '',
@@ -341,6 +349,14 @@ describe('webhook', () => {
       expect(getOrderId(event)).toBe('ORD_1');
     });
 
+    it('should handle malformed payment payload gracefully', () => {
+      const event: WebhookEvent = {
+        event_id: 'evt_1', merchant_id: 'M1', type: 'payment.completed', created_at: '',
+        data: { type: 'payment', id: 'PAY_1', object: {} },
+      };
+      expect(getOrderId(event)).toBeUndefined();
+    });
+
     it('should return undefined for unrelated event', () => {
       const event: WebhookEvent = {
         event_id: 'evt_1', merchant_id: 'M1', type: 'customer.created', created_at: '',
@@ -365,6 +381,14 @@ describe('webhook', () => {
         data: { type: 'customer', id: 'CUST_1', object: {} },
       };
       expect(getCustomerId(event)).toBe('CUST_1');
+    });
+
+    it('should handle malformed payment payload gracefully', () => {
+      const event: WebhookEvent = {
+        event_id: 'evt_1', merchant_id: 'M1', type: 'payment.created', created_at: '',
+        data: { type: 'payment', id: 'PAY_1', object: {} },
+      };
+      expect(getCustomerId(event)).toBeUndefined();
     });
 
     it('should return undefined for unrelated event', () => {

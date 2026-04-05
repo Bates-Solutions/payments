@@ -5,7 +5,6 @@ import type {
   WebhookVerificationResult,
   ParsedWebhookRequest,
   PaymentWebhookObject,
-  OrderWebhookObject,
   RefundWebhookObject,
 } from './types.js';
 
@@ -242,12 +241,11 @@ export function createWebhookProcessor(config: WebhookConfig) {
  */
 export function getPaymentId(event: WebhookEvent): string | undefined {
   if (event.type.startsWith('payment.')) {
-    const obj = event.data.object as PaymentWebhookObject;
-    return obj.payment.id;
+    return event.data.id;
   }
   if (event.type.startsWith('refund.')) {
-    const obj = event.data.object as RefundWebhookObject;
-    return obj.refund.payment_id;
+    const obj = event.data.object as Partial<RefundWebhookObject>;
+    return obj.refund?.payment_id;
   }
   return undefined;
 }
@@ -257,16 +255,15 @@ export function getPaymentId(event: WebhookEvent): string | undefined {
  */
 export function getOrderId(event: WebhookEvent): string | undefined {
   if (event.type.startsWith('payment.')) {
-    const obj = event.data.object as PaymentWebhookObject;
-    return obj.payment.order_id;
+    const obj = event.data.object as Partial<PaymentWebhookObject>;
+    return obj.payment?.order_id;
   }
   if (event.type.startsWith('order.')) {
-    const obj = event.data.object as OrderWebhookObject;
-    return obj.order_update?.order_id;
+    return event.data.id;
   }
   if (event.type.startsWith('refund.')) {
-    const obj = event.data.object as RefundWebhookObject;
-    return obj.refund.order_id;
+    const obj = event.data.object as Partial<RefundWebhookObject>;
+    return obj.refund?.order_id;
   }
   return undefined;
 }
@@ -276,8 +273,8 @@ export function getOrderId(event: WebhookEvent): string | undefined {
  */
 export function getCustomerId(event: WebhookEvent): string | undefined {
   if (event.type.startsWith('payment.')) {
-    const obj = event.data.object as PaymentWebhookObject;
-    return obj.payment.customer_id;
+    const obj = event.data.object as Partial<PaymentWebhookObject>;
+    return obj.payment?.customer_id;
   }
   if (event.type.startsWith('customer.')) {
     return event.data.id;
