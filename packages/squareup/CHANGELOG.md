@@ -1,3 +1,15 @@
+# [1.6.0](https://github.com/mbates/squareup/compare/v1.5.2...v1.6.0) (2026-04-05)
+
+
+### Bug Fixes
+
+* **webhooks:** address PR review feedback ([e69ca29](https://github.com/mbates/squareup/commit/e69ca2976661f00dcc9e9ddf9a38e1581f0789bf))
+
+
+### Features
+
+* **webhooks:** add typed event payloads and entity ID helpers ([bf320df](https://github.com/mbates/squareup/commit/bf320dff35b9f5077bb8ad26c8e1faad1c2b7622)), closes [#51](https://github.com/mbates/squareup/issues/51)
+
 ## [1.5.2](https://github.com/mbates/squareup/compare/v1.5.1...v1.5.2) (2026-04-05)
 
 
