@@ -57,6 +57,14 @@ export type {
   WebhookConfig,
   WebhookVerificationResult,
   ParsedWebhookRequest,
+  PaymentWebhookObject,
+  OrderWebhookObject,
+  RefundWebhookObject,
+  CustomerWebhookObject,
+  PaymentWebhookEvent,
+  OrderWebhookEvent,
+  RefundWebhookEvent,
+  CustomerWebhookEvent,
 } from './types.js';
 
 // Core webhook utilities
@@ -67,6 +75,9 @@ export {
   parseAndVerifyWebhook,
   processWebhookEvent,
   createWebhookProcessor,
+  getPaymentId,
+  getOrderId,
+  getCustomerId,
 } from './webhook.js';
 
 // Express middleware

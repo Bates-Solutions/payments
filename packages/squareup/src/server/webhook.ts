@@ -4,6 +4,8 @@ import type {
   WebhookEvent,
   WebhookVerificationResult,
   ParsedWebhookRequest,
+  PaymentWebhookObject,
+  RefundWebhookObject,
 } from './types.js';
 
 /**
@@ -232,4 +234,50 @@ export function createWebhookProcessor(config: WebhookConfig) {
       };
     }
   };
+}
+
+/**
+ * Extract the payment ID from a webhook event
+ */
+export function getPaymentId(event: WebhookEvent): string | undefined {
+  if (event.type.startsWith('payment.')) {
+    return event.data.id;
+  }
+  if (event.type.startsWith('refund.')) {
+    const obj = event.data.object as Partial<RefundWebhookObject>;
+    return obj.refund?.payment_id;
+  }
+  return undefined;
+}
+
+/**
+ * Extract the order ID from a webhook event
+ */
+export function getOrderId(event: WebhookEvent): string | undefined {
+  if (event.type.startsWith('payment.')) {
+    const obj = event.data.object as Partial<PaymentWebhookObject>;
+    return obj.payment?.order_id;
+  }
+  if (event.type.startsWith('order.')) {
+    return event.data.id;
+  }
+  if (event.type.startsWith('refund.')) {
+    const obj = event.data.object as Partial<RefundWebhookObject>;
+    return obj.refund?.order_id;
+  }
+  return undefined;
+}
+
+/**
+ * Extract the customer ID from a webhook event
+ */
+export function getCustomerId(event: WebhookEvent): string | undefined {
+  if (event.type.startsWith('payment.')) {
+    const obj = event.data.object as Partial<PaymentWebhookObject>;
+    return obj.payment?.customer_id;
+  }
+  if (event.type.startsWith('customer.')) {
+    return event.data.id;
+  }
+  return undefined;
 }
