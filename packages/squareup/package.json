@@ -61,27 +61,27 @@
     "node": ">=22"
   },
   "peerDependencies": {
-    "square": "^43.2.1"
+    "square": ">=43.2.1 <45"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.2",
+    "@eslint/js": "^10.0.1",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@types/express": "^5.0.6",
-    "@types/node": "^25.0.3",
-    "@typescript-eslint/eslint-plugin": "^8.51.0",
-    "@typescript-eslint/parser": "^8.51.0",
-    "@vitest/coverage-v8": "^4.0.0",
-    "eslint": "^9.39.2",
+    "@types/node": "^25.5.0",
+    "@typescript-eslint/eslint-plugin": "^8.58.0",
+    "@typescript-eslint/parser": "^8.58.0",
+    "@vitest/coverage-v8": "^4.1.2",
+    "eslint": "^10.1.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.1.0",
-    "prettier": "^3.2.0",
-    "semantic-release": "^25.0.2",
-    "square": "^43.2.1",
+    "prettier": "^3.8.1",
+    "semantic-release": "^25.0.3",
+    "square": "^44.0.1",
     "typedoc": "^0.28.18",
-    "typedoc-plugin-markdown": "^4.9.0",
-    "typescript": "^5.3.0",
-    "typescript-eslint": "^8.51.0",
+    "typedoc-plugin-markdown": "^4.10.0",
+    "typescript": "^6.0.2",
+    "typescript-eslint": "^8.58.0",
     "vitest": "^4.0.16"
   }
 }

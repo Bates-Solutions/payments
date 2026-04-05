@@ -43,21 +43,22 @@ describe('LoyaltyService', () => {
       expect(result).toEqual(mockProgram);
     });
 
-    it('should list programs if no ID provided', async () => {
+    it('should get main program if no ID provided', async () => {
       const mockProgram = { id: 'PROG_123' };
       const client = createMockClient({
-        programs: { list: vi.fn().mockResolvedValue({ programs: [mockProgram] }), get: vi.fn(), calculate: vi.fn() },
+        programs: { get: vi.fn().mockResolvedValue({ program: mockProgram }), calculate: vi.fn() },
       });
 
       const service = new LoyaltyService(client);
       const result = await service.getProgram();
 
+      expect(client.loyalty.programs.get).toHaveBeenCalledWith({ programId: 'main' });
       expect(result).toEqual(mockProgram);
     });
 
-    it('should throw if no programs found', async () => {
+    it('should throw if no program found', async () => {
       const client = createMockClient({
-        programs: { list: vi.fn().mockResolvedValue({ programs: [] }), get: vi.fn(), calculate: vi.fn() },
+        programs: { get: vi.fn().mockResolvedValue({}), calculate: vi.fn() },
       });
 
       const service = new LoyaltyService(client);
