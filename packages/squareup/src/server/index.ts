@@ -95,3 +95,14 @@ export {
   parseNextWebhook,
   type WebhookResponse,
 } from './middleware/nextjs.js';
+
+// Lambda handler
+export {
+  createLambdaWebhookHandler,
+  type LambdaProxyEvent,
+  type LambdaProxyResult,
+  type LambdaWebhookConfig,
+  type LambdaWebhookHandler,
+  type LambdaWebhookHandlers,
+  type WebhookEventContext,
+} from './middleware/lambda.js';
