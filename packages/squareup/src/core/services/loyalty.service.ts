@@ -163,14 +163,12 @@ export class LoyaltyService {
       }
 
       // Get the main program
-      const response = await this.client.loyalty.programs.list();
-      const programs = response.programs ?? [];
-
-      if (programs.length === 0) {
+      const response = await this.client.loyalty.programs.get({ programId: 'main' });
+      if (!response.program) {
         throw new Error('No loyalty program found');
       }
 
-      return programs[0] as LoyaltyProgram;
+      return response.program as LoyaltyProgram;
     } catch (error) {
       throw parseSquareError(error);
     }

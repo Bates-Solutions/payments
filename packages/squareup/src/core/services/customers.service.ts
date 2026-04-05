@@ -363,7 +363,7 @@ export class CustomersService {
         limit: pageSize,
       });
 
-      const customers = page.data as Customer[];
+      const customers = (page.response.customers ?? []) as Customer[];
       for (const customer of customers) {
         if (this.matchesQuery(customer, terms)) {
           results.push(customer);
@@ -405,7 +405,7 @@ export class CustomersService {
       });
 
       return {
-        customers: page.data as Customer[],
+        customers: (page.response.customers ?? []) as Customer[],
         cursor: page.response.cursor,
       };
     } catch (error) {
