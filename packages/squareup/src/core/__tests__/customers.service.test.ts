@@ -415,10 +415,9 @@ describe('CustomersService', () => {
   });
 
   describe('search with query', () => {
-    function createListMockForSearch(data: unknown[], cursor?: string) {
+    function createListMockForSearch(customers: unknown[], cursor?: string) {
       return vi.fn().mockResolvedValue({
-        data,
-        response: { cursor },
+        response: { customers, cursor },
       });
     }
 
@@ -538,12 +537,10 @@ describe('CustomersService', () => {
     it('should paginate through multiple pages', async () => {
       const listMock = vi.fn()
         .mockResolvedValueOnce({
-          data: [{ id: 'CUST_1', givenName: 'Jane' }],
-          response: { cursor: 'PAGE_2' },
+          response: { customers: [{ id: 'CUST_1', givenName: 'Jane' }], cursor: 'PAGE_2' },
         })
         .mockResolvedValueOnce({
-          data: [{ id: 'CUST_2', givenName: 'Tim' }],
-          response: { cursor: undefined },
+          response: { customers: [{ id: 'CUST_2', givenName: 'Tim' }], cursor: undefined },
         });
       const client = createMockClient({ list: listMock });
 
@@ -558,16 +555,17 @@ describe('CustomersService', () => {
     it('should not skip matches when limit is reached mid-page', async () => {
       const listMock = vi.fn()
         .mockResolvedValueOnce({
-          data: [
-            { id: 'CUST_1', givenName: 'Tim' },
-            { id: 'CUST_2', givenName: 'Timothy' },
-            { id: 'CUST_3', givenName: 'Timmy' },
-          ],
-          response: { cursor: 'PAGE_2' },
+          response: {
+            customers: [
+              { id: 'CUST_1', givenName: 'Tim' },
+              { id: 'CUST_2', givenName: 'Timothy' },
+              { id: 'CUST_3', givenName: 'Timmy' },
+            ],
+            cursor: 'PAGE_2',
+          },
         })
         .mockResolvedValueOnce({
-          data: [{ id: 'CUST_4', givenName: 'Tim Jr' }],
-          response: { cursor: undefined },
+          response: { customers: [{ id: 'CUST_4', givenName: 'Tim Jr' }], cursor: undefined },
         });
       const client = createMockClient({ list: listMock });
 
@@ -581,6 +579,19 @@ describe('CustomersService', () => {
       expect(result.cursor).toBe('PAGE_2');
       // Should NOT have fetched page 2 since limit was satisfied from page 1
       expect(listMock).toHaveBeenCalledTimes(1);
+    });
+
+    it('should handle page with undefined customers', async () => {
+      const client = createMockClient({
+        list: vi.fn().mockResolvedValue({
+          response: { customers: undefined, cursor: undefined },
+        }),
+      });
+
+      const service = new CustomersService(client);
+      const result = await service.search({ query: 'larsen' });
+
+      expect(result.data).toEqual([]);
     });
 
     it('should treat whitespace-only query as no query', async () => {
@@ -622,10 +633,9 @@ describe('CustomersService', () => {
   });
 
   describe('list', () => {
-    function createListMock(data: unknown[], cursor?: string) {
+    function createListMock(customers: unknown[], cursor?: string) {
       return vi.fn().mockResolvedValue({
-        data,
-        response: { cursor },
+        response: { customers, cursor },
       });
     }
 
@@ -673,8 +683,7 @@ describe('CustomersService', () => {
     it('should handle empty results', async () => {
       const client = createMockClient({
         list: vi.fn().mockResolvedValue({
-          data: [],
-          response: { cursor: undefined },
+          response: { customers: undefined, cursor: undefined },
         }),
       });
 
