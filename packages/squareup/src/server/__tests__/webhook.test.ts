@@ -6,6 +6,9 @@ import {
   parseAndVerifyWebhook,
   processWebhookEvent,
   createWebhookProcessor,
+  getPaymentId,
+  getOrderId,
+  getCustomerId,
   SIGNATURE_HEADER,
 } from '../webhook.js';
 import type { WebhookEvent, WebhookConfig } from '../types.js';
@@ -284,6 +287,92 @@ describe('webhook', () => {
       const signatureWithUrl = generateSignature(rawBody, signatureKey, notificationUrl);
       const result2 = await processor(rawBody, signatureWithUrl);
       expect(result2.success).toBe(true);
+    });
+  });
+
+  describe('getPaymentId', () => {
+    it('should extract payment ID from payment event', () => {
+      const event: WebhookEvent = {
+        event_id: 'evt_1', merchant_id: 'M1', type: 'payment.completed', created_at: '',
+        data: { type: 'payment', id: 'PAY_1', object: { payment: { id: 'PAY_1', status: 'COMPLETED' } } },
+      };
+      expect(getPaymentId(event)).toBe('PAY_1');
+    });
+
+    it('should extract payment ID from refund event', () => {
+      const event: WebhookEvent = {
+        event_id: 'evt_1', merchant_id: 'M1', type: 'refund.created', created_at: '',
+        data: { type: 'refund', id: 'REF_1', object: { refund: { id: 'REF_1', payment_id: 'PAY_1', status: 'PENDING' } } },
+      };
+      expect(getPaymentId(event)).toBe('PAY_1');
+    });
+
+    it('should return undefined for unrelated event', () => {
+      const event: WebhookEvent = {
+        event_id: 'evt_1', merchant_id: 'M1', type: 'order.created', created_at: '',
+        data: { type: 'order', id: 'ORD_1', object: {} },
+      };
+      expect(getPaymentId(event)).toBeUndefined();
+    });
+  });
+
+  describe('getOrderId', () => {
+    it('should extract order ID from payment event', () => {
+      const event: WebhookEvent = {
+        event_id: 'evt_1', merchant_id: 'M1', type: 'payment.completed', created_at: '',
+        data: { type: 'payment', id: 'PAY_1', object: { payment: { id: 'PAY_1', order_id: 'ORD_1', status: 'COMPLETED' } } },
+      };
+      expect(getOrderId(event)).toBe('ORD_1');
+    });
+
+    it('should extract order ID from order event', () => {
+      const event: WebhookEvent = {
+        event_id: 'evt_1', merchant_id: 'M1', type: 'order.updated', created_at: '',
+        data: { type: 'order', id: 'ORD_1', object: { order_update: { order_id: 'ORD_1', state: 'OPEN', version: 1 } } },
+      };
+      expect(getOrderId(event)).toBe('ORD_1');
+    });
+
+    it('should extract order ID from refund event', () => {
+      const event: WebhookEvent = {
+        event_id: 'evt_1', merchant_id: 'M1', type: 'refund.updated', created_at: '',
+        data: { type: 'refund', id: 'REF_1', object: { refund: { id: 'REF_1', payment_id: 'PAY_1', order_id: 'ORD_1', status: 'COMPLETED' } } },
+      };
+      expect(getOrderId(event)).toBe('ORD_1');
+    });
+
+    it('should return undefined for unrelated event', () => {
+      const event: WebhookEvent = {
+        event_id: 'evt_1', merchant_id: 'M1', type: 'customer.created', created_at: '',
+        data: { type: 'customer', id: 'CUST_1', object: {} },
+      };
+      expect(getOrderId(event)).toBeUndefined();
+    });
+  });
+
+  describe('getCustomerId', () => {
+    it('should extract customer ID from payment event', () => {
+      const event: WebhookEvent = {
+        event_id: 'evt_1', merchant_id: 'M1', type: 'payment.created', created_at: '',
+        data: { type: 'payment', id: 'PAY_1', object: { payment: { id: 'PAY_1', customer_id: 'CUST_1', status: 'COMPLETED' } } },
+      };
+      expect(getCustomerId(event)).toBe('CUST_1');
+    });
+
+    it('should extract customer ID from customer event', () => {
+      const event: WebhookEvent = {
+        event_id: 'evt_1', merchant_id: 'M1', type: 'customer.updated', created_at: '',
+        data: { type: 'customer', id: 'CUST_1', object: {} },
+      };
+      expect(getCustomerId(event)).toBe('CUST_1');
+    });
+
+    it('should return undefined for unrelated event', () => {
+      const event: WebhookEvent = {
+        event_id: 'evt_1', merchant_id: 'M1', type: 'order.created', created_at: '',
+        data: { type: 'order', id: 'ORD_1', object: {} },
+      };
+      expect(getCustomerId(event)).toBeUndefined();
     });
   });
 });
