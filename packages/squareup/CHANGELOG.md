@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/mbates/squareup/compare/v1.5.0...v1.5.1) (2026-04-05)
+
+
+### Bug Fixes
+
+* **deps:** bump typedoc to 0.28.18 for TypeScript 6.x support ([e72db7b](https://github.com/mbates/squareup/commit/e72db7b7281ebd784d4e0d79947dcd8fa3e05132))
+
 # [1.5.0](https://github.com/mbates/squareup/compare/v1.4.0...v1.5.0) (2026-04-04)
 
 
