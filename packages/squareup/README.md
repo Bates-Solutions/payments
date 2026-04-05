@@ -142,6 +142,22 @@ export async function POST(request: Request) {
 }
 ```
 
+### Typed Webhook Payloads
+
+```typescript
+import type { PaymentWebhookEvent } from '@bates-solutions/squareup/server';
+import { getOrderId, getCustomerId } from '@bates-solutions/squareup/server';
+
+// Cast to typed event for full payload types — no `as any` needed
+const event = webhookHandler.verifyAndParse(req) as PaymentWebhookEvent;
+const payment = event.data.object.payment;
+console.log(payment.status, payment.amount_money);
+
+// Or use helpers to extract entity IDs from any event type
+const orderId = getOrderId(event);     // works on payment, order, and refund events
+const customerId = getCustomerId(event); // works on payment and customer events
+```
+
 ## Available Services
 
 | Service         | Description                          |
