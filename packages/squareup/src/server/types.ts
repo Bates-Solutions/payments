@@ -203,7 +203,15 @@ export interface CustomerWebhookObject {
 /**
  * Typed webhook events for common event types
  */
-export type PaymentWebhookEvent = WebhookEvent<PaymentWebhookObject>;
-export type OrderWebhookEvent = WebhookEvent<OrderWebhookObject>;
-export type RefundWebhookEvent = WebhookEvent<RefundWebhookObject>;
-export type CustomerWebhookEvent = WebhookEvent<CustomerWebhookObject>;
+export type PaymentWebhookEvent = WebhookEvent<PaymentWebhookObject> & {
+  type: PaymentEventType;
+};
+export type OrderWebhookEvent = WebhookEvent<OrderWebhookObject> & {
+  type: OrderEventType;
+};
+export type RefundWebhookEvent = WebhookEvent<RefundWebhookObject> & {
+  type: RefundEventType;
+};
+export type CustomerWebhookEvent = WebhookEvent<CustomerWebhookObject> & {
+  type: CustomerEventType;
+};
