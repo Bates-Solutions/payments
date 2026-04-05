@@ -13,7 +13,7 @@ import type { WebhookEvent } from '../types.js';
  */
 export interface LambdaProxyEvent {
   httpMethod: string;
-  headers: Record<string, string | undefined>;
+  headers?: Record<string, string | undefined> | null;
   body: string | null;
   isBase64Encoded?: boolean;
 }
@@ -115,17 +115,25 @@ export function createLambdaWebhookHandler(config: LambdaWebhookConfig) {
       return { statusCode: 204, headers: corsHeaders, body: '' };
     }
 
-    const headers = normalizeHeaders(proxyEvent.headers);
+    const headers = normalizeHeaders(proxyEvent.headers ?? {});
     const signature = headers[SIGNATURE_HEADER];
     const rawBody = proxyEvent.isBase64Encoded && proxyEvent.body
       ? Buffer.from(proxyEvent.body, 'base64').toString('utf-8')
       : proxyEvent.body;
 
-    if (!rawBody || !signature) {
+    if (!rawBody) {
+      return {
+        statusCode: 400,
+        headers: corsHeaders,
+        body: JSON.stringify({ error: 'Missing request body' }),
+      };
+    }
+
+    if (!signature) {
       return {
         statusCode: 401,
         headers: corsHeaders,
-        body: JSON.stringify({ error: 'Missing body or signature' }),
+        body: JSON.stringify({ error: 'Missing signature header' }),
       };
     }
 
@@ -144,9 +152,20 @@ export function createLambdaWebhookHandler(config: LambdaWebhookConfig) {
       };
     }
 
+    let event: WebhookEvent;
     try {
-      const event = parseWebhookEvent(rawBody);
+      event = parseWebhookEvent(rawBody);
+    } catch (error) {
+      return {
+        statusCode: 400,
+        headers: corsHeaders,
+        body: JSON.stringify({
+          error: error instanceof Error ? error.message : 'Invalid webhook payload',
+        }),
+      };
+    }
 
+    try {
       const context: WebhookEventContext = {
         paymentId: getPaymentId(event),
         orderId: getOrderId(event),
