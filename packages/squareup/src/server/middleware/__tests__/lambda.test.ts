@@ -50,14 +50,37 @@ describe('createLambdaWebhookHandler', () => {
     const result = await handler(createEvent({ headers: {} }));
 
     expect(result.statusCode).toBe(401);
-    expect(JSON.parse(result.body).error).toBe('Missing body or signature');
+    expect(JSON.parse(result.body).error).toBe('Missing signature header');
   });
 
-  it('should return 401 for missing body', async () => {
+  it('should return 400 for missing body', async () => {
     const handler = createLambdaWebhookHandler({ signatureKey, handlers: {} });
     const result = await handler(createEvent({ body: null }));
 
+    expect(result.statusCode).toBe(400);
+    expect(JSON.parse(result.body).error).toBe('Missing request body');
+  });
+
+  it('should handle null headers gracefully', async () => {
+    const handler = createLambdaWebhookHandler({ signatureKey, handlers: {} });
+    const result = await handler({ httpMethod: 'POST', headers: null, body: rawBody });
+
     expect(result.statusCode).toBe(401);
+    expect(JSON.parse(result.body).error).toBe('Missing signature header');
+  });
+
+  it('should return 400 for malformed JSON body', async () => {
+    const badBody = 'not-json';
+    const handler = createLambdaWebhookHandler({ signatureKey, handlers: {} });
+    const result = await handler(createEvent({
+      body: badBody,
+      headers: {
+        'x-square-hmacsha256-signature': generateSignature(badBody, signatureKey),
+      },
+    }));
+
+    expect(result.statusCode).toBe(400);
+    expect(JSON.parse(result.body).error).toContain('Invalid webhook payload');
   });
 
   it('should return 401 for invalid signature', async () => {
