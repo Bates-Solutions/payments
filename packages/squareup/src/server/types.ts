@@ -5,7 +5,7 @@
  */
 
 // Payment Events
-export type PaymentEventType = 'payment.created' | 'payment.updated';
+export type PaymentEventType = 'payment.created' | 'payment.updated' | 'payment.completed';
 
 // Refund Events
 export type RefundEventType = 'refund.created' | 'refund.updated';
@@ -143,3 +143,67 @@ export interface ParsedWebhookRequest {
   /** Parsed event data */
   event: WebhookEvent;
 }
+
+// --- Typed webhook object payloads ---
+
+/**
+ * Payment object in a webhook event payload
+ */
+export interface PaymentWebhookObject {
+  payment: {
+    id: string;
+    order_id?: string;
+    customer_id?: string;
+    amount_money?: { amount: number; currency: string };
+    status: string;
+    source_type?: string;
+    location_id?: string;
+    created_at?: string;
+    updated_at?: string;
+  };
+}
+
+/**
+ * Order update object in a webhook event payload
+ */
+export interface OrderWebhookObject {
+  order_update?: {
+    order_id: string;
+    state: string;
+    version: number;
+  };
+}
+
+/**
+ * Refund object in a webhook event payload
+ */
+export interface RefundWebhookObject {
+  refund: {
+    id: string;
+    payment_id: string;
+    order_id?: string;
+    amount_money?: { amount: number; currency: string };
+    status: string;
+  };
+}
+
+/**
+ * Customer object in a webhook event payload
+ */
+export interface CustomerWebhookObject {
+  customer?: {
+    id: string;
+    given_name?: string;
+    family_name?: string;
+    email_address?: string;
+    phone_number?: string;
+  };
+}
+
+/**
+ * Typed webhook events for common event types
+ */
+export type PaymentWebhookEvent = WebhookEvent<PaymentWebhookObject>;
+export type OrderWebhookEvent = WebhookEvent<OrderWebhookObject>;
+export type RefundWebhookEvent = WebhookEvent<RefundWebhookObject>;
+export type CustomerWebhookEvent = WebhookEvent<CustomerWebhookObject>;
