@@ -581,6 +581,19 @@ describe('CustomersService', () => {
       expect(listMock).toHaveBeenCalledTimes(1);
     });
 
+    it('should handle page with undefined customers', async () => {
+      const client = createMockClient({
+        list: vi.fn().mockResolvedValue({
+          response: { customers: undefined, cursor: undefined },
+        }),
+      });
+
+      const service = new CustomersService(client);
+      const result = await service.search({ query: 'larsen' });
+
+      expect(result.data).toEqual([]);
+    });
+
     it('should treat whitespace-only query as no query', async () => {
       const client = createMockClient({
         search: vi.fn().mockResolvedValue({ customers: [] }),
