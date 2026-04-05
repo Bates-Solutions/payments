@@ -1,3 +1,15 @@
+# [1.7.0](https://github.com/mbates/squareup/compare/v1.6.0...v1.7.0) (2026-04-05)
+
+
+### Bug Fixes
+
+* **webhooks:** address Lambda handler PR review feedback ([02bb45e](https://github.com/mbates/squareup/commit/02bb45ea0f40069d3a58a03e8b687e07d54e35cc))
+
+
+### Features
+
+* **webhooks:** add createLambdaWebhookHandler for serverless ([570b661](https://github.com/mbates/squareup/commit/570b66138ea6f485696eca511f218e5b3e473914)), closes [#53](https://github.com/mbates/squareup/issues/53)
+
 # [1.6.0](https://github.com/mbates/squareup/compare/v1.5.2...v1.6.0) (2026-04-05)
 
 
