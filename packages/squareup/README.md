@@ -158,6 +158,22 @@ const orderId = getOrderId(event);     // works on payment, order, and refund ev
 const customerId = getCustomerId(event); // works on payment and customer events
 ```
 
+### Webhook Handling (AWS Lambda)
+
+```typescript
+import { createLambdaWebhookHandler } from '@bates-solutions/squareup/server';
+
+export const handler = createLambdaWebhookHandler({
+  signatureKey: process.env.SQUARE_WEBHOOK_SIGNATURE_KEY!,
+  handlers: {
+    'payment.completed': async (event, context) => {
+      // context.orderId, context.customerId auto-extracted
+      await processPayment(event.data.id, context.orderId!);
+    },
+  },
+});
+```
+
 ## Available Services
 
 | Service         | Description                          |
