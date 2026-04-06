@@ -1,3 +1,15 @@
+# [1.8.0](https://github.com/mbates/squareup/compare/v1.7.0...v1.8.0) (2026-04-06)
+
+
+### Bug Fixes
+
+* **orders:** use typed Square objects in searchRecent ([13c4309](https://github.com/mbates/squareup/commit/13c4309f348fb76de58f857ac0b47a526dd91407))
+
+
+### Features
+
+* **orders:** add searchRecent() convenience method ([4754a21](https://github.com/mbates/squareup/commit/4754a218bea5567140a6a5b02f0c033f5513460e)), closes [#52](https://github.com/mbates/squareup/issues/52)
+
 # [1.7.0](https://github.com/mbates/squareup/compare/v1.6.0...v1.7.0) (2026-04-05)
 
 
