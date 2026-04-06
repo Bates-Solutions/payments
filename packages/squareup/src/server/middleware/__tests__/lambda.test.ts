@@ -290,6 +290,44 @@ describe('createLambdaWebhookHandler', () => {
     );
   });
 
+  it('should use default console logger when no logger provided', async () => {
+    const infoSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const handler = createLambdaWebhookHandler({
+      signatureKey,
+      handlers: { 'payment.completed': () => { throw new Error('test'); } },
+    });
+
+    await handler(createEvent());
+
+    expect(infoSpy).toHaveBeenCalledWith(
+      'Webhook event received',
+      expect.objectContaining({ type: 'payment.completed' })
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      'Webhook handler error',
+      expect.objectContaining({ error: 'test' })
+    );
+    infoSpy.mockRestore();
+    errorSpy.mockRestore();
+  });
+
+  it('should use default console logger for unmatched events', async () => {
+    const infoSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
+    const handler = createLambdaWebhookHandler({
+      signatureKey,
+      handlers: {},
+    });
+
+    await handler(createEvent());
+
+    expect(infoSpy).toHaveBeenCalledWith(
+      'No handler registered for event type',
+      expect.objectContaining({ type: 'payment.completed' })
+    );
+    infoSpy.mockRestore();
+  });
+
   it('should disable logging when logger is false', async () => {
     const consoleSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
     const handler = createLambdaWebhookHandler({
