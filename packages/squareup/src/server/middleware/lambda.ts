@@ -52,6 +52,19 @@ export type LambdaWebhookHandlers = {
 };
 
 /**
+ * Logger interface for Lambda webhook handler
+ */
+export interface WebhookLogger {
+  info: (message: string, data?: Record<string, unknown>) => void;
+  error: (message: string, data?: Record<string, unknown>) => void;
+}
+
+const defaultLogger: WebhookLogger = {
+  info: (message, data) => { console.info(message, data ?? ''); },
+  error: (message, data) => { console.error(message, data ?? ''); },
+};
+
+/**
  * Configuration for Lambda webhook handling
  */
 export interface LambdaWebhookConfig {
@@ -63,6 +76,10 @@ export interface LambdaWebhookConfig {
   notificationUrl?: string;
   /** Custom CORS headers (merged with defaults) */
   corsHeaders?: Record<string, string>;
+  /** Logger instance (defaults to console) */
+  logger?: WebhookLogger | false;
+  /** Callback for events with no registered handler */
+  onUnhandledEvent?: (event: WebhookEvent, context: WebhookEventContext) => void | Promise<void>;
 }
 
 const DEFAULT_CORS_HEADERS: Record<string, string> = {
@@ -108,6 +125,7 @@ function normalizeHeaders(
  */
 export function createLambdaWebhookHandler(config: LambdaWebhookConfig) {
   const corsHeaders = { ...DEFAULT_CORS_HEADERS, ...config.corsHeaders };
+  const logger = config.logger === false ? undefined : (config.logger ?? defaultLogger);
 
   return async (proxyEvent: LambdaProxyEvent): Promise<LambdaProxyResult> => {
     // Handle CORS preflight
@@ -172,9 +190,20 @@ export function createLambdaWebhookHandler(config: LambdaWebhookConfig) {
         customerId: getCustomerId(event),
       };
 
+      logger?.info('Webhook event received', {
+        type: event.type,
+        eventId: event.event_id,
+        ...context,
+      });
+
       const handler = config.handlers[event.type];
       if (handler) {
         await handler(event, context);
+      } else {
+        logger?.info('No handler registered for event type', { type: event.type });
+        if (config.onUnhandledEvent) {
+          await config.onUnhandledEvent(event, context);
+        }
       }
 
       return {
@@ -183,6 +212,12 @@ export function createLambdaWebhookHandler(config: LambdaWebhookConfig) {
         body: JSON.stringify({ success: true, eventId: event.event_id, ...context }),
       };
     } catch (error) {
+      logger?.error('Webhook handler error', {
+        type: event.type,
+        eventId: event.event_id,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      });
+
       // Return 200 on handler errors — Square retries on 5xx
       return {
         statusCode: 200,
