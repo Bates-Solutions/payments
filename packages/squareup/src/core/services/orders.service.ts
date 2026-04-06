@@ -1,5 +1,5 @@
 import type { SquareClient } from 'square';
-import type { CreateOrderOptions, SearchOrdersOptions } from '../types/index.js';
+import type { CreateOrderOptions, SearchOrdersOptions, SearchRecentOrdersOptions } from '../types/index.js';
 import { parseSquareError, SquareValidationError } from '../errors.js';
 import { createIdempotencyKey } from '../utils.js';
 import { OrderBuilder, type Order } from '../builders/order.builder.js';
@@ -265,5 +265,61 @@ export class OrdersService {
     } catch (error) {
       throw parseSquareError(error);
     }
+  }
+
+  /**
+   * Search for recent orders with simplified filter options
+   *
+   * @param options - Simplified search options
+   * @returns Paginated list of orders
+   *
+   * @example
+   * ```typescript
+   * // Get completed orders from the last hour
+   * const { data } = await square.orders.searchRecent({
+   *   states: ['COMPLETED'],
+   *   since: new Date(Date.now() - 60 * 60 * 1000),
+   * });
+   *
+   * // Get all orders from a date range
+   * const { data, cursor } = await square.orders.searchRecent({
+   *   since: new Date('2024-01-01'),
+   *   until: new Date('2024-01-31'),
+   *   limit: 50,
+   * });
+   * ```
+   */
+  async searchRecent(
+    options?: SearchRecentOrdersOptions
+  ): Promise<{ data: Order[]; cursor?: string }> {
+    const filter: Record<string, unknown> = {};
+
+    if (options?.states) {
+      filter.stateFilter = { states: options.states };
+    }
+
+    if (options?.since || options?.until) {
+      filter.dateTimeFilter = {
+        closedAt: {
+          ...(options.since ? { startAt: options.since.toISOString() } : {}),
+          ...(options.until ? { endAt: options.until.toISOString() } : {}),
+        },
+      };
+    }
+
+    const query: Record<string, unknown> = {
+      sort: { sortField: 'CLOSED_AT', sortOrder: 'DESC' },
+    };
+
+    if (Object.keys(filter).length > 0) {
+      query.filter = filter;
+    }
+
+    return this.search({
+      locationIds: options?.locationIds,
+      cursor: options?.cursor,
+      limit: options?.limit,
+      query: query as import('square').SearchOrdersQuery,
+    });
   }
 }

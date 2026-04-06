@@ -72,6 +72,12 @@ const order = await client.orders.create(
     .build()
 );
 
+// Search recent completed orders
+const { data: orders } = await client.orders.searchRecent({
+  states: ['COMPLETED'],
+  since: new Date(Date.now() - 60 * 60 * 1000), // last hour
+});
+
 // Manage customers
 const customer = await client.customers.create({
   givenName: 'John',
