@@ -109,7 +109,7 @@ export interface SearchOrdersOptions {
  */
 export interface SearchRecentOrdersOptions {
   locationIds?: string[];
-  states?: string[];
+  states?: import('square').OrderState[];
   since?: Date;
   until?: Date;
   limit?: number;
