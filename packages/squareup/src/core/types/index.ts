@@ -103,3 +103,15 @@ export interface SearchOrdersOptions {
   limit?: number;
   query?: import('square').SearchOrdersQuery;
 }
+
+/**
+ * Simplified options for searching recent orders
+ */
+export interface SearchRecentOrdersOptions {
+  locationIds?: string[];
+  states?: import('square').OrderState[];
+  since?: Date;
+  until?: Date;
+  limit?: number;
+  cursor?: string;
+}
