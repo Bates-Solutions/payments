@@ -281,10 +281,18 @@ export class OrdersService {
    *   since: new Date(Date.now() - 60 * 60 * 1000),
    * });
    *
-   * // Get all orders from a date range
+   * // Get first page of orders from a date range
    * const { data, cursor } = await square.orders.searchRecent({
    *   since: new Date('2024-01-01'),
    *   until: new Date('2024-01-31'),
+   *   limit: 50,
+   * });
+   *
+   * // Fetch next page
+   * const page2 = await square.orders.searchRecent({
+   *   since: new Date('2024-01-01'),
+   *   until: new Date('2024-01-31'),
+   *   cursor,
    *   limit: 50,
    * });
    * ```
@@ -292,7 +300,7 @@ export class OrdersService {
   async searchRecent(
     options?: SearchRecentOrdersOptions
   ): Promise<{ data: Order[]; cursor?: string }> {
-    const filter: Record<string, unknown> = {};
+    const filter: import('square').SearchOrdersFilter = {};
 
     if (options?.states) {
       filter.stateFilter = { states: options.states };
@@ -307,7 +315,7 @@ export class OrdersService {
       };
     }
 
-    const query: Record<string, unknown> = {
+    const query: import('square').SearchOrdersQuery = {
       sort: { sortField: 'CLOSED_AT', sortOrder: 'DESC' },
     };
 
@@ -319,7 +327,7 @@ export class OrdersService {
       locationIds: options?.locationIds,
       cursor: options?.cursor,
       limit: options?.limit,
-      query: query as import('square').SearchOrdersQuery,
+      query,
     });
   }
 }
