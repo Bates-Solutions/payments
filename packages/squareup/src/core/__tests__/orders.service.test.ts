@@ -559,4 +559,138 @@ describe('OrdersService', () => {
       });
     });
   });
+
+  describe('searchRecent', () => {
+    it('should search with state filter', async () => {
+      const client = createMockClient({
+        search: vi.fn().mockResolvedValue({ orders: [{ id: 'ORD_1' }] }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      const result = await service.searchRecent({ states: ['COMPLETED'] });
+
+      expect(result.data).toHaveLength(1);
+      expect(client.orders.search).toHaveBeenCalledWith(
+        expect.objectContaining({
+          query: expect.objectContaining({
+            filter: { stateFilter: { states: ['COMPLETED'] } },
+            sort: { sortField: 'CLOSED_AT', sortOrder: 'DESC' },
+          }),
+        })
+      );
+    });
+
+    it('should search with date range', async () => {
+      const since = new Date('2024-06-01T00:00:00Z');
+      const until = new Date('2024-06-30T23:59:59Z');
+      const client = createMockClient({
+        search: vi.fn().mockResolvedValue({ orders: [] }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      await service.searchRecent({ since, until });
+
+      expect(client.orders.search).toHaveBeenCalledWith(
+        expect.objectContaining({
+          query: expect.objectContaining({
+            filter: {
+              dateTimeFilter: {
+                closedAt: {
+                  startAt: since.toISOString(),
+                  endAt: until.toISOString(),
+                },
+              },
+            },
+          }),
+        })
+      );
+    });
+
+    it('should search with since only', async () => {
+      const since = new Date('2024-06-01T00:00:00Z');
+      const client = createMockClient({
+        search: vi.fn().mockResolvedValue({ orders: [] }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      await service.searchRecent({ since });
+
+      expect(client.orders.search).toHaveBeenCalledWith(
+        expect.objectContaining({
+          query: expect.objectContaining({
+            filter: {
+              dateTimeFilter: {
+                closedAt: { startAt: since.toISOString() },
+              },
+            },
+          }),
+        })
+      );
+    });
+
+    it('should combine state and date filters', async () => {
+      const since = new Date('2024-06-01T00:00:00Z');
+      const client = createMockClient({
+        search: vi.fn().mockResolvedValue({ orders: [] }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      await service.searchRecent({ states: ['COMPLETED'], since });
+
+      expect(client.orders.search).toHaveBeenCalledWith(
+        expect.objectContaining({
+          query: expect.objectContaining({
+            filter: {
+              stateFilter: { states: ['COMPLETED'] },
+              dateTimeFilter: {
+                closedAt: { startAt: since.toISOString() },
+              },
+            },
+          }),
+        })
+      );
+    });
+
+    it('should pass cursor and limit', async () => {
+      const client = createMockClient({
+        search: vi.fn().mockResolvedValue({ orders: [], cursor: 'next' }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      const result = await service.searchRecent({ cursor: 'prev', limit: 25 });
+
+      expect(result.cursor).toBe('next');
+      expect(client.orders.search).toHaveBeenCalledWith(
+        expect.objectContaining({ cursor: 'prev', limit: 25 })
+      );
+    });
+
+    it('should search with no filters', async () => {
+      const client = createMockClient({
+        search: vi.fn().mockResolvedValue({ orders: [] }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      await service.searchRecent();
+
+      expect(client.orders.search).toHaveBeenCalledWith(
+        expect.objectContaining({
+          query: { sort: { sortField: 'CLOSED_AT', sortOrder: 'DESC' } },
+        })
+      );
+    });
+
+    it('should pass custom locationIds', async () => {
+      const client = createMockClient({
+        search: vi.fn().mockResolvedValue({ orders: [] }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      await service.searchRecent({ locationIds: ['LOC_A'] });
+
+      expect(client.orders.search).toHaveBeenCalledWith(
+        expect.objectContaining({ locationIds: ['LOC_A'] })
+      );
+    });
+  });
 });
