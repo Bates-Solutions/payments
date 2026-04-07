@@ -329,7 +329,8 @@ describe('createLambdaWebhookHandler', () => {
   });
 
   it('should disable logging when logger is false', async () => {
-    const consoleSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
+    const infoSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     const handler = createLambdaWebhookHandler({
       signatureKey,
       handlers: {},
@@ -338,7 +339,28 @@ describe('createLambdaWebhookHandler', () => {
 
     await handler(createEvent());
 
-    expect(consoleSpy).not.toHaveBeenCalled();
-    consoleSpy.mockRestore();
+    expect(infoSpy).not.toHaveBeenCalled();
+    expect(errorSpy).not.toHaveBeenCalled();
+    infoSpy.mockRestore();
+    errorSpy.mockRestore();
+  });
+
+  it('should disable logging for errors when logger is false', async () => {
+    const infoSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const handler = createLambdaWebhookHandler({
+      signatureKey,
+      handlers: { 'payment.completed': () => { throw new Error('boom'); } },
+      logger: false,
+    });
+
+    const result = await handler(createEvent());
+
+    expect(result.statusCode).toBe(200);
+    expect(JSON.parse(result.body).success).toBe(false);
+    expect(infoSpy).not.toHaveBeenCalled();
+    expect(errorSpy).not.toHaveBeenCalled();
+    infoSpy.mockRestore();
+    errorSpy.mockRestore();
   });
 });
