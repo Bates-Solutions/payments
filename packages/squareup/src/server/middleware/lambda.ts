@@ -60,12 +60,8 @@ export interface WebhookLogger {
 }
 
 const defaultLogger: WebhookLogger = {
-  info: (message, data) => {
-    if (data) { console.info(message, data); } else { console.info(message); }
-  },
-  error: (message, data) => {
-    if (data) { console.error(message, data); } else { console.error(message); }
-  },
+  info: (message, data) => { console.info(message, data); },
+  error: (message, data) => { console.error(message, data); },
 };
 
 /**
