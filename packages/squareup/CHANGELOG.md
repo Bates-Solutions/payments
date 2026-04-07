@@ -1,3 +1,17 @@
+# [1.9.0](https://github.com/mbates/squareup/compare/v1.8.0...v1.9.0) (2026-04-07)
+
+
+### Bug Fixes
+
+* **webhooks:** omit empty arg in default logger output ([1262b1d](https://github.com/mbates/squareup/commit/1262b1db8c4ce73fcd93989eae3e63d253fdd4b0))
+* **webhooks:** simplify default logger and improve test coverage ([037652e](https://github.com/mbates/squareup/commit/037652e0981b0a6065cab8e6b3a227647e5bb3d9))
+* **webhooks:** use if/else instead of ternary in default logger ([61b1e4e](https://github.com/mbates/squareup/commit/61b1e4ef2ba78a3712a12c9b1d2a9d7f400f008b))
+
+
+### Features
+
+* **webhooks:** add logging and onUnhandledEvent to Lambda handler ([3669a0d](https://github.com/mbates/squareup/commit/3669a0d19e869092d54003dca76bdb96458e53ba)), closes [#57](https://github.com/mbates/squareup/issues/57)
+
 # [1.8.0](https://github.com/mbates/squareup/compare/v1.7.0...v1.8.0) (2026-04-06)
 
 
