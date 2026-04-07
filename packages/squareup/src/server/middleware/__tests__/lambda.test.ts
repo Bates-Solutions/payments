@@ -212,4 +212,155 @@ describe('createLambdaWebhookHandler', () => {
     }));
     expect(result2.statusCode).toBe(200);
   });
+
+  it('should log received events', async () => {
+    const logger = { info: vi.fn(), error: vi.fn() };
+    const handler = createLambdaWebhookHandler({
+      signatureKey,
+      handlers: { 'payment.completed': vi.fn() },
+      logger,
+    });
+
+    await handler(createEvent());
+
+    expect(logger.info).toHaveBeenCalledWith(
+      'Webhook event received',
+      expect.objectContaining({ type: 'payment.completed', eventId: 'evt_123' })
+    );
+  });
+
+  it('should log when no handler matches', async () => {
+    const logger = { info: vi.fn(), error: vi.fn() };
+    const handler = createLambdaWebhookHandler({
+      signatureKey,
+      handlers: {},
+      logger,
+    });
+
+    await handler(createEvent());
+
+    expect(logger.info).toHaveBeenCalledWith(
+      'No handler registered for event type',
+      { type: 'payment.completed' }
+    );
+  });
+
+  it('should call onUnhandledEvent for unmatched events', async () => {
+    const onUnhandled = vi.fn();
+    const handler = createLambdaWebhookHandler({
+      signatureKey,
+      handlers: {},
+      onUnhandledEvent: onUnhandled,
+    });
+
+    await handler(createEvent());
+
+    expect(onUnhandled).toHaveBeenCalledWith(
+      expect.objectContaining({ event_id: 'evt_123' }),
+      expect.objectContaining({ paymentId: 'PAY_123' })
+    );
+  });
+
+  it('should not call onUnhandledEvent when handler matches', async () => {
+    const onUnhandled = vi.fn();
+    const handler = createLambdaWebhookHandler({
+      signatureKey,
+      handlers: { 'payment.completed': vi.fn() },
+      onUnhandledEvent: onUnhandled,
+    });
+
+    await handler(createEvent());
+
+    expect(onUnhandled).not.toHaveBeenCalled();
+  });
+
+  it('should log handler errors', async () => {
+    const logger = { info: vi.fn(), error: vi.fn() };
+    const handler = createLambdaWebhookHandler({
+      signatureKey,
+      handlers: { 'payment.completed': () => { throw new Error('boom'); } },
+      logger,
+    });
+
+    await handler(createEvent());
+
+    expect(logger.error).toHaveBeenCalledWith(
+      'Webhook handler error',
+      expect.objectContaining({ error: 'boom' })
+    );
+  });
+
+  it('should use default console logger when no logger provided', async () => {
+    const infoSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const handler = createLambdaWebhookHandler({
+      signatureKey,
+      handlers: { 'payment.completed': () => { throw new Error('test'); } },
+    });
+
+    await handler(createEvent());
+
+    expect(infoSpy).toHaveBeenCalledWith(
+      'Webhook event received',
+      expect.objectContaining({ type: 'payment.completed' })
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      'Webhook handler error',
+      expect.objectContaining({ error: 'test' })
+    );
+    infoSpy.mockRestore();
+    errorSpy.mockRestore();
+  });
+
+  it('should use default console logger for unmatched events', async () => {
+    const infoSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
+    const handler = createLambdaWebhookHandler({
+      signatureKey,
+      handlers: {},
+    });
+
+    await handler(createEvent());
+
+    expect(infoSpy).toHaveBeenCalledWith(
+      'No handler registered for event type',
+      expect.objectContaining({ type: 'payment.completed' })
+    );
+    infoSpy.mockRestore();
+  });
+
+  it('should disable logging when logger is false', async () => {
+    const infoSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const handler = createLambdaWebhookHandler({
+      signatureKey,
+      handlers: {},
+      logger: false,
+    });
+
+    await handler(createEvent());
+
+    expect(infoSpy).not.toHaveBeenCalled();
+    expect(errorSpy).not.toHaveBeenCalled();
+    infoSpy.mockRestore();
+    errorSpy.mockRestore();
+  });
+
+  it('should disable logging for errors when logger is false', async () => {
+    const infoSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const handler = createLambdaWebhookHandler({
+      signatureKey,
+      handlers: { 'payment.completed': () => { throw new Error('boom'); } },
+      logger: false,
+    });
+
+    const result = await handler(createEvent());
+
+    expect(result.statusCode).toBe(200);
+    expect(JSON.parse(result.body).success).toBe(false);
+    expect(infoSpy).not.toHaveBeenCalled();
+    expect(errorSpy).not.toHaveBeenCalled();
+    infoSpy.mockRestore();
+    errorSpy.mockRestore();
+  });
 });
