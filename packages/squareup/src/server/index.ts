@@ -105,4 +105,5 @@ export {
   type LambdaWebhookHandler,
   type LambdaWebhookHandlers,
   type WebhookEventContext,
+  type WebhookLogger,
 } from './middleware/lambda.js';
