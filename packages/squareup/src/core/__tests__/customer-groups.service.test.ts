@@ -32,10 +32,12 @@ describe('CustomerGroupsService', () => {
       const result = await service.create({ name: 'Wholesale' });
 
       expect(result).toEqual(mockGroup);
-      expect(client.customers.groups.create).toHaveBeenCalledWith({
-        idempotencyKey: undefined,
-        group: { name: 'Wholesale' },
-      });
+      expect(client.customers.groups.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          idempotencyKey: expect.any(String),
+          group: { name: 'Wholesale' },
+        })
+      );
     });
 
     it('should require a name', async () => {
@@ -96,6 +98,13 @@ describe('CustomerGroupsService', () => {
         groupId: 'GRP_1',
         group: { name: 'VIP' },
       });
+    });
+
+    it('should require a name', async () => {
+      const service = new CustomerGroupsService(createMockClient());
+      await expect(service.update('GRP_1', { name: '' })).rejects.toThrow(
+        SquareValidationError
+      );
     });
   });
 
