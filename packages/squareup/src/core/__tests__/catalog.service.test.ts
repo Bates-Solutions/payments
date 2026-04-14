@@ -622,4 +622,366 @@ describe('CatalogService', () => {
       await expect(service.batchGet(['ITEM_1'])).rejects.toThrow();
     });
   });
+
+  describe('createProductSet', () => {
+    it('should create a product set', async () => {
+      const mockObj = { id: 'PS_1', type: 'PRODUCT_SET' };
+      const client = createMockClient({
+        object: {
+          upsert: vi.fn().mockResolvedValue({ catalogObject: mockObj }),
+          get: vi.fn(),
+          delete: vi.fn(),
+        },
+      });
+
+      const result = await new CatalogService(client).createProductSet({
+        name: 'Wholesale items',
+        productIdsAny: ['V1', 'V2'],
+      });
+
+      expect(result).toEqual(mockObj);
+      expect(client.catalog.object.upsert).toHaveBeenCalledWith(
+        expect.objectContaining({
+          object: expect.objectContaining({
+            type: 'PRODUCT_SET',
+            productSetData: expect.objectContaining({
+              name: 'Wholesale items',
+              productIdsAny: ['V1', 'V2'],
+            }),
+          }),
+        })
+      );
+    });
+
+    it('should require name', async () => {
+      const client = createMockClient();
+      const service = new CatalogService(client);
+      await expect(
+        service.createProductSet({ name: '', productIdsAny: ['V1'] })
+      ).rejects.toThrow(SquareValidationError);
+    });
+
+    it('should require at least one product selection', async () => {
+      const client = createMockClient();
+      const service = new CatalogService(client);
+      await expect(
+        service.createProductSet({ name: 'set' })
+      ).rejects.toThrow(SquareValidationError);
+    });
+  });
+
+  describe('createPricingRule', () => {
+    it('should create a pricing rule with customer group', async () => {
+      const mockObj = { id: 'PR_1', type: 'PRICING_RULE' };
+      const client = createMockClient({
+        object: {
+          upsert: vi.fn().mockResolvedValue({ catalogObject: mockObj }),
+          get: vi.fn(),
+          delete: vi.fn(),
+        },
+      });
+
+      const result = await new CatalogService(client).createPricingRule({
+        name: 'Wholesale 20% off',
+        discountId: 'D_1',
+        matchProductsId: 'PS_1',
+        customerGroupIdsAny: ['GRP_1'],
+      });
+
+      expect(result).toEqual(mockObj);
+      expect(client.catalog.object.upsert).toHaveBeenCalledWith(
+        expect.objectContaining({
+          object: expect.objectContaining({
+            type: 'PRICING_RULE',
+            pricingRuleData: expect.objectContaining({
+              name: 'Wholesale 20% off',
+              discountId: 'D_1',
+              matchProductsId: 'PS_1',
+              customerGroupIdsAny: ['GRP_1'],
+            }),
+          }),
+        })
+      );
+    });
+
+    it('should coerce minimumOrderSubtotal to BigInt money', async () => {
+      const client = createMockClient({
+        object: {
+          upsert: vi.fn().mockResolvedValue({ catalogObject: { id: 'PR_1' } }),
+          get: vi.fn(),
+          delete: vi.fn(),
+        },
+      });
+
+      await new CatalogService(client).createPricingRule({
+        name: 'rule',
+        discountId: 'D_1',
+        matchProductsId: 'PS_1',
+        minimumOrderSubtotal: 5000,
+      });
+
+      const call = (client.catalog.object.upsert as ReturnType<typeof vi.fn>).mock.calls[0][0];
+      expect(call.object.pricingRuleData.minimumOrderSubtotalMoney).toEqual({
+        amount: BigInt(5000),
+        currency: 'USD',
+      });
+    });
+
+    it('should require discountId and matchProductsId', async () => {
+      const service = new CatalogService(createMockClient());
+      await expect(
+        service.createPricingRule({ name: 'r', matchProductsId: 'PS_1' })
+      ).rejects.toThrow(SquareValidationError);
+      await expect(
+        service.createPricingRule({ name: 'r', discountId: 'D_1' })
+      ).rejects.toThrow(SquareValidationError);
+    });
+  });
+
+  describe('createTimePeriod', () => {
+    it('should create a time period', async () => {
+      const mockObj = { id: 'TP_1', type: 'TIME_PERIOD' };
+      const client = createMockClient({
+        object: {
+          upsert: vi.fn().mockResolvedValue({ catalogObject: mockObj }),
+          get: vi.fn(),
+          delete: vi.fn(),
+        },
+      });
+
+      const event = 'DTSTART:20260101T170000\nDURATION:PT2H';
+      const result = await new CatalogService(client).createTimePeriod({ event });
+
+      expect(result).toEqual(mockObj);
+      expect(client.catalog.object.upsert).toHaveBeenCalledWith(
+        expect.objectContaining({
+          object: expect.objectContaining({
+            type: 'TIME_PERIOD',
+            timePeriodData: { event },
+          }),
+        })
+      );
+    });
+
+    it('should require event', async () => {
+      const service = new CatalogService(createMockClient());
+      await expect(service.createTimePeriod({ event: '' })).rejects.toThrow(
+        SquareValidationError
+      );
+    });
+  });
+
+  describe('createWholesalePricing', () => {
+    function createBatchClient(overrides: Record<string, unknown> = {}): SquareClient {
+      return {
+        catalog: {
+          object: { upsert: vi.fn(), get: vi.fn(), delete: vi.fn() },
+          search: vi.fn(),
+          list: vi.fn(),
+          batchGet: vi.fn(),
+          batchUpsert: vi.fn(),
+          ...overrides,
+        },
+      } as unknown as SquareClient;
+    }
+
+    it('should atomically create productSet, discount, and pricing rule', async () => {
+      const returnedObjects = [
+        { id: 'PS_1', type: 'PRODUCT_SET' },
+        { id: 'D_1', type: 'DISCOUNT' },
+        { id: 'PR_1', type: 'PRICING_RULE' },
+      ];
+      const client = createBatchClient({
+        batchUpsert: vi.fn().mockResolvedValue({ objects: returnedObjects }),
+      });
+
+      const result = await new CatalogService(client).createWholesalePricing({
+        name: 'Wholesale 20% off',
+        customerGroupId: 'GRP_1',
+        itemVariationIds: ['V1', 'V2'],
+        discount: { percentage: '20' },
+      });
+
+      expect(result.productSet.id).toBe('PS_1');
+      expect(result.discount.id).toBe('D_1');
+      expect(result.pricingRule.id).toBe('PR_1');
+
+      const call = (client.catalog.batchUpsert as ReturnType<typeof vi.fn>).mock.calls[0][0];
+      expect(call.batches[0].objects).toHaveLength(3);
+      const psObj = call.batches[0].objects.find((o: { type: string }) => o.type === 'PRODUCT_SET');
+      const prObj = call.batches[0].objects.find((o: { type: string }) => o.type === 'PRICING_RULE');
+      expect(psObj.productSetData.productIdsAny).toEqual(['V1', 'V2']);
+      expect(prObj.pricingRuleData.matchProductsId).toBe(psObj.id);
+      expect(prObj.pricingRuleData.customerGroupIdsAny).toEqual(['GRP_1']);
+    });
+
+    it('should support fixed amount discount', async () => {
+      const client = createBatchClient({
+        batchUpsert: vi.fn().mockResolvedValue({
+          objects: [
+            { id: 'PS_1', type: 'PRODUCT_SET' },
+            { id: 'D_1', type: 'DISCOUNT' },
+            { id: 'PR_1', type: 'PRICING_RULE' },
+          ],
+        }),
+      });
+
+      await new CatalogService(client).createWholesalePricing({
+        name: '$5 off',
+        customerGroupId: 'GRP_1',
+        itemVariationIds: ['V1'],
+        discount: { amount: 500 },
+      });
+
+      const call = (client.catalog.batchUpsert as ReturnType<typeof vi.fn>).mock.calls[0][0];
+      const discount = call.batches[0].objects.find(
+        (o: { type: string }) => o.type === 'DISCOUNT'
+      );
+      expect(discount.discountData.discountType).toBe('FIXED_AMOUNT');
+      expect(discount.discountData.amountMoney).toEqual({
+        amount: BigInt(500),
+        currency: 'USD',
+      });
+    });
+
+    it('should validate required inputs', async () => {
+      const service = new CatalogService(createBatchClient());
+      await expect(
+        service.createWholesalePricing({
+          name: 'x',
+          customerGroupId: '',
+          itemVariationIds: ['V1'],
+          discount: { percentage: '10' },
+        })
+      ).rejects.toThrow(SquareValidationError);
+      await expect(
+        service.createWholesalePricing({
+          name: 'x',
+          customerGroupId: 'G',
+          itemVariationIds: [],
+          discount: { percentage: '10' },
+        })
+      ).rejects.toThrow(SquareValidationError);
+    });
+
+    it('should throw when batch response is incomplete', async () => {
+      const client = createBatchClient({
+        batchUpsert: vi.fn().mockResolvedValue({ objects: [] }),
+      });
+
+      await expect(
+        new CatalogService(client).createWholesalePricing({
+          name: 'x',
+          customerGroupId: 'GRP_1',
+          itemVariationIds: ['V1'],
+          discount: { percentage: '10' },
+        })
+      ).rejects.toThrow();
+    });
+
+    it('should require name', async () => {
+      const service = new CatalogService(createBatchClient());
+      await expect(
+        service.createWholesalePricing({
+          name: '',
+          customerGroupId: 'G',
+          itemVariationIds: ['V1'],
+          discount: { percentage: '10' },
+        })
+      ).rejects.toThrow(SquareValidationError);
+    });
+
+    it('should wrap batchUpsert errors', async () => {
+      const client = createBatchClient({
+        batchUpsert: vi.fn().mockRejectedValue(new Error('boom')),
+      });
+      await expect(
+        new CatalogService(client).createWholesalePricing({
+          name: 'x',
+          customerGroupId: 'GRP_1',
+          itemVariationIds: ['V1'],
+          discount: { percentage: '10' },
+        })
+      ).rejects.toThrow();
+    });
+  });
+
+  describe('new helper error paths', () => {
+    function clientWithUpsert(upsert: ReturnType<typeof vi.fn>): SquareClient {
+      return {
+        catalog: {
+          object: { upsert, get: vi.fn(), delete: vi.fn() },
+        },
+      } as unknown as SquareClient;
+    }
+
+    it('createProductSet throws when response missing', async () => {
+      const service = new CatalogService(
+        clientWithUpsert(vi.fn().mockResolvedValue({}))
+      );
+      await expect(
+        service.createProductSet({ name: 'set', productIdsAny: ['V1'] })
+      ).rejects.toThrow();
+    });
+
+    it('createProductSet wraps upsert errors', async () => {
+      const service = new CatalogService(
+        clientWithUpsert(vi.fn().mockRejectedValue(new Error('boom')))
+      );
+      await expect(
+        service.createProductSet({ name: 'set', productIdsAny: ['V1'] })
+      ).rejects.toThrow();
+    });
+
+    it('createPricingRule requires name', async () => {
+      const service = new CatalogService(clientWithUpsert(vi.fn()));
+      await expect(
+        service.createPricingRule({
+          name: '',
+          discountId: 'D_1',
+          matchProductsId: 'PS_1',
+        })
+      ).rejects.toThrow(SquareValidationError);
+    });
+
+    it('createPricingRule throws when response missing', async () => {
+      const service = new CatalogService(
+        clientWithUpsert(vi.fn().mockResolvedValue({}))
+      );
+      await expect(
+        service.createPricingRule({
+          name: 'r',
+          discountId: 'D_1',
+          matchProductsId: 'PS_1',
+        })
+      ).rejects.toThrow();
+    });
+
+    it('createPricingRule wraps upsert errors', async () => {
+      const service = new CatalogService(
+        clientWithUpsert(vi.fn().mockRejectedValue(new Error('boom')))
+      );
+      await expect(
+        service.createPricingRule({
+          name: 'r',
+          discountId: 'D_1',
+          matchProductsId: 'PS_1',
+        })
+      ).rejects.toThrow();
+    });
+
+    it('createTimePeriod throws when response missing', async () => {
+      const service = new CatalogService(
+        clientWithUpsert(vi.fn().mockResolvedValue({}))
+      );
+      await expect(service.createTimePeriod({ event: 'DTSTART:X' })).rejects.toThrow();
+    });
+
+    it('createTimePeriod wraps upsert errors', async () => {
+      const service = new CatalogService(
+        clientWithUpsert(vi.fn().mockRejectedValue(new Error('boom')))
+      );
+      await expect(service.createTimePeriod({ event: 'DTSTART:X' })).rejects.toThrow();
+    });
+  });
 });

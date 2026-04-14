@@ -6,6 +6,7 @@ export type { SquareClientConfig } from './client.js';
 export { PaymentsService } from './services/payments.service.js';
 export { OrdersService } from './services/orders.service.js';
 export { CustomersService } from './services/customers.service.js';
+export { CustomerGroupsService } from './services/customer-groups.service.js';
 export { CatalogService } from './services/catalog.service.js';
 export { InventoryService } from './services/inventory.service.js';
 export { SubscriptionsService } from './services/subscriptions.service.js';
