@@ -38,7 +38,6 @@ docs/plans/
 
 # AI assistants
 .claude/
-CLAUDE.md
 .cursor/
 .cursorrules
 .aider*
