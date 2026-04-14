@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/mbates/squareup/compare/v1.9.0...v1.10.0) (2026-04-14)
+
+
+### Features
+
+* **catalog:** add PRICING_RULE, PRODUCT_SET, TIME_PERIOD and customer groups ([8c7a7eb](https://github.com/mbates/squareup/commit/8c7a7eb22782ad3637048333899fa8135ef0fcc8)), closes [#59](https://github.com/mbates/squareup/issues/59)
+
 # [1.9.0](https://github.com/mbates/squareup/compare/v1.8.0...v1.9.0) (2026-04-07)
 
 
