@@ -1,5 +1,6 @@
 import type { SquareClient } from 'square';
 import { parseSquareError, SquareValidationError } from '../errors.js';
+import { createIdempotencyKey } from '../utils.js';
 
 /**
  * Customer group from Square API
@@ -59,7 +60,7 @@ export class CustomerGroupsService {
 
     try {
       const response = await this.client.customers.groups.create({
-        idempotencyKey: options.idempotencyKey,
+        idempotencyKey: options.idempotencyKey ?? createIdempotencyKey(),
         group: { name: options.name },
       });
 
@@ -97,6 +98,9 @@ export class CustomerGroupsService {
     groupId: string,
     options: UpdateCustomerGroupOptions
   ): Promise<CustomerGroup> {
+    if (!options.name) {
+      throw new SquareValidationError('Customer group name is required', 'name');
+    }
     try {
       const response = await this.client.customers.groups.update({
         groupId,

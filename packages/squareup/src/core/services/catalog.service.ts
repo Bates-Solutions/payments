@@ -584,20 +584,20 @@ export class CatalogService {
     const discountId = `#wholesale_discount_${String(Date.now())}`;
     const pricingRuleId = `#wholesale_pricing_rule_${String(Date.now())}`;
 
-    const discount = options.discount;
+    const discountInput = options.discount;
     const discountData =
-      'percentage' in discount
+      'percentage' in discountInput
         ? {
             name: `${options.name} discount`,
             discountType: 'FIXED_PERCENTAGE' as const,
-            percentage: discount.percentage,
+            percentage: discountInput.percentage,
           }
         : {
             name: `${options.name} discount`,
             discountType: 'FIXED_AMOUNT' as const,
             amountMoney: {
-              amount: BigInt(discount.amount),
-              currency: discount.currency ?? 'USD',
+              amount: BigInt(discountInput.amount),
+              currency: discountInput.currency ?? 'USD',
             },
           };
 
