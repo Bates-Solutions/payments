@@ -15,7 +15,62 @@ export type CatalogObjectType =
   | 'MODIFIER'
   | 'MODIFIER_LIST'
   | 'IMAGE'
+  | 'PRICING_RULE'
+  | 'PRODUCT_SET'
+  | 'TIME_PERIOD'
   | 'CUSTOM_ATTRIBUTE_DEFINITION';
+
+/**
+ * Structured data for a catalog PRICING_RULE object.
+ *
+ * Pricing rules automatically apply a discount to a set of items when conditions
+ * match — typically used for wholesale pricing, BOGO promos, or happy-hour pricing.
+ * A rule references a `CatalogProductSet` (matched items), a `CatalogDiscount`,
+ * and optionally a list of customer group IDs (members-only pricing).
+ */
+export interface CatalogPricingRuleData {
+  name?: string;
+  timePeriodIds?: string[];
+  discountId?: string;
+  matchProductsId?: string;
+  applyProductsId?: string;
+  excludeProductsId?: string;
+  customerGroupIdsAny?: string[];
+  validFromDate?: string;
+  validFromLocalTime?: string;
+  validUntilDate?: string;
+  validUntilLocalTime?: string;
+  minimumOrderSubtotalMoney?: {
+    amount?: bigint;
+    currency?: string;
+  };
+}
+
+/**
+ * Structured data for a catalog PRODUCT_SET object.
+ *
+ * A product set is a named collection of catalog objects referenced by a
+ * pricing rule. Including a category includes all of its items and variations.
+ */
+export interface CatalogProductSetData {
+  name?: string;
+  productIdsAny?: string[];
+  productIdsAll?: string[];
+  allProducts?: boolean;
+  quantityExact?: bigint;
+  quantityMin?: bigint;
+  quantityMax?: bigint;
+}
+
+/**
+ * Structured data for a catalog TIME_PERIOD object.
+ *
+ * `event` is an RFC 5545 iCalendar VEVENT fragment (only SUMMARY, DTSTART,
+ * DURATION and RRULE are supported). DTSTART must be in local (unzoned) time.
+ */
+export interface CatalogTimePeriodData {
+  event?: string;
+}
 
 /**
  * Custom attribute value for catalog items
@@ -91,6 +146,9 @@ export interface CatalogObject {
     inclusionType?: 'ADDITIVE' | 'INCLUSIVE';
   };
   customAttributeDefinitionData?: CustomAttributeDefinitionData;
+  pricingRuleData?: CatalogPricingRuleData;
+  productSetData?: CatalogProductSetData;
+  timePeriodData?: CatalogTimePeriodData;
 }
 
 /**
@@ -115,6 +173,73 @@ export interface CreateCatalogItemOptions {
 export interface CreateCategoryOptions {
   name: string;
   idempotencyKey?: string;
+}
+
+/**
+ * Options for creating a pricing rule
+ */
+export interface CreatePricingRuleOptions {
+  name: string;
+  discountId?: string;
+  matchProductsId?: string;
+  applyProductsId?: string;
+  excludeProductsId?: string;
+  customerGroupIdsAny?: string[];
+  timePeriodIds?: string[];
+  validFromDate?: string;
+  validFromLocalTime?: string;
+  validUntilDate?: string;
+  validUntilLocalTime?: string;
+  minimumOrderSubtotal?: number;
+  currency?: CurrencyCode;
+  idempotencyKey?: string;
+}
+
+/**
+ * Options for creating a product set
+ */
+export interface CreateProductSetOptions {
+  name: string;
+  productIdsAny?: string[];
+  productIdsAll?: string[];
+  allProducts?: boolean;
+  quantityExact?: number;
+  quantityMin?: number;
+  quantityMax?: number;
+  idempotencyKey?: string;
+}
+
+/**
+ * Options for creating a time period
+ */
+export interface CreateTimePeriodOptions {
+  event: string;
+  idempotencyKey?: string;
+}
+
+/**
+ * Options for creating a complete wholesale pricing configuration
+ * in a single atomic batch upsert.
+ */
+export interface CreateWholesalePricingOptions {
+  name: string;
+  customerGroupId: string;
+  itemVariationIds: string[];
+  discount:
+    | { percentage: string }
+    | { amount: number; currency?: CurrencyCode };
+  validFromDate?: string;
+  validUntilDate?: string;
+  idempotencyKey?: string;
+}
+
+/**
+ * Result of a wholesale pricing batch upsert — the three newly created objects.
+ */
+export interface WholesalePricingResult {
+  pricingRule: CatalogObject;
+  productSet: CatalogObject;
+  discount: CatalogObject;
 }
 
 /**
@@ -254,6 +379,272 @@ export class CatalogService {
       }
 
       return response.catalogObject as CatalogObject;
+    } catch (error) {
+      throw parseSquareError(error);
+    }
+  }
+
+  /**
+   * Create a product set — a named collection of catalog objects used as the
+   * match target of a pricing rule.
+   *
+   * @example
+   * ```typescript
+   * const set = await square.catalog.createProductSet({
+   *   name: 'Wholesale items',
+   *   productIdsAny: ['VAR_1', 'VAR_2'],
+   * });
+   * ```
+   */
+  async createProductSet(options: CreateProductSetOptions): Promise<CatalogObject> {
+    if (!options.name) {
+      throw new SquareValidationError('Product set name is required', 'name');
+    }
+    if (
+      !options.allProducts &&
+      !options.productIdsAny?.length &&
+      !options.productIdsAll?.length
+    ) {
+      throw new SquareValidationError(
+        'One of productIdsAny, productIdsAll, or allProducts is required',
+        'productIdsAny'
+      );
+    }
+
+    try {
+      const response = await this.client.catalog.object.upsert({
+        idempotencyKey: options.idempotencyKey ?? createIdempotencyKey(),
+        object: {
+          type: 'PRODUCT_SET',
+          id: `#product_set_${String(Date.now())}`,
+          productSetData: {
+            name: options.name,
+            productIdsAny: options.productIdsAny,
+            productIdsAll: options.productIdsAll,
+            allProducts: options.allProducts,
+            quantityExact:
+              options.quantityExact !== undefined ? BigInt(options.quantityExact) : undefined,
+            quantityMin:
+              options.quantityMin !== undefined ? BigInt(options.quantityMin) : undefined,
+            quantityMax:
+              options.quantityMax !== undefined ? BigInt(options.quantityMax) : undefined,
+          },
+        } as unknown as SquareCatalogObject,
+      });
+
+      if (!response.catalogObject) {
+        throw new Error('Product set was not created');
+      }
+
+      return response.catalogObject as CatalogObject;
+    } catch (error) {
+      throw parseSquareError(error);
+    }
+  }
+
+  /**
+   * Create a pricing rule that applies a discount to a product set, optionally
+   * restricted to members of given customer groups.
+   *
+   * @example
+   * ```typescript
+   * const rule = await square.catalog.createPricingRule({
+   *   name: 'Wholesale 20% off',
+   *   matchProductsId: productSet.id,
+   *   discountId: discount.id,
+   *   customerGroupIdsAny: [wholesaleGroup.id],
+   * });
+   * ```
+   */
+  async createPricingRule(options: CreatePricingRuleOptions): Promise<CatalogObject> {
+    if (!options.name) {
+      throw new SquareValidationError('Pricing rule name is required', 'name');
+    }
+    if (!options.discountId) {
+      throw new SquareValidationError('discountId is required', 'discountId');
+    }
+    if (!options.matchProductsId) {
+      throw new SquareValidationError('matchProductsId is required', 'matchProductsId');
+    }
+
+    try {
+      const response = await this.client.catalog.object.upsert({
+        idempotencyKey: options.idempotencyKey ?? createIdempotencyKey(),
+        object: {
+          type: 'PRICING_RULE',
+          id: `#pricing_rule_${String(Date.now())}`,
+          pricingRuleData: {
+            name: options.name,
+            discountId: options.discountId,
+            matchProductsId: options.matchProductsId,
+            applyProductsId: options.applyProductsId,
+            excludeProductsId: options.excludeProductsId,
+            customerGroupIdsAny: options.customerGroupIdsAny,
+            timePeriodIds: options.timePeriodIds,
+            validFromDate: options.validFromDate,
+            validFromLocalTime: options.validFromLocalTime,
+            validUntilDate: options.validUntilDate,
+            validUntilLocalTime: options.validUntilLocalTime,
+            minimumOrderSubtotalMoney:
+              options.minimumOrderSubtotal !== undefined
+                ? {
+                    amount: BigInt(options.minimumOrderSubtotal),
+                    currency: options.currency ?? 'USD',
+                  }
+                : undefined,
+          },
+        } as unknown as SquareCatalogObject,
+      });
+
+      if (!response.catalogObject) {
+        throw new Error('Pricing rule was not created');
+      }
+
+      return response.catalogObject as CatalogObject;
+    } catch (error) {
+      throw parseSquareError(error);
+    }
+  }
+
+  /**
+   * Create a time period (RFC 5545 iCalendar VEVENT) for use in time-bounded
+   * pricing rules, e.g. happy-hour discounts.
+   *
+   * @example
+   * ```typescript
+   * const happyHour = await square.catalog.createTimePeriod({
+   *   event: 'DTSTART:20260101T170000\nDURATION:PT2H\nRRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR',
+   * });
+   * ```
+   */
+  async createTimePeriod(options: CreateTimePeriodOptions): Promise<CatalogObject> {
+    if (!options.event) {
+      throw new SquareValidationError('Time period event is required', 'event');
+    }
+
+    try {
+      const response = await this.client.catalog.object.upsert({
+        idempotencyKey: options.idempotencyKey ?? createIdempotencyKey(),
+        object: {
+          type: 'TIME_PERIOD',
+          id: `#time_period_${String(Date.now())}`,
+          timePeriodData: {
+            event: options.event,
+          },
+        } as unknown as SquareCatalogObject,
+      });
+
+      if (!response.catalogObject) {
+        throw new Error('Time period was not created');
+      }
+
+      return response.catalogObject as CatalogObject;
+    } catch (error) {
+      throw parseSquareError(error);
+    }
+  }
+
+  /**
+   * Create a complete wholesale pricing configuration in a single atomic
+   * batch upsert: a product set, a discount, and a pricing rule that links
+   * them to the given customer group.
+   *
+   * The three objects are created together with temporary IDs so the pricing
+   * rule can reference the just-created product set and discount. The customer
+   * group must already exist — create it via `square.customerGroups.create`.
+   *
+   * @example
+   * ```typescript
+   * const group = await square.customerGroups.create({ name: 'Wholesale' });
+   * const result = await square.catalog.createWholesalePricing({
+   *   name: 'Wholesale 20% off',
+   *   customerGroupId: group.id!,
+   *   itemVariationIds: ['VAR_1', 'VAR_2'],
+   *   discount: { percentage: '20' },
+   * });
+   * ```
+   */
+  async createWholesalePricing(
+    options: CreateWholesalePricingOptions
+  ): Promise<WholesalePricingResult> {
+    if (!options.name) {
+      throw new SquareValidationError('name is required', 'name');
+    }
+    if (!options.customerGroupId) {
+      throw new SquareValidationError('customerGroupId is required', 'customerGroupId');
+    }
+    if (!options.itemVariationIds.length) {
+      throw new SquareValidationError(
+        'At least one itemVariationId is required',
+        'itemVariationIds'
+      );
+    }
+
+    const productSetId = `#wholesale_product_set_${String(Date.now())}`;
+    const discountId = `#wholesale_discount_${String(Date.now())}`;
+    const pricingRuleId = `#wholesale_pricing_rule_${String(Date.now())}`;
+
+    const discount = options.discount;
+    const discountData =
+      'percentage' in discount
+        ? {
+            name: `${options.name} discount`,
+            discountType: 'FIXED_PERCENTAGE' as const,
+            percentage: discount.percentage,
+          }
+        : {
+            name: `${options.name} discount`,
+            discountType: 'FIXED_AMOUNT' as const,
+            amountMoney: {
+              amount: BigInt(discount.amount),
+              currency: discount.currency ?? 'USD',
+            },
+          };
+
+    const batchObjects: SquareCatalogObject[] = [
+      {
+        type: 'PRODUCT_SET',
+        id: productSetId,
+        productSetData: {
+          name: `${options.name} product set`,
+          productIdsAny: options.itemVariationIds,
+        },
+      } as unknown as SquareCatalogObject,
+      {
+        type: 'DISCOUNT',
+        id: discountId,
+        discountData,
+      } as unknown as SquareCatalogObject,
+      {
+        type: 'PRICING_RULE',
+        id: pricingRuleId,
+        pricingRuleData: {
+          name: options.name,
+          matchProductsId: productSetId,
+          discountId,
+          customerGroupIdsAny: [options.customerGroupId],
+          validFromDate: options.validFromDate,
+          validUntilDate: options.validUntilDate,
+        },
+      } as unknown as SquareCatalogObject,
+    ];
+
+    try {
+      const response = await this.client.catalog.batchUpsert({
+        idempotencyKey: options.idempotencyKey ?? createIdempotencyKey(),
+        batches: [{ objects: batchObjects }],
+      });
+
+      const responseObjects = (response.objects ?? []) as CatalogObject[];
+      const productSet = responseObjects.find((o) => o.type === 'PRODUCT_SET');
+      const discount = responseObjects.find((o) => o.type === 'DISCOUNT');
+      const pricingRule = responseObjects.find((o) => o.type === 'PRICING_RULE');
+
+      if (!productSet || !discount || !pricingRule) {
+        throw new Error('Wholesale pricing batch upsert did not return all objects');
+      }
+
+      return { pricingRule, productSet, discount };
     } catch (error) {
       throw parseSquareError(error);
     }
