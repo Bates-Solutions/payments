@@ -140,6 +140,76 @@ describe('CustomerGroupsService', () => {
     });
   });
 
+  describe('error paths', () => {
+    it('should throw when create returns no group', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({}),
+      });
+      await expect(
+        new CustomerGroupsService(client).create({ name: 'X' })
+      ).rejects.toThrow();
+    });
+
+    it('should wrap create errors', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockRejectedValue(new Error('boom')),
+      });
+      await expect(
+        new CustomerGroupsService(client).create({ name: 'X' })
+      ).rejects.toThrow();
+    });
+
+    it('should throw when update returns no group', async () => {
+      const client = createMockClient({
+        update: vi.fn().mockResolvedValue({}),
+      });
+      await expect(
+        new CustomerGroupsService(client).update('G', { name: 'X' })
+      ).rejects.toThrow();
+    });
+
+    it('should wrap update errors', async () => {
+      const client = createMockClient({
+        update: vi.fn().mockRejectedValue(new Error('boom')),
+      });
+      await expect(
+        new CustomerGroupsService(client).update('G', { name: 'X' })
+      ).rejects.toThrow();
+    });
+
+    it('should wrap delete errors', async () => {
+      const client = createMockClient({
+        delete: vi.fn().mockRejectedValue(new Error('boom')),
+      });
+      await expect(new CustomerGroupsService(client).delete('G')).rejects.toThrow();
+    });
+
+    it('should wrap list errors', async () => {
+      const client = createMockClient({
+        list: vi.fn().mockRejectedValue(new Error('boom')),
+      });
+      await expect(new CustomerGroupsService(client).list()).rejects.toThrow();
+    });
+
+    it('should wrap addCustomer errors', async () => {
+      const client = createMockClient({
+        add: vi.fn().mockRejectedValue(new Error('boom')),
+      });
+      await expect(
+        new CustomerGroupsService(client).addCustomer('G', 'C')
+      ).rejects.toThrow();
+    });
+
+    it('should wrap removeCustomer errors', async () => {
+      const client = createMockClient({
+        remove: vi.fn().mockRejectedValue(new Error('boom')),
+      });
+      await expect(
+        new CustomerGroupsService(client).removeCustomer('G', 'C')
+      ).rejects.toThrow();
+    });
+  });
+
   describe('membership', () => {
     it('should add a customer to a group', async () => {
       const client = createMockClient({
