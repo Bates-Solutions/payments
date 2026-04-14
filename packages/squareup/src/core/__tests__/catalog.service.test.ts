@@ -878,5 +878,110 @@ describe('CatalogService', () => {
         })
       ).rejects.toThrow();
     });
+
+    it('should require name', async () => {
+      const service = new CatalogService(createBatchClient());
+      await expect(
+        service.createWholesalePricing({
+          name: '',
+          customerGroupId: 'G',
+          itemVariationIds: ['V1'],
+          discount: { percentage: '10' },
+        })
+      ).rejects.toThrow(SquareValidationError);
+    });
+
+    it('should wrap batchUpsert errors', async () => {
+      const client = createBatchClient({
+        batchUpsert: vi.fn().mockRejectedValue(new Error('boom')),
+      });
+      await expect(
+        new CatalogService(client).createWholesalePricing({
+          name: 'x',
+          customerGroupId: 'GRP_1',
+          itemVariationIds: ['V1'],
+          discount: { percentage: '10' },
+        })
+      ).rejects.toThrow();
+    });
+  });
+
+  describe('new helper error paths', () => {
+    function clientWithUpsert(upsert: ReturnType<typeof vi.fn>): SquareClient {
+      return {
+        catalog: {
+          object: { upsert, get: vi.fn(), delete: vi.fn() },
+        },
+      } as unknown as SquareClient;
+    }
+
+    it('createProductSet throws when response missing', async () => {
+      const service = new CatalogService(
+        clientWithUpsert(vi.fn().mockResolvedValue({}))
+      );
+      await expect(
+        service.createProductSet({ name: 'set', productIdsAny: ['V1'] })
+      ).rejects.toThrow();
+    });
+
+    it('createProductSet wraps upsert errors', async () => {
+      const service = new CatalogService(
+        clientWithUpsert(vi.fn().mockRejectedValue(new Error('boom')))
+      );
+      await expect(
+        service.createProductSet({ name: 'set', productIdsAny: ['V1'] })
+      ).rejects.toThrow();
+    });
+
+    it('createPricingRule requires name', async () => {
+      const service = new CatalogService(clientWithUpsert(vi.fn()));
+      await expect(
+        service.createPricingRule({
+          name: '',
+          discountId: 'D_1',
+          matchProductsId: 'PS_1',
+        })
+      ).rejects.toThrow(SquareValidationError);
+    });
+
+    it('createPricingRule throws when response missing', async () => {
+      const service = new CatalogService(
+        clientWithUpsert(vi.fn().mockResolvedValue({}))
+      );
+      await expect(
+        service.createPricingRule({
+          name: 'r',
+          discountId: 'D_1',
+          matchProductsId: 'PS_1',
+        })
+      ).rejects.toThrow();
+    });
+
+    it('createPricingRule wraps upsert errors', async () => {
+      const service = new CatalogService(
+        clientWithUpsert(vi.fn().mockRejectedValue(new Error('boom')))
+      );
+      await expect(
+        service.createPricingRule({
+          name: 'r',
+          discountId: 'D_1',
+          matchProductsId: 'PS_1',
+        })
+      ).rejects.toThrow();
+    });
+
+    it('createTimePeriod throws when response missing', async () => {
+      const service = new CatalogService(
+        clientWithUpsert(vi.fn().mockResolvedValue({}))
+      );
+      await expect(service.createTimePeriod({ event: 'DTSTART:X' })).rejects.toThrow();
+    });
+
+    it('createTimePeriod wraps upsert errors', async () => {
+      const service = new CatalogService(
+        clientWithUpsert(vi.fn().mockRejectedValue(new Error('boom')))
+      );
+      await expect(service.createTimePeriod({ event: 'DTSTART:X' })).rejects.toThrow();
+    });
   });
 });
