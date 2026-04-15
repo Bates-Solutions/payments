@@ -48,6 +48,17 @@ Always run `typecheck`, `lint`, and `test` before committing.
 - Keep commit messages and PR descriptions focused on the changes, not how they were made
 - Release is automated via semantic-release on merge to `main` — use conventional commit prefixes (`feat:`, `fix:`, `chore:`, etc.)
 
+## Documentation
+
+This is a public npm library — consumers rely on docs to discover and use new functionality.
+
+- **Every PR that adds or changes public API surface must update docs in the same PR** (or a follow-up PR opened immediately after merge):
+  - `README.md` — feature list and service table
+  - `docs/guides/core/<service>.md` — usage guide for each service (create one for new services)
+  - JSDoc on public methods/types — TypeDoc regenerates `docs/api-reference.md` from these
+- Bug fixes that don't change public behavior don't require doc updates
+- If a PR is merged without docs, open a docs-only follow-up PR before moving on to other work
+
 ## Plan Mode
 
 - Wait for explicit user approval before beginning implementation
