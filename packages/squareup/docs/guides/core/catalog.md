@@ -391,6 +391,116 @@ const tax = await square.sdk.catalog.object.upsert({
 });
 ```
 
+## Wholesale Pricing
+
+Square applies discounts automatically when a `PRICING_RULE` matches an order. A wholesale setup needs three catalog objects working together:
+
+- **`PRODUCT_SET`** — the items the rule applies to
+- **`DISCOUNT`** — the percentage or fixed amount to take off
+- **`PRICING_RULE`** — links the product set + discount, optionally gated by customer group
+
+Membership is managed via the [Customer Groups Guide](./customer-groups.md).
+
+### Quick: `createWholesalePricing()`
+
+For the common case (one customer group, one set of items, one discount), use the composite helper. It creates all three objects in a single atomic `batchUpsert`:
+
+```typescript
+// 1. Create the customer group (once)
+const wholesale = await square.customerGroups.create({ name: 'Wholesale' });
+
+// 2. Assign retailers
+await square.customerGroups.addCustomer(wholesale.id!, retailerCustomerId);
+
+// 3. Create the pricing rule
+const { pricingRule, productSet, discount } =
+  await square.catalog.createWholesalePricing({
+    name: 'Wholesale 20% off',
+    customerGroupId: wholesale.id!,
+    itemVariationIds: ['VAR_1', 'VAR_2'],
+    discount: { percentage: '20' },
+  });
+```
+
+Fixed-amount discount instead of percentage:
+
+```typescript
+await square.catalog.createWholesalePricing({
+  name: '$5 off wholesale items',
+  customerGroupId: wholesale.id!,
+  itemVariationIds: ['VAR_1'],
+  discount: { amount: 500, currency: 'USD' }, // cents
+});
+```
+
+### Building Rules Manually
+
+For more control (existing product sets, multiple discounts, time-bounded rules), create each object yourself:
+
+```typescript
+// Product set — items the rule will match
+const set = await square.catalog.createProductSet({
+  name: 'Wholesale items',
+  productIdsAny: ['VAR_1', 'VAR_2', 'VAR_3'],
+});
+
+// Discount — taken off the price of matched items
+const discount = await square.catalog.upsert({
+  type: 'DISCOUNT',
+  id: 'discount_id', // or '#temp_id' if creating
+  discountData: {
+    name: 'Wholesale 20%',
+    discountType: 'FIXED_PERCENTAGE',
+    percentage: '20',
+  },
+});
+
+// Pricing rule — links them, gated by customer group
+const rule = await square.catalog.createPricingRule({
+  name: 'Wholesale 20% off',
+  matchProductsId: set.id,
+  discountId: discount.id,
+  customerGroupIdsAny: [wholesale.id!],
+  minimumOrderSubtotal: 5000, // optional: only above $50 (cents)
+});
+```
+
+### Time-Bounded Rules (Happy Hour, Sales)
+
+Use `TIME_PERIOD` objects with RFC 5545 iCalendar `RRULE` syntax:
+
+```typescript
+// Weekday 5–7pm
+const happyHour = await square.catalog.createTimePeriod({
+  event: [
+    'DTSTART:20260101T170000',
+    'DURATION:PT2H',
+    'RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR',
+  ].join('\n'),
+});
+
+await square.catalog.createPricingRule({
+  name: 'Happy hour 50% off drinks',
+  matchProductsId: drinksSetId,
+  discountId: halfOffDiscountId,
+  timePeriodIds: [happyHour.id],
+});
+```
+
+Date-bounded rules (no recurrence) can use `validFromDate` / `validUntilDate` directly without a time period:
+
+```typescript
+await square.catalog.createPricingRule({
+  name: 'Black Friday',
+  matchProductsId: salesSetId,
+  discountId: bfDiscountId,
+  validFromDate: '2026-11-27',
+  validUntilDate: '2026-11-28',
+});
+```
+
+> **Note:** `DTSTART` in the iCalendar event must be in **local (unzoned)** time. Square evaluates against the seller's location time zone.
+
 ## Best Practices
 
 1. **Use variations** - Every item needs at least one variation for pricing
@@ -398,9 +508,11 @@ const tax = await square.sdk.catalog.object.upsert({
 3. **Set SKUs** - Helps with inventory and external system integration
 4. **Batch operations** - Use `batchGet` for fetching multiple items
 5. **Cache catalog data** - Catalog doesn't change frequently
+6. **Reuse product sets** - One product set can power multiple pricing rules (different tiers, time periods)
 
 ## Next Steps
 
+- [Customer Groups Guide](./customer-groups.md) - Gate pricing rules by customer
 - [Orders Guide](./orders.md) - Use catalog items in orders
 - [React Hooks](../react/hooks.md) - Display catalog in React
 - [Angular Services](../angular/services.md) - Catalog in Angular
