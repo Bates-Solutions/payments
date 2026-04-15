@@ -28,7 +28,7 @@ Stop wrestling with Square's low-level APIs. **squareup** gives you a simplified
 - **Type-Safe** - Full TypeScript support with strict types
 - **Fluent Builders** - Chainable order and payment construction
 - **Webhook Support** - Signature verification and middleware for Express/Next.js
-- **Service Classes** - Payments, Orders, Customers, Catalog, Inventory, Subscriptions, Invoices, Loyalty
+- **Service Classes** - Payments, Orders, Customers, Customer Groups, Catalog (incl. pricing rules), Inventory, Subscriptions, Invoices, Loyalty
 
 ## Requirements
 
@@ -182,16 +182,18 @@ export const handler = createLambdaWebhookHandler({
 
 ## Available Services
 
-| Service         | Description                          |
-| --------------- | ------------------------------------ |
-| `payments`      | Process and manage payments          |
-| `orders`        | Create and manage orders             |
-| `customers`     | Customer management                  |
-| `catalog`       | Product catalog operations           |
-| `inventory`     | Inventory tracking                   |
-| `subscriptions` | Subscription management              |
-| `invoices`      | Invoice operations                   |
-| `loyalty`       | Loyalty program management           |
+| Service          | Description                                                    |
+| ---------------- | -------------------------------------------------------------- |
+| `payments`       | Process and manage payments                                    |
+| `orders`         | Create and manage orders                                       |
+| `customers`      | Customer management                                            |
+| `customerGroups` | Customer groups + group membership (gates pricing rules)       |
+| `catalog`        | Product catalog ops, incl. pricing rules and wholesale pricing |
+| `inventory`      | Inventory tracking                                             |
+| `subscriptions`  | Subscription management                                        |
+| `invoices`       | Invoice operations                                             |
+| `loyalty`        | Loyalty program management                                     |
+| `checkout`       | Hosted checkout sessions                                       |
 
 ## Utilities
 
