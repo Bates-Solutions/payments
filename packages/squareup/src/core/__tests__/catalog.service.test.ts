@@ -421,6 +421,24 @@ describe('CatalogService', () => {
       );
     });
 
+    it('should accept SUBSCRIPTION_PLAN and SUBSCRIPTION_PLAN_VARIATION object types', async () => {
+      const client = createMockClient({
+        search: vi.fn().mockResolvedValue({ objects: [] }),
+      });
+
+      const service = new CatalogService(client);
+      // Type-level assertion: these must be assignable to CatalogObjectType.
+      await service.search({
+        objectTypes: ['SUBSCRIPTION_PLAN', 'SUBSCRIPTION_PLAN_VARIATION'],
+      });
+
+      expect(client.catalog.search).toHaveBeenCalledWith(
+        expect.objectContaining({
+          objectTypes: ['SUBSCRIPTION_PLAN', 'SUBSCRIPTION_PLAN_VARIATION'],
+        })
+      );
+    });
+
     it('should search with text query', async () => {
       const client = createMockClient({
         search: vi.fn().mockResolvedValue({ objects: [] }),
