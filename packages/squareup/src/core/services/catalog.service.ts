@@ -18,7 +18,9 @@ export type CatalogObjectType =
   | 'PRICING_RULE'
   | 'PRODUCT_SET'
   | 'TIME_PERIOD'
-  | 'CUSTOM_ATTRIBUTE_DEFINITION';
+  | 'CUSTOM_ATTRIBUTE_DEFINITION'
+  | 'SUBSCRIPTION_PLAN'
+  | 'SUBSCRIPTION_PLAN_VARIATION';
 
 /**
  * Structured data for a catalog PRICING_RULE object.
