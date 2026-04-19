@@ -32,6 +32,8 @@ const square = createSquareClient({
 | `MODIFIER_LIST` | Groups of modifiers |
 | `IMAGE` | Product images |
 | `CUSTOM_ATTRIBUTE_DEFINITION` | Custom attribute definitions for items |
+| `SUBSCRIPTION_PLAN` | Subscription plan templates (used with the Subscriptions service) |
+| `SUBSCRIPTION_PLAN_VARIATION` | Subscribable plan variations — pass the variation `id` as `planVariationId` to `subscriptions.create()` |
 
 ## Creating Items
 
