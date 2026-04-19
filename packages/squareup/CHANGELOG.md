@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/mbates/squareup/compare/v1.10.0...v1.11.0) (2026-04-19)
+
+
+### Features
+
+* **catalog:** add SUBSCRIPTION_PLAN and SUBSCRIPTION_PLAN_VARIATION object types ([3f3e038](https://github.com/mbates/squareup/commit/3f3e0381f33e42609f4dc64b40c58518aecfd435)), closes [#67](https://github.com/mbates/squareup/issues/67)
+
 # [1.10.0](https://github.com/mbates/squareup/compare/v1.9.0...v1.10.0) (2026-04-14)
 
 
