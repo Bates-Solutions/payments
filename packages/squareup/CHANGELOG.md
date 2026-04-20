@@ -1,3 +1,10 @@
+# [1.13.0](https://github.com/mbates/squareup/compare/v1.12.0...v1.13.0) (2026-04-20)
+
+
+### Features
+
+* **gift-cards:** add GiftCardsService with full lifecycle support ([5e15b25](https://github.com/mbates/squareup/commit/5e15b2596ca60425af658f9a22748e04442b1a9d)), closes [#69](https://github.com/mbates/squareup/issues/69)
+
 # [1.12.0](https://github.com/mbates/squareup/compare/v1.11.0...v1.12.0) (2026-04-20)
 
 
