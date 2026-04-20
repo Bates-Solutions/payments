@@ -17,6 +17,7 @@ Welcome to the documentation for `@bates-solutions/squareup`, a TypeScript wrapp
 - [Customers](./guides/core/customers.md) - Customer operations
 - [Customer Groups](./guides/core/customer-groups.md) - Customer groups for wholesale tiers and member pricing
 - [Catalog](./guides/core/catalog.md) - Product catalog and pricing rules
+- [Subscriptions](./guides/core/subscriptions.md) - Recurring billing (flat-rate and product-driven via order templates)
 
 ### Server
 

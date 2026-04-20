@@ -119,6 +119,63 @@ describe('OrdersService', () => {
 
       await expect(service.create({ lineItems: [] })).rejects.toThrow(SquareValidationError);
     });
+
+    it('should forward state and pricingOptions (order template)', async () => {
+      const mockOrder = { id: 'ORDER_TEMPLATE', state: 'DRAFT' };
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: mockOrder }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      await service.create({
+        lineItems: [{ catalogObjectId: 'VAR_1', quantity: 2 }],
+        state: 'DRAFT',
+        pricingOptions: { autoApplyDiscounts: true, autoApplyTaxes: true },
+      });
+
+      expect(client.orders.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          order: expect.objectContaining({
+            state: 'DRAFT',
+            pricingOptions: { autoApplyDiscounts: true, autoApplyTaxes: true },
+          }),
+        })
+      );
+    });
+
+    it('should honor locationId from options over default', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      await service.create({
+        lineItems: [{ name: 'Coffee', amount: 350 }],
+        locationId: 'OVERRIDE_LOC',
+      });
+
+      expect(client.orders.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          order: expect.objectContaining({ locationId: 'OVERRIDE_LOC' }),
+        })
+      );
+    });
+
+    it('should forward explicit idempotencyKey', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      await service.create({
+        lineItems: [{ name: 'Coffee', amount: 350 }],
+        idempotencyKey: 'stable-key',
+      });
+
+      expect(client.orders.create).toHaveBeenCalledWith(
+        expect.objectContaining({ idempotencyKey: 'stable-key' })
+      );
+    });
   });
 
   describe('get', () => {

@@ -102,6 +102,134 @@ describe('SubscriptionsService', () => {
         service.create({ customerId: 'CUST_123', planVariationId: 'PLAN_VAR_123' })
       ).rejects.toThrow('Subscription was not created');
     });
+
+    it('should accept phases without planVariationId', async () => {
+      const mockSubscription = { id: 'SUB_TEMPLATE' };
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ subscription: mockSubscription }),
+      });
+
+      const service = new SubscriptionsService(client, defaultLocationId);
+      const result = await service.create({
+        customerId: 'CUST_123',
+        phases: [{ orderTemplateId: 'ORDER_TEMPLATE_1' }],
+      });
+
+      expect(result).toEqual(mockSubscription);
+      expect(client.subscriptions.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          phases: [{ ordinal: undefined, orderTemplateId: 'ORDER_TEMPLATE_1' }],
+        })
+      );
+    });
+
+    it('should coerce number ordinal to bigint', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ subscription: { id: 'S' } }),
+      });
+
+      const service = new SubscriptionsService(client, defaultLocationId);
+      await service.create({
+        customerId: 'CUST_123',
+        phases: [
+          { ordinal: 0, orderTemplateId: 'T0' },
+          { ordinal: 1, orderTemplateId: 'T1' },
+        ],
+      });
+
+      const call = (client.subscriptions.create as ReturnType<typeof vi.fn>).mock.calls[0][0];
+      expect(call.phases[0].ordinal).toBe(BigInt(0));
+      expect(call.phases[1].ordinal).toBe(BigInt(1));
+    });
+
+    it('should accept bigint ordinal directly', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ subscription: { id: 'S' } }),
+      });
+
+      const service = new SubscriptionsService(client, defaultLocationId);
+      await service.create({
+        customerId: 'CUST_123',
+        phases: [{ ordinal: BigInt(5), orderTemplateId: 'T' }],
+      });
+
+      const call = (client.subscriptions.create as ReturnType<typeof vi.fn>).mock.calls[0][0];
+      expect(call.phases[0].ordinal).toBe(BigInt(5));
+    });
+
+    it('should allow planVariationId AND phases together', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ subscription: { id: 'S' } }),
+      });
+
+      const service = new SubscriptionsService(client, defaultLocationId);
+      await service.create({
+        customerId: 'CUST_123',
+        planVariationId: 'PLAN_VAR_X',
+        phases: [{ orderTemplateId: 'T' }],
+      });
+
+      expect(client.subscriptions.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          planVariationId: 'PLAN_VAR_X',
+          phases: [{ ordinal: undefined, orderTemplateId: 'T' }],
+        })
+      );
+    });
+
+    it('should throw when neither planVariationId nor phases is provided', async () => {
+      const client = createMockClient();
+      const service = new SubscriptionsService(client, defaultLocationId);
+
+      await expect(
+        service.create({ customerId: 'CUST_123' })
+      ).rejects.toThrow(SquareValidationError);
+    });
+
+    it('should throw for empty phases array without planVariationId', async () => {
+      const client = createMockClient();
+      const service = new SubscriptionsService(client, defaultLocationId);
+
+      await expect(
+        service.create({ customerId: 'CUST_123', phases: [] })
+      ).rejects.toThrow(SquareValidationError);
+    });
+
+    it('should reject non-integer ordinal', async () => {
+      const client = createMockClient();
+      const service = new SubscriptionsService(client, defaultLocationId);
+
+      await expect(
+        service.create({
+          customerId: 'CUST_123',
+          phases: [{ ordinal: 1.5, orderTemplateId: 'T' }],
+        })
+      ).rejects.toThrow(SquareValidationError);
+    });
+
+    it('should reject negative ordinal', async () => {
+      const client = createMockClient();
+      const service = new SubscriptionsService(client, defaultLocationId);
+
+      await expect(
+        service.create({
+          customerId: 'CUST_123',
+          phases: [{ ordinal: -1, orderTemplateId: 'T' }],
+        })
+      ).rejects.toThrow(SquareValidationError);
+    });
+
+    it('should reject NaN ordinal', async () => {
+      const client = createMockClient();
+      const service = new SubscriptionsService(client, defaultLocationId);
+
+      await expect(
+        service.create({
+          customerId: 'CUST_123',
+          phases: [{ ordinal: Number.NaN, orderTemplateId: 'T' }],
+        })
+      ).rejects.toThrow(SquareValidationError);
+    });
   });
 
   describe('get', () => {

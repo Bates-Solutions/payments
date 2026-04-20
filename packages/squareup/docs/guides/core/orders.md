@@ -135,6 +135,61 @@ const order = await square.orders.create({
 });
 ```
 
+## Order Templates
+
+A **DRAFT** order with pricing options becomes a reusable template — most commonly used as the source for a subscription phase (see [Subscriptions Guide](./subscriptions.md#product-driven-subscriptions)).
+
+Use `asTemplate()` as shorthand for `state: 'DRAFT'` + `pricingOptions.autoApplyDiscounts: true`:
+
+```typescript
+const template = await square.orders
+  .builder()
+  .addItem({ catalogObjectId: 'VAR_1', quantity: 2 })
+  .addItem({ catalogObjectId: 'VAR_2', quantity: 1 })
+  .withCustomer('CUST_123')
+  .asTemplate()
+  .build();
+
+console.log('Template order ID:', template.id);
+```
+
+Or pass the equivalent options to `create()`:
+
+```typescript
+const template = await square.orders.create({
+  lineItems: [
+    { catalogObjectId: 'VAR_1', quantity: 2 },
+    { catalogObjectId: 'VAR_2', quantity: 1 },
+  ],
+  customerId: 'CUST_123',
+  state: 'DRAFT',
+  pricingOptions: { autoApplyDiscounts: true },
+});
+```
+
+### Why `autoApplyDiscounts`
+
+When `autoApplyDiscounts: true`, Square re-evaluates catalog pricing rules every time the order is used (including at each subscription billing cycle). That means customer-group-gated wholesale tiers, time-bounded promos, and other rules applied via [`catalog.createPricingRule`](./catalog.md#wholesale-pricing) fire automatically — no app-side price overrides needed.
+
+### Explicit `basePriceMoney` on Ad-hoc Items
+
+For templates where you want a specific currency or the price is derived at runtime:
+
+```typescript
+.addItem({
+  name: 'Wholesale bundle',
+  basePriceMoney: { amount: 2499, currency: 'USD' },
+})
+```
+
+### Stable Idempotency for Retries
+
+Templates tied to specific orders (e.g. per retailer per month) benefit from deterministic idempotency keys:
+
+```typescript
+.withIdempotencyKey(`wholesale-template-${retailerId}-${yyyyMm}`)
+```
+
 ## Getting Order Details
 
 ```typescript
