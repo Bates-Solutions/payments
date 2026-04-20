@@ -158,8 +158,8 @@ Or pass the equivalent options to `create()`:
 ```typescript
 const template = await square.orders.create({
   lineItems: [
-    { catalogObjectId: 'VAR_1', quantity: '2' },
-    { catalogObjectId: 'VAR_2', quantity: '1' },
+    { catalogObjectId: 'VAR_1', quantity: 2 },
+    { catalogObjectId: 'VAR_2', quantity: 1 },
   ],
   customerId: 'CUST_123',
   state: 'DRAFT',

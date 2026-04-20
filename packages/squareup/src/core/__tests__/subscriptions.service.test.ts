@@ -194,6 +194,42 @@ describe('SubscriptionsService', () => {
         service.create({ customerId: 'CUST_123', phases: [] })
       ).rejects.toThrow(SquareValidationError);
     });
+
+    it('should reject non-integer ordinal', async () => {
+      const client = createMockClient();
+      const service = new SubscriptionsService(client, defaultLocationId);
+
+      await expect(
+        service.create({
+          customerId: 'CUST_123',
+          phases: [{ ordinal: 1.5, orderTemplateId: 'T' }],
+        })
+      ).rejects.toThrow(SquareValidationError);
+    });
+
+    it('should reject negative ordinal', async () => {
+      const client = createMockClient();
+      const service = new SubscriptionsService(client, defaultLocationId);
+
+      await expect(
+        service.create({
+          customerId: 'CUST_123',
+          phases: [{ ordinal: -1, orderTemplateId: 'T' }],
+        })
+      ).rejects.toThrow(SquareValidationError);
+    });
+
+    it('should reject NaN ordinal', async () => {
+      const client = createMockClient();
+      const service = new SubscriptionsService(client, defaultLocationId);
+
+      await expect(
+        service.create({
+          customerId: 'CUST_123',
+          phases: [{ ordinal: Number.NaN, orderTemplateId: 'T' }],
+        })
+      ).rejects.toThrow(SquareValidationError);
+    });
   });
 
   describe('get', () => {

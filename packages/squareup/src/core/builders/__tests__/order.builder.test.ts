@@ -255,7 +255,10 @@ describe('OrderBuilder', () => {
         .addItem({ name: 'Coffee', amount: 350 })
         .withCustomer('CUST_123')
         .withReference('REF_123')
-        .withTip(100);
+        .withTip(100)
+        .withState('DRAFT')
+        .withPricingOptions({ autoApplyDiscounts: true })
+        .withIdempotencyKey('key-1');
 
       builder.reset();
       const preview = builder.preview();
@@ -264,6 +267,24 @@ describe('OrderBuilder', () => {
       expect(preview.customerId).toBeUndefined();
       expect(preview.referenceId).toBeUndefined();
       expect(preview.tipAmount).toBeUndefined();
+      expect(preview.state).toBeUndefined();
+      expect(preview.pricingOptions).toBeUndefined();
+      expect(preview.idempotencyKey).toBeUndefined();
+    });
+
+    it('preview should include state, pricingOptions, idempotencyKey when set', () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId);
+
+      builder
+        .addItem({ name: 'Coffee', amount: 350 })
+        .asTemplate()
+        .withIdempotencyKey('stable-1');
+
+      const preview = builder.preview();
+      expect(preview.state).toBe('DRAFT');
+      expect(preview.pricingOptions).toEqual({ autoApplyDiscounts: true });
+      expect(preview.idempotencyKey).toBe('stable-1');
     });
 
     it('should be chainable', () => {
