@@ -74,7 +74,7 @@ export class OrdersService {
    * ```
    */
   async create(options: CreateOrderOptions, locationId?: string): Promise<Order> {
-    const location = locationId ?? this.defaultLocationId;
+    const location = options.locationId ?? locationId ?? this.defaultLocationId;
     if (!location) {
       throw new SquareValidationError(
         'locationId is required. Set it in client config or provide it explicitly.',
@@ -99,6 +99,18 @@ export class OrdersService {
 
     if (options.referenceId) {
       builder.withReference(options.referenceId);
+    }
+
+    if (options.state) {
+      builder.withState(options.state);
+    }
+
+    if (options.pricingOptions) {
+      builder.withPricingOptions(options.pricingOptions);
+    }
+
+    if (options.idempotencyKey) {
+      builder.withIdempotencyKey(options.idempotencyKey);
     }
 
     return builder.build();

@@ -77,11 +77,45 @@ export interface SubscriptionPlan {
 }
 
 /**
- * Options for creating a subscription
+ * A subscription phase that bills from an order template.
+ *
+ * Use with `orders.create({ state: 'DRAFT', pricingOptions: { autoApplyDiscounts: true } })`
+ * (or `orders.builder().asTemplate()`) to drive product-based recurring billing —
+ * each cycle invoices the line items on the template, re-applying catalog
+ * pricing rules (e.g. customer-group wholesale tiers) at calculation time.
+ */
+export interface SubscriptionPhaseInput {
+  /**
+   * Position of this phase in the subscription's phase sequence. Defaults to
+   * array position when omitted. Accepts a number or bigint — coerced to
+   * bigint at the SDK boundary.
+   */
+  ordinal?: number | bigint;
+  /**
+   * ID of a DRAFT order created via `square.orders.create(...)` that defines
+   * what ships each billing cycle.
+   */
+  orderTemplateId: string;
+}
+
+/**
+ * Options for creating a subscription.
+ *
+ * One of `planVariationId` or `phases[]` must be provided. A plan variation
+ * drives flat-rate (STATIC) or percentage-of-template (RELATIVE) pricing;
+ * phases drive product-based billing from order templates.
  */
 export interface CreateSubscriptionOptions {
   customerId: string;
-  planVariationId: string;
+  /**
+   * Plan variation ID. Required when `phases` is omitted.
+   */
+  planVariationId?: string;
+  /**
+   * Ordered list of billing phases. Each phase references an order template
+   * that defines the line items billed during that phase.
+   */
+  phases?: SubscriptionPhaseInput[];
   locationId?: string;
   startDate?: string;
   cardId?: string;
@@ -140,9 +174,23 @@ export class SubscriptionsService {
       throw new SquareValidationError('customerId is required', 'customerId');
     }
 
-    if (!options.planVariationId) {
-      throw new SquareValidationError('planVariationId is required', 'planVariationId');
+    if (!options.planVariationId && !options.phases?.length) {
+      throw new SquareValidationError(
+        'One of planVariationId or phases is required',
+        'phases'
+      );
     }
+
+    options.phases?.forEach((phase, i) => {
+      if (phase.ordinal === undefined) return;
+      if (typeof phase.ordinal === 'bigint') return;
+      if (!Number.isInteger(phase.ordinal) || phase.ordinal < 0) {
+        throw new SquareValidationError(
+          'Phase ordinal must be a non-negative integer',
+          `phases[${String(i)}].ordinal`
+        );
+      }
+    });
 
     try {
       const response = await this.client.subscriptions.create({
@@ -150,6 +198,11 @@ export class SubscriptionsService {
         locationId,
         customerId: options.customerId,
         planVariationId: options.planVariationId,
+        phases: options.phases?.map((phase) => ({
+          ordinal:
+            phase.ordinal !== undefined ? BigInt(phase.ordinal) : undefined,
+          orderTemplateId: phase.orderTemplateId,
+        })),
         startDate: options.startDate,
         cardId: options.cardId,
         timezone: options.timezone,
