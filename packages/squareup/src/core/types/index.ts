@@ -46,6 +46,15 @@ export interface LineItemInput {
   catalogObjectId?: string;
   quantity?: number;
   amount?: number;
+  /**
+   * Explicit money override. When set, takes precedence over `amount` + the
+   * builder's default currency. Useful for order templates where the base
+   * price must include an explicit currency.
+   */
+  basePriceMoney?: {
+    amount: bigint | number;
+    currency: CurrencyCode;
+  };
   note?: string;
 }
 
@@ -65,12 +74,39 @@ export interface CreatePaymentOptions {
 }
 
 /**
+ * Pricing options for an order. Controls automatic application of discounts
+ * (pricing rules) and taxes.
+ */
+export interface OrderPricingOptions {
+  /**
+   * Apply catalog pricing rules (incl. customer-group-gated wholesale rules)
+   * automatically at calculation time. Required for order templates that back
+   * subscriptions with per-retailer wholesale pricing.
+   */
+  autoApplyDiscounts?: boolean;
+  /**
+   * Apply all enabled taxes at the location automatically.
+   */
+  autoApplyTaxes?: boolean;
+}
+
+/**
  * Create order options
  */
 export interface CreateOrderOptions {
   lineItems: LineItemInput[];
   customerId?: string;
   referenceId?: string;
+  /**
+   * Order state. Use `'DRAFT'` when creating an order template that will back
+   * a subscription phase (`subscriptions.create({ phases: [...] })`).
+   */
+  state?: 'DRAFT' | 'OPEN';
+  pricingOptions?: OrderPricingOptions;
+  /**
+   * Override the client's default location for this order.
+   */
+  locationId?: string;
   idempotencyKey?: string;
 }
 

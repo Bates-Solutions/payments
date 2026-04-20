@@ -10,12 +10,21 @@ export { CustomerGroupsService } from './services/customer-groups.service.js';
 export { CatalogService } from './services/catalog.service.js';
 export { InventoryService } from './services/inventory.service.js';
 export { SubscriptionsService } from './services/subscriptions.service.js';
+export type {
+  Subscription,
+  SubscriptionStatus,
+  SubscriptionCadence,
+  SubscriptionPlan,
+  SubscriptionPhaseInput,
+  CreateSubscriptionOptions,
+} from './services/subscriptions.service.js';
 export { InvoicesService } from './services/invoices.service.js';
 export { LoyaltyService } from './services/loyalty.service.js';
 export { CheckoutService } from './services/checkout.service.js';
 
 // Builders
 export { OrderBuilder } from './builders/order.builder.js';
+export type { Order } from './builders/order.builder.js';
 
 // Errors
 export {

@@ -185,12 +185,12 @@ export const handler = createLambdaWebhookHandler({
 | Service          | Description                                                    |
 | ---------------- | -------------------------------------------------------------- |
 | `payments`       | Process and manage payments                                    |
-| `orders`         | Create and manage orders                                       |
+| `orders`         | Create and manage orders, incl. DRAFT templates for subscriptions |
 | `customers`      | Customer management                                            |
 | `customerGroups` | Customer groups + group membership (gates pricing rules)       |
 | `catalog`        | Product catalog ops, incl. pricing rules and wholesale pricing |
 | `inventory`      | Inventory tracking                                             |
-| `subscriptions`  | Subscription management                                        |
+| `subscriptions`  | Subscription management, incl. phases backed by order templates |
 | `invoices`       | Invoice operations                                             |
 | `loyalty`        | Loyalty program management                                     |
 | `checkout`       | Hosted checkout sessions                                       |

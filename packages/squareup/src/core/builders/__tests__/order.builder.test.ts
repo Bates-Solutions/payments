@@ -375,4 +375,142 @@ describe('OrderBuilder', () => {
       expect(result).toEqual(mockOrder);
     });
   });
+
+  describe('withState', () => {
+    it('should set order state on build', async () => {
+      const mockOrder = { id: 'ORDER_TEMPLATE' };
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: mockOrder }),
+      });
+
+      await new OrderBuilder(client, locationId)
+        .addItem({ name: 'Coffee', amount: 350 })
+        .withState('DRAFT')
+        .build();
+
+      expect(client.orders.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          order: expect.objectContaining({ state: 'DRAFT' }),
+        })
+      );
+    });
+  });
+
+  describe('withPricingOptions', () => {
+    it('should forward pricing options to build', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
+      });
+
+      await new OrderBuilder(client, locationId)
+        .addItem({ name: 'Coffee', amount: 350 })
+        .withPricingOptions({ autoApplyDiscounts: true, autoApplyTaxes: false })
+        .build();
+
+      expect(client.orders.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          order: expect.objectContaining({
+            pricingOptions: { autoApplyDiscounts: true, autoApplyTaxes: false },
+          }),
+        })
+      );
+    });
+  });
+
+  describe('asTemplate', () => {
+    it('should shortcut DRAFT + autoApplyDiscounts', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
+      });
+
+      await new OrderBuilder(client, locationId)
+        .addItem({ catalogObjectId: 'VAR_1', quantity: 2 })
+        .asTemplate()
+        .build();
+
+      expect(client.orders.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          order: expect.objectContaining({
+            state: 'DRAFT',
+            pricingOptions: { autoApplyDiscounts: true },
+          }),
+        })
+      );
+    });
+  });
+
+  describe('withIdempotencyKey', () => {
+    it('should use the supplied key instead of generating one', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
+      });
+
+      await new OrderBuilder(client, locationId)
+        .addItem({ name: 'Coffee', amount: 350 })
+        .withIdempotencyKey('custom-key-1')
+        .build();
+
+      expect(client.orders.create).toHaveBeenCalledWith(
+        expect.objectContaining({ idempotencyKey: 'custom-key-1' })
+      );
+    });
+  });
+
+  describe('per-item basePriceMoney', () => {
+    it('should use explicit basePriceMoney over builder currency', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
+      });
+
+      await new OrderBuilder(client, locationId)
+        .withCurrency('USD')
+        .addItem({
+          name: 'Wholesale Pickles',
+          basePriceMoney: { amount: 750, currency: 'EUR' },
+        })
+        .build();
+
+      const call = (client.orders.create as ReturnType<typeof vi.fn>).mock.calls[0][0];
+      expect(call.order.lineItems[0].basePriceMoney).toEqual({
+        amount: BigInt(750),
+        currency: 'EUR',
+      });
+    });
+
+    it('should accept bigint amount', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
+      });
+
+      await new OrderBuilder(client, locationId)
+        .addItem({
+          name: 'Wholesale',
+          basePriceMoney: { amount: BigInt(999), currency: 'USD' },
+        })
+        .build();
+
+      const call = (client.orders.create as ReturnType<typeof vi.fn>).mock.calls[0][0];
+      expect(call.order.lineItems[0].basePriceMoney.amount).toBe(BigInt(999));
+    });
+
+    it('should override amount+currency derived from amount when both supplied', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
+      });
+
+      await new OrderBuilder(client, locationId)
+        .addItem({
+          name: 'Coffee',
+          amount: 350,
+          basePriceMoney: { amount: 700, currency: 'EUR' },
+        })
+        .build();
+
+      const call = (client.orders.create as ReturnType<typeof vi.fn>).mock.calls[0][0];
+      expect(call.order.lineItems[0].basePriceMoney).toEqual({
+        amount: BigInt(700),
+        currency: 'EUR',
+      });
+    });
+  });
 });
