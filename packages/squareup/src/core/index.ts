@@ -21,6 +21,30 @@ export type {
 export { InvoicesService } from './services/invoices.service.js';
 export { LoyaltyService } from './services/loyalty.service.js';
 export { CheckoutService } from './services/checkout.service.js';
+export {
+  GiftCardsService,
+  GiftCardActivitiesService,
+} from './services/gift-cards.service.js';
+export type {
+  GiftCard,
+  GiftCardType,
+  GiftCardGanSource,
+  GiftCardState,
+  GiftCardActivity,
+  GiftCardActivityType,
+  GiftCardDeactivateReason,
+  CreateGiftCardOptions,
+  CreateGiftCardActivityOptions,
+  ListGiftCardsOptions,
+  ListGiftCardActivitiesOptions,
+  ActivateActivityDetails,
+  LoadActivityDetails,
+  RedeemActivityDetails,
+  AdjustIncrementActivityDetails,
+  AdjustDecrementActivityDetails,
+  AdjustIncrementReason,
+  AdjustDecrementReason,
+} from './services/gift-cards.service.js';
 
 // Builders
 export { OrderBuilder } from './builders/order.builder.js';
