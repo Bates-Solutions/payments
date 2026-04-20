@@ -1,3 +1,15 @@
+# [1.12.0](https://github.com/mbates/squareup/compare/v1.11.0...v1.12.0) (2026-04-20)
+
+
+### Bug Fixes
+
+* address PR review feedback ([9baef79](https://github.com/mbates/squareup/commit/9baef794069ed273ff5814758621a3476f84b98b))
+
+
+### Features
+
+* **subscriptions:** support order-template phases + extend order creation ([f718265](https://github.com/mbates/squareup/commit/f7182650c69be273b45fb463895e9e4b28e389ac)), closes [#71](https://github.com/mbates/squareup/issues/71)
+
 # [1.11.0](https://github.com/mbates/squareup/compare/v1.10.0...v1.11.0) (2026-04-19)
 
 
