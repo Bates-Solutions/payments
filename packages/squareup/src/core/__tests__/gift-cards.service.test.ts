@@ -434,6 +434,21 @@ describe('GiftCardsService', () => {
       );
     });
 
+    it('load should default currency to USD when omitted', async () => {
+      const activitiesCreate = vi.fn().mockResolvedValue({
+        giftCardActivity: { id: 'A2' },
+      });
+      const client = createMockClient({}, { create: activitiesCreate });
+
+      await new GiftCardsService(client, defaultLocation).load('gftc:1', 500);
+
+      const call = activitiesCreate.mock.calls[0][0];
+      expect(call.giftCardActivity.loadActivityDetails.amountMoney).toEqual({
+        amount: BigInt(500),
+        currency: 'USD',
+      });
+    });
+
     it('redeem should call activities.create with REDEEM details', async () => {
       const activitiesCreate = vi.fn().mockResolvedValue({
         giftCardActivity: { id: 'A3', type: 'REDEEM' },
@@ -664,6 +679,41 @@ describe('GiftCardActivitiesService', () => {
           }),
         })
       );
+    });
+
+    it('should handle activity details without amountMoney (undefined money)', async () => {
+      const create = vi.fn().mockResolvedValue({ giftCardActivity: { id: 'A' } });
+      const client = createMockClient({}, { create });
+
+      await new GiftCardActivitiesService(client, defaultLocation).create({
+        type: 'ACTIVATE',
+        giftCardId: 'gftc:1',
+        // amountMoney omitted — Square populates from the linked Order line item
+        activateActivityDetails: { orderId: 'O1', lineItemUid: 'L1' },
+      });
+
+      const call = create.mock.calls[0][0];
+      expect(call.giftCardActivity.activateActivityDetails.amountMoney).toBeUndefined();
+      expect(call.giftCardActivity.activateActivityDetails.orderId).toBe('O1');
+    });
+
+    it('should handle amountMoney with currency but no amount', async () => {
+      const create = vi.fn().mockResolvedValue({ giftCardActivity: { id: 'A' } });
+      const client = createMockClient({}, { create });
+
+      await new GiftCardActivitiesService(client, defaultLocation).create({
+        type: 'LOAD',
+        giftCardId: 'gftc:1',
+        loadActivityDetails: {
+          amountMoney: { currency: 'USD' } as { amount: bigint; currency: string },
+        },
+      });
+
+      const call = create.mock.calls[0][0];
+      expect(call.giftCardActivity.loadActivityDetails.amountMoney).toEqual({
+        amount: undefined,
+        currency: 'USD',
+      });
     });
 
     it('should pass clearBalance details', async () => {
