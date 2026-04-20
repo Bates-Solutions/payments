@@ -1,7 +1,9 @@
 import type { SquareClient } from 'square';
-import type { CurrencyCode, LineItemInput } from '../types/index.js';
+import type { CurrencyCode, LineItemInput, OrderPricingOptions } from '../types/index.js';
 import { parseSquareError, SquareValidationError } from '../errors.js';
 import { createIdempotencyKey } from '../utils.js';
+
+type OrderState = 'DRAFT' | 'OPEN';
 
 /**
  * Order line item type for internal use
@@ -26,6 +28,7 @@ export interface Order {
   referenceId?: string;
   customerId?: string;
   lineItems?: OrderLineItem[];
+  pricingOptions?: OrderPricingOptions;
   totalMoney?: {
     amount?: bigint;
     currency?: string;
@@ -56,6 +59,9 @@ export class OrderBuilder {
   private referenceId?: string;
   private tipAmount?: bigint;
   private currency: CurrencyCode = 'USD';
+  private state?: OrderState;
+  private pricingOptions?: OrderPricingOptions;
+  private idempotencyKey?: string;
 
   constructor(
     private readonly client: SquareClient,
@@ -95,15 +101,26 @@ export class OrderBuilder {
 
     if (item.catalogObjectId) {
       lineItem.catalogObjectId = item.catalogObjectId;
-    } else if (item.name && item.amount !== undefined) {
+    } else if (item.name) {
       lineItem.name = item.name;
+      if (item.amount !== undefined) {
+        lineItem.basePriceMoney = {
+          amount: BigInt(item.amount),
+          currency: this.currency,
+        };
+      }
+    }
+
+    if (item.basePriceMoney) {
       lineItem.basePriceMoney = {
-        amount: BigInt(item.amount),
-        currency: this.currency,
+        amount: BigInt(item.basePriceMoney.amount),
+        currency: item.basePriceMoney.currency,
       };
-    } else {
+    }
+
+    if (!lineItem.catalogObjectId && (!lineItem.name || !lineItem.basePriceMoney)) {
       throw new SquareValidationError(
-        'Line item must have either catalogObjectId or both name and amount'
+        'Line item must have either catalogObjectId or both name and amount (or basePriceMoney)'
       );
     }
 
@@ -174,6 +191,43 @@ export class OrderBuilder {
   }
 
   /**
+   * Set the order state. Use `'DRAFT'` when creating an order template that
+   * will back a subscription phase.
+   */
+  withState(state: OrderState): this {
+    this.state = state;
+    return this;
+  }
+
+  /**
+   * Set pricing options. `autoApplyDiscounts: true` is required for templates
+   * that should pick up customer-group pricing rules (wholesale tiers) at each
+   * subscription billing cycle.
+   */
+  withPricingOptions(options: OrderPricingOptions): this {
+    this.pricingOptions = options;
+    return this;
+  }
+
+  /**
+   * Shorthand for configuring an order as a subscription template: sets state
+   * to `DRAFT` and enables automatic discount application so pricing rules fire
+   * at billing time.
+   */
+  asTemplate(): this {
+    return this.withState('DRAFT').withPricingOptions({ autoApplyDiscounts: true });
+  }
+
+  /**
+   * Provide an explicit idempotency key. Useful for retrying subscription
+   * template creation without producing duplicate orders.
+   */
+  withIdempotencyKey(key: string): this {
+    this.idempotencyKey = key;
+    return this;
+  }
+
+  /**
    * Build and create the order
    *
    * @returns Created order
@@ -193,8 +247,10 @@ export class OrderBuilder {
           lineItems: this.lineItems,
           customerId: this.customerId,
           referenceId: this.referenceId,
+          state: this.state,
+          pricingOptions: this.pricingOptions,
         },
-        idempotencyKey: createIdempotencyKey(),
+        idempotencyKey: this.idempotencyKey ?? createIdempotencyKey(),
       });
 
       if (!response.order) {
