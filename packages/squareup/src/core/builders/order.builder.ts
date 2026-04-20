@@ -274,6 +274,9 @@ export class OrderBuilder {
     referenceId?: string;
     tipAmount?: bigint;
     currency: CurrencyCode;
+    state?: OrderState;
+    pricingOptions?: OrderPricingOptions;
+    idempotencyKey?: string;
   } {
     return {
       locationId: this.locationId,
@@ -282,6 +285,9 @@ export class OrderBuilder {
       referenceId: this.referenceId,
       tipAmount: this.tipAmount,
       currency: this.currency,
+      state: this.state,
+      pricingOptions: this.pricingOptions,
+      idempotencyKey: this.idempotencyKey,
     };
   }
 
@@ -293,6 +299,9 @@ export class OrderBuilder {
     this.customerId = undefined;
     this.referenceId = undefined;
     this.tipAmount = undefined;
+    this.state = undefined;
+    this.pricingOptions = undefined;
+    this.idempotencyKey = undefined;
     return this;
   }
 }

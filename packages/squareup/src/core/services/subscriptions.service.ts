@@ -177,9 +177,20 @@ export class SubscriptionsService {
     if (!options.planVariationId && !options.phases?.length) {
       throw new SquareValidationError(
         'One of planVariationId or phases is required',
-        'planVariationId'
+        'phases'
       );
     }
+
+    options.phases?.forEach((phase, i) => {
+      if (phase.ordinal === undefined) return;
+      if (typeof phase.ordinal === 'bigint') return;
+      if (!Number.isInteger(phase.ordinal) || phase.ordinal < 0) {
+        throw new SquareValidationError(
+          'Phase ordinal must be a non-negative integer',
+          `phases[${String(i)}].ordinal`
+        );
+      }
+    });
 
     try {
       const response = await this.client.subscriptions.create({
