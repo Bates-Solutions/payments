@@ -20,7 +20,7 @@
 
 ---
 
-Stop wrestling with Square's low-level APIs. **squareup** gives you a simplified client API and fluent builders that make payment integration straightforward. Process payments, manage orders, handle webhooks—all with full TypeScript support and zero boilerplate.
+Stop wrestling with Square's low-level APIs. **squareup** gives you a simplified client API and fluent builders that make payment integration straightforward. Process payments, manage orders, handle webhooks. All with full TypeScript support and zero boilerplate.
 
 ## Features
 
