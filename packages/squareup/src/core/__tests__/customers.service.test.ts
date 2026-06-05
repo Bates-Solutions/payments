@@ -664,9 +664,37 @@ describe('CustomersService', () => {
       expect(client.customers.list).toHaveBeenCalledWith({
         cursor: 'PAGE_CURSOR',
         limit: 10,
+        sortField: 'DEFAULT',
+        sortOrder: undefined,
       });
       expect(result.customers).toEqual(mockCustomers);
       expect(result.cursor).toBe('NEXT_PAGE_CURSOR');
+    });
+
+    it('should default sortField to DEFAULT to avoid an empty sort_field=', async () => {
+      const client = createMockClient({
+        list: createListMock([{ id: 'CUST_1' }]),
+      });
+
+      const service = new CustomersService(client);
+      await service.list();
+
+      expect(client.customers.list).toHaveBeenCalledWith(
+        expect.objectContaining({ sortField: 'DEFAULT' })
+      );
+    });
+
+    it('should forward sortField and sortOrder when provided', async () => {
+      const client = createMockClient({
+        list: createListMock([{ id: 'CUST_1' }]),
+      });
+
+      const service = new CustomersService(client);
+      await service.list({ sortField: 'CREATED_AT', sortOrder: 'DESC' });
+
+      expect(client.customers.list).toHaveBeenCalledWith(
+        expect.objectContaining({ sortField: 'CREATED_AT', sortOrder: 'DESC' })
+      );
     });
 
     it('should return cursor for next page', async () => {

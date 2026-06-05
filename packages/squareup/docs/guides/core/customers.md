@@ -164,16 +164,35 @@ do {
 console.log('Total customers:', allCustomers.length);
 ```
 
-## Listing All Customers
+## Listing Customers
+
+`list()` returns customers and an optional `cursor` for the next page.
 
 ```typescript
 // Get first 50 customers
-const customers = await square.customers.list({ limit: 50 });
+const { customers, cursor } = await square.customers.list({ limit: 50 });
 
 for (const customer of customers) {
   console.log(customer.id, customer.emailAddress);
 }
 ```
+
+### Sorting
+
+By default customers are listed using Square's `DEFAULT` sort field. Pass
+`sortField` and `sortOrder` to control ordering:
+
+```typescript
+// Newest customers first
+const { customers } = await square.customers.list({
+  sortField: 'CREATED_AT',
+  sortOrder: 'DESC',
+});
+```
+
+Valid `sortField` values are `DEFAULT` and `CREATED_AT`; `sortOrder` is `ASC`
+or `DESC`. The wrapper always sends a valid `sortField` so the request never
+fails with the Square 400 caused by an empty `sort_field=` parameter.
 
 ## Find or Create Pattern
 
