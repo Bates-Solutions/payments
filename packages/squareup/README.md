@@ -89,6 +89,9 @@ const customer = await client.customers.create({
 const page1 = await client.customers.list({ limit: 50 });
 const page2 = await client.customers.list({ cursor: page1.cursor, limit: 50 });
 
+// List customers sorted by creation time, newest first
+const recent = await client.customers.list({ sortField: 'CREATED_AT', sortOrder: 'DESC' });
+
 // Search customers by name, email, company, or city
 const results = await client.customers.search({ query: 'john doe' });
 ```

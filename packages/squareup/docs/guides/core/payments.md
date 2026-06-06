@@ -192,4 +192,3 @@ Use any future expiration date and any 3-digit CVV.
 
 - [Orders Guide](./orders.md) - Create orders with payments
 - [Customers Guide](./customers.md) - Save cards on file
-- [React Hooks](../react/hooks.md) - Frontend payment forms
