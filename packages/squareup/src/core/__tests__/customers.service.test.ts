@@ -630,6 +630,20 @@ describe('CustomersService', () => {
         expect.objectContaining({ cursor: 'RESUME_CURSOR' })
       );
     });
+
+    it('should send a valid sortField on internal paging to avoid an empty sort_field=', async () => {
+      const listMock = createListMockForSearch([
+        { id: 'CUST_1', givenName: 'Tim' },
+      ]);
+      const client = createMockClient({ list: listMock });
+
+      const service = new CustomersService(client);
+      await service.search({ query: 'tim' });
+
+      expect(listMock).toHaveBeenCalledWith(
+        expect.objectContaining({ sortField: 'DEFAULT' })
+      );
+    });
   });
 
   describe('list', () => {
