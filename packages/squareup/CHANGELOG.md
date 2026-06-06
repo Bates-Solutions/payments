@@ -1,3 +1,10 @@
+## [1.13.1](https://github.com/mbates/squareup/compare/v1.13.0...v1.13.1) (2026-06-06)
+
+
+### Bug Fixes
+
+* **customers:** send valid sort_field to avoid Square 400 on list() ([c83cd95](https://github.com/mbates/squareup/commit/c83cd95ab1bba005dd1e961ab4a3e204067b9e6b)), closes [#82](https://github.com/mbates/squareup/issues/82)
+
 # [1.13.0](https://github.com/mbates/squareup/compare/v1.12.0...v1.13.0) (2026-04-20)
 
 
