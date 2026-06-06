@@ -76,11 +76,35 @@ export interface UpdateCustomerOptions {
 }
 
 /**
+ * Field used to sort customers when listing.
+ *
+ * - `DEFAULT` — sort by the attribute Square selects by default
+ * - `CREATED_AT` — sort by customer creation time
+ */
+export type CustomerSortField = 'DEFAULT' | 'CREATED_AT';
+
+/**
+ * Sort direction for list results.
+ */
+export type CustomerSortOrder = 'ASC' | 'DESC';
+
+/**
  * Options for listing customers
  */
 export interface ListCustomersOptions {
   limit?: number;
   cursor?: string;
+  /**
+   * Field to sort by. Defaults to `DEFAULT` when omitted.
+   *
+   * A valid value is always sent to avoid an empty `sort_field=` query
+   * parameter, which the Square API rejects with a 400.
+   */
+  sortField?: CustomerSortField;
+  /**
+   * Sort direction (`ASC` or `DESC`). Only forwarded when provided.
+   */
+  sortOrder?: CustomerSortOrder;
 }
 
 /**
@@ -361,6 +385,8 @@ export class CustomersService {
       const page = await this.client.customers.list({
         cursor: currentCursor,
         limit: pageSize,
+        // Always send a valid enum; see list() for why.
+        sortField: 'DEFAULT',
       });
 
       const customers = (page.response.customers ?? []) as Customer[];
@@ -393,6 +419,9 @@ export class CustomersService {
    *
    * // Get next page using cursor
    * const page2 = await square.customers.list({ cursor: page1.cursor, limit: 50 });
+   *
+   * // Sort by creation time, newest first
+   * const recent = await square.customers.list({ sortField: 'CREATED_AT', sortOrder: 'DESC' });
    * ```
    */
   async list(
@@ -402,6 +431,10 @@ export class CustomersService {
       const page = await this.client.customers.list({
         cursor: options?.cursor,
         limit: options?.limit,
+        // Always send a valid enum. With sortField undefined, square SDK
+        // v44.1.0 emits `sort_field=` (empty), which Square rejects with a 400.
+        sortField: options?.sortField ?? 'DEFAULT',
+        sortOrder: options?.sortOrder,
       });
 
       return {
