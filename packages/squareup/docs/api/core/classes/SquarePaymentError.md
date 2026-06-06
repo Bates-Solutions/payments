@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v0.2.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v1.13.1**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: SquarePaymentError
 
-Defined in: [src/core/errors.ts:88](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/errors.ts#L88)
+Defined in: [core/errors.ts:88](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/errors.ts#L88)
 
 Payment processing errors
 
@@ -20,7 +20,7 @@ Payment processing errors
 
 > **new SquarePaymentError**(`message`, `code`, `paymentId?`): `SquarePaymentError`
 
-Defined in: [src/core/errors.ts:91](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/errors.ts#L91)
+Defined in: [core/errors.ts:91](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/errors.ts#L91)
 
 #### Parameters
 
@@ -50,7 +50,7 @@ Defined in: [src/core/errors.ts:91](https://github.com/mbates/squareup/blob/483f
 
 > `readonly` **code**: [`SquareErrorCode`](../type-aliases/SquareErrorCode.md)
 
-Defined in: [src/core/errors.ts:31](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/errors.ts#L31)
+Defined in: [core/errors.ts:31](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/errors.ts#L31)
 
 #### Inherited from
 
@@ -60,9 +60,9 @@ Defined in: [src/core/errors.ts:31](https://github.com/mbates/squareup/blob/483f
 
 ### details?
 
-> `readonly` `optional` **details**: `unknown`
+> `readonly` `optional` **details?**: `unknown`
 
-Defined in: [src/core/errors.ts:33](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/errors.ts#L33)
+Defined in: [core/errors.ts:33](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/errors.ts#L33)
 
 #### Inherited from
 
@@ -72,17 +72,17 @@ Defined in: [src/core/errors.ts:33](https://github.com/mbates/squareup/blob/483f
 
 ### paymentId?
 
-> `readonly` `optional` **paymentId**: `string`
+> `readonly` `optional` **paymentId?**: `string`
 
-Defined in: [src/core/errors.ts:89](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/errors.ts#L89)
+Defined in: [core/errors.ts:89](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/errors.ts#L89)
 
 ***
 
 ### statusCode?
 
-> `readonly` `optional` **statusCode**: `number`
+> `readonly` `optional` **statusCode?**: `number`
 
-Defined in: [src/core/errors.ts:32](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/errors.ts#L32)
+Defined in: [core/errors.ts:32](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/errors.ts#L32)
 
 #### Inherited from
 

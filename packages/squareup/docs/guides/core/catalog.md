@@ -516,5 +516,3 @@ await square.catalog.createPricingRule({
 
 - [Customer Groups Guide](./customer-groups.md) - Gate pricing rules by customer
 - [Orders Guide](./orders.md) - Use catalog items in orders
-- [React Hooks](../react/hooks.md) - Display catalog in React
-- [Angular Services](../angular/services.md) - Catalog in Angular

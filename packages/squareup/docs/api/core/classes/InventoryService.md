@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v0.2.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v1.13.1**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: InventoryService
 
-Defined in: [src/core/services/inventory.service.ts:83](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/services/inventory.service.ts#L83)
+Defined in: [core/services/inventory.service.ts:83](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/services/inventory.service.ts#L83)
 
 Inventory service for managing Square inventory
 
@@ -30,7 +30,7 @@ await square.inventory.adjust({
 
 > **new InventoryService**(`client`, `defaultLocationId?`): `InventoryService`
 
-Defined in: [src/core/services/inventory.service.ts:84](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/services/inventory.service.ts#L84)
+Defined in: [core/services/inventory.service.ts:84](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/services/inventory.service.ts#L84)
 
 #### Parameters
 
@@ -52,7 +52,7 @@ Defined in: [src/core/services/inventory.service.ts:84](https://github.com/mbate
 
 > **adjust**(`options`): `Promise`\<`InventoryCount`[]\>
 
-Defined in: [src/core/services/inventory.service.ts:236](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/services/inventory.service.ts#L236)
+Defined in: [core/services/inventory.service.ts:236](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/services/inventory.service.ts#L236)
 
 Adjust inventory (add or remove stock)
 
@@ -112,7 +112,7 @@ await square.inventory.adjust({
 
 > **batchChange**(`changes`, `idempotencyKey?`): `Promise`\<`InventoryCount`[]\>
 
-Defined in: [src/core/services/inventory.service.ts:352](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/services/inventory.service.ts#L352)
+Defined in: [core/services/inventory.service.ts:352](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/services/inventory.service.ts#L352)
 
 Batch apply multiple inventory changes
 
@@ -159,7 +159,7 @@ await square.inventory.batchChange([
 
 > **batchGetCounts**(`catalogObjectIds`, `locationIds?`): `Promise`\<`InventoryCount`[]\>
 
-Defined in: [src/core/services/inventory.service.ts:135](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/services/inventory.service.ts#L135)
+Defined in: [core/services/inventory.service.ts:135](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/services/inventory.service.ts#L135)
 
 Batch retrieve inventory counts for multiple objects
 
@@ -198,7 +198,7 @@ const counts = await square.inventory.batchGetCounts(
 
 > **getCounts**(`catalogObjectId`, `locationId?`): `Promise`\<`InventoryCount`[]\>
 
-Defined in: [src/core/services/inventory.service.ts:102](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/services/inventory.service.ts#L102)
+Defined in: [core/services/inventory.service.ts:102](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/services/inventory.service.ts#L102)
 
 Get inventory counts for a catalog object
 
@@ -235,7 +235,7 @@ console.log(`In stock: ${counts[0].quantity}`);
 
 > **setCount**(`options`): `Promise`\<`InventoryCount`[]\>
 
-Defined in: [src/core/services/inventory.service.ts:175](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/services/inventory.service.ts#L175)
+Defined in: [core/services/inventory.service.ts:175](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/services/inventory.service.ts#L175)
 
 Set the inventory count for an item (physical count)
 
@@ -287,7 +287,7 @@ await square.inventory.setCount({
 
 > **transfer**(`options`): `Promise`\<`InventoryCount`[]\>
 
-Defined in: [src/core/services/inventory.service.ts:294](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/services/inventory.service.ts#L294)
+Defined in: [core/services/inventory.service.ts:294](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/services/inventory.service.ts#L294)
 
 Transfer inventory between locations
 

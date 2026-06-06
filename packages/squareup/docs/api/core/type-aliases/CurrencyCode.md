@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v0.2.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v1.13.1**](../../README.md)
 
 ***
 
@@ -8,6 +8,6 @@
 
 > **CurrencyCode** = `"USD"` \| `"CAD"` \| `"GBP"` \| `"EUR"` \| `"AUD"` \| `"JPY"`
 
-Defined in: [src/core/types/index.ts:9](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/types/index.ts#L9)
+Defined in: [core/types/index.ts:9](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/types/index.ts#L9)
 
 Currency codes supported by Square
