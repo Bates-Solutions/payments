@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v0.2.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v1.13.1**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: SquareError
 
-Defined in: [src/core/errors.ts:30](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/errors.ts#L30)
+Defined in: [core/errors.ts:30](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/errors.ts#L30)
 
 Base Square error class
 
@@ -25,9 +25,9 @@ Base Square error class
 
 ### Constructor
 
-> **new SquareError**(`message`, `code`, `statusCode?`, `details?`): `SquareError`
+> **new SquareError**(`message`, `code?`, `statusCode?`, `details?`): `SquareError`
 
-Defined in: [src/core/errors.ts:35](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/errors.ts#L35)
+Defined in: [core/errors.ts:35](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/errors.ts#L35)
 
 #### Parameters
 
@@ -35,7 +35,7 @@ Defined in: [src/core/errors.ts:35](https://github.com/mbates/squareup/blob/483f
 
 `string`
 
-##### code
+##### code?
 
 [`SquareErrorCode`](../type-aliases/SquareErrorCode.md) = `'UNKNOWN'`
 
@@ -61,20 +61,20 @@ Defined in: [src/core/errors.ts:35](https://github.com/mbates/squareup/blob/483f
 
 > `readonly` **code**: [`SquareErrorCode`](../type-aliases/SquareErrorCode.md)
 
-Defined in: [src/core/errors.ts:31](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/errors.ts#L31)
+Defined in: [core/errors.ts:31](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/errors.ts#L31)
 
 ***
 
 ### details?
 
-> `readonly` `optional` **details**: `unknown`
+> `readonly` `optional` **details?**: `unknown`
 
-Defined in: [src/core/errors.ts:33](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/errors.ts#L33)
+Defined in: [core/errors.ts:33](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/errors.ts#L33)
 
 ***
 
 ### statusCode?
 
-> `readonly` `optional` **statusCode**: `number`
+> `readonly` `optional` **statusCode?**: `number`
 
-Defined in: [src/core/errors.ts:32](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/errors.ts#L32)
+Defined in: [core/errors.ts:32](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/errors.ts#L32)

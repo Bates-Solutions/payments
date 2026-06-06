@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v0.2.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v1.13.1**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: SquareClientConfig
 
-Defined in: [src/core/client.ts:15](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/client.ts#L15)
+Defined in: [core/client.ts:18](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/client.ts#L18)
 
 Configuration options for the Square client
 
@@ -16,7 +16,7 @@ Configuration options for the Square client
 
 > **accessToken**: `string`
 
-Defined in: [src/core/client.ts:19](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/client.ts#L19)
+Defined in: [core/client.ts:22](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/client.ts#L22)
 
 Square API access token
 
@@ -24,9 +24,9 @@ Square API access token
 
 ### defaultCurrency?
 
-> `optional` **defaultCurrency**: `string`
+> `optional` **defaultCurrency?**: `string`
 
-Defined in: [src/core/client.ts:36](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/client.ts#L36)
+Defined in: [core/client.ts:39](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/client.ts#L39)
 
 Default currency code
 
@@ -40,9 +40,9 @@ Default currency code
 
 ### environment?
 
-> `optional` **environment**: [`SquareEnvironment`](../type-aliases/SquareEnvironment.md)
+> `optional` **environment?**: [`SquareEnvironment`](../type-aliases/SquareEnvironment.md)
 
-Defined in: [src/core/client.ts:25](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/client.ts#L25)
+Defined in: [core/client.ts:28](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/client.ts#L28)
 
 Square environment (sandbox or production)
 
@@ -56,8 +56,8 @@ Square environment (sandbox or production)
 
 ### locationId?
 
-> `optional` **locationId**: `string`
+> `optional` **locationId?**: `string`
 
-Defined in: [src/core/client.ts:30](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/client.ts#L30)
+Defined in: [core/client.ts:33](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/client.ts#L33)
 
 Default location ID for operations that require it

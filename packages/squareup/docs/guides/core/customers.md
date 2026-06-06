@@ -332,4 +332,3 @@ try {
 
 - [Payments Guide](./payments.md) - Process payments with customers
 - [Orders Guide](./orders.md) - Create orders for customers
-- [React Hooks](../react/hooks.md) - Customer management in React
