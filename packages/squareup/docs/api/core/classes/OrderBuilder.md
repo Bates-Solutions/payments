@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v0.2.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v1.13.1**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: OrderBuilder
 
-Defined in: [src/core/builders/order.builder.ts:53](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/builders/order.builder.ts#L53)
+Defined in: [core/builders/order.builder.ts:56](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/builders/order.builder.ts#L56)
 
 Fluent builder for creating Square orders
 
@@ -28,7 +28,7 @@ const order = await square.orders
 
 > **new OrderBuilder**(`client`, `locationId`): `OrderBuilder`
 
-Defined in: [src/core/builders/order.builder.ts:60](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/builders/order.builder.ts#L60)
+Defined in: [core/builders/order.builder.ts:66](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/builders/order.builder.ts#L66)
 
 #### Parameters
 
@@ -50,7 +50,7 @@ Defined in: [src/core/builders/order.builder.ts:60](https://github.com/mbates/sq
 
 > **addItem**(`item`): `this`
 
-Defined in: [src/core/builders/order.builder.ts:89](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/builders/order.builder.ts#L89)
+Defined in: [core/builders/order.builder.ts:95](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/builders/order.builder.ts#L95)
 
 Add a line item to the order
 
@@ -82,7 +82,7 @@ builder
 
 > **addItems**(`items`): `this`
 
-Defined in: [src/core/builders/order.builder.ts:124](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/builders/order.builder.ts#L124)
+Defined in: [core/builders/order.builder.ts:141](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/builders/order.builder.ts#L141)
 
 Add multiple line items at once
 
@@ -102,17 +102,33 @@ Builder instance for chaining
 
 ***
 
+### asTemplate()
+
+> **asTemplate**(): `this`
+
+Defined in: [core/builders/order.builder.ts:217](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/builders/order.builder.ts#L217)
+
+Shorthand for configuring an order as a subscription template: sets state
+to `DRAFT` and enables automatic discount application so pricing rules fire
+at billing time.
+
+#### Returns
+
+`this`
+
+***
+
 ### build()
 
-> **build**(): `Promise`\<`Order`\>
+> **build**(): `Promise`\<[`Order`](../interfaces/Order.md)\>
 
-Defined in: [src/core/builders/order.builder.ts:184](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/builders/order.builder.ts#L184)
+Defined in: [core/builders/order.builder.ts:238](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/builders/order.builder.ts#L238)
 
 Build and create the order
 
 #### Returns
 
-`Promise`\<`Order`\>
+`Promise`\<[`Order`](../interfaces/Order.md)\>
 
 Created order
 
@@ -130,7 +146,7 @@ When API call fails
 
 > **preview**(): `object`
 
-Defined in: [src/core/builders/order.builder.ts:214](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/builders/order.builder.ts#L214)
+Defined in: [core/builders/order.builder.ts:270](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/builders/order.builder.ts#L270)
 
 Preview the order without creating it
 Returns the order configuration that would be sent
@@ -145,7 +161,11 @@ Returns the order configuration that would be sent
 
 ##### customerId?
 
-> `optional` **customerId**: `string`
+> `optional` **customerId?**: `string`
+
+##### idempotencyKey?
+
+> `optional` **idempotencyKey?**: `string`
 
 ##### lineItems
 
@@ -155,13 +175,21 @@ Returns the order configuration that would be sent
 
 > **locationId**: `string`
 
+##### pricingOptions?
+
+> `optional` **pricingOptions?**: [`OrderPricingOptions`](../interfaces/OrderPricingOptions.md)
+
 ##### referenceId?
 
-> `optional` **referenceId**: `string`
+> `optional` **referenceId?**: `string`
+
+##### state?
+
+> `optional` **state?**: `OrderState`
 
 ##### tipAmount?
 
-> `optional` **tipAmount**: `bigint`
+> `optional` **tipAmount?**: `bigint`
 
 ***
 
@@ -169,7 +197,7 @@ Returns the order configuration that would be sent
 
 > **reset**(): `this`
 
-Defined in: [src/core/builders/order.builder.ts:235](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/builders/order.builder.ts#L235)
+Defined in: [core/builders/order.builder.ts:297](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/builders/order.builder.ts#L297)
 
 Reset the builder to start fresh
 
@@ -183,7 +211,7 @@ Reset the builder to start fresh
 
 > **withCurrency**(`currency`): `this`
 
-Defined in: [src/core/builders/order.builder.ts:71](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/builders/order.builder.ts#L71)
+Defined in: [core/builders/order.builder.ts:77](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/builders/order.builder.ts#L77)
 
 Set the currency for the order
 
@@ -207,7 +235,7 @@ Builder instance for chaining
 
 > **withCustomer**(`customerId`): `this`
 
-Defined in: [src/core/builders/order.builder.ts:148](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/builders/order.builder.ts#L148)
+Defined in: [core/builders/order.builder.ts:165](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/builders/order.builder.ts#L165)
 
 Associate a customer with the order
 
@@ -227,11 +255,32 @@ Builder instance for chaining
 
 ***
 
+### withIdempotencyKey()
+
+> **withIdempotencyKey**(`key`): `this`
+
+Defined in: [core/builders/order.builder.ts:225](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/builders/order.builder.ts#L225)
+
+Provide an explicit idempotency key. Useful for retrying subscription
+template creation without producing duplicate orders.
+
+#### Parameters
+
+##### key
+
+`string`
+
+#### Returns
+
+`this`
+
+***
+
 ### withNote()
 
 > **withNote**(`_note`): `this`
 
-Defined in: [src/core/builders/order.builder.ts:170](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/builders/order.builder.ts#L170)
+Defined in: [core/builders/order.builder.ts:187](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/builders/order.builder.ts#L187)
 
 Add a note to the order
 
@@ -249,11 +298,33 @@ Builder instance for chaining
 
 ***
 
+### withPricingOptions()
+
+> **withPricingOptions**(`options`): `this`
+
+Defined in: [core/builders/order.builder.ts:207](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/builders/order.builder.ts#L207)
+
+Set pricing options. `autoApplyDiscounts: true` is required for templates
+that should pick up customer-group pricing rules (wholesale tiers) at each
+subscription billing cycle.
+
+#### Parameters
+
+##### options
+
+[`OrderPricingOptions`](../interfaces/OrderPricingOptions.md)
+
+#### Returns
+
+`this`
+
+***
+
 ### withReference()
 
 > **withReference**(`referenceId`): `this`
 
-Defined in: [src/core/builders/order.builder.ts:159](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/builders/order.builder.ts#L159)
+Defined in: [core/builders/order.builder.ts:176](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/builders/order.builder.ts#L176)
 
 Add a reference ID for external tracking
 
@@ -273,11 +344,32 @@ Builder instance for chaining
 
 ***
 
+### withState()
+
+> **withState**(`state`): `this`
+
+Defined in: [core/builders/order.builder.ts:197](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/builders/order.builder.ts#L197)
+
+Set the order state. Use `'DRAFT'` when creating an order template that
+will back a subscription phase.
+
+#### Parameters
+
+##### state
+
+`OrderState`
+
+#### Returns
+
+`this`
+
+***
+
 ### withTip()
 
 > **withTip**(`amount`): `this`
 
-Defined in: [src/core/builders/order.builder.ts:137](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/core/builders/order.builder.ts#L137)
+Defined in: [core/builders/order.builder.ts:154](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/builders/order.builder.ts#L154)
 
 Add a tip to the order
 

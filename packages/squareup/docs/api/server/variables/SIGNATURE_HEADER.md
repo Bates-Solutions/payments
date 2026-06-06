@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v0.2.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v1.13.1**](../../README.md)
 
 ***
 
@@ -8,6 +8,6 @@
 
 > `const` **SIGNATURE\_HEADER**: `"x-square-hmacsha256-signature"` = `'x-square-hmacsha256-signature'`
 
-Defined in: [src/server/webhook.ts:12](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/server/webhook.ts#L12)
+Defined in: [server/webhook.ts:14](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/server/webhook.ts#L14)
 
 Header name for Square webhook signature

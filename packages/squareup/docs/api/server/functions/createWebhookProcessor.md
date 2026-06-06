@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v0.2.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v1.13.1**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **createWebhookProcessor**(`config`): (`rawBody`, `signature`) => `Promise`\<\{ `error?`: `string`; `event?`: [`WebhookEvent`](../interfaces/WebhookEvent.md)\<`unknown`\>; `success`: `boolean`; \}\>
 
-Defined in: [src/server/webhook.ts:205](https://github.com/mbates/squareup/blob/483fcbcf6cfb72e7fa9b0c8ff55c0a7f670262a1/src/server/webhook.ts#L205)
+Defined in: [server/webhook.ts:207](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/server/webhook.ts#L207)
 
 Create a webhook handler function that verifies and processes events
 
@@ -24,21 +24,7 @@ Webhook configuration
 
 Handler function that processes raw webhook requests
 
-> (`rawBody`, `signature`): `Promise`\<\{ `error?`: `string`; `event?`: [`WebhookEvent`](../interfaces/WebhookEvent.md)\<`unknown`\>; `success`: `boolean`; \}\>
-
-### Parameters
-
-#### rawBody
-
-`string`
-
-#### signature
-
-`string`
-
-### Returns
-
-`Promise`\<\{ `error?`: `string`; `event?`: [`WebhookEvent`](../interfaces/WebhookEvent.md)\<`unknown`\>; `success`: `boolean`; \}\>
+(`rawBody`, `signature`) => `Promise`\<\{ `error?`: `string`; `event?`: [`WebhookEvent`](../interfaces/WebhookEvent.md)\<`unknown`\>; `success`: `boolean`; \}\>
 
 ## Example
 
