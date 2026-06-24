@@ -439,8 +439,9 @@ export class CustomersService {
         // Always send a valid enum. With sortField undefined, square SDK
         // v44.1.0 emits `sort_field=` (empty), which Square rejects with a 400.
         sortField: options?.sortField ?? 'DEFAULT',
-        // Once sort_field is set, Square requires a non-empty sort_order; an
-        // undefined sortOrder serializes to `sort_order=` and 400s. Default it.
+        // Same SDK serialization issue as sortField: an undefined sortOrder is
+        // emitted as an empty `sort_order=`, which Square rejects with a 400.
+        // Default it so a valid value always accompanies sort_field.
         sortOrder: options?.sortOrder ?? 'DESC',
       });
 
