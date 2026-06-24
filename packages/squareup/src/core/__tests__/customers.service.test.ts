@@ -644,6 +644,23 @@ describe('CustomersService', () => {
         expect.objectContaining({ sortField: 'DEFAULT' })
       );
     });
+
+    // Intent guard only: the mocked SDK can't reproduce the underlying defect
+    // (an undefined sortOrder serializing to `sort_order=`). This asserts the
+    // wrapper passes a valid value; the serialization fix is out of unit scope.
+    it('should send a valid sortOrder on internal paging to avoid an empty sort_order=', async () => {
+      const listMock = createListMockForSearch([
+        { id: 'CUST_1', givenName: 'Tim' },
+      ]);
+      const client = createMockClient({ list: listMock });
+
+      const service = new CustomersService(client);
+      await service.search({ query: 'tim' });
+
+      expect(listMock).toHaveBeenCalledWith(
+        expect.objectContaining({ sortField: 'DEFAULT', sortOrder: 'DESC' })
+      );
+    });
   });
 
   describe('list', () => {
@@ -679,7 +696,7 @@ describe('CustomersService', () => {
         cursor: 'PAGE_CURSOR',
         limit: 10,
         sortField: 'DEFAULT',
-        sortOrder: undefined,
+        sortOrder: 'DESC',
       });
       expect(result.customers).toEqual(mockCustomers);
       expect(result.cursor).toBe('NEXT_PAGE_CURSOR');
@@ -695,6 +712,21 @@ describe('CustomersService', () => {
 
       expect(client.customers.list).toHaveBeenCalledWith(
         expect.objectContaining({ sortField: 'DEFAULT' })
+      );
+    });
+
+    // Intent guard only (see search test note): asserts the passed value, not
+    // the SDK's querystring serialization.
+    it('should default sortOrder to DESC to avoid an empty sort_order=', async () => {
+      const client = createMockClient({
+        list: createListMock([{ id: 'CUST_1' }]),
+      });
+
+      const service = new CustomersService(client);
+      await service.list();
+
+      expect(client.customers.list).toHaveBeenCalledWith(
+        expect.objectContaining({ sortOrder: 'DESC' })
       );
     });
 
