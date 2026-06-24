@@ -68,7 +68,7 @@ export class CustomerGroupsService {
         throw new Error('Customer group was not created');
       }
 
-      return response.group as CustomerGroup;
+      return response.group;
     } catch (error) {
       throw parseSquareError(error);
     }
@@ -85,7 +85,7 @@ export class CustomerGroupsService {
         throw new Error('Customer group not found');
       }
 
-      return response.group as CustomerGroup;
+      return response.group;
     } catch (error) {
       throw parseSquareError(error);
     }
@@ -111,7 +111,7 @@ export class CustomerGroupsService {
         throw new Error('Customer group update failed');
       }
 
-      return response.group as CustomerGroup;
+      return response.group;
     } catch (error) {
       throw parseSquareError(error);
     }
@@ -142,7 +142,7 @@ export class CustomerGroupsService {
       });
 
       return {
-        groups: (page.response.groups ?? []) as CustomerGroup[],
+        groups: page.response.groups ?? [],
         cursor: page.response.cursor,
       };
     } catch (error) {

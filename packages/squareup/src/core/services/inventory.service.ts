@@ -360,9 +360,7 @@ export class InventoryService {
     try {
       const response = await this.client.inventory.batchCreateChanges({
         idempotencyKey: idempotencyKey ?? createIdempotencyKey(),
-        changes: changes as Parameters<
-          typeof this.client.inventory.batchCreateChanges
-        >[0]['changes'],
+        changes,
       });
 
       return (response.counts ?? []) as InventoryCount[];
