@@ -1,3 +1,10 @@
+## [1.13.2](https://github.com/mbates/squareup/compare/v1.13.1...v1.13.2) (2026-06-24)
+
+
+### Bug Fixes
+
+* **customers:** send valid sort_order to avoid Square 400 on text search ([3579c04](https://github.com/mbates/squareup/commit/3579c041d8e073a10736caa24e317c38a467ff46)), closes [#100](https://github.com/mbates/squareup/issues/100)
+
 ## [1.13.1](https://github.com/mbates/squareup/compare/v1.13.0...v1.13.1) (2026-06-06)
 
 
