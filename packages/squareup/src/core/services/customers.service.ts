@@ -102,7 +102,10 @@ export interface ListCustomersOptions {
    */
   sortField?: CustomerSortField;
   /**
-   * Sort direction (`ASC` or `DESC`). Only forwarded when provided.
+   * Sort direction. Defaults to `DESC` when omitted.
+   *
+   * A valid value is always sent alongside `sort_field` to avoid an empty
+   * `sort_order=` query parameter, which the Square API rejects with a 400.
    */
   sortOrder?: CustomerSortOrder;
 }
@@ -385,8 +388,10 @@ export class CustomersService {
       const page = await this.client.customers.list({
         cursor: currentCursor,
         limit: pageSize,
-        // Always send a valid enum; see list() for why.
+        // Always send a valid sort_field/sort_order pair; see list() for why.
+        // Omitting sortOrder serializes `sort_order=` and 400s on text queries.
         sortField: 'DEFAULT',
+        sortOrder: 'DESC',
       });
 
       const customers = (page.response.customers ?? []) as Customer[];
@@ -434,7 +439,10 @@ export class CustomersService {
         // Always send a valid enum. With sortField undefined, square SDK
         // v44.1.0 emits `sort_field=` (empty), which Square rejects with a 400.
         sortField: options?.sortField ?? 'DEFAULT',
-        sortOrder: options?.sortOrder,
+        // Same SDK serialization issue as sortField: an undefined sortOrder is
+        // emitted as an empty `sort_order=`, which Square rejects with a 400.
+        // Default it so a valid value always accompanies sort_field.
+        sortOrder: options?.sortOrder ?? 'DESC',
       });
 
       return {

@@ -168,8 +168,11 @@ console.log('Total customers:', allCustomers.length);
 
 `list()` returns customers and an optional `cursor` for the next page.
 
+When called without `sortField`/`sortOrder`, `list()` returns customers
+newest-first (`DEFAULT`/`DESC`) — see [Sorting](#sorting) below.
+
 ```typescript
-// Get first 50 customers
+// Get first 50 customers (newest first by default)
 const { customers, cursor } = await square.customers.list({ limit: 50 });
 
 for (const customer of customers) {
@@ -191,8 +194,11 @@ const { customers } = await square.customers.list({
 ```
 
 Valid `sortField` values are `DEFAULT` and `CREATED_AT`; `sortOrder` is `ASC`
-or `DESC`. The wrapper always sends a valid `sortField` so the request never
-fails with the Square 400 caused by an empty `sort_field=` parameter.
+or `DESC`. The wrapper always pairs a valid `sortField` with a valid
+`sortOrder` so the request never fails with the Square 400 caused by an empty
+`sort_field=` or `sort_order=` parameter. When you omit `sortOrder`, the
+wrapper sends `DESC` by default — pass `sortOrder: 'ASC'` explicitly if you
+need ascending order.
 
 ## Find or Create Pattern
 
