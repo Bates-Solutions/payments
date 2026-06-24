@@ -645,6 +645,9 @@ describe('CustomersService', () => {
       );
     });
 
+    // Intent guard only: the mocked SDK can't reproduce the underlying defect
+    // (an undefined sortOrder serializing to `sort_order=`). This asserts the
+    // wrapper passes a valid value; the serialization fix is out of unit scope.
     it('should send a valid sortOrder on internal paging to avoid an empty sort_order=', async () => {
       const listMock = createListMockForSearch([
         { id: 'CUST_1', givenName: 'Tim' },
@@ -712,6 +715,8 @@ describe('CustomersService', () => {
       );
     });
 
+    // Intent guard only (see search test note): asserts the passed value, not
+    // the SDK's querystring serialization.
     it('should default sortOrder to DESC to avoid an empty sort_order=', async () => {
       const client = createMockClient({
         list: createListMock([{ id: 'CUST_1' }]),
