@@ -168,8 +168,11 @@ console.log('Total customers:', allCustomers.length);
 
 `list()` returns customers and an optional `cursor` for the next page.
 
+When called without `sortField`/`sortOrder`, `list()` returns customers
+newest-first (`DEFAULT`/`DESC`) — see [Sorting](#sorting) below.
+
 ```typescript
-// Get first 50 customers
+// Get first 50 customers (newest first by default)
 const { customers, cursor } = await square.customers.list({ limit: 50 });
 
 for (const customer of customers) {
