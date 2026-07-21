@@ -6,11 +6,7 @@
 
 # Class: CustomersService
 
-<<<<<<< HEAD
-Defined in: [core/services/customers.service.ts:82](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/customers.service.ts#L82)
-=======
-Defined in: [core/services/customers.service.ts:82](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/customers.service.ts#L82)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/customers.service.ts:82](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L82)
 
 Customers service wrapping Stripe Customers.
 
@@ -29,11 +25,7 @@ const customer = await stripe.customers.create({
 
 > **new CustomersService**(`client`): `CustomersService`
 
-<<<<<<< HEAD
-Defined in: [core/services/customers.service.ts:83](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/customers.service.ts#L83)
-=======
-Defined in: [core/services/customers.service.ts:83](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/customers.service.ts#L83)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/customers.service.ts:83](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L83)
 
 #### Parameters
 
@@ -51,11 +43,7 @@ Defined in: [core/services/customers.service.ts:83](https://github.com/mbates/st
 
 > **create**(`options`): `Promise`\<`Customer`\>
 
-<<<<<<< HEAD
-Defined in: [core/services/customers.service.ts:102](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/customers.service.ts#L102)
-=======
-Defined in: [core/services/customers.service.ts:102](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/customers.service.ts#L102)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/customers.service.ts:102](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L102)
 
 Create a new customer.
 
@@ -93,11 +81,7 @@ const customer = await stripe.customers.create({
 
 > **delete**(`customerId`): `Promise`\<`void`\>
 
-<<<<<<< HEAD
-Defined in: [core/services/customers.service.ts:191](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/customers.service.ts#L191)
-=======
-Defined in: [core/services/customers.service.ts:192](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/customers.service.ts#L192)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/customers.service.ts:192](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L192)
 
 Delete a customer.
 
@@ -125,11 +109,7 @@ await stripe.customers.delete('cus_123');
 
 > **get**(`customerId`): `Promise`\<`Customer`\>
 
-<<<<<<< HEAD
-Defined in: [core/services/customers.service.ts:139](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/customers.service.ts#L139)
-=======
-Defined in: [core/services/customers.service.ts:140](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/customers.service.ts#L140)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/customers.service.ts:140](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L140)
 
 Retrieve a customer by ID.
 
@@ -167,11 +147,7 @@ const customer = await stripe.customers.get('cus_123');
 
 > **list**(`options?`): `Promise`\<[`PaginatedResponse`](../interfaces/PaginatedResponse.md)\<`Customer`\>\>
 
-<<<<<<< HEAD
-Defined in: [core/services/customers.service.ts:211](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/customers.service.ts#L211)
-=======
-Defined in: [core/services/customers.service.ts:212](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/customers.service.ts#L212)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/customers.service.ts:212](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L212)
 
 List customers with cursor-based pagination.
 
@@ -202,11 +178,7 @@ const page2 = await stripe.customers.list({ startingAfter: page1.nextCursor });
 
 > **search**(`query`, `options?`): `Promise`\<[`PaginatedResponse`](../interfaces/PaginatedResponse.md)\<`Customer`\>\>
 
-<<<<<<< HEAD
-Defined in: [core/services/customers.service.ts:243](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/customers.service.ts#L243)
-=======
-Defined in: [core/services/customers.service.ts:244](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/customers.service.ts#L244)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/customers.service.ts:244](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L244)
 
 Search customers with Stripe's search query language.
 
@@ -252,11 +224,7 @@ const { data } = await stripe.customers.search("email:'john@example.com'");
 
 > **update**(`customerId`, `options`): `Promise`\<`Customer`\>
 
-<<<<<<< HEAD
-Defined in: [core/services/customers.service.ts:166](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/customers.service.ts#L166)
-=======
-Defined in: [core/services/customers.service.ts:167](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/customers.service.ts#L167)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/customers.service.ts:167](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L167)
 
 Update a customer.
 

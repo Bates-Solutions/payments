@@ -6,11 +6,7 @@
 
 # Interface: WebhookEventContext
 
-<<<<<<< HEAD
-Defined in: [server/middleware/lambda.ts:33](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/middleware/lambda.ts#L33)
-=======
-Defined in: [server/middleware/lambda.ts:33](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/server/middleware/lambda.ts#L33)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [server/middleware/lambda.ts:33](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/server/middleware/lambda.ts#L33)
 
 Context passed to Lambda webhook handlers with auto-extracted entity IDs.
 
@@ -20,11 +16,7 @@ Context passed to Lambda webhook handlers with auto-extracted entity IDs.
 
 > `optional` **chargeId?**: `string`
 
-<<<<<<< HEAD
-Defined in: [server/middleware/lambda.ts:35](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/middleware/lambda.ts#L35)
-=======
-Defined in: [server/middleware/lambda.ts:35](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/server/middleware/lambda.ts#L35)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [server/middleware/lambda.ts:35](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/server/middleware/lambda.ts#L35)
 
 ***
 
@@ -32,11 +24,7 @@ Defined in: [server/middleware/lambda.ts:35](https://github.com/mbates/stripe/bl
 
 > `optional` **customerId?**: `string`
 
-<<<<<<< HEAD
-Defined in: [server/middleware/lambda.ts:36](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/middleware/lambda.ts#L36)
-=======
-Defined in: [server/middleware/lambda.ts:36](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/server/middleware/lambda.ts#L36)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [server/middleware/lambda.ts:36](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/server/middleware/lambda.ts#L36)
 
 ***
 
@@ -44,8 +32,4 @@ Defined in: [server/middleware/lambda.ts:36](https://github.com/mbates/stripe/bl
 
 > `optional` **paymentIntentId?**: `string`
 
-<<<<<<< HEAD
-Defined in: [server/middleware/lambda.ts:34](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/middleware/lambda.ts#L34)
-=======
-Defined in: [server/middleware/lambda.ts:34](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/server/middleware/lambda.ts#L34)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [server/middleware/lambda.ts:34](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/server/middleware/lambda.ts#L34)

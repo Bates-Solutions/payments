@@ -6,7 +6,7 @@
 
 # Class: ProductsService
 
-Defined in: core/services/products.service.ts:30
+Defined in: [core/services/products.service.ts:30](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/products.service.ts#L30)
 
 Products service wrapping Stripe [Products](https://docs.stripe.com/api/products).
 
@@ -24,7 +24,7 @@ console.log(product.metadata);
 
 > **new ProductsService**(`client`): `ProductsService`
 
-Defined in: core/services/products.service.ts:31
+Defined in: [core/services/products.service.ts:31](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/products.service.ts#L31)
 
 #### Parameters
 
@@ -42,7 +42,7 @@ Defined in: core/services/products.service.ts:31
 
 > **get**(`productId`): `Promise`\<`Product`\>
 
-Defined in: core/services/products.service.ts:57
+Defined in: [core/services/products.service.ts:57](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/products.service.ts#L57)
 
 Retrieve a product by ID.
 
@@ -62,7 +62,7 @@ Retrieve a product by ID.
 
 > **list**(`options?`): `Promise`\<[`PaginatedResponse`](../interfaces/PaginatedResponse.md)\<`Product`\>\>
 
-Defined in: core/services/products.service.ts:36
+Defined in: [core/services/products.service.ts:36](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/products.service.ts#L36)
 
 List products with cursor-based pagination.
 

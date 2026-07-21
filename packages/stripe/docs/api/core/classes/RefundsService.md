@@ -6,11 +6,7 @@
 
 # Class: RefundsService
 
-<<<<<<< HEAD
-Defined in: [core/services/refunds.service.ts:59](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/refunds.service.ts#L59)
-=======
-Defined in: [core/services/refunds.service.ts:59](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/refunds.service.ts#L59)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/refunds.service.ts:59](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/refunds.service.ts#L59)
 
 Refunds service wrapping Stripe Refunds.
 
@@ -28,11 +24,7 @@ const refund = await stripe.refunds.create({
 
 > **new RefundsService**(`client`): `RefundsService`
 
-<<<<<<< HEAD
-Defined in: [core/services/refunds.service.ts:60](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/refunds.service.ts#L60)
-=======
-Defined in: [core/services/refunds.service.ts:60](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/refunds.service.ts#L60)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/refunds.service.ts:60](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/refunds.service.ts#L60)
 
 #### Parameters
 
@@ -50,11 +42,7 @@ Defined in: [core/services/refunds.service.ts:60](https://github.com/mbates/stri
 
 > **create**(`options`): `Promise`\<`Refund`\>
 
-<<<<<<< HEAD
-Defined in: [core/services/refunds.service.ts:83](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/refunds.service.ts#L83)
-=======
-Defined in: [core/services/refunds.service.ts:83](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/refunds.service.ts#L83)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/refunds.service.ts:83](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/refunds.service.ts#L83)
 
 Create a refund.
 
@@ -96,11 +84,7 @@ const partial = await stripe.refunds.create({
 
 > **get**(`refundId`): `Promise`\<`Refund`\>
 
-<<<<<<< HEAD
-Defined in: [core/services/refunds.service.ts:120](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/refunds.service.ts#L120)
-=======
-Defined in: [core/services/refunds.service.ts:120](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/refunds.service.ts#L120)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/refunds.service.ts:120](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/refunds.service.ts#L120)
 
 Retrieve a refund by ID.
 
@@ -130,11 +114,7 @@ const refund = await stripe.refunds.get('re_123');
 
 > **list**(`options?`): `Promise`\<[`PaginatedResponse`](../interfaces/PaginatedResponse.md)\<`Refund`\>\>
 
-<<<<<<< HEAD
-Defined in: [core/services/refunds.service.ts:139](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/refunds.service.ts#L139)
-=======
-Defined in: [core/services/refunds.service.ts:139](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/refunds.service.ts#L139)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/refunds.service.ts:139](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/refunds.service.ts#L139)
 
 List refunds with cursor-based pagination.
 

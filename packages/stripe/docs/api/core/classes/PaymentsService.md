@@ -6,11 +6,7 @@
 
 # Class: PaymentsService
 
-<<<<<<< HEAD
-Defined in: [core/services/payments.service.ts:35](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/payments.service.ts#L35)
-=======
-Defined in: [core/services/payments.service.ts:35](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/payments.service.ts#L35)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/payments.service.ts:35](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/payments.service.ts#L35)
 
 Payments service wrapping Stripe PaymentIntents.
 
@@ -31,11 +27,7 @@ const payment = await stripe.payments.create({
 
 > **new PaymentsService**(`client`): `PaymentsService`
 
-<<<<<<< HEAD
-Defined in: [core/services/payments.service.ts:36](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/payments.service.ts#L36)
-=======
-Defined in: [core/services/payments.service.ts:36](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/payments.service.ts#L36)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/payments.service.ts:36](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/payments.service.ts#L36)
 
 #### Parameters
 
@@ -53,11 +45,7 @@ Defined in: [core/services/payments.service.ts:36](https://github.com/mbates/str
 
 > **cancel**(`paymentId`): `Promise`\<`PaymentIntent`\>
 
-<<<<<<< HEAD
-Defined in: [core/services/payments.service.ts:133](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/payments.service.ts#L133)
-=======
-Defined in: [core/services/payments.service.ts:133](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/payments.service.ts#L133)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/payments.service.ts:133](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/payments.service.ts#L133)
 
 Cancel a payment.
 
@@ -87,11 +75,7 @@ const payment = await stripe.payments.cancel('pi_123');
 
 > **capture**(`paymentId`): `Promise`\<`PaymentIntent`\>
 
-<<<<<<< HEAD
-Defined in: [core/services/payments.service.ts:114](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/payments.service.ts#L114)
-=======
-Defined in: [core/services/payments.service.ts:114](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/payments.service.ts#L114)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/payments.service.ts:114](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/payments.service.ts#L114)
 
 Capture a payment that was authorized with `capture_method: manual`.
 
@@ -121,11 +105,7 @@ const payment = await stripe.payments.capture('pi_123');
 
 > **create**(`options`): `Promise`\<`PaymentIntent`\>
 
-<<<<<<< HEAD
-Defined in: [core/services/payments.service.ts:58](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/payments.service.ts#L58)
-=======
-Defined in: [core/services/payments.service.ts:58](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/payments.service.ts#L58)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/payments.service.ts:58](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/payments.service.ts#L58)
 
 Create a payment (PaymentIntent).
 
@@ -169,11 +149,7 @@ const payment = await stripe.payments.create({
 
 > **get**(`paymentId`): `Promise`\<`PaymentIntent`\>
 
-<<<<<<< HEAD
-Defined in: [core/services/payments.service.ts:95](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/payments.service.ts#L95)
-=======
-Defined in: [core/services/payments.service.ts:95](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/payments.service.ts#L95)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/payments.service.ts:95](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/payments.service.ts#L95)
 
 Retrieve a payment by ID.
 
@@ -203,11 +179,7 @@ const payment = await stripe.payments.get('pi_123');
 
 > **list**(`options?`): `Promise`\<[`PaginatedResponse`](../interfaces/PaginatedResponse.md)\<`PaymentIntent`\>\>
 
-<<<<<<< HEAD
-Defined in: [core/services/payments.service.ts:153](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/payments.service.ts#L153)
-=======
-Defined in: [core/services/payments.service.ts:153](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/payments.service.ts#L153)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/payments.service.ts:153](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/payments.service.ts#L153)
 
 List payments with cursor-based pagination.
 

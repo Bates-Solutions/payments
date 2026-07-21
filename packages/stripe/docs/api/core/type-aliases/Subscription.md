@@ -8,6 +8,6 @@
 
 > **Subscription** = `Stripe.Subscription`
 
-Defined in: core/services/subscriptions.service.ts:9
+Defined in: [core/services/subscriptions.service.ts:9](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L9)
 
 The raw Stripe Subscription

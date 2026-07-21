@@ -8,6 +8,6 @@
 
 > **BillingPortalSession** = `Stripe.BillingPortal.Session`
 
-Defined in: core/services/billing-portal.service.ts:8
+Defined in: [core/services/billing-portal.service.ts:8](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/billing-portal.service.ts#L8)
 
 A Stripe Billing Portal session

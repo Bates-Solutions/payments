@@ -6,11 +6,7 @@
 
 # Interface: CreateCustomerOptions
 
-<<<<<<< HEAD
-Defined in: [core/services/customers.service.ts:26](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/customers.service.ts#L26)
-=======
-Defined in: [core/services/customers.service.ts:26](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/customers.service.ts#L26)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/customers.service.ts:26](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L26)
 
 Options for creating a customer
 
@@ -20,11 +16,7 @@ Options for creating a customer
 
 > `optional` **address?**: [`CustomerAddress`](CustomerAddress.md)
 
-<<<<<<< HEAD
-Defined in: [core/services/customers.service.ts:31](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/customers.service.ts#L31)
-=======
-Defined in: [core/services/customers.service.ts:31](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/customers.service.ts#L31)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/customers.service.ts:31](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L31)
 
 ***
 
@@ -32,11 +24,7 @@ Defined in: [core/services/customers.service.ts:31](https://github.com/mbates/st
 
 > `optional` **description?**: `string`
 
-<<<<<<< HEAD
-Defined in: [core/services/customers.service.ts:30](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/customers.service.ts#L30)
-=======
-Defined in: [core/services/customers.service.ts:30](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/customers.service.ts#L30)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/customers.service.ts:30](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L30)
 
 ***
 
@@ -44,11 +32,7 @@ Defined in: [core/services/customers.service.ts:30](https://github.com/mbates/st
 
 > `optional` **email?**: `string`
 
-<<<<<<< HEAD
-Defined in: [core/services/customers.service.ts:27](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/customers.service.ts#L27)
-=======
-Defined in: [core/services/customers.service.ts:27](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/customers.service.ts#L27)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/customers.service.ts:27](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L27)
 
 ***
 
@@ -56,11 +40,7 @@ Defined in: [core/services/customers.service.ts:27](https://github.com/mbates/st
 
 > `optional` **idempotencyKey?**: `string`
 
-<<<<<<< HEAD
-Defined in: [core/services/customers.service.ts:33](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/customers.service.ts#L33)
-=======
-Defined in: [core/services/customers.service.ts:33](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/customers.service.ts#L33)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/customers.service.ts:33](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L33)
 
 ***
 
@@ -68,11 +48,7 @@ Defined in: [core/services/customers.service.ts:33](https://github.com/mbates/st
 
 > `optional` **metadata?**: `Record`\<`string`, `string`\>
 
-<<<<<<< HEAD
-Defined in: [core/services/customers.service.ts:32](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/customers.service.ts#L32)
-=======
-Defined in: [core/services/customers.service.ts:32](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/customers.service.ts#L32)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/customers.service.ts:32](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L32)
 
 ***
 
@@ -80,11 +56,7 @@ Defined in: [core/services/customers.service.ts:32](https://github.com/mbates/st
 
 > `optional` **name?**: `string`
 
-<<<<<<< HEAD
-Defined in: [core/services/customers.service.ts:28](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/customers.service.ts#L28)
-=======
-Defined in: [core/services/customers.service.ts:28](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/customers.service.ts#L28)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/customers.service.ts:28](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L28)
 
 ***
 
@@ -92,8 +64,4 @@ Defined in: [core/services/customers.service.ts:28](https://github.com/mbates/st
 
 > `optional` **phone?**: `string`
 
-<<<<<<< HEAD
-Defined in: [core/services/customers.service.ts:29](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/customers.service.ts#L29)
-=======
-Defined in: [core/services/customers.service.ts:29](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/customers.service.ts#L29)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/customers.service.ts:29](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L29)

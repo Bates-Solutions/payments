@@ -6,11 +6,7 @@
 
 # Interface: CreateRefundOptions
 
-<<<<<<< HEAD
-Defined in: [core/services/refunds.service.ts:21](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/refunds.service.ts#L21)
-=======
-Defined in: [core/services/refunds.service.ts:21](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/refunds.service.ts#L21)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/refunds.service.ts:21](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/refunds.service.ts#L21)
 
 Options for creating a refund.
 
@@ -22,11 +18,7 @@ Provide either `paymentIntentId` or `chargeId`.
 
 > `optional` **amount?**: `number`
 
-<<<<<<< HEAD
-Defined in: [core/services/refunds.service.ts:29](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/refunds.service.ts#L29)
-=======
-Defined in: [core/services/refunds.service.ts:29](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/refunds.service.ts#L29)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/refunds.service.ts:29](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/refunds.service.ts#L29)
 
 Amount to refund in the smallest currency unit. Omit for a full refund.
 
@@ -36,11 +28,7 @@ Amount to refund in the smallest currency unit. Omit for a full refund.
 
 > `optional` **chargeId?**: `string`
 
-<<<<<<< HEAD
-Defined in: [core/services/refunds.service.ts:25](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/refunds.service.ts#L25)
-=======
-Defined in: [core/services/refunds.service.ts:25](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/refunds.service.ts#L25)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/refunds.service.ts:25](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/refunds.service.ts#L25)
 
 Charge to refund
 
@@ -50,11 +38,7 @@ Charge to refund
 
 > `optional` **idempotencyKey?**: `string`
 
-<<<<<<< HEAD
-Defined in: [core/services/refunds.service.ts:33](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/refunds.service.ts#L33)
-=======
-Defined in: [core/services/refunds.service.ts:33](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/refunds.service.ts#L33)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/refunds.service.ts:33](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/refunds.service.ts#L33)
 
 ***
 
@@ -62,11 +46,7 @@ Defined in: [core/services/refunds.service.ts:33](https://github.com/mbates/stri
 
 > `optional` **metadata?**: `Record`\<`string`, `string`\>
 
-<<<<<<< HEAD
-Defined in: [core/services/refunds.service.ts:32](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/refunds.service.ts#L32)
-=======
-Defined in: [core/services/refunds.service.ts:32](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/refunds.service.ts#L32)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/refunds.service.ts:32](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/refunds.service.ts#L32)
 
 ***
 
@@ -74,11 +54,7 @@ Defined in: [core/services/refunds.service.ts:32](https://github.com/mbates/stri
 
 > `optional` **paymentIntentId?**: `string`
 
-<<<<<<< HEAD
-Defined in: [core/services/refunds.service.ts:23](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/refunds.service.ts#L23)
-=======
-Defined in: [core/services/refunds.service.ts:23](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/refunds.service.ts#L23)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/refunds.service.ts:23](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/refunds.service.ts#L23)
 
 PaymentIntent to refund
 
@@ -88,10 +64,6 @@ PaymentIntent to refund
 
 > `optional` **reason?**: [`RefundReason`](../type-aliases/RefundReason.md)
 
-<<<<<<< HEAD
-Defined in: [core/services/refunds.service.ts:31](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/refunds.service.ts#L31)
-=======
-Defined in: [core/services/refunds.service.ts:31](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/refunds.service.ts#L31)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/refunds.service.ts:31](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/refunds.service.ts#L31)
 
 Reason for the refund

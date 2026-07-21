@@ -6,7 +6,7 @@
 
 # Interface: CreateCheckoutSessionOptions
 
-Defined in: core/services/checkout.service.ts:24
+Defined in: [core/services/checkout.service.ts:24](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/checkout.service.ts#L24)
 
 Options for creating a Checkout Session
 
@@ -16,7 +16,7 @@ Options for creating a Checkout Session
 
 > **cancelUrl**: `string`
 
-Defined in: core/services/checkout.service.ts:35
+Defined in: [core/services/checkout.service.ts:35](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/checkout.service.ts#L35)
 
 URL to redirect to on cancel
 
@@ -26,7 +26,7 @@ URL to redirect to on cancel
 
 > `optional` **clientReferenceId?**: `string`
 
-Defined in: core/services/checkout.service.ts:41
+Defined in: [core/services/checkout.service.ts:41](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/checkout.service.ts#L41)
 
 Your own reference id echoed back on the session
 
@@ -36,7 +36,7 @@ Your own reference id echoed back on the session
 
 > `optional` **customerEmail?**: `string`
 
-Defined in: core/services/checkout.service.ts:39
+Defined in: [core/services/checkout.service.ts:39](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/checkout.service.ts#L39)
 
 Prefill the email for a new customer (ignored when `customerId` is set)
 
@@ -46,7 +46,7 @@ Prefill the email for a new customer (ignored when `customerId` is set)
 
 > `optional` **customerId?**: `string`
 
-Defined in: core/services/checkout.service.ts:37
+Defined in: [core/services/checkout.service.ts:37](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/checkout.service.ts#L37)
 
 Existing customer to attach the session to
 
@@ -56,7 +56,7 @@ Existing customer to attach the session to
 
 > `optional` **idempotencyKey?**: `string`
 
-Defined in: core/services/checkout.service.ts:45
+Defined in: [core/services/checkout.service.ts:45](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/checkout.service.ts#L45)
 
 Idempotency key (defaults to a generated UUID)
 
@@ -66,7 +66,7 @@ Idempotency key (defaults to a generated UUID)
 
 > **lineItems**: [`CheckoutLineItem`](CheckoutLineItem.md)[]
 
-Defined in: core/services/checkout.service.ts:31
+Defined in: [core/services/checkout.service.ts:31](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/checkout.service.ts#L31)
 
 Line items (price + quantity)
 
@@ -76,7 +76,7 @@ Line items (price + quantity)
 
 > `optional` **metadata?**: `Record`\<`string`, `string`\>
 
-Defined in: core/services/checkout.service.ts:43
+Defined in: [core/services/checkout.service.ts:43](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/checkout.service.ts#L43)
 
 Key/value metadata attached to the session
 
@@ -86,7 +86,7 @@ Key/value metadata attached to the session
 
 > `optional` **mode?**: `Mode`
 
-Defined in: core/services/checkout.service.ts:29
+Defined in: [core/services/checkout.service.ts:29](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/checkout.service.ts#L29)
 
 Checkout mode.
 
@@ -102,6 +102,6 @@ Checkout mode.
 
 > **successUrl**: `string`
 
-Defined in: core/services/checkout.service.ts:33
+Defined in: [core/services/checkout.service.ts:33](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/checkout.service.ts#L33)
 
 URL to redirect to on success

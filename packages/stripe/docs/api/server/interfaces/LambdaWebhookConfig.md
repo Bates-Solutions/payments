@@ -6,11 +6,7 @@
 
 # Interface: LambdaWebhookConfig
 
-<<<<<<< HEAD
-Defined in: [server/middleware/lambda.ts:74](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/middleware/lambda.ts#L74)
-=======
-Defined in: [server/middleware/lambda.ts:74](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/server/middleware/lambda.ts#L74)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [server/middleware/lambda.ts:74](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/server/middleware/lambda.ts#L74)
 
 Configuration for Lambda webhook handling.
 
@@ -24,11 +20,7 @@ Configuration for Lambda webhook handling.
 
 > `optional` **corsHeaders?**: `Record`\<`string`, `string`\>
 
-<<<<<<< HEAD
-Defined in: [server/middleware/lambda.ts:80](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/middleware/lambda.ts#L80)
-=======
-Defined in: [server/middleware/lambda.ts:80](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/server/middleware/lambda.ts#L80)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [server/middleware/lambda.ts:80](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/server/middleware/lambda.ts#L80)
 
 Custom CORS headers (merged with defaults)
 
@@ -38,11 +30,7 @@ Custom CORS headers (merged with defaults)
 
 > **handlers**: [`LambdaWebhookHandlers`](../type-aliases/LambdaWebhookHandlers.md)
 
-<<<<<<< HEAD
-Defined in: [server/middleware/lambda.ts:78](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/middleware/lambda.ts#L78)
-=======
-Defined in: [server/middleware/lambda.ts:78](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/server/middleware/lambda.ts#L78)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [server/middleware/lambda.ts:78](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/server/middleware/lambda.ts#L78)
 
 Event handlers by type
 
@@ -52,11 +40,7 @@ Event handlers by type
 
 > `optional` **logger?**: `false` \| [`WebhookLogger`](WebhookLogger.md)
 
-<<<<<<< HEAD
-Defined in: [server/middleware/lambda.ts:82](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/middleware/lambda.ts#L82)
-=======
-Defined in: [server/middleware/lambda.ts:82](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/server/middleware/lambda.ts#L82)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [server/middleware/lambda.ts:82](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/server/middleware/lambda.ts#L82)
 
 Logger instance (defaults to console); pass `false` to disable
 
@@ -66,11 +50,7 @@ Logger instance (defaults to console); pass `false` to disable
 
 > `optional` **onUnhandledEvent?**: (`event`, `context`) => `void` \| `Promise`\<`void`\>
 
-<<<<<<< HEAD
-Defined in: [server/middleware/lambda.ts:84](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/middleware/lambda.ts#L84)
-=======
-Defined in: [server/middleware/lambda.ts:84](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/server/middleware/lambda.ts#L84)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [server/middleware/lambda.ts:84](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/server/middleware/lambda.ts#L84)
 
 Callback for events with no registered handler
 
@@ -94,11 +74,7 @@ Callback for events with no registered handler
 
 > **signingSecret**: `string`
 
-<<<<<<< HEAD
-Defined in: [server/middleware/lambda.ts:76](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/middleware/lambda.ts#L76)
-=======
-Defined in: [server/middleware/lambda.ts:76](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/server/middleware/lambda.ts#L76)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [server/middleware/lambda.ts:76](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/server/middleware/lambda.ts#L76)
 
 Stripe webhook signing secret (`whsec_…`)
 
@@ -108,11 +84,7 @@ Stripe webhook signing secret (`whsec_…`)
 
 > `optional` **tolerance?**: `number`
 
-<<<<<<< HEAD
-Defined in: [server/types.ts:50](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/types.ts#L50)
-=======
-Defined in: [server/types.ts:50](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/server/types.ts#L50)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [server/types.ts:50](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/server/types.ts#L50)
 
 Maximum allowed difference (seconds) between the signature timestamp and
 now. Set to `0` to disable the timestamp check.
