@@ -81,7 +81,12 @@ export function createExpressWebhookHandler(config: ExpressWebhookOptions): Requ
         throw new Error('Missing or invalid signature header');
       }
 
-      const verification = verifySignature(rawBody, signature, webhookConfig.signingSecret, webhookConfig);
+      const verification = await verifySignature(
+        rawBody,
+        signature,
+        webhookConfig.signingSecret,
+        webhookConfig
+      );
 
       if (!verification.valid) {
         if (autoRespond) {

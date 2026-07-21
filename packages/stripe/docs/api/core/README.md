@@ -50,5 +50,6 @@
 - [createStripeClient](functions/createStripeClient.md)
 - [formatMoney](functions/formatMoney.md)
 - [fromMinor](functions/fromMinor.md)
+- [fromUnixTime](functions/fromUnixTime.md)
 - [parseStripeError](functions/parseStripeError.md)
 - [toMinor](functions/toMinor.md)

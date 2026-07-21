@@ -8,9 +8,12 @@
 
 > **createIdempotencyKey**(): `string`
 
-Defined in: core/utils.ts:102
+Defined in: [core/utils.ts:104](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/utils.ts#L104)
 
 Create a unique idempotency key for Stripe API requests.
+
+Uses the WebCrypto `randomUUID`, so it runs on any modern runtime (Node 22+,
+Deno, Bun, Cloudflare Workers) — not just Node.
 
 ## Returns
 

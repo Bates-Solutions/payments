@@ -6,7 +6,7 @@
 
 # Class: StripeApiError
 
-Defined in: core/errors.ts:52
+Defined in: [core/errors.ts:52](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/errors.ts#L52)
 
 API-level errors from Stripe
 
@@ -20,7 +20,7 @@ API-level errors from Stripe
 
 > **new StripeApiError**(`message`, `code`, `statusCode`, `options?`): `StripeApiError`
 
-Defined in: core/errors.ts:60
+Defined in: [core/errors.ts:60](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/errors.ts#L60)
 
 #### Parameters
 
@@ -68,7 +68,7 @@ Defined in: core/errors.ts:60
 
 > `readonly` **code**: [`StripeErrorCode`](../type-aliases/StripeErrorCode.md)
 
-Defined in: core/errors.ts:28
+Defined in: [core/errors.ts:28](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/errors.ts#L28)
 
 #### Inherited from
 
@@ -80,7 +80,7 @@ Defined in: core/errors.ts:28
 
 > `readonly` `optional` **details?**: `unknown`
 
-Defined in: core/errors.ts:30
+Defined in: [core/errors.ts:30](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/errors.ts#L30)
 
 #### Inherited from
 
@@ -92,7 +92,7 @@ Defined in: core/errors.ts:30
 
 > `readonly` `optional` **param?**: `string`
 
-Defined in: core/errors.ts:56
+Defined in: [core/errors.ts:56](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/errors.ts#L56)
 
 Request parameter the error relates to, if any
 
@@ -102,7 +102,7 @@ Request parameter the error relates to, if any
 
 > `readonly` `optional` **requestId?**: `string`
 
-Defined in: core/errors.ts:58
+Defined in: [core/errors.ts:58](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/errors.ts#L58)
 
 Stripe request ID for support/debugging
 
@@ -112,7 +112,7 @@ Stripe request ID for support/debugging
 
 > `readonly` `optional` **statusCode?**: `number`
 
-Defined in: core/errors.ts:29
+Defined in: [core/errors.ts:29](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/errors.ts#L29)
 
 #### Inherited from
 
@@ -124,6 +124,6 @@ Defined in: core/errors.ts:29
 
 > `readonly` `optional` **type?**: `string`
 
-Defined in: core/errors.ts:54
+Defined in: [core/errors.ts:54](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/errors.ts#L54)
 
 Raw Stripe error `type` (e.g. `invalid_request_error`)

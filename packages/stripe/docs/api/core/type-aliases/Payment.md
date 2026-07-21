@@ -8,6 +8,6 @@
 
 > **Payment** = `Stripe.PaymentIntent`
 
-Defined in: core/services/payments.service.ts:9
+Defined in: [core/services/payments.service.ts:9](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/payments.service.ts#L9)
 
 A Stripe PaymentIntent
