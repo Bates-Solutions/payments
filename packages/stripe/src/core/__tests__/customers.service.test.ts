@@ -114,11 +114,11 @@ describe('CustomersService', () => {
   });
 
   describe('list', () => {
-    it('lists customers and returns a cursor', async () => {
+    it('returns a cursor only when more pages remain', async () => {
       const client = createMockClient({
         list: vi.fn().mockResolvedValue({
           data: [{ id: 'cus_1' }, { id: 'cus_2' }],
-          has_more: false,
+          has_more: true,
         }),
       });
 
@@ -132,6 +132,15 @@ describe('CustomersService', () => {
         email: 'john@example.com',
         starting_after: undefined,
       });
+    });
+
+    it('omits the cursor on the final page', async () => {
+      const client = createMockClient({
+        list: vi.fn().mockResolvedValue({ data: [{ id: 'cus_1' }], has_more: false }),
+      });
+      const result = await new CustomersService(client).list();
+      expect(result.hasMore).toBe(false);
+      expect(result.nextCursor).toBeUndefined();
     });
   });
 
