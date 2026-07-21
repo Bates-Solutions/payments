@@ -8,11 +8,7 @@
 
 > **verifySignature**(`rawBody`, `signature`, `signingSecret`, `options?`): `Promise`\<[`WebhookVerificationResult`](../interfaces/WebhookVerificationResult.md)\>
 
-<<<<<<< HEAD
-Defined in: [server/webhook.ts:108](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/webhook.ts#L108)
-=======
-Defined in: [server/webhook.ts:105](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/server/webhook.ts#L105)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [server/webhook.ts:108](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/server/webhook.ts#L108)
 
 Verify a Stripe webhook signature.
 

@@ -8,10 +8,6 @@
 
 > **WebhookEventType** = `Stripe.Event`\[`"type"`\]
 
-<<<<<<< HEAD
-Defined in: [server/types.ts:14](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/types.ts#L14)
-=======
-Defined in: [server/types.ts:14](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/server/types.ts#L14)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [server/types.ts:14](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/server/types.ts#L14)
 
 All Stripe webhook event type strings (e.g. `payment_intent.succeeded`).

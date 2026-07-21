@@ -6,11 +6,7 @@
 
 # Interface: CreatePaymentOptions
 
-<<<<<<< HEAD
-Defined in: [core/types/index.ts:50](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/types/index.ts#L50)
-=======
-Defined in: [core/types/index.ts:50](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/types/index.ts#L50)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/types/index.ts:50](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/types/index.ts#L50)
 
 Options for creating a payment (PaymentIntent)
 
@@ -20,11 +16,7 @@ Options for creating a payment (PaymentIntent)
 
 > **amount**: `number`
 
-<<<<<<< HEAD
-Defined in: [core/types/index.ts:52](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/types/index.ts#L52)
-=======
-Defined in: [core/types/index.ts:52](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/types/index.ts#L52)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/types/index.ts:52](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/types/index.ts#L52)
 
 Amount in the smallest currency unit (e.g. cents)
 
@@ -34,11 +26,7 @@ Amount in the smallest currency unit (e.g. cents)
 
 > `optional` **confirm?**: `boolean`
 
-<<<<<<< HEAD
-Defined in: [core/types/index.ts:63](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/types/index.ts#L63)
-=======
-Defined in: [core/types/index.ts:63](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/types/index.ts#L63)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/types/index.ts:63](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/types/index.ts#L63)
 
 Confirm the PaymentIntent immediately after creation.
 
@@ -54,11 +42,7 @@ false
 
 > `optional` **currency?**: [`CurrencyCode`](../type-aliases/CurrencyCode.md)
 
-<<<<<<< HEAD
-Defined in: [core/types/index.ts:54](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/types/index.ts#L54)
-=======
-Defined in: [core/types/index.ts:54](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/types/index.ts#L54)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/types/index.ts:54](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/types/index.ts#L54)
 
 ISO currency code (default: `usd`)
 
@@ -68,11 +52,7 @@ ISO currency code (default: `usd`)
 
 > `optional` **customerId?**: `string`
 
-<<<<<<< HEAD
-Defined in: [core/types/index.ts:56](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/types/index.ts#L56)
-=======
-Defined in: [core/types/index.ts:56](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/types/index.ts#L56)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/types/index.ts:56](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/types/index.ts#L56)
 
 Customer to attach the payment to
 
@@ -82,11 +62,7 @@ Customer to attach the payment to
 
 > `optional` **description?**: `string`
 
-<<<<<<< HEAD
-Defined in: [core/types/index.ts:65](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/types/index.ts#L65)
-=======
-Defined in: [core/types/index.ts:65](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/types/index.ts#L65)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/types/index.ts:65](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/types/index.ts#L65)
 
 Arbitrary description shown in the Stripe dashboard
 
@@ -96,11 +72,7 @@ Arbitrary description shown in the Stripe dashboard
 
 > `optional` **idempotencyKey?**: `string`
 
-<<<<<<< HEAD
-Defined in: [core/types/index.ts:71](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/types/index.ts#L71)
-=======
-Defined in: [core/types/index.ts:71](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/types/index.ts#L71)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/types/index.ts:71](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/types/index.ts#L71)
 
 Idempotency key (defaults to a generated UUID)
 
@@ -110,11 +82,7 @@ Idempotency key (defaults to a generated UUID)
 
 > `optional` **metadata?**: `Record`\<`string`, `string`\>
 
-<<<<<<< HEAD
-Defined in: [core/types/index.ts:69](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/types/index.ts#L69)
-=======
-Defined in: [core/types/index.ts:69](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/types/index.ts#L69)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/types/index.ts:69](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/types/index.ts#L69)
 
 Key/value metadata attached to the PaymentIntent
 
@@ -124,11 +92,7 @@ Key/value metadata attached to the PaymentIntent
 
 > `optional` **paymentMethod?**: `string`
 
-<<<<<<< HEAD
-Defined in: [core/types/index.ts:58](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/types/index.ts#L58)
-=======
-Defined in: [core/types/index.ts:58](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/types/index.ts#L58)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/types/index.ts:58](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/types/index.ts#L58)
 
 Payment method to charge (e.g. `pm_…`)
 
@@ -138,10 +102,6 @@ Payment method to charge (e.g. `pm_…`)
 
 > `optional` **receiptEmail?**: `string`
 
-<<<<<<< HEAD
-Defined in: [core/types/index.ts:67](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/types/index.ts#L67)
-=======
-Defined in: [core/types/index.ts:67](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/types/index.ts#L67)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/types/index.ts:67](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/types/index.ts#L67)
 
 Email address to send the receipt to

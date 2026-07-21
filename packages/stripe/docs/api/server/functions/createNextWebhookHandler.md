@@ -8,11 +8,7 @@
 
 > **createNextWebhookHandler**(`config`): (`request`) => `Promise`\<`Response`\>
 
-<<<<<<< HEAD
-Defined in: [server/middleware/nextjs.ts:59](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/middleware/nextjs.ts#L59)
-=======
-Defined in: [server/middleware/nextjs.ts:59](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/server/middleware/nextjs.ts#L59)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [server/middleware/nextjs.ts:59](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/server/middleware/nextjs.ts#L59)
 
 Create a Next.js App Router webhook handler.
 

@@ -6,7 +6,7 @@
 
 # Interface: CreatePortalSessionOptions
 
-Defined in: core/services/billing-portal.service.ts:13
+Defined in: [core/services/billing-portal.service.ts:13](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/billing-portal.service.ts#L13)
 
 Options for creating a Billing Portal session
 
@@ -16,7 +16,7 @@ Options for creating a Billing Portal session
 
 > `optional` **configuration?**: `string`
 
-Defined in: core/services/billing-portal.service.ts:19
+Defined in: [core/services/billing-portal.service.ts:19](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/billing-portal.service.ts#L19)
 
 A specific portal configuration ID to use
 
@@ -26,7 +26,7 @@ A specific portal configuration ID to use
 
 > **customerId**: `string`
 
-Defined in: core/services/billing-portal.service.ts:15
+Defined in: [core/services/billing-portal.service.ts:15](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/billing-portal.service.ts#L15)
 
 Customer to open the portal for
 
@@ -36,7 +36,7 @@ Customer to open the portal for
 
 > `optional` **idempotencyKey?**: `string`
 
-Defined in: core/services/billing-portal.service.ts:21
+Defined in: [core/services/billing-portal.service.ts:21](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/billing-portal.service.ts#L21)
 
 Idempotency key (defaults to a generated UUID)
 
@@ -46,6 +46,6 @@ Idempotency key (defaults to a generated UUID)
 
 > `optional` **returnUrl?**: `string`
 
-Defined in: core/services/billing-portal.service.ts:17
+Defined in: [core/services/billing-portal.service.ts:17](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/billing-portal.service.ts#L17)
 
 URL to return to after leaving the portal

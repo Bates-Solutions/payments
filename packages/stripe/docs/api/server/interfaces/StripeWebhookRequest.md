@@ -6,11 +6,7 @@
 
 # Interface: StripeWebhookRequest
 
-<<<<<<< HEAD
-Defined in: [server/middleware/express.ts:8](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/middleware/express.ts#L8)
-=======
-Defined in: [server/middleware/express.ts:8](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/server/middleware/express.ts#L8)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [server/middleware/express.ts:8](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/server/middleware/express.ts#L8)
 
 Extended Express Request carrying Stripe webhook data.
 
@@ -24,11 +20,7 @@ Extended Express Request carrying Stripe webhook data.
 
 > `optional` **rawBody?**: `string`
 
-<<<<<<< HEAD
-Defined in: [server/middleware/express.ts:10](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/middleware/express.ts#L10)
-=======
-Defined in: [server/middleware/express.ts:10](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/server/middleware/express.ts#L10)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [server/middleware/express.ts:10](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/server/middleware/express.ts#L10)
 
 The raw request body as a string
 
@@ -38,10 +30,6 @@ The raw request body as a string
 
 > `optional` **stripeEvent?**: `Event`
 
-<<<<<<< HEAD
-Defined in: [server/middleware/express.ts:12](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/middleware/express.ts#L12)
-=======
-Defined in: [server/middleware/express.ts:12](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/server/middleware/express.ts#L12)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [server/middleware/express.ts:12](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/server/middleware/express.ts#L12)
 
 The parsed Stripe webhook event

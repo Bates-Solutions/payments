@@ -6,11 +6,7 @@
 
 # Interface: ListRefundsOptions
 
-<<<<<<< HEAD
-Defined in: [core/services/refunds.service.ts:39](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/refunds.service.ts#L39)
-=======
-Defined in: [core/services/refunds.service.ts:39](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/refunds.service.ts#L39)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/refunds.service.ts:39](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/refunds.service.ts#L39)
 
 Options for listing refunds
 
@@ -20,11 +16,7 @@ Options for listing refunds
 
 > `optional` **chargeId?**: `string`
 
-<<<<<<< HEAD
-Defined in: [core/services/refunds.service.ts:44](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/refunds.service.ts#L44)
-=======
-Defined in: [core/services/refunds.service.ts:44](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/refunds.service.ts#L44)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/refunds.service.ts:44](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/refunds.service.ts#L44)
 
 Only return refunds for this charge
 
@@ -34,11 +26,7 @@ Only return refunds for this charge
 
 > `optional` **limit?**: `number`
 
-<<<<<<< HEAD
-Defined in: [core/services/refunds.service.ts:40](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/refunds.service.ts#L40)
-=======
-Defined in: [core/services/refunds.service.ts:40](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/refunds.service.ts#L40)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/refunds.service.ts:40](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/refunds.service.ts#L40)
 
 ***
 
@@ -46,11 +34,7 @@ Defined in: [core/services/refunds.service.ts:40](https://github.com/mbates/stri
 
 > `optional` **paymentIntentId?**: `string`
 
-<<<<<<< HEAD
-Defined in: [core/services/refunds.service.ts:42](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/refunds.service.ts#L42)
-=======
-Defined in: [core/services/refunds.service.ts:42](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/refunds.service.ts#L42)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/refunds.service.ts:42](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/refunds.service.ts#L42)
 
 Only return refunds for this PaymentIntent
 
@@ -60,10 +44,6 @@ Only return refunds for this PaymentIntent
 
 > `optional` **startingAfter?**: `string`
 
-<<<<<<< HEAD
-Defined in: [core/services/refunds.service.ts:46](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/refunds.service.ts#L46)
-=======
-Defined in: [core/services/refunds.service.ts:46](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/refunds.service.ts#L46)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/services/refunds.service.ts:46](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/refunds.service.ts#L46)
 
 Cursor: return records after this refund ID

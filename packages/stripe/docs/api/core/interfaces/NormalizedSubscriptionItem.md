@@ -6,7 +6,7 @@
 
 # Interface: NormalizedSubscriptionItem
 
-Defined in: core/services/subscriptions.service.ts:19
+Defined in: [core/services/subscriptions.service.ts:19](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L19)
 
 A single normalized subscription item.
 
@@ -16,7 +16,7 @@ A single normalized subscription item.
 
 > **id**: `string`
 
-Defined in: core/services/subscriptions.service.ts:20
+Defined in: [core/services/subscriptions.service.ts:20](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L20)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: core/services/subscriptions.service.ts:20
 
 > `optional` **priceId?**: `string`
 
-Defined in: core/services/subscriptions.service.ts:21
+Defined in: [core/services/subscriptions.service.ts:21](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L21)
 
 ***
 
@@ -32,4 +32,4 @@ Defined in: core/services/subscriptions.service.ts:21
 
 > `optional` **quantity?**: `number`
 
-Defined in: core/services/subscriptions.service.ts:22
+Defined in: [core/services/subscriptions.service.ts:22](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L22)

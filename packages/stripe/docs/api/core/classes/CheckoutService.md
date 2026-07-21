@@ -6,7 +6,7 @@
 
 # Class: CheckoutService
 
-Defined in: core/services/checkout.service.ts:74
+Defined in: [core/services/checkout.service.ts:74](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/checkout.service.ts#L74)
 
 Checkout service wrapping Stripe [Checkout Sessions](https://docs.stripe.com/api/checkout/sessions).
 
@@ -30,7 +30,7 @@ redirect(session.url);
 
 > **new CheckoutService**(`client`): `CheckoutService`
 
-Defined in: core/services/checkout.service.ts:75
+Defined in: [core/services/checkout.service.ts:75](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/checkout.service.ts#L75)
 
 #### Parameters
 
@@ -48,7 +48,7 @@ Defined in: core/services/checkout.service.ts:75
 
 > **create**(`options`): `Promise`\<`Session`\>
 
-Defined in: core/services/checkout.service.ts:85
+Defined in: [core/services/checkout.service.ts:85](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/checkout.service.ts#L85)
 
 Create a Checkout Session.
 
@@ -76,7 +76,7 @@ When required fields are missing
 
 > **expire**(`sessionId`): `Promise`\<`Session`\>
 
-Defined in: core/services/checkout.service.ts:133
+Defined in: [core/services/checkout.service.ts:133](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/checkout.service.ts#L133)
 
 Expire an open Checkout Session so it can no longer be completed.
 
@@ -96,7 +96,7 @@ Expire an open Checkout Session so it can no longer be completed.
 
 > **get**(`sessionId`): `Promise`\<`Session`\>
 
-Defined in: core/services/checkout.service.ts:122
+Defined in: [core/services/checkout.service.ts:122](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/checkout.service.ts#L122)
 
 Retrieve a Checkout Session by ID.
 
@@ -116,7 +116,7 @@ Retrieve a Checkout Session by ID.
 
 > **list**(`options?`): `Promise`\<[`PaginatedResponse`](../interfaces/PaginatedResponse.md)\<`Session`\>\>
 
-Defined in: core/services/checkout.service.ts:144
+Defined in: [core/services/checkout.service.ts:144](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/checkout.service.ts#L144)
 
 List Checkout Sessions with cursor-based pagination.
 

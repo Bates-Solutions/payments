@@ -6,7 +6,7 @@
 
 # Interface: NormalizedSubscription
 
-Defined in: core/services/subscriptions.service.ts:33
+Defined in: [core/services/subscriptions.service.ts:33](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L33)
 
 A normalized subscription with a stable shape across Stripe API versions.
 
@@ -21,7 +21,7 @@ from the item first and falls back to the subscription.
 
 > **cancelAtPeriodEnd**: `boolean`
 
-Defined in: core/services/subscriptions.service.ts:44
+Defined in: [core/services/subscriptions.service.ts:44](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L44)
 
 ***
 
@@ -29,7 +29,7 @@ Defined in: core/services/subscriptions.service.ts:44
 
 > `optional` **canceledAt?**: `Date`
 
-Defined in: core/services/subscriptions.service.ts:45
+Defined in: [core/services/subscriptions.service.ts:45](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L45)
 
 ***
 
@@ -37,7 +37,7 @@ Defined in: core/services/subscriptions.service.ts:45
 
 > `optional` **currentPeriodEnd?**: `Date`
 
-Defined in: core/services/subscriptions.service.ts:43
+Defined in: [core/services/subscriptions.service.ts:43](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L43)
 
 ***
 
@@ -45,7 +45,7 @@ Defined in: core/services/subscriptions.service.ts:43
 
 > `optional` **currentPeriodStart?**: `Date`
 
-Defined in: core/services/subscriptions.service.ts:42
+Defined in: [core/services/subscriptions.service.ts:42](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L42)
 
 ***
 
@@ -53,7 +53,7 @@ Defined in: core/services/subscriptions.service.ts:42
 
 > `optional` **customerId?**: `string`
 
-Defined in: core/services/subscriptions.service.ts:36
+Defined in: [core/services/subscriptions.service.ts:36](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L36)
 
 ***
 
@@ -61,7 +61,7 @@ Defined in: core/services/subscriptions.service.ts:36
 
 > **id**: `string`
 
-Defined in: core/services/subscriptions.service.ts:34
+Defined in: [core/services/subscriptions.service.ts:34](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L34)
 
 ***
 
@@ -69,7 +69,7 @@ Defined in: core/services/subscriptions.service.ts:34
 
 > **items**: [`NormalizedSubscriptionItem`](NormalizedSubscriptionItem.md)[]
 
-Defined in: core/services/subscriptions.service.ts:41
+Defined in: [core/services/subscriptions.service.ts:41](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L41)
 
 ***
 
@@ -77,7 +77,7 @@ Defined in: core/services/subscriptions.service.ts:41
 
 > `optional` **priceId?**: `string`
 
-Defined in: core/services/subscriptions.service.ts:38
+Defined in: [core/services/subscriptions.service.ts:38](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L38)
 
 Price ID of the first item — the common single-item case
 
@@ -87,7 +87,7 @@ Price ID of the first item — the common single-item case
 
 > `optional` **quantity?**: `number`
 
-Defined in: core/services/subscriptions.service.ts:40
+Defined in: [core/services/subscriptions.service.ts:40](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L40)
 
 Quantity of the first item
 
@@ -97,7 +97,7 @@ Quantity of the first item
 
 > **raw**: `Subscription`
 
-Defined in: core/services/subscriptions.service.ts:48
+Defined in: [core/services/subscriptions.service.ts:48](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L48)
 
 The raw Stripe subscription, for anything not normalized here
 
@@ -107,7 +107,7 @@ The raw Stripe subscription, for anything not normalized here
 
 > **status**: `Status`
 
-Defined in: core/services/subscriptions.service.ts:35
+Defined in: [core/services/subscriptions.service.ts:35](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L35)
 
 ***
 
@@ -115,4 +115,4 @@ Defined in: core/services/subscriptions.service.ts:35
 
 > `optional` **trialEnd?**: `Date`
 
-Defined in: core/services/subscriptions.service.ts:46
+Defined in: [core/services/subscriptions.service.ts:46](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L46)

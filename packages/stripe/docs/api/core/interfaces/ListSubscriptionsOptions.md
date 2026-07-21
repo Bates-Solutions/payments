@@ -6,7 +6,7 @@
 
 # Interface: ListSubscriptionsOptions
 
-Defined in: core/services/subscriptions.service.ts:89
+Defined in: [core/services/subscriptions.service.ts:89](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L89)
 
 Options for listing subscriptions
 
@@ -16,7 +16,7 @@ Options for listing subscriptions
 
 > `optional` **customerId?**: `string`
 
-Defined in: core/services/subscriptions.service.ts:90
+Defined in: [core/services/subscriptions.service.ts:90](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L90)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: core/services/subscriptions.service.ts:90
 
 > `optional` **limit?**: `number`
 
-Defined in: core/services/subscriptions.service.ts:92
+Defined in: [core/services/subscriptions.service.ts:92](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L92)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: core/services/subscriptions.service.ts:92
 
 > `optional` **startingAfter?**: `string`
 
-Defined in: core/services/subscriptions.service.ts:93
+Defined in: [core/services/subscriptions.service.ts:93](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L93)
 
 ***
 
@@ -40,4 +40,4 @@ Defined in: core/services/subscriptions.service.ts:93
 
 > `optional` **status?**: `Status`
 
-Defined in: core/services/subscriptions.service.ts:91
+Defined in: [core/services/subscriptions.service.ts:91](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L91)

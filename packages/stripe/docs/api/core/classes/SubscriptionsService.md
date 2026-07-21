@@ -6,7 +6,7 @@
 
 # Class: SubscriptionsService
 
-Defined in: core/services/subscriptions.service.ts:120
+Defined in: [core/services/subscriptions.service.ts:120](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L120)
 
 Subscriptions service wrapping Stripe [Subscriptions](https://docs.stripe.com/api/subscriptions).
 
@@ -27,7 +27,7 @@ sub.priceId;          // 'price_…'
 
 > **new SubscriptionsService**(`client`): `SubscriptionsService`
 
-Defined in: core/services/subscriptions.service.ts:121
+Defined in: [core/services/subscriptions.service.ts:121](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L121)
 
 #### Parameters
 
@@ -45,7 +45,7 @@ Defined in: core/services/subscriptions.service.ts:121
 
 > **cancel**(`subscriptionId`, `options?`): `Promise`\<[`NormalizedSubscription`](../interfaces/NormalizedSubscription.md)\>
 
-Defined in: core/services/subscriptions.service.ts:160
+Defined in: [core/services/subscriptions.service.ts:160](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L160)
 
 Cancel a subscription, immediately or at period end.
 
@@ -69,7 +69,7 @@ Cancel a subscription, immediately or at period end.
 
 > **list**(`options?`): `Promise`\<[`PaginatedResponse`](../interfaces/PaginatedResponse.md)\<[`NormalizedSubscription`](../interfaces/NormalizedSubscription.md)\>\>
 
-Defined in: core/services/subscriptions.service.ts:138
+Defined in: [core/services/subscriptions.service.ts:138](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L138)
 
 List subscriptions with cursor-based pagination, normalized.
 
@@ -89,7 +89,7 @@ List subscriptions with cursor-based pagination, normalized.
 
 > **resume**(`subscriptionId`): `Promise`\<[`NormalizedSubscription`](../interfaces/NormalizedSubscription.md)\>
 
-Defined in: core/services/subscriptions.service.ts:177
+Defined in: [core/services/subscriptions.service.ts:177](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L177)
 
 Resume a subscription that was set to cancel at period end.
 
@@ -109,7 +109,7 @@ Resume a subscription that was set to cancel at period end.
 
 > **retrieve**(`subscriptionId`): `Promise`\<[`NormalizedSubscription`](../interfaces/NormalizedSubscription.md)\>
 
-Defined in: core/services/subscriptions.service.ts:126
+Defined in: [core/services/subscriptions.service.ts:126](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L126)
 
 Retrieve a subscription by ID, normalized.
 

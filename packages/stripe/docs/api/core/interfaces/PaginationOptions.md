@@ -6,11 +6,7 @@
 
 # Interface: PaginationOptions
 
-<<<<<<< HEAD
-Defined in: [core/types/index.ts:20](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/types/index.ts#L20)
-=======
-Defined in: [core/types/index.ts:20](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/types/index.ts#L20)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/types/index.ts:20](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/types/index.ts#L20)
 
 Common cursor pagination options
 
@@ -20,11 +16,7 @@ Common cursor pagination options
 
 > `optional` **limit?**: `number`
 
-<<<<<<< HEAD
-Defined in: [core/types/index.ts:22](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/types/index.ts#L22)
-=======
-Defined in: [core/types/index.ts:22](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/types/index.ts#L22)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/types/index.ts:22](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/types/index.ts#L22)
 
 Maximum number of records to return
 
@@ -34,10 +26,6 @@ Maximum number of records to return
 
 > `optional` **startingAfter?**: `string`
 
-<<<<<<< HEAD
-Defined in: [core/types/index.ts:24](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/types/index.ts#L24)
-=======
-Defined in: [core/types/index.ts:24](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/types/index.ts#L24)
->>>>>>> feat/edge-webhook-and-subscription-helpers
+Defined in: [core/types/index.ts:24](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/types/index.ts#L24)
 
 Cursor: return records after this object ID (`starting_after`)
