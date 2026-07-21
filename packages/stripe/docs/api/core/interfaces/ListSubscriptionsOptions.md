@@ -6,7 +6,7 @@
 
 # Interface: ListSubscriptionsOptions
 
-Defined in: [core/services/subscriptions.service.ts:89](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L89)
+Defined in: [core/services/subscriptions.service.ts:89](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/subscriptions.service.ts#L89)
 
 Options for listing subscriptions
 
@@ -16,7 +16,7 @@ Options for listing subscriptions
 
 > `optional` **customerId?**: `string`
 
-Defined in: [core/services/subscriptions.service.ts:90](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L90)
+Defined in: [core/services/subscriptions.service.ts:90](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/subscriptions.service.ts#L90)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [core/services/subscriptions.service.ts:90](https://github.com/mbate
 
 > `optional` **limit?**: `number`
 
-Defined in: [core/services/subscriptions.service.ts:92](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L92)
+Defined in: [core/services/subscriptions.service.ts:92](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/subscriptions.service.ts#L92)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [core/services/subscriptions.service.ts:92](https://github.com/mbate
 
 > `optional` **startingAfter?**: `string`
 
-Defined in: [core/services/subscriptions.service.ts:93](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L93)
+Defined in: [core/services/subscriptions.service.ts:93](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/subscriptions.service.ts#L93)
 
 ***
 
@@ -40,4 +40,4 @@ Defined in: [core/services/subscriptions.service.ts:93](https://github.com/mbate
 
 > `optional` **status?**: `Status`
 
-Defined in: [core/services/subscriptions.service.ts:91](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L91)
+Defined in: [core/services/subscriptions.service.ts:91](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/subscriptions.service.ts#L91)

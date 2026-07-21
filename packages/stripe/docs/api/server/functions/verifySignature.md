@@ -8,7 +8,7 @@
 
 > **verifySignature**(`rawBody`, `signature`, `signingSecret`, `options?`): `Promise`\<[`WebhookVerificationResult`](../interfaces/WebhookVerificationResult.md)\>
 
-Defined in: [server/webhook.ts:108](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/server/webhook.ts#L108)
+Defined in: [server/webhook.ts:108](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/server/webhook.ts#L108)
 
 Verify a Stripe webhook signature.
 

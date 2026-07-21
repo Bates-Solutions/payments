@@ -83,7 +83,10 @@ export class CheckoutService {
    * @throws {StripeValidationError} When required fields are missing
    */
   async create(options: CreateCheckoutSessionOptions): Promise<CheckoutSession> {
-    if (!options.lineItems.length) {
+    // Optional chain guards JS callers who bypass the types and omit lineItems;
+    // TS marks it required, so the chain is "unnecessary" only for typed callers.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (!options.lineItems?.length) {
       throw new StripeValidationError('lineItems must not be empty', 'lineItems');
     }
     if (!options.successUrl) {

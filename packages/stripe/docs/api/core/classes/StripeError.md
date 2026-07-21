@@ -6,7 +6,7 @@
 
 # Class: StripeError
 
-Defined in: [core/errors.ts:27](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/errors.ts#L27)
+Defined in: [core/errors.ts:27](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/errors.ts#L27)
 
 Base Stripe error class
 
@@ -27,7 +27,7 @@ Base Stripe error class
 
 > **new StripeError**(`message`, `code?`, `statusCode?`, `details?`): `StripeError`
 
-Defined in: [core/errors.ts:32](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/errors.ts#L32)
+Defined in: [core/errors.ts:32](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/errors.ts#L32)
 
 #### Parameters
 
@@ -61,7 +61,7 @@ Defined in: [core/errors.ts:32](https://github.com/mbates/stripe/blob/1dfc19f47c
 
 > `readonly` **code**: [`StripeErrorCode`](../type-aliases/StripeErrorCode.md)
 
-Defined in: [core/errors.ts:28](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/errors.ts#L28)
+Defined in: [core/errors.ts:28](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/errors.ts#L28)
 
 ***
 
@@ -69,7 +69,7 @@ Defined in: [core/errors.ts:28](https://github.com/mbates/stripe/blob/1dfc19f47c
 
 > `readonly` `optional` **details?**: `unknown`
 
-Defined in: [core/errors.ts:30](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/errors.ts#L30)
+Defined in: [core/errors.ts:30](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/errors.ts#L30)
 
 ***
 
@@ -77,4 +77,4 @@ Defined in: [core/errors.ts:30](https://github.com/mbates/stripe/blob/1dfc19f47c
 
 > `readonly` `optional` **statusCode?**: `number`
 
-Defined in: [core/errors.ts:29](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/errors.ts#L29)
+Defined in: [core/errors.ts:29](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/errors.ts#L29)

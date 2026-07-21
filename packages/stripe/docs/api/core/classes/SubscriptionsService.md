@@ -6,7 +6,7 @@
 
 # Class: SubscriptionsService
 
-Defined in: [core/services/subscriptions.service.ts:120](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L120)
+Defined in: [core/services/subscriptions.service.ts:120](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/subscriptions.service.ts#L120)
 
 Subscriptions service wrapping Stripe [Subscriptions](https://docs.stripe.com/api/subscriptions).
 
@@ -16,7 +16,7 @@ always available on `.raw`.
 ## Example
 
 ```typescript
-const sub = await stripe.subscriptions.retrieve('sub_123');
+const sub = await stripe.subscriptions.get('sub_123');
 sub.currentPeriodEnd; // a JS Date
 sub.priceId;          // 'price_…'
 ```
@@ -27,7 +27,7 @@ sub.priceId;          // 'price_…'
 
 > **new SubscriptionsService**(`client`): `SubscriptionsService`
 
-Defined in: [core/services/subscriptions.service.ts:121](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L121)
+Defined in: [core/services/subscriptions.service.ts:121](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/subscriptions.service.ts#L121)
 
 #### Parameters
 
@@ -45,7 +45,7 @@ Defined in: [core/services/subscriptions.service.ts:121](https://github.com/mbat
 
 > **cancel**(`subscriptionId`, `options?`): `Promise`\<[`NormalizedSubscription`](../interfaces/NormalizedSubscription.md)\>
 
-Defined in: [core/services/subscriptions.service.ts:160](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L160)
+Defined in: [core/services/subscriptions.service.ts:160](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/subscriptions.service.ts#L160)
 
 Cancel a subscription, immediately or at period end.
 
@@ -65,11 +65,31 @@ Cancel a subscription, immediately or at period end.
 
 ***
 
+### get()
+
+> **get**(`subscriptionId`): `Promise`\<[`NormalizedSubscription`](../interfaces/NormalizedSubscription.md)\>
+
+Defined in: [core/services/subscriptions.service.ts:126](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/subscriptions.service.ts#L126)
+
+Get a subscription by ID, normalized.
+
+#### Parameters
+
+##### subscriptionId
+
+`string`
+
+#### Returns
+
+`Promise`\<[`NormalizedSubscription`](../interfaces/NormalizedSubscription.md)\>
+
+***
+
 ### list()
 
 > **list**(`options?`): `Promise`\<[`PaginatedResponse`](../interfaces/PaginatedResponse.md)\<[`NormalizedSubscription`](../interfaces/NormalizedSubscription.md)\>\>
 
-Defined in: [core/services/subscriptions.service.ts:138](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L138)
+Defined in: [core/services/subscriptions.service.ts:138](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/subscriptions.service.ts#L138)
 
 List subscriptions with cursor-based pagination, normalized.
 
@@ -89,29 +109,9 @@ List subscriptions with cursor-based pagination, normalized.
 
 > **resume**(`subscriptionId`): `Promise`\<[`NormalizedSubscription`](../interfaces/NormalizedSubscription.md)\>
 
-Defined in: [core/services/subscriptions.service.ts:177](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L177)
+Defined in: [core/services/subscriptions.service.ts:177](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/subscriptions.service.ts#L177)
 
 Resume a subscription that was set to cancel at period end.
-
-#### Parameters
-
-##### subscriptionId
-
-`string`
-
-#### Returns
-
-`Promise`\<[`NormalizedSubscription`](../interfaces/NormalizedSubscription.md)\>
-
-***
-
-### retrieve()
-
-> **retrieve**(`subscriptionId`): `Promise`\<[`NormalizedSubscription`](../interfaces/NormalizedSubscription.md)\>
-
-Defined in: [core/services/subscriptions.service.ts:126](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/subscriptions.service.ts#L126)
-
-Retrieve a subscription by ID, normalized.
 
 #### Parameters
 
