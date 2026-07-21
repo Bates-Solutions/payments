@@ -6,7 +6,11 @@
 
 # Class: StripeValidationError
 
+<<<<<<< HEAD
 Defined in: [core/errors.ts:107](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/errors.ts#L107)
+=======
+Defined in: [core/errors.ts:107](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/errors.ts#L107)
+>>>>>>> feat/edge-webhook-and-subscription-helpers
 
 Validation errors for input this wrapper checks before calling Stripe
 
@@ -20,7 +24,11 @@ Validation errors for input this wrapper checks before calling Stripe
 
 > **new StripeValidationError**(`message`, `field?`): `StripeValidationError`
 
+<<<<<<< HEAD
 Defined in: [core/errors.ts:110](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/errors.ts#L110)
+=======
+Defined in: [core/errors.ts:110](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/errors.ts#L110)
+>>>>>>> feat/edge-webhook-and-subscription-helpers
 
 #### Parameters
 
@@ -46,7 +54,11 @@ Defined in: [core/errors.ts:110](https://github.com/mbates/stripe/blob/bb852372e
 
 > `readonly` **code**: [`StripeErrorCode`](../type-aliases/StripeErrorCode.md)
 
+<<<<<<< HEAD
 Defined in: [core/errors.ts:28](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/errors.ts#L28)
+=======
+Defined in: [core/errors.ts:28](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/errors.ts#L28)
+>>>>>>> feat/edge-webhook-and-subscription-helpers
 
 #### Inherited from
 
@@ -58,7 +70,11 @@ Defined in: [core/errors.ts:28](https://github.com/mbates/stripe/blob/bb852372e9
 
 > `readonly` `optional` **details?**: `unknown`
 
+<<<<<<< HEAD
 Defined in: [core/errors.ts:30](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/errors.ts#L30)
+=======
+Defined in: [core/errors.ts:30](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/errors.ts#L30)
+>>>>>>> feat/edge-webhook-and-subscription-helpers
 
 #### Inherited from
 
@@ -70,7 +86,11 @@ Defined in: [core/errors.ts:30](https://github.com/mbates/stripe/blob/bb852372e9
 
 > `readonly` `optional` **field?**: `string`
 
+<<<<<<< HEAD
 Defined in: [core/errors.ts:108](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/errors.ts#L108)
+=======
+Defined in: [core/errors.ts:108](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/errors.ts#L108)
+>>>>>>> feat/edge-webhook-and-subscription-helpers
 
 ***
 
@@ -78,7 +98,11 @@ Defined in: [core/errors.ts:108](https://github.com/mbates/stripe/blob/bb852372e
 
 > `readonly` `optional` **statusCode?**: `number`
 
+<<<<<<< HEAD
 Defined in: [core/errors.ts:29](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/errors.ts#L29)
+=======
+Defined in: [core/errors.ts:29](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/errors.ts#L29)
+>>>>>>> feat/edge-webhook-and-subscription-helpers
 
 #### Inherited from
 

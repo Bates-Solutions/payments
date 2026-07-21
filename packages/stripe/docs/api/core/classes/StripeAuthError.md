@@ -6,7 +6,11 @@
 
 # Class: StripeAuthError
 
+<<<<<<< HEAD
 Defined in: [core/errors.ts:77](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/errors.ts#L77)
+=======
+Defined in: [core/errors.ts:77](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/errors.ts#L77)
+>>>>>>> feat/edge-webhook-and-subscription-helpers
 
 Authentication errors
 
@@ -20,7 +24,11 @@ Authentication errors
 
 > **new StripeAuthError**(`message`, `code?`): `StripeAuthError`
 
+<<<<<<< HEAD
 Defined in: [core/errors.ts:78](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/errors.ts#L78)
+=======
+Defined in: [core/errors.ts:78](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/errors.ts#L78)
+>>>>>>> feat/edge-webhook-and-subscription-helpers
 
 #### Parameters
 
@@ -46,7 +54,11 @@ Defined in: [core/errors.ts:78](https://github.com/mbates/stripe/blob/bb852372e9
 
 > `readonly` **code**: [`StripeErrorCode`](../type-aliases/StripeErrorCode.md)
 
+<<<<<<< HEAD
 Defined in: [core/errors.ts:28](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/errors.ts#L28)
+=======
+Defined in: [core/errors.ts:28](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/errors.ts#L28)
+>>>>>>> feat/edge-webhook-and-subscription-helpers
 
 #### Inherited from
 
@@ -58,7 +70,11 @@ Defined in: [core/errors.ts:28](https://github.com/mbates/stripe/blob/bb852372e9
 
 > `readonly` `optional` **details?**: `unknown`
 
+<<<<<<< HEAD
 Defined in: [core/errors.ts:30](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/errors.ts#L30)
+=======
+Defined in: [core/errors.ts:30](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/errors.ts#L30)
+>>>>>>> feat/edge-webhook-and-subscription-helpers
 
 #### Inherited from
 
@@ -70,7 +86,11 @@ Defined in: [core/errors.ts:30](https://github.com/mbates/stripe/blob/bb852372e9
 
 > `readonly` `optional` **statusCode?**: `number`
 
+<<<<<<< HEAD
 Defined in: [core/errors.ts:29](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/errors.ts#L29)
+=======
+Defined in: [core/errors.ts:29](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/errors.ts#L29)
+>>>>>>> feat/edge-webhook-and-subscription-helpers
 
 #### Inherited from
 

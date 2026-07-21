@@ -8,7 +8,11 @@
 
 > **createStripeClient**(`config`): [`StripeClient`](../classes/StripeClient.md)
 
+<<<<<<< HEAD
 Defined in: [core/client.ts:122](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/client.ts#L122)
+=======
+Defined in: [core/client.ts:109](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/client.ts#L109)
+>>>>>>> feat/edge-webhook-and-subscription-helpers
 
 Create a new Stripe client instance.
 
