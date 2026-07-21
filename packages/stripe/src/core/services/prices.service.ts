@@ -57,7 +57,7 @@ export class PricesService {
       return {
         data: page.data,
         hasMore: page.has_more,
-        nextCursor: page.data.at(-1)?.id,
+        nextCursor: page.has_more ? page.data.at(-1)?.id : undefined,
       };
     } catch (error) {
       throw parseStripeError(error);

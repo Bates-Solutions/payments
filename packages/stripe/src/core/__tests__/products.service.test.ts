@@ -15,7 +15,7 @@ function createMockClient(overrides: Record<string, unknown> = {}): Stripe {
 describe('ProductsService', () => {
   it('lists active products', async () => {
     const client = createMockClient({
-      list: vi.fn().mockResolvedValue({ data: [{ id: 'prod_1' }], has_more: false }),
+      list: vi.fn().mockResolvedValue({ data: [{ id: "prod_1" }], has_more: true }),
     });
     const result = await new ProductsService(client).list({ active: true });
     expect(result.data).toHaveLength(1);
