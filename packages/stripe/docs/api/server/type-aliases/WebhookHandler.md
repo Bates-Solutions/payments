@@ -8,7 +8,7 @@
 
 > **WebhookHandler**\<`E`\> = (`event`) => `void` \| `Promise`\<`void`\>
 
-Defined in: [server/types.ts:19](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/server/types.ts#L19)
+Defined in: [server/types.ts:19](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/server/types.ts#L19)
 
 Handler for a webhook event of a specific type.
 

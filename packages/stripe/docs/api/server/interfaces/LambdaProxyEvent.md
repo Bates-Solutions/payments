@@ -6,7 +6,7 @@
 
 # Interface: LambdaProxyEvent
 
-Defined in: [server/middleware/lambda.ts:14](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/server/middleware/lambda.ts#L14)
+Defined in: [server/middleware/lambda.ts:14](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/server/middleware/lambda.ts#L14)
 
 Minimal API Gateway proxy event shape (avoids an aws-lambda dependency).
 
@@ -16,7 +16,7 @@ Minimal API Gateway proxy event shape (avoids an aws-lambda dependency).
 
 > **body**: `string` \| `null`
 
-Defined in: [server/middleware/lambda.ts:17](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/server/middleware/lambda.ts#L17)
+Defined in: [server/middleware/lambda.ts:17](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/server/middleware/lambda.ts#L17)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [server/middleware/lambda.ts:17](https://github.com/mbates/stripe/bl
 
 > `optional` **headers?**: `Record`\<`string`, `string` \| `undefined`\> \| `null`
 
-Defined in: [server/middleware/lambda.ts:16](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/server/middleware/lambda.ts#L16)
+Defined in: [server/middleware/lambda.ts:16](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/server/middleware/lambda.ts#L16)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [server/middleware/lambda.ts:16](https://github.com/mbates/stripe/bl
 
 > **httpMethod**: `string`
 
-Defined in: [server/middleware/lambda.ts:15](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/server/middleware/lambda.ts#L15)
+Defined in: [server/middleware/lambda.ts:15](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/server/middleware/lambda.ts#L15)
 
 ***
 
@@ -40,4 +40,4 @@ Defined in: [server/middleware/lambda.ts:15](https://github.com/mbates/stripe/bl
 
 > `optional` **isBase64Encoded?**: `boolean`
 
-Defined in: [server/middleware/lambda.ts:18](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/server/middleware/lambda.ts#L18)
+Defined in: [server/middleware/lambda.ts:18](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/server/middleware/lambda.ts#L18)

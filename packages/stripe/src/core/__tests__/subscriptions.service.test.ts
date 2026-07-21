@@ -79,7 +79,7 @@ describe('SubscriptionsService', () => {
     const client = createMockClient({
       retrieve: vi.fn().mockResolvedValue(subWithItemPeriod()),
     });
-    const result = await new SubscriptionsService(client).retrieve('sub_1');
+    const result = await new SubscriptionsService(client).get('sub_1');
     expect(result.priceId).toBe('price_1');
     expect(client.subscriptions.retrieve).toHaveBeenCalledWith('sub_1');
   });
@@ -120,6 +120,6 @@ describe('SubscriptionsService', () => {
     const client = createMockClient({
       retrieve: vi.fn().mockRejectedValue({ type: 'invalid_request_error', statusCode: 404 }),
     });
-    await expect(new SubscriptionsService(client).retrieve('sub_x')).rejects.toThrow();
+    await expect(new SubscriptionsService(client).get('sub_x')).rejects.toThrow();
   });
 });

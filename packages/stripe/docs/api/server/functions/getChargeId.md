@@ -8,7 +8,7 @@
 
 > **getChargeId**(`event`): `string` \| `undefined`
 
-Defined in: [server/webhook.ts:304](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/server/webhook.ts#L304)
+Defined in: [server/webhook.ts:304](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/server/webhook.ts#L304)
 
 Extract the Charge ID from a webhook event, when present.
 

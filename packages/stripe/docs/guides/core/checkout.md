@@ -47,4 +47,4 @@ const { data } = await stripe.checkout.list({ customerId: 'cus_123' });
 
 ## Reacting to completion
 
-A completed session fires a `checkout.session.completed` webhook. See the [Webhooks guide](../server/webhooks.md) — pair it with `subscriptions.retrieve` to read the resulting subscription.
+A completed session fires a `checkout.session.completed` webhook. See the [Webhooks guide](../server/webhooks.md) — pair it with `subscriptions.get` to read the resulting subscription.

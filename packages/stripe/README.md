@@ -102,7 +102,7 @@ const portal = await client.billingPortal.create({
 });
 
 // Read a subscription with period fields already as JS Dates
-const sub = await client.subscriptions.retrieve('sub_123');
+const sub = await client.subscriptions.get('sub_123');
 sub.status;             // 'active'
 sub.priceId;            // 'price_123'
 sub.currentPeriodEnd;   // Date
@@ -204,7 +204,7 @@ Stripe's epoch-seconds timestamps to a `Date`.
 | `refunds`       | Create and list refunds                                         |
 | `checkout`      | Hosted Checkout Sessions (subscription & one-time)              |
 | `billingPortal` | Customer billing portal sessions                                |
-| `subscriptions` | Retrieve/list/cancel subscriptions, normalized with `Date`s     |
+| `subscriptions` | Get, list, cancel subscriptions, normalized with `Date`s     |
 | `prices`        | List/retrieve prices (with product expansion)                   |
 | `products`      | List/retrieve products                                          |
 

@@ -7,7 +7,7 @@ The `subscriptions` service wraps Stripe [Subscriptions](https://docs.stripe.com
 Stripe moved `current_period_start` / `current_period_end` **from the subscription onto the subscription item** in newer API versions. The wrapper reads from the item first and falls back to the subscription, and surfaces both as JS `Date`s — so your code stops caring which API version is pinned and stops doing `new Date(x * 1000)`.
 
 ```typescript
-const sub = await stripe.subscriptions.retrieve('sub_123');
+const sub = await stripe.subscriptions.get('sub_123');
 
 sub.id;                  // 'sub_123'
 sub.status;              // 'active' | 'trialing' | 'past_due' | 'canceled' | …

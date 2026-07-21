@@ -112,7 +112,7 @@ export interface CancelSubscriptionOptions {
  *
  * @example
  * ```typescript
- * const sub = await stripe.subscriptions.retrieve('sub_123');
+ * const sub = await stripe.subscriptions.get('sub_123');
  * sub.currentPeriodEnd; // a JS Date
  * sub.priceId;          // 'price_…'
  * ```
@@ -121,9 +121,9 @@ export class SubscriptionsService {
   constructor(private readonly client: Stripe) {}
 
   /**
-   * Retrieve a subscription by ID, normalized.
+   * Get a subscription by ID, normalized.
    */
-  async retrieve(subscriptionId: string): Promise<NormalizedSubscription> {
+  async get(subscriptionId: string): Promise<NormalizedSubscription> {
     try {
       const subscription = await this.client.subscriptions.retrieve(subscriptionId);
       return normalizeSubscription(subscription);

@@ -6,7 +6,7 @@
 
 # Interface: UpdateCustomerOptions
 
-Defined in: [core/services/customers.service.ts:39](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L39)
+Defined in: [core/services/customers.service.ts:39](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/customers.service.ts#L39)
 
 Options for updating a customer
 
@@ -16,7 +16,7 @@ Options for updating a customer
 
 > `optional` **address?**: [`CustomerAddress`](CustomerAddress.md)
 
-Defined in: [core/services/customers.service.ts:44](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L44)
+Defined in: [core/services/customers.service.ts:44](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/customers.service.ts#L44)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [core/services/customers.service.ts:44](https://github.com/mbates/st
 
 > `optional` **description?**: `string`
 
-Defined in: [core/services/customers.service.ts:43](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L43)
+Defined in: [core/services/customers.service.ts:43](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/customers.service.ts#L43)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [core/services/customers.service.ts:43](https://github.com/mbates/st
 
 > `optional` **email?**: `string`
 
-Defined in: [core/services/customers.service.ts:40](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L40)
+Defined in: [core/services/customers.service.ts:40](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/customers.service.ts#L40)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [core/services/customers.service.ts:40](https://github.com/mbates/st
 
 > `optional` **metadata?**: `Record`\<`string`, `string`\>
 
-Defined in: [core/services/customers.service.ts:45](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L45)
+Defined in: [core/services/customers.service.ts:45](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/customers.service.ts#L45)
 
 ***
 
@@ -48,7 +48,7 @@ Defined in: [core/services/customers.service.ts:45](https://github.com/mbates/st
 
 > `optional` **name?**: `string`
 
-Defined in: [core/services/customers.service.ts:41](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L41)
+Defined in: [core/services/customers.service.ts:41](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/customers.service.ts#L41)
 
 ***
 
@@ -56,4 +56,4 @@ Defined in: [core/services/customers.service.ts:41](https://github.com/mbates/st
 
 > `optional` **phone?**: `string`
 
-Defined in: [core/services/customers.service.ts:42](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L42)
+Defined in: [core/services/customers.service.ts:42](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/customers.service.ts#L42)

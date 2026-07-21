@@ -6,7 +6,7 @@
 
 # Class: CustomersService
 
-Defined in: [core/services/customers.service.ts:82](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L82)
+Defined in: [core/services/customers.service.ts:82](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/customers.service.ts#L82)
 
 Customers service wrapping Stripe Customers.
 
@@ -25,7 +25,7 @@ const customer = await stripe.customers.create({
 
 > **new CustomersService**(`client`): `CustomersService`
 
-Defined in: [core/services/customers.service.ts:83](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L83)
+Defined in: [core/services/customers.service.ts:83](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/customers.service.ts#L83)
 
 #### Parameters
 
@@ -43,7 +43,7 @@ Defined in: [core/services/customers.service.ts:83](https://github.com/mbates/st
 
 > **create**(`options`): `Promise`\<`Customer`\>
 
-Defined in: [core/services/customers.service.ts:102](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L102)
+Defined in: [core/services/customers.service.ts:102](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/customers.service.ts#L102)
 
 Create a new customer.
 
@@ -81,7 +81,7 @@ const customer = await stripe.customers.create({
 
 > **delete**(`customerId`): `Promise`\<`void`\>
 
-Defined in: [core/services/customers.service.ts:192](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L192)
+Defined in: [core/services/customers.service.ts:192](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/customers.service.ts#L192)
 
 Delete a customer.
 
@@ -109,7 +109,7 @@ await stripe.customers.delete('cus_123');
 
 > **get**(`customerId`): `Promise`\<`Customer`\>
 
-Defined in: [core/services/customers.service.ts:140](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L140)
+Defined in: [core/services/customers.service.ts:140](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/customers.service.ts#L140)
 
 Retrieve a customer by ID.
 
@@ -147,7 +147,7 @@ const customer = await stripe.customers.get('cus_123');
 
 > **list**(`options?`): `Promise`\<[`PaginatedResponse`](../interfaces/PaginatedResponse.md)\<`Customer`\>\>
 
-Defined in: [core/services/customers.service.ts:212](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L212)
+Defined in: [core/services/customers.service.ts:212](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/customers.service.ts#L212)
 
 List customers with cursor-based pagination.
 
@@ -178,7 +178,7 @@ const page2 = await stripe.customers.list({ startingAfter: page1.nextCursor });
 
 > **search**(`query`, `options?`): `Promise`\<[`PaginatedResponse`](../interfaces/PaginatedResponse.md)\<`Customer`\>\>
 
-Defined in: [core/services/customers.service.ts:244](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L244)
+Defined in: [core/services/customers.service.ts:244](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/customers.service.ts#L244)
 
 Search customers with Stripe's search query language.
 
@@ -224,7 +224,7 @@ const { data } = await stripe.customers.search("email:'john@example.com'");
 
 > **update**(`customerId`, `options`): `Promise`\<`Customer`\>
 
-Defined in: [core/services/customers.service.ts:167](https://github.com/mbates/stripe/blob/1dfc19f47c2036a15d4f534929d617adb51479a3/src/core/services/customers.service.ts#L167)
+Defined in: [core/services/customers.service.ts:167](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/customers.service.ts#L167)
 
 Update a customer.
 
