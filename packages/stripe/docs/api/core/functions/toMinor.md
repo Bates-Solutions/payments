@@ -8,7 +8,7 @@
 
 > **toMinor**(`amount`, `currency?`): `number`
 
-Defined in: [core/utils.ts:39](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/utils.ts#L39)
+Defined in: [core/utils.ts:39](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/utils.ts#L39)
 
 Convert a major-unit amount to the smallest currency unit Stripe expects.
 

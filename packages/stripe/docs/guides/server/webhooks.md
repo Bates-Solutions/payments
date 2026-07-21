@@ -4,7 +4,7 @@ Server utilities live in the `@bates-solutions/stripe/server` entrypoint. They v
 
 ## Runtime support
 
-Verification uses **WebCrypto** (`globalThis.crypto.subtle`), not Node's `crypto` module, so it runs on **Node 20+, Deno, Bun, and Cloudflare Workers**. See [`createWebhookHandler`](#framework-neutral-edge--deno) for a runtime-neutral handler. The Express and AWS Lambda adapters are Node-targeted (they use `Buffer`/streams).
+Verification uses **WebCrypto** (`globalThis.crypto.subtle`), not Node's `crypto` module, so it runs on **Node 22+, Deno, Bun, and Cloudflare Workers**. See [`createWebhookHandler`](#framework-neutral-edge--deno) for a runtime-neutral handler. The Express and AWS Lambda adapters are Node-targeted (they use `Buffer`/streams).
 
 ## Signature verification
 

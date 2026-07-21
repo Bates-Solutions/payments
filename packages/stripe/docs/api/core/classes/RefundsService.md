@@ -6,7 +6,7 @@
 
 # Class: RefundsService
 
-Defined in: [core/services/refunds.service.ts:59](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/services/refunds.service.ts#L59)
+Defined in: [core/services/refunds.service.ts:59](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/refunds.service.ts#L59)
 
 Refunds service wrapping Stripe Refunds.
 
@@ -24,7 +24,7 @@ const refund = await stripe.refunds.create({
 
 > **new RefundsService**(`client`): `RefundsService`
 
-Defined in: [core/services/refunds.service.ts:60](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/services/refunds.service.ts#L60)
+Defined in: [core/services/refunds.service.ts:60](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/refunds.service.ts#L60)
 
 #### Parameters
 
@@ -42,7 +42,7 @@ Defined in: [core/services/refunds.service.ts:60](https://github.com/mbates/stri
 
 > **create**(`options`): `Promise`\<`Refund`\>
 
-Defined in: [core/services/refunds.service.ts:83](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/services/refunds.service.ts#L83)
+Defined in: [core/services/refunds.service.ts:83](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/refunds.service.ts#L83)
 
 Create a refund.
 
@@ -84,7 +84,7 @@ const partial = await stripe.refunds.create({
 
 > **get**(`refundId`): `Promise`\<`Refund`\>
 
-Defined in: [core/services/refunds.service.ts:120](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/services/refunds.service.ts#L120)
+Defined in: [core/services/refunds.service.ts:120](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/refunds.service.ts#L120)
 
 Retrieve a refund by ID.
 
@@ -114,7 +114,7 @@ const refund = await stripe.refunds.get('re_123');
 
 > **list**(`options?`): `Promise`\<[`PaginatedResponse`](../interfaces/PaginatedResponse.md)\<`Refund`\>\>
 
-Defined in: [core/services/refunds.service.ts:139](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/services/refunds.service.ts#L139)
+Defined in: [core/services/refunds.service.ts:139](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/refunds.service.ts#L139)
 
 List refunds with cursor-based pagination.
 
