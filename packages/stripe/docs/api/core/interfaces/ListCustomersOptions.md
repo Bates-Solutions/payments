@@ -6,7 +6,7 @@
 
 # Interface: ListCustomersOptions
 
-Defined in: [core/services/customers.service.ts:51](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/services/customers.service.ts#L51)
+Defined in: [core/services/customers.service.ts:51](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/customers.service.ts#L51)
 
 Options for listing customers
 
@@ -16,7 +16,7 @@ Options for listing customers
 
 > `optional` **email?**: `string`
 
-Defined in: [core/services/customers.service.ts:54](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/services/customers.service.ts#L54)
+Defined in: [core/services/customers.service.ts:54](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/customers.service.ts#L54)
 
 Filter by exact email address
 
@@ -26,7 +26,7 @@ Filter by exact email address
 
 > `optional` **limit?**: `number`
 
-Defined in: [core/services/customers.service.ts:52](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/services/customers.service.ts#L52)
+Defined in: [core/services/customers.service.ts:52](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/customers.service.ts#L52)
 
 ***
 
@@ -34,6 +34,6 @@ Defined in: [core/services/customers.service.ts:52](https://github.com/mbates/st
 
 > `optional` **startingAfter?**: `string`
 
-Defined in: [core/services/customers.service.ts:56](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/services/customers.service.ts#L56)
+Defined in: [core/services/customers.service.ts:56](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/customers.service.ts#L56)
 
 Cursor: return records after this customer ID

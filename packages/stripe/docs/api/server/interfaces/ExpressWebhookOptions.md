@@ -6,7 +6,7 @@
 
 # Interface: ExpressWebhookOptions
 
-Defined in: [server/middleware/express.ts:18](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/server/middleware/express.ts#L18)
+Defined in: [server/middleware/express.ts:18](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/middleware/express.ts#L18)
 
 Options for the Express webhook middleware.
 
@@ -20,7 +20,7 @@ Options for the Express webhook middleware.
 
 > `optional` **autoRespond?**: `boolean`
 
-Defined in: [server/middleware/express.ts:23](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/server/middleware/express.ts#L23)
+Defined in: [server/middleware/express.ts:23](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/middleware/express.ts#L23)
 
 Whether to send the response automatically.
 
@@ -36,7 +36,7 @@ true
 
 > **handlers**: [`WebhookHandlers`](../type-aliases/WebhookHandlers.md)
 
-Defined in: [server/types.ts:60](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/server/types.ts#L60)
+Defined in: [server/types.ts:60](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/types.ts#L60)
 
 Event handlers by type
 
@@ -50,7 +50,7 @@ Event handlers by type
 
 > **signingSecret**: `string`
 
-Defined in: [server/types.ts:58](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/server/types.ts#L58)
+Defined in: [server/types.ts:58](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/types.ts#L58)
 
 Stripe webhook signing secret (`whsec_…`)
 
@@ -64,7 +64,7 @@ Stripe webhook signing secret (`whsec_…`)
 
 > `optional` **throwOnInvalidSignature?**: `boolean`
 
-Defined in: [server/types.ts:65](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/server/types.ts#L65)
+Defined in: [server/types.ts:65](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/types.ts#L65)
 
 Whether to treat a signature verification failure as an error.
 
@@ -84,7 +84,7 @@ true
 
 > `optional` **tolerance?**: `number`
 
-Defined in: [server/types.ts:50](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/server/types.ts#L50)
+Defined in: [server/types.ts:50](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/types.ts#L50)
 
 Maximum allowed difference (seconds) between the signature timestamp and
 now. Set to `0` to disable the timestamp check.

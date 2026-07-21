@@ -1,3 +1,4 @@
+import { resolveId } from '../core/utils.js';
 import type {
   WebhookConfig,
   WebhookEvent,
@@ -5,6 +6,8 @@ import type {
   ParsedWebhookRequest,
   VerifyOptions,
 } from './types.js';
+
+export { resolveId };
 
 /**
  * Header name carrying the Stripe webhook signature.
@@ -330,27 +333,4 @@ export function getSubscriptionId(event: WebhookEvent): string | undefined {
     return object.id;
   }
   return resolveId(object.subscription);
-}
-
-/**
- * Resolve a Stripe reference that may be either an ID string or an expanded
- * object, to its ID.
- *
- * Stripe fields like `customer` / `subscription` are a bare ID string unless
- * expanded, in which case they are the full object. This collapses both forms.
- *
- * @example
- * ```typescript
- * resolveId('cus_1');          // 'cus_1'
- * resolveId({ id: 'cus_1' });  // 'cus_1'
- * resolveId(null);             // undefined
- * ```
- */
-export function resolveId(
-  value: string | { id?: string } | null | undefined
-): string | undefined {
-  if (typeof value === 'string') {
-    return value;
-  }
-  return value?.id;
 }

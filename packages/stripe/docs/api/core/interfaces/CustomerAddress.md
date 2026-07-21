@@ -6,7 +6,7 @@
 
 # Interface: CustomerAddress
 
-Defined in: [core/services/customers.service.ts:14](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/services/customers.service.ts#L14)
+Defined in: [core/services/customers.service.ts:14](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/customers.service.ts#L14)
 
 Address for a customer
 
@@ -16,7 +16,7 @@ Address for a customer
 
 > `optional` **city?**: `string`
 
-Defined in: [core/services/customers.service.ts:17](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/services/customers.service.ts#L17)
+Defined in: [core/services/customers.service.ts:17](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/customers.service.ts#L17)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [core/services/customers.service.ts:17](https://github.com/mbates/st
 
 > `optional` **country?**: `string`
 
-Defined in: [core/services/customers.service.ts:20](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/services/customers.service.ts#L20)
+Defined in: [core/services/customers.service.ts:20](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/customers.service.ts#L20)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [core/services/customers.service.ts:20](https://github.com/mbates/st
 
 > `optional` **line1?**: `string`
 
-Defined in: [core/services/customers.service.ts:15](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/services/customers.service.ts#L15)
+Defined in: [core/services/customers.service.ts:15](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/customers.service.ts#L15)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [core/services/customers.service.ts:15](https://github.com/mbates/st
 
 > `optional` **line2?**: `string`
 
-Defined in: [core/services/customers.service.ts:16](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/services/customers.service.ts#L16)
+Defined in: [core/services/customers.service.ts:16](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/customers.service.ts#L16)
 
 ***
 
@@ -48,7 +48,7 @@ Defined in: [core/services/customers.service.ts:16](https://github.com/mbates/st
 
 > `optional` **postalCode?**: `string`
 
-Defined in: [core/services/customers.service.ts:19](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/services/customers.service.ts#L19)
+Defined in: [core/services/customers.service.ts:19](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/customers.service.ts#L19)
 
 ***
 
@@ -56,4 +56,4 @@ Defined in: [core/services/customers.service.ts:19](https://github.com/mbates/st
 
 > `optional` **state?**: `string`
 
-Defined in: [core/services/customers.service.ts:18](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/services/customers.service.ts#L18)
+Defined in: [core/services/customers.service.ts:18](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/customers.service.ts#L18)
