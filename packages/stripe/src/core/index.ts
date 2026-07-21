@@ -33,7 +33,7 @@ export {
 export type { StripeErrorCode } from './errors.js';
 
 // Utils
-export { toMinor, fromMinor, formatMoney, createIdempotencyKey } from './utils.js';
+export { toMinor, fromMinor, formatMoney, createIdempotencyKey, fromUnixTime } from './utils.js';
 export type { Money } from './utils.js';
 
 // Types

@@ -8,7 +8,7 @@
 
 > **parseWebhookEvent**(`rawBody`): `Event`
 
-Defined in: server/webhook.ts:133
+Defined in: [server/webhook.ts:158](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/server/webhook.ts#L158)
 
 Parse a webhook request body into a typed event.
 

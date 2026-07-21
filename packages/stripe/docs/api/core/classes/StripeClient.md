@@ -6,7 +6,7 @@
 
 # Class: StripeClient
 
-Defined in: core/client.ts:47
+Defined in: [core/client.ts:47](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/client.ts#L47)
 
 Main Stripe client wrapper.
 
@@ -32,7 +32,7 @@ const payment = await stripe.payments.create({
 
 > **new StripeClient**(`config`): `StripeClient`
 
-Defined in: core/client.ts:55
+Defined in: [core/client.ts:55](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/client.ts#L55)
 
 #### Parameters
 
@@ -50,7 +50,7 @@ Defined in: core/client.ts:55
 
 > `readonly` **customers**: [`CustomersService`](CustomersService.md)
 
-Defined in: core/client.ts:52
+Defined in: [core/client.ts:52](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/client.ts#L52)
 
 ***
 
@@ -58,7 +58,7 @@ Defined in: core/client.ts:52
 
 > `readonly` **payments**: [`PaymentsService`](PaymentsService.md)
 
-Defined in: core/client.ts:51
+Defined in: [core/client.ts:51](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/client.ts#L51)
 
 ***
 
@@ -66,7 +66,7 @@ Defined in: core/client.ts:51
 
 > `readonly` **refunds**: [`RefundsService`](RefundsService.md)
 
-Defined in: core/client.ts:53
+Defined in: [core/client.ts:53](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/client.ts#L53)
 
 ## Accessors
 
@@ -76,7 +76,7 @@ Defined in: core/client.ts:53
 
 > **get** **environment**(): [`StripeEnvironment`](../type-aliases/StripeEnvironment.md)
 
-Defined in: core/client.ts:89
+Defined in: [core/client.ts:89](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/client.ts#L89)
 
 The environment this client operates in, derived from the API key.
 
@@ -92,7 +92,7 @@ The environment this client operates in, derived from the API key.
 
 > **get** **sdk**(): `Stripe`
 
-Defined in: core/client.ts:82
+Defined in: [core/client.ts:82](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/client.ts#L82)
 
 Get the underlying Stripe SDK client.
 Use this for advanced operations not covered by the wrapper.

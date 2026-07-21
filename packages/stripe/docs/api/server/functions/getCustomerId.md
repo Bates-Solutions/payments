@@ -8,7 +8,7 @@
 
 > **getCustomerId**(`event`): `string` \| `undefined`
 
-Defined in: server/webhook.ts:286
+Defined in: [server/webhook.ts:311](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/server/webhook.ts#L311)
 
 Extract the Customer ID from a webhook event, when present.
 

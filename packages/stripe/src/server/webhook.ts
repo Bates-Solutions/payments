@@ -1,4 +1,3 @@
-import { createHmac, timingSafeEqual } from 'crypto';
 import type {
   WebhookConfig,
   WebhookEvent,
@@ -11,6 +10,43 @@ import type {
  * Header name carrying the Stripe webhook signature.
  */
 export const SIGNATURE_HEADER = 'stripe-signature';
+
+/**
+ * Compute an HMAC-SHA256 hex digest using WebCrypto.
+ *
+ * Uses `globalThis.crypto.subtle` so verification runs on any modern runtime
+ * (Node 20+, Deno, Bun, Cloudflare Workers) with no Node built-ins.
+ */
+async function hmacSha256Hex(secret: string, payload: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const key = await globalThis.crypto.subtle.importKey(
+    'raw',
+    encoder.encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign']
+  );
+  const signature = await globalThis.crypto.subtle.sign('HMAC', key, encoder.encode(payload));
+  return Array.from(new Uint8Array(signature))
+    .map((byte) => byte.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+/**
+ * Constant-time comparison of two equal-length hex strings.
+ *
+ * Pure JS (no `node:crypto`) so it works on edge runtimes.
+ */
+function timingSafeEqualHex(a: string, b: string): boolean {
+  if (a.length !== b.length || a.length === 0) {
+    return false;
+  }
+  let mismatch = 0;
+  for (let i = 0; i < a.length; i++) {
+    mismatch |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return mismatch === 0;
+}
 
 /**
  * Parse a `stripe-signature` header into its timestamp and v1 signatures.
@@ -39,22 +75,11 @@ function parseSignatureHeader(header: string): {
 }
 
 /**
- * Timing-safe comparison of two hex-encoded strings.
- */
-function timingSafeEqualHex(a: string, b: string): boolean {
-  const bufferA = Buffer.from(a, 'hex');
-  const bufferB = Buffer.from(b, 'hex');
-  if (bufferA.length !== bufferB.length || bufferA.length === 0) {
-    return false;
-  }
-  return timingSafeEqual(bufferA, bufferB);
-}
-
-/**
  * Verify a Stripe webhook signature.
  *
  * Reimplements Stripe's signing scheme (HMAC-SHA256 over `${timestamp}.${body}`)
- * so verification needs neither a Stripe SDK instance nor a network call.
+ * using WebCrypto, so verification needs neither a Stripe SDK instance, a network
+ * call, nor any Node built-in — it runs on Node 20+, Deno, Bun, and Workers.
  *
  * @param rawBody - The raw request body as a string
  * @param signature - The `stripe-signature` header value
@@ -66,7 +91,7 @@ function timingSafeEqualHex(a: string, b: string): boolean {
  * ```typescript
  * import { verifySignature } from '@bates-solutions/stripe/server';
  *
- * const result = verifySignature(
+ * const result = await verifySignature(
  *   rawBody,
  *   req.headers['stripe-signature'],
  *   process.env.STRIPE_WEBHOOK_SECRET!
@@ -77,12 +102,12 @@ function timingSafeEqualHex(a: string, b: string): boolean {
  * }
  * ```
  */
-export function verifySignature(
+export async function verifySignature(
   rawBody: string,
   signature: string,
   signingSecret: string,
   options?: VerifyOptions
-): WebhookVerificationResult {
+): Promise<WebhookVerificationResult> {
   if (!rawBody) {
     return { valid: false, error: 'Missing request body' };
   }
@@ -99,7 +124,7 @@ export function verifySignature(
   }
 
   const signedPayload = `${timestamp.toString()}.${rawBody}`;
-  const expected = createHmac('sha256', signingSecret).update(signedPayload).digest('hex');
+  const expected = await hmacSha256Hex(signingSecret, signedPayload);
 
   const matches = signatures.some((sig) => timingSafeEqualHex(sig, expected));
   if (!matches) {
@@ -157,13 +182,13 @@ export function parseWebhookEvent(rawBody: string): WebhookEvent {
  * );
  * ```
  */
-export function parseAndVerifyWebhook(
+export async function parseAndVerifyWebhook(
   rawBody: string,
   signature: string,
   signingSecret: string,
   options?: VerifyOptions
-): ParsedWebhookRequest {
-  const verification = verifySignature(rawBody, signature, signingSecret, options);
+): Promise<ParsedWebhookRequest> {
+  const verification = await verifySignature(rawBody, signature, signingSecret, options);
 
   if (!verification.valid) {
     throw new Error(verification.error ?? 'Signature verification failed');
@@ -231,7 +256,7 @@ export function createWebhookProcessor(config: WebhookConfig) {
     signature: string
   ): Promise<{ success: boolean; event?: WebhookEvent; error?: string }> => {
     try {
-      const verification = verifySignature(rawBody, signature, config.signingSecret, config);
+      const verification = await verifySignature(rawBody, signature, config.signingSecret, config);
 
       if (!verification.valid && config.throwOnInvalidSignature !== false) {
         return { success: false, error: verification.error };
@@ -289,8 +314,43 @@ export function getCustomerId(event: WebhookEvent): string | undefined {
   if (event.type.startsWith('customer.')) {
     return object.id;
   }
-  if (typeof object.customer === 'string') {
-    return object.customer;
+  return resolveId(object.customer);
+}
+
+/**
+ * Extract the Subscription ID from a webhook event, when present.
+ *
+ * Works on `customer.subscription.*` events (the object is the subscription)
+ * and on objects that reference a subscription (Checkout Sessions, Invoices).
+ */
+export function getSubscriptionId(event: WebhookEvent): string | undefined {
+  const object = event.data.object as { id?: string; subscription?: string | { id?: string } };
+
+  if (event.type.startsWith('customer.subscription.')) {
+    return object.id;
   }
-  return object.customer?.id;
+  return resolveId(object.subscription);
+}
+
+/**
+ * Resolve a Stripe reference that may be either an ID string or an expanded
+ * object, to its ID.
+ *
+ * Stripe fields like `customer` / `subscription` are a bare ID string unless
+ * expanded, in which case they are the full object. This collapses both forms.
+ *
+ * @example
+ * ```typescript
+ * resolveId('cus_1');          // 'cus_1'
+ * resolveId({ id: 'cus_1' });  // 'cus_1'
+ * resolveId(null);             // undefined
+ * ```
+ */
+export function resolveId(
+  value: string | { id?: string } | null | undefined
+): string | undefined {
+  if (typeof value === 'string') {
+    return value;
+  }
+  return value?.id;
 }

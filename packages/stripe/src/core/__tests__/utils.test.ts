@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { toMinor, fromMinor, formatMoney, createIdempotencyKey } from '../utils.js';
+import { toMinor, fromMinor, formatMoney, createIdempotencyKey, fromUnixTime } from '../utils.js';
 
 describe('toMinor', () => {
   it('converts major units to cents', () => {
@@ -43,5 +43,16 @@ describe('createIdempotencyKey', () => {
     const b = createIdempotencyKey();
     expect(a).toMatch(/^[0-9a-f-]{36}$/);
     expect(a).not.toBe(b);
+  });
+});
+
+describe('fromUnixTime', () => {
+  it('converts Unix seconds to a Date', () => {
+    expect(fromUnixTime(1700000000)?.toISOString()).toBe('2023-11-14T22:13:20.000Z');
+  });
+
+  it('returns undefined for null/undefined', () => {
+    expect(fromUnixTime(null)).toBeUndefined();
+    expect(fromUnixTime(undefined)).toBeUndefined();
   });
 });

@@ -6,7 +6,7 @@
 
 # Class: CustomersService
 
-Defined in: core/services/customers.service.ts:82
+Defined in: [core/services/customers.service.ts:82](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/services/customers.service.ts#L82)
 
 Customers service wrapping Stripe Customers.
 
@@ -25,7 +25,7 @@ const customer = await stripe.customers.create({
 
 > **new CustomersService**(`client`): `CustomersService`
 
-Defined in: core/services/customers.service.ts:83
+Defined in: [core/services/customers.service.ts:83](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/services/customers.service.ts#L83)
 
 #### Parameters
 
@@ -43,7 +43,7 @@ Defined in: core/services/customers.service.ts:83
 
 > **create**(`options`): `Promise`\<`Customer`\>
 
-Defined in: core/services/customers.service.ts:102
+Defined in: [core/services/customers.service.ts:102](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/services/customers.service.ts#L102)
 
 Create a new customer.
 
@@ -81,7 +81,7 @@ const customer = await stripe.customers.create({
 
 > **delete**(`customerId`): `Promise`\<`void`\>
 
-Defined in: core/services/customers.service.ts:191
+Defined in: [core/services/customers.service.ts:191](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/services/customers.service.ts#L191)
 
 Delete a customer.
 
@@ -109,7 +109,7 @@ await stripe.customers.delete('cus_123');
 
 > **get**(`customerId`): `Promise`\<`Customer`\>
 
-Defined in: core/services/customers.service.ts:139
+Defined in: [core/services/customers.service.ts:139](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/services/customers.service.ts#L139)
 
 Retrieve a customer by ID.
 
@@ -143,7 +143,7 @@ const customer = await stripe.customers.get('cus_123');
 
 > **list**(`options?`): `Promise`\<[`PaginatedResponse`](../interfaces/PaginatedResponse.md)\<`Customer`\>\>
 
-Defined in: core/services/customers.service.ts:211
+Defined in: [core/services/customers.service.ts:211](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/services/customers.service.ts#L211)
 
 List customers with cursor-based pagination.
 
@@ -174,7 +174,7 @@ const page2 = await stripe.customers.list({ startingAfter: page1.nextCursor });
 
 > **search**(`query`, `options?`): `Promise`\<[`PaginatedResponse`](../interfaces/PaginatedResponse.md)\<`Customer`\>\>
 
-Defined in: core/services/customers.service.ts:243
+Defined in: [core/services/customers.service.ts:243](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/services/customers.service.ts#L243)
 
 Search customers with Stripe's search query language.
 
@@ -220,7 +220,7 @@ const { data } = await stripe.customers.search("email:'john@example.com'");
 
 > **update**(`customerId`, `options`): `Promise`\<`Customer`\>
 
-Defined in: core/services/customers.service.ts:166
+Defined in: [core/services/customers.service.ts:166](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/services/customers.service.ts#L166)
 
 Update a customer.
 

@@ -66,6 +66,18 @@ export interface WebhookConfig extends VerifyOptions {
 }
 
 /**
+ * Convenience aliases for the subscription-lifecycle events, each narrowed to
+ * its concrete `data.object` type. Handy for typing standalone handler
+ * functions without re-deriving the `Extract<…>`.
+ */
+export type CheckoutSessionCompletedEvent = Extract<Stripe.Event, { type: 'checkout.session.completed' }>;
+export type SubscriptionCreatedEvent = Extract<Stripe.Event, { type: 'customer.subscription.created' }>;
+export type SubscriptionUpdatedEvent = Extract<Stripe.Event, { type: 'customer.subscription.updated' }>;
+export type SubscriptionDeletedEvent = Extract<Stripe.Event, { type: 'customer.subscription.deleted' }>;
+export type InvoicePaidEvent = Extract<Stripe.Event, { type: 'invoice.paid' }>;
+export type InvoicePaymentFailedEvent = Extract<Stripe.Event, { type: 'invoice.payment_failed' }>;
+
+/**
  * Result of webhook signature verification.
  */
 export interface WebhookVerificationResult {
