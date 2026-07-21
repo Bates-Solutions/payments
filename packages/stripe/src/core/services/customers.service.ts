@@ -129,7 +129,8 @@ export class CustomersService {
    * @param customerId - Customer ID
    * @returns The customer
    *
-   * @throws {StripeApiError} When the customer has been deleted or not found
+   * @throws {StripeValidationError} When the customer has been deleted
+   * @throws {StripeApiError} When the customer is not found
    *
    * @example
    * ```typescript
@@ -219,7 +220,7 @@ export class CustomersService {
       return {
         data: page.data,
         hasMore: page.has_more,
-        nextCursor: page.data.at(-1)?.id,
+        nextCursor: page.has_more ? page.data.at(-1)?.id : undefined,
       };
     } catch (error) {
       throw parseStripeError(error);
