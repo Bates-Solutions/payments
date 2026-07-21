@@ -147,7 +147,7 @@ export class SubscriptionsService {
       return {
         data: page.data.map(normalizeSubscription),
         hasMore: page.has_more,
-        nextCursor: page.data.at(-1)?.id,
+        nextCursor: page.has_more ? page.data.at(-1)?.id : undefined,
       };
     } catch (error) {
       throw parseStripeError(error);

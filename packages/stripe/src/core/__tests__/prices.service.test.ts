@@ -16,8 +16,8 @@ describe('PricesService', () => {
   it('lists active prices with the product expanded', async () => {
     const client = createMockClient({
       list: vi.fn().mockResolvedValue({
-        data: [{ id: 'price_1', product: { id: 'prod_1', metadata: { tier: 'pro' } } }],
-        has_more: false,
+        data: [{ id: "price_1", product: { id: "prod_1", metadata: { tier: "pro" } } }],
+        has_more: true,
       }),
     });
 

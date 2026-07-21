@@ -86,7 +86,7 @@ describe('SubscriptionsService', () => {
 
   it('lists and normalizes', async () => {
     const client = createMockClient({
-      list: vi.fn().mockResolvedValue({ data: [subWithItemPeriod()], has_more: false }),
+      list: vi.fn().mockResolvedValue({ data: [subWithItemPeriod()], has_more: true }),
     });
     const result = await new SubscriptionsService(client).list({ customerId: 'cus_1' });
     expect(result.data[0].id).toBe('sub_1');

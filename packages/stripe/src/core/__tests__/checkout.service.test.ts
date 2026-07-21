@@ -94,7 +94,7 @@ describe('CheckoutService', () => {
 
     it('lists sessions', async () => {
       const client = createMockClient({
-        list: vi.fn().mockResolvedValue({ data: [{ id: 'cs_1' }], has_more: false }),
+        list: vi.fn().mockResolvedValue({ data: [{ id: "cs_1" }], has_more: true }),
       });
       const result = await new CheckoutService(client).list({ customerId: 'cus_1' });
       expect(result.data).toHaveLength(1);
