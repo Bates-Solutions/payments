@@ -8,7 +8,11 @@
 
 > **getSubscriptionId**(`event`): `string` \| `undefined`
 
+<<<<<<< HEAD
 Defined in: [server/webhook.ts:329](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/webhook.ts#L329)
+=======
+Defined in: [server/webhook.ts:342](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/server/webhook.ts#L342)
+>>>>>>> feat/edge-webhook-and-subscription-helpers
 
 Extract the Subscription ID from a webhook event, when present.
 

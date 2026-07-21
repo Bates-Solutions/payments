@@ -8,7 +8,11 @@
 
 > **createWebhookHandler**(`config`): (`request`) => `Promise`\<`Response`\>
 
+<<<<<<< HEAD
 Defined in: [server/middleware/web.ts:32](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/middleware/web.ts#L32)
+=======
+Defined in: [server/middleware/web.ts:32](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/server/middleware/web.ts#L32)
+>>>>>>> feat/edge-webhook-and-subscription-helpers
 
 Create a framework-neutral webhook handler built on the Web platform.
 

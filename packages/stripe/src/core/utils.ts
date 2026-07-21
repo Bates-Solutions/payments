@@ -90,7 +90,7 @@ export function formatMoney(
 /**
  * Create a unique idempotency key for Stripe API requests.
  *
- * Uses the WebCrypto `randomUUID`, so it runs on any modern runtime (Node 20+,
+ * Uses the WebCrypto `randomUUID`, so it runs on any modern runtime (Node 22+,
  * Deno, Bun, Cloudflare Workers) — not just Node.
  *
  * @returns UUID string

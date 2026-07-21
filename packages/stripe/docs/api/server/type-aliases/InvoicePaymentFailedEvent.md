@@ -8,7 +8,11 @@
 
 > **InvoicePaymentFailedEvent** = `Extract`\<`Stripe.Event`, \{ `type`: `"invoice.payment_failed"`; \}\>
 
+<<<<<<< HEAD
 Defined in: [server/types.ts:78](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/types.ts#L78)
+=======
+Defined in: [server/types.ts:78](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/server/types.ts#L78)
+>>>>>>> feat/edge-webhook-and-subscription-helpers
 
 @bates-solutions/stripe/server
 

@@ -8,6 +8,10 @@
 
 > **Refund** = `Stripe.Refund`
 
+<<<<<<< HEAD
 Defined in: [core/services/refunds.service.ts:9](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/core/services/refunds.service.ts#L9)
+=======
+Defined in: [core/services/refunds.service.ts:9](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/refunds.service.ts#L9)
+>>>>>>> feat/edge-webhook-and-subscription-helpers
 
 A Stripe Refund
