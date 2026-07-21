@@ -1,3 +1,10 @@
+## [1.13.3](https://github.com/mbates/squareup/compare/v1.13.2...v1.13.3) (2026-07-21)
+
+
+### Bug Fixes
+
+* **server:** never dispatch webhook events on an invalid signature ([82a6057](https://github.com/mbates/squareup/commit/82a60575a1c7a973820c2256b77a615ed93f93d7))
+
 ## [1.13.2](https://github.com/mbates/squareup/compare/v1.13.1...v1.13.2) (2026-06-24)
 
 
