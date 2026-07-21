@@ -15,6 +15,10 @@ Welcome to the documentation for `@bates-solutions/stripe`, a TypeScript wrapper
 - [Payments](./guides/core/payments.md) - Processing payments (PaymentIntents)
 - [Customers](./guides/core/customers.md) - Customer operations and search
 - [Refunds](./guides/core/refunds.md) - Refunding payments
+- [Checkout](./guides/core/checkout.md) - Hosted Checkout Sessions
+- [Billing Portal](./guides/core/billing-portal.md) - Customer self-service portal
+- [Subscriptions](./guides/core/subscriptions.md) - Recurring billing, normalized
+- [Prices & Products](./guides/core/prices-and-products.md) - Reading your catalog from Stripe
 
 ### Server
 

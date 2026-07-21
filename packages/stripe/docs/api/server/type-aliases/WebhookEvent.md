@@ -8,7 +8,7 @@
 
 > **WebhookEvent** = `Stripe.Event`
 
-Defined in: [server/types.ts:9](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/server/types.ts#L9)
+Defined in: [server/types.ts:9](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/server/types.ts#L9)
 
 A verified Stripe webhook event.
 

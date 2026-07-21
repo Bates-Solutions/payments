@@ -8,7 +8,7 @@
 
 > **SubscriptionCreatedEvent** = `Extract`\<`Stripe.Event`, \{ `type`: `"customer.subscription.created"`; \}\>
 
-Defined in: [server/types.ts:74](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/server/types.ts#L74)
+Defined in: [server/types.ts:74](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/server/types.ts#L74)
 
 @bates-solutions/stripe/server
 
