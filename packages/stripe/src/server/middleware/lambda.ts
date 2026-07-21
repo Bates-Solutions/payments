@@ -155,7 +155,7 @@ export function createLambdaWebhookHandler(config: LambdaWebhookConfig) {
       };
     }
 
-    const verification = verifySignature(rawBody, signature, config.signingSecret, config);
+    const verification = await verifySignature(rawBody, signature, config.signingSecret, config);
 
     if (!verification.valid) {
       return {

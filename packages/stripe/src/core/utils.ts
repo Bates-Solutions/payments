@@ -1,4 +1,3 @@
-import { randomUUID } from 'crypto';
 import type { CurrencyCode } from './types/index.js';
 
 /**
@@ -91,6 +90,9 @@ export function formatMoney(
 /**
  * Create a unique idempotency key for Stripe API requests.
  *
+ * Uses the WebCrypto `randomUUID`, so it runs on any modern runtime (Node 20+,
+ * Deno, Bun, Cloudflare Workers) — not just Node.
+ *
  * @returns UUID string
  *
  * @example
@@ -100,5 +102,27 @@ export function formatMoney(
  * ```
  */
 export function createIdempotencyKey(): string {
-  return randomUUID();
+  return globalThis.crypto.randomUUID();
+}
+
+/**
+ * Convert a Unix timestamp (seconds) to a JS `Date`.
+ *
+ * Stripe expresses times as Unix epoch **seconds**; this saves consumers from
+ * the repetitive `new Date(value * 1000)`.
+ *
+ * @param seconds - Unix time in seconds (e.g. `subscription.current_period_end`)
+ * @returns A `Date`, or `undefined` if the input is null/undefined
+ *
+ * @example
+ * ```typescript
+ * fromUnixTime(1700000000); // Date
+ * fromUnixTime(null);       // undefined
+ * ```
+ */
+export function fromUnixTime(seconds: number | null | undefined): Date | undefined {
+  if (seconds === null || seconds === undefined) {
+    return undefined;
+  }
+  return new Date(seconds * 1000);
 }

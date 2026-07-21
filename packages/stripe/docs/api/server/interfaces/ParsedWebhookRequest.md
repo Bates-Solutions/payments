@@ -6,7 +6,7 @@
 
 # Interface: ParsedWebhookRequest
 
-Defined in: server/types.ts:81
+Defined in: [server/types.ts:93](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/server/types.ts#L93)
 
 A parsed and verified webhook request.
 
@@ -16,7 +16,7 @@ A parsed and verified webhook request.
 
 > **event**: `Event`
 
-Defined in: server/types.ts:87
+Defined in: [server/types.ts:99](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/server/types.ts#L99)
 
 The parsed event
 
@@ -26,7 +26,7 @@ The parsed event
 
 > **rawBody**: `string`
 
-Defined in: server/types.ts:83
+Defined in: [server/types.ts:95](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/server/types.ts#L95)
 
 The raw request body
 
@@ -36,6 +36,6 @@ The raw request body
 
 > **signature**: `string`
 
-Defined in: server/types.ts:85
+Defined in: [server/types.ts:97](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/server/types.ts#L97)
 
 The signature from the `stripe-signature` header
