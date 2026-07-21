@@ -217,10 +217,13 @@ export function createWebhookProcessor(config: WebhookConfig) {
         config.notificationUrl
       );
 
+      // Never dispatch on an invalid signature. `throwOnInvalidSignature` only
+      // controls throw-vs-return semantics — both stop before dispatch.
       if (!verification.valid) {
         if (config.throwOnInvalidSignature !== false) {
-          return { success: false, error: verification.error };
+          throw new Error(verification.error ?? 'Signature verification failed');
         }
+        return { success: false, error: verification.error };
       }
 
       const event = parseWebhookEvent(rawBody);

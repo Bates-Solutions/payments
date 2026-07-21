@@ -239,6 +239,21 @@ describe('webhook', () => {
       expect(result.error).toBe('Invalid signature');
     });
 
+    it('should never dispatch a forged event, even with throwOnInvalidSignature: false', async () => {
+      const handler = vi.fn();
+      const processor = createWebhookProcessor({
+        signatureKey,
+        throwOnInvalidSignature: false,
+        handlers: { 'payment.created': handler },
+      });
+
+      const result = await processor(rawBody, 'wrong-signature');
+
+      expect(result.success).toBe(false);
+      expect(result.event).toBeUndefined();
+      expect(handler).not.toHaveBeenCalled();
+    });
+
     it('should return error for invalid JSON body', async () => {
       const processor = createWebhookProcessor({
         signatureKey,
