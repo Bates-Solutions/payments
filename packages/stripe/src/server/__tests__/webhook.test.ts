@@ -151,6 +151,21 @@ describe('createWebhookProcessor', () => {
     const result = await process(makeEvent(), 'bad');
     expect(result.success).toBe(false);
   });
+
+  it('never dispatches a forged event, even with throwOnInvalidSignature: false', async () => {
+    const handler = vi.fn();
+    const process = createWebhookProcessor({
+      signingSecret: SECRET,
+      throwOnInvalidSignature: false,
+      handlers: { 'payment_intent.succeeded': handler },
+    });
+
+    const result = await process(makeEvent(), 'bad');
+
+    expect(result.success).toBe(false);
+    expect(result.event).toBeUndefined();
+    expect(handler).not.toHaveBeenCalled();
+  });
 });
 
 describe('entity extractors', () => {
