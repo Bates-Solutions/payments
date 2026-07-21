@@ -8,7 +8,7 @@
 
 > **createExpressWebhookHandler**(`config`): `RequestHandler`
 
-Defined in: [server/middleware/express.ts:58](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/server/middleware/express.ts#L58)
+Defined in: [server/middleware/express.ts:58](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/server/middleware/express.ts#L58)
 
 Create Express middleware for handling Stripe webhooks.
 

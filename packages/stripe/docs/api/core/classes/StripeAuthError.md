@@ -6,7 +6,7 @@
 
 # Class: StripeAuthError
 
-Defined in: [core/errors.ts:77](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/errors.ts#L77)
+Defined in: [core/errors.ts:77](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/errors.ts#L77)
 
 Authentication errors
 
@@ -20,7 +20,7 @@ Authentication errors
 
 > **new StripeAuthError**(`message`, `code?`): `StripeAuthError`
 
-Defined in: [core/errors.ts:78](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/errors.ts#L78)
+Defined in: [core/errors.ts:78](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/errors.ts#L78)
 
 #### Parameters
 
@@ -46,7 +46,7 @@ Defined in: [core/errors.ts:78](https://github.com/mbates/stripe/blob/4dd39275a7
 
 > `readonly` **code**: [`StripeErrorCode`](../type-aliases/StripeErrorCode.md)
 
-Defined in: [core/errors.ts:28](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/errors.ts#L28)
+Defined in: [core/errors.ts:28](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/errors.ts#L28)
 
 #### Inherited from
 
@@ -58,7 +58,7 @@ Defined in: [core/errors.ts:28](https://github.com/mbates/stripe/blob/4dd39275a7
 
 > `readonly` `optional` **details?**: `unknown`
 
-Defined in: [core/errors.ts:30](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/errors.ts#L30)
+Defined in: [core/errors.ts:30](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/errors.ts#L30)
 
 #### Inherited from
 
@@ -70,7 +70,7 @@ Defined in: [core/errors.ts:30](https://github.com/mbates/stripe/blob/4dd39275a7
 
 > `readonly` `optional` **statusCode?**: `number`
 
-Defined in: [core/errors.ts:29](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/errors.ts#L29)
+Defined in: [core/errors.ts:29](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/errors.ts#L29)
 
 #### Inherited from
 

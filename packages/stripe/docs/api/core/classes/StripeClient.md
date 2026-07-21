@@ -6,7 +6,7 @@
 
 # Class: StripeClient
 
-Defined in: [core/client.ts:47](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/client.ts#L47)
+Defined in: [core/client.ts:52](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/client.ts#L52)
 
 Main Stripe client wrapper.
 
@@ -32,7 +32,7 @@ const payment = await stripe.payments.create({
 
 > **new StripeClient**(`config`): `StripeClient`
 
-Defined in: [core/client.ts:55](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/client.ts#L55)
+Defined in: [core/client.ts:65](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/client.ts#L65)
 
 #### Parameters
 
@@ -46,11 +46,27 @@ Defined in: [core/client.ts:55](https://github.com/mbates/stripe/blob/4dd39275a7
 
 ## Properties
 
+### billingPortal
+
+> `readonly` **billingPortal**: [`BillingPortalService`](BillingPortalService.md)
+
+Defined in: [core/client.ts:60](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/client.ts#L60)
+
+***
+
+### checkout
+
+> `readonly` **checkout**: [`CheckoutService`](CheckoutService.md)
+
+Defined in: [core/client.ts:59](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/client.ts#L59)
+
+***
+
 ### customers
 
 > `readonly` **customers**: [`CustomersService`](CustomersService.md)
 
-Defined in: [core/client.ts:52](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/client.ts#L52)
+Defined in: [core/client.ts:57](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/client.ts#L57)
 
 ***
 
@@ -58,7 +74,23 @@ Defined in: [core/client.ts:52](https://github.com/mbates/stripe/blob/4dd39275a7
 
 > `readonly` **payments**: [`PaymentsService`](PaymentsService.md)
 
-Defined in: [core/client.ts:51](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/client.ts#L51)
+Defined in: [core/client.ts:56](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/client.ts#L56)
+
+***
+
+### prices
+
+> `readonly` **prices**: [`PricesService`](PricesService.md)
+
+Defined in: [core/client.ts:62](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/client.ts#L62)
+
+***
+
+### products
+
+> `readonly` **products**: [`ProductsService`](ProductsService.md)
+
+Defined in: [core/client.ts:63](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/client.ts#L63)
 
 ***
 
@@ -66,7 +98,15 @@ Defined in: [core/client.ts:51](https://github.com/mbates/stripe/blob/4dd39275a7
 
 > `readonly` **refunds**: [`RefundsService`](RefundsService.md)
 
-Defined in: [core/client.ts:53](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/client.ts#L53)
+Defined in: [core/client.ts:58](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/client.ts#L58)
+
+***
+
+### subscriptions
+
+> `readonly` **subscriptions**: [`SubscriptionsService`](SubscriptionsService.md)
+
+Defined in: [core/client.ts:61](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/client.ts#L61)
 
 ## Accessors
 
@@ -76,7 +116,7 @@ Defined in: [core/client.ts:53](https://github.com/mbates/stripe/blob/4dd39275a7
 
 > **get** **environment**(): [`StripeEnvironment`](../type-aliases/StripeEnvironment.md)
 
-Defined in: [core/client.ts:91](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/client.ts#L91)
+Defined in: [core/client.ts:106](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/client.ts#L106)
 
 The environment this client operates in, derived from the API key.
 
@@ -92,7 +132,7 @@ The environment this client operates in, derived from the API key.
 
 > **get** **sdk**(): `Stripe`
 
-Defined in: [core/client.ts:84](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/client.ts#L84)
+Defined in: [core/client.ts:99](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/client.ts#L99)
 
 Get the underlying Stripe SDK client.
 Use this for advanced operations not covered by the wrapper.

@@ -6,7 +6,7 @@
 
 # Interface: PaginationOptions
 
-Defined in: [core/types/index.ts:20](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/types/index.ts#L20)
+Defined in: [core/types/index.ts:20](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/types/index.ts#L20)
 
 Common cursor pagination options
 
@@ -16,7 +16,7 @@ Common cursor pagination options
 
 > `optional` **limit?**: `number`
 
-Defined in: [core/types/index.ts:22](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/types/index.ts#L22)
+Defined in: [core/types/index.ts:22](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/types/index.ts#L22)
 
 Maximum number of records to return
 
@@ -26,6 +26,6 @@ Maximum number of records to return
 
 > `optional` **startingAfter?**: `string`
 
-Defined in: [core/types/index.ts:24](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/types/index.ts#L24)
+Defined in: [core/types/index.ts:24](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/types/index.ts#L24)
 
 Cursor: return records after this object ID (`starting_after`)

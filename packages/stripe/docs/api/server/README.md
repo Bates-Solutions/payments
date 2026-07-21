@@ -57,5 +57,10 @@
 - [parseNextWebhook](functions/parseNextWebhook.md)
 - [parseWebhookEvent](functions/parseWebhookEvent.md)
 - [processWebhookEvent](functions/processWebhookEvent.md)
-- [resolveId](functions/resolveId.md)
 - [verifySignature](functions/verifySignature.md)
+
+## References
+
+### resolveId
+
+Re-exports [resolveId](../core/functions/resolveId.md)

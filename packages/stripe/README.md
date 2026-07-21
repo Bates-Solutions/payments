@@ -24,10 +24,11 @@ A thin, consistent wrapper over the official [`stripe`](https://www.npmjs.com/pa
 
 ## Features
 
-- **Simplified APIs** – Less boilerplate over PaymentIntents, Customers, and Refunds
+- **Simplified APIs** – Less boilerplate over payments, subscriptions, hosted checkout, and billing
 - **Type-Safe** – Full TypeScript support; wraps Stripe's own types
 - **Typed Errors** – `parseStripeError` normalizes Stripe errors into a small class hierarchy
 - **Edge-ready webhooks** – WebCrypto signature verification that runs on Node, **Deno**, Bun, and Workers, plus Express / Next.js / Lambda adapters
+- **Version-stable subscriptions** – Normalized shape with `Date` period fields, absorbing Stripe's API churn
 - **Escape Hatch** – `client.sdk` exposes the underlying Stripe instance for anything not wrapped
 
 ## Requirements
@@ -79,6 +80,35 @@ const refund = await client.refunds.create({
 // Paginate
 const page1 = await client.customers.list({ limit: 50 });
 const page2 = await client.customers.list({ startingAfter: page1.nextCursor });
+```
+
+### Hosted subscription billing
+
+```typescript
+// Send the customer to Stripe-hosted Checkout to subscribe
+const session = await client.checkout.create({
+  mode: 'subscription',
+  customerId: 'cus_123',
+  lineItems: [{ price: 'price_123', quantity: 1 }],
+  successUrl: 'https://app.example.com/billing?success=true',
+  cancelUrl: 'https://app.example.com/billing?canceled=true',
+});
+redirect(session.url);
+
+// Let them manage it in the billing portal
+const portal = await client.billingPortal.create({
+  customerId: 'cus_123',
+  returnUrl: 'https://app.example.com/account',
+});
+
+// Read a subscription with period fields already as JS Dates
+const sub = await client.subscriptions.get('sub_123');
+sub.status;             // 'active'
+sub.priceId;            // 'price_123'
+sub.currentPeriodEnd;   // Date
+
+// Read your catalog from Stripe (products expanded)
+const { data: prices } = await client.prices.list({ active: true, expandProduct: true });
 ```
 
 ### Webhook Handling (Express)
@@ -167,11 +197,16 @@ Stripe's epoch-seconds timestamps to a `Date`.
 
 ## Available Services
 
-| Service     | Description                                    |
-| ----------- | ---------------------------------------------- |
-| `payments`  | Create and manage payments (PaymentIntents)    |
-| `customers` | Customer management + search                   |
-| `refunds`   | Create and list refunds                        |
+| Service         | Description                                                     |
+| --------------- | --------------------------------------------------------------- |
+| `payments`      | Create and manage payments (PaymentIntents)                     |
+| `customers`     | Customer management + search                                    |
+| `refunds`       | Create and list refunds                                         |
+| `checkout`      | Hosted Checkout Sessions (subscription & one-time)              |
+| `billingPortal` | Customer billing portal sessions                                |
+| `subscriptions` | Get, list, cancel subscriptions, normalized with `Date`s     |
+| `prices`        | List/retrieve prices (with product expansion)                   |
+| `products`      | List/retrieve products                                          |
 
 ## Utilities
 
