@@ -83,7 +83,7 @@ describe('RefundsService', () => {
   describe('list', () => {
     it('lists refunds for a payment intent', async () => {
       const client = createMockClient({
-        list: vi.fn().mockResolvedValue({ data: [{ id: 're_1' }], has_more: false }),
+        list: vi.fn().mockResolvedValue({ data: [{ id: 're_1' }], has_more: true }),
       });
 
       const service = new RefundsService(client);

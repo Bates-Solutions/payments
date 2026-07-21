@@ -57,7 +57,9 @@ export class StripeClient {
       throw new Error('apiKey is required to create a Stripe client');
     }
 
-    this.environmentValue = config.apiKey.startsWith('sk_live_') ? 'live' : 'test';
+    // Match the `_live_` segment so restricted keys (`rk_live_…`) are classified
+    // correctly, not just standard secret keys (`sk_live_…`).
+    this.environmentValue = config.apiKey.includes('_live_') ? 'live' : 'test';
 
     const stripeConfig: Stripe.StripeConfig = {
       maxNetworkRetries: config.maxNetworkRetries ?? 1,
