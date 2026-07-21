@@ -1,4 +1,5 @@
 import { verifySignature, parseWebhookEvent, processWebhookEvent, SIGNATURE_HEADER } from '../webhook.js';
+import { createWebhookHandler } from './web.js';
 import type { WebhookConfig, WebhookEvent, VerifyOptions } from '../types.js';
 
 /**
@@ -56,32 +57,8 @@ interface NextPagesResponse {
  * ```
  */
 export function createNextWebhookHandler(config: WebhookConfig) {
-  return async (request: Request): Promise<Response> => {
-    try {
-      const rawBody = await request.text();
-
-      const signature = request.headers.get(SIGNATURE_HEADER);
-      if (!signature) {
-        return Response.json({ error: 'Missing signature header' }, { status: 400 });
-      }
-
-      const verification = verifySignature(rawBody, signature, config.signingSecret, config);
-
-      if (!verification.valid) {
-        return Response.json({ error: verification.error }, { status: 400 });
-      }
-
-      const event = parseWebhookEvent(rawBody);
-      await processWebhookEvent(event, config);
-
-      return Response.json({ received: true, eventId: event.id }, { status: 200 });
-    } catch (error) {
-      return Response.json(
-        { error: error instanceof Error ? error.message : 'Webhook processing failed' },
-        { status: 500 }
-      );
-    }
-  };
+  // The App Router speaks the Web platform, so reuse the framework-neutral handler.
+  return createWebhookHandler(config);
 }
 
 /**
@@ -127,7 +104,7 @@ export function createNextPagesWebhookHandler(config: WebhookConfig) {
         return;
       }
 
-      const verification = verifySignature(rawBody, signature, config.signingSecret, config);
+      const verification = await verifySignature(rawBody, signature, config.signingSecret, config);
 
       if (!verification.valid) {
         res.status(400).json({ error: verification.error });
@@ -203,7 +180,7 @@ export async function parseNextWebhook(
     throw new Error('Missing signature header');
   }
 
-  const verification = verifySignature(rawBody, signature, signingSecret, options);
+  const verification = await verifySignature(rawBody, signature, signingSecret, options);
 
   if (!verification.valid) {
     throw new Error(verification.error ?? 'Signature verification failed');

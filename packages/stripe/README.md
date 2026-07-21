@@ -27,7 +27,7 @@ A thin, consistent wrapper over the official [`stripe`](https://www.npmjs.com/pa
 - **Simplified APIs** – Less boilerplate over PaymentIntents, Customers, and Refunds
 - **Type-Safe** – Full TypeScript support; wraps Stripe's own types
 - **Typed Errors** – `parseStripeError` normalizes Stripe errors into a small class hierarchy
-- **Webhook Support** – Signature verification and middleware for Express, Next.js, and AWS Lambda
+- **Edge-ready webhooks** – WebCrypto signature verification that runs on Node, **Deno**, Bun, and Workers, plus Express / Next.js / Lambda adapters
 - **Escape Hatch** – `client.sdk` exposes the underlying Stripe instance for anything not wrapped
 
 ## Requirements
@@ -137,6 +137,33 @@ export const handler = createLambdaWebhookHandler({
   },
 });
 ```
+
+### Webhook Handling (Edge / Deno / Workers)
+
+Signature verification uses WebCrypto, so `createWebhookHandler` runs on any
+runtime that speaks the Fetch API — Deno, Cloudflare Workers, Bun, and edge
+functions — with no Node built-ins.
+
+```typescript
+// Supabase Edge Function / Deno
+import { createWebhookHandler } from '@bates-solutions/stripe/server';
+
+const handler = createWebhookHandler({
+  signingSecret: Deno.env.get('STRIPE_WEBHOOK_SECRET')!,
+  handlers: {
+    'checkout.session.completed': async (event) => {
+      console.log('Subscribed:', event.data.object.id);
+    },
+  },
+});
+
+Deno.serve(handler);
+```
+
+Entity helpers extract common IDs from any event: `getPaymentIntentId`,
+`getChargeId`, `getCustomerId`, `getSubscriptionId`, and `resolveId` (collapses
+an id-string-or-expanded-object reference). `fromUnixTime(seconds)` converts
+Stripe's epoch-seconds timestamps to a `Date`.
 
 ## Available Services
 

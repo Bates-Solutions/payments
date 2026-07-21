@@ -10,6 +10,8 @@ import {
   getPaymentIntentId,
   getChargeId,
   getCustomerId,
+  getSubscriptionId,
+  resolveId,
 } from '../webhook.js';
 import type { WebhookEvent } from '../types.js';
 
@@ -39,50 +41,50 @@ describe('constants', () => {
 });
 
 describe('verifySignature', () => {
-  it('accepts a valid signature', () => {
+  it('accepts a valid signature', async () => {
     const body = makeEvent();
-    const result = verifySignature(body, sign(body), SECRET);
+    const result = await verifySignature(body, sign(body), SECRET);
     expect(result.valid).toBe(true);
   });
 
-  it('rejects a tampered body', () => {
+  it('rejects a tampered body', async () => {
     const body = makeEvent();
     const header = sign(body);
-    const result = verifySignature(body + 'x', header, SECRET);
+    const result = await verifySignature(body + 'x', header, SECRET);
     expect(result.valid).toBe(false);
     expect(result.error).toBe('Invalid signature');
   });
 
-  it('rejects a wrong secret', () => {
+  it('rejects a wrong secret', async () => {
     const body = makeEvent();
-    const result = verifySignature(body, sign(body), 'whsec_wrong');
+    const result = await verifySignature(body, sign(body), 'whsec_wrong');
     expect(result.valid).toBe(false);
   });
 
-  it('reports missing inputs', () => {
-    expect(verifySignature('', 'sig', SECRET).error).toBe('Missing request body');
-    expect(verifySignature('body', '', SECRET).error).toBe('Missing signature header');
-    expect(verifySignature('body', 'sig', '').error).toBe('Missing signing secret');
+  it('reports missing inputs', async () => {
+    expect((await verifySignature('', 'sig', SECRET)).error).toBe('Missing request body');
+    expect((await verifySignature('body', '', SECRET)).error).toBe('Missing signature header');
+    expect((await verifySignature('body', 'sig', '')).error).toBe('Missing signing secret');
   });
 
-  it('rejects a malformed header', () => {
-    const result = verifySignature(makeEvent(), 'not-a-real-header', SECRET);
+  it('rejects a malformed header', async () => {
+    const result = await verifySignature(makeEvent(), 'not-a-real-header', SECRET);
     expect(result.valid).toBe(false);
     expect(result.error).toBe('Invalid signature header format');
   });
 
-  it('rejects a timestamp outside the tolerance', () => {
+  it('rejects a timestamp outside the tolerance', async () => {
     const body = makeEvent();
     const oldTimestamp = Math.floor(Date.now() / 1000) - 1000;
-    const result = verifySignature(body, sign(body, SECRET, oldTimestamp), SECRET, { tolerance: 300 });
+    const result = await verifySignature(body, sign(body, SECRET, oldTimestamp), SECRET, { tolerance: 300 });
     expect(result.valid).toBe(false);
     expect(result.error).toBe('Timestamp outside the tolerance zone');
   });
 
-  it('skips the timestamp check when tolerance is 0', () => {
+  it('skips the timestamp check when tolerance is 0', async () => {
     const body = makeEvent();
     const oldTimestamp = Math.floor(Date.now() / 1000) - 100000;
-    const result = verifySignature(body, sign(body, SECRET, oldTimestamp), SECRET, { tolerance: 0 });
+    const result = await verifySignature(body, sign(body, SECRET, oldTimestamp), SECRET, { tolerance: 0 });
     expect(result.valid).toBe(true);
   });
 });
@@ -99,15 +101,15 @@ describe('parseWebhookEvent', () => {
 });
 
 describe('parseAndVerifyWebhook', () => {
-  it('returns the parsed event when valid', () => {
+  it('returns the parsed event when valid', async () => {
     const body = makeEvent();
-    const { event } = parseAndVerifyWebhook(body, sign(body), SECRET);
+    const { event } = await parseAndVerifyWebhook(body, sign(body), SECRET);
     expect(event.id).toBe('evt_123');
   });
 
-  it('throws when the signature is invalid', () => {
+  it('throws when the signature is invalid', async () => {
     const body = makeEvent();
-    expect(() => parseAndVerifyWebhook(body, 'bad', SECRET)).toThrow();
+    await expect(parseAndVerifyWebhook(body, 'bad', SECRET)).rejects.toThrow();
   });
 });
 
@@ -192,5 +194,48 @@ describe('entity extractors', () => {
       makeEvent({ type: 'customer.created', data: { object: { id: 'cus_7' } } } as never)
     );
     expect(getCustomerId(event)).toBe('cus_7');
+  });
+
+  it('extracts the customer id (not the object id) from a customer.subscription.* event', () => {
+    const event = parseWebhookEvent(
+      makeEvent({
+        type: 'customer.subscription.updated',
+        data: { object: { id: 'sub_1', customer: 'cus_88' } },
+      } as never)
+    );
+    expect(getCustomerId(event)).toBe('cus_88');
+  });
+
+  it('extracts a subscription id from a subscription event', () => {
+    const event = parseWebhookEvent(
+      makeEvent({ type: 'customer.subscription.updated', data: { object: { id: 'sub_1' } } } as never)
+    );
+    expect(getSubscriptionId(event)).toBe('sub_1');
+  });
+
+  it('extracts a subscription id referenced by a checkout session', () => {
+    const event = parseWebhookEvent(
+      makeEvent({
+        type: 'checkout.session.completed',
+        data: { object: { id: 'cs_1', subscription: 'sub_9', customer: 'cus_9' } },
+      } as never)
+    );
+    expect(getSubscriptionId(event)).toBe('sub_9');
+    expect(getCustomerId(event)).toBe('cus_9');
+  });
+});
+
+describe('resolveId', () => {
+  it('returns a string id as-is', () => {
+    expect(resolveId('cus_1')).toBe('cus_1');
+  });
+
+  it('reads id off an expanded object', () => {
+    expect(resolveId({ id: 'cus_1' })).toBe('cus_1');
+  });
+
+  it('returns undefined for null/undefined', () => {
+    expect(resolveId(null)).toBeUndefined();
+    expect(resolveId(undefined)).toBeUndefined();
   });
 });

@@ -29,6 +29,12 @@ export type {
   VerifyOptions,
   WebhookVerificationResult,
   ParsedWebhookRequest,
+  CheckoutSessionCompletedEvent,
+  SubscriptionCreatedEvent,
+  SubscriptionUpdatedEvent,
+  SubscriptionDeletedEvent,
+  InvoicePaidEvent,
+  InvoicePaymentFailedEvent,
 } from './types.js';
 
 // Core webhook utilities
@@ -42,7 +48,12 @@ export {
   getPaymentIntentId,
   getChargeId,
   getCustomerId,
+  getSubscriptionId,
+  resolveId,
 } from './webhook.js';
+
+// Framework-neutral (edge/Deno/Workers) handler
+export { createWebhookHandler } from './middleware/web.js';
 
 // Express middleware
 export {

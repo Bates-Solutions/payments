@@ -6,7 +6,7 @@
 
 # Interface: CreatePaymentOptions
 
-Defined in: core/types/index.ts:50
+Defined in: [core/types/index.ts:50](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/types/index.ts#L50)
 
 Options for creating a payment (PaymentIntent)
 
@@ -16,7 +16,7 @@ Options for creating a payment (PaymentIntent)
 
 > **amount**: `number`
 
-Defined in: core/types/index.ts:52
+Defined in: [core/types/index.ts:52](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/types/index.ts#L52)
 
 Amount in the smallest currency unit (e.g. cents)
 
@@ -26,7 +26,7 @@ Amount in the smallest currency unit (e.g. cents)
 
 > `optional` **confirm?**: `boolean`
 
-Defined in: core/types/index.ts:63
+Defined in: [core/types/index.ts:63](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/types/index.ts#L63)
 
 Confirm the PaymentIntent immediately after creation.
 
@@ -42,7 +42,7 @@ false
 
 > `optional` **currency?**: [`CurrencyCode`](../type-aliases/CurrencyCode.md)
 
-Defined in: core/types/index.ts:54
+Defined in: [core/types/index.ts:54](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/types/index.ts#L54)
 
 ISO currency code (default: `usd`)
 
@@ -52,7 +52,7 @@ ISO currency code (default: `usd`)
 
 > `optional` **customerId?**: `string`
 
-Defined in: core/types/index.ts:56
+Defined in: [core/types/index.ts:56](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/types/index.ts#L56)
 
 Customer to attach the payment to
 
@@ -62,7 +62,7 @@ Customer to attach the payment to
 
 > `optional` **description?**: `string`
 
-Defined in: core/types/index.ts:65
+Defined in: [core/types/index.ts:65](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/types/index.ts#L65)
 
 Arbitrary description shown in the Stripe dashboard
 
@@ -72,7 +72,7 @@ Arbitrary description shown in the Stripe dashboard
 
 > `optional` **idempotencyKey?**: `string`
 
-Defined in: core/types/index.ts:71
+Defined in: [core/types/index.ts:71](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/types/index.ts#L71)
 
 Idempotency key (defaults to a generated UUID)
 
@@ -82,7 +82,7 @@ Idempotency key (defaults to a generated UUID)
 
 > `optional` **metadata?**: `Record`\<`string`, `string`\>
 
-Defined in: core/types/index.ts:69
+Defined in: [core/types/index.ts:69](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/types/index.ts#L69)
 
 Key/value metadata attached to the PaymentIntent
 
@@ -92,7 +92,7 @@ Key/value metadata attached to the PaymentIntent
 
 > `optional` **paymentMethod?**: `string`
 
-Defined in: core/types/index.ts:58
+Defined in: [core/types/index.ts:58](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/types/index.ts#L58)
 
 Payment method to charge (e.g. `pm_…`)
 
@@ -102,6 +102,6 @@ Payment method to charge (e.g. `pm_…`)
 
 > `optional` **receiptEmail?**: `string`
 
-Defined in: core/types/index.ts:67
+Defined in: [core/types/index.ts:67](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/types/index.ts#L67)
 
 Email address to send the receipt to

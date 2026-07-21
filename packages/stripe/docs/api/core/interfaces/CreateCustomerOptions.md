@@ -6,7 +6,7 @@
 
 # Interface: CreateCustomerOptions
 
-Defined in: core/services/customers.service.ts:26
+Defined in: [core/services/customers.service.ts:26](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/customers.service.ts#L26)
 
 Options for creating a customer
 
@@ -16,7 +16,7 @@ Options for creating a customer
 
 > `optional` **address?**: [`CustomerAddress`](CustomerAddress.md)
 
-Defined in: core/services/customers.service.ts:31
+Defined in: [core/services/customers.service.ts:31](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/customers.service.ts#L31)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: core/services/customers.service.ts:31
 
 > `optional` **description?**: `string`
 
-Defined in: core/services/customers.service.ts:30
+Defined in: [core/services/customers.service.ts:30](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/customers.service.ts#L30)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: core/services/customers.service.ts:30
 
 > `optional` **email?**: `string`
 
-Defined in: core/services/customers.service.ts:27
+Defined in: [core/services/customers.service.ts:27](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/customers.service.ts#L27)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: core/services/customers.service.ts:27
 
 > `optional` **idempotencyKey?**: `string`
 
-Defined in: core/services/customers.service.ts:33
+Defined in: [core/services/customers.service.ts:33](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/customers.service.ts#L33)
 
 ***
 
@@ -48,7 +48,7 @@ Defined in: core/services/customers.service.ts:33
 
 > `optional` **metadata?**: `Record`\<`string`, `string`\>
 
-Defined in: core/services/customers.service.ts:32
+Defined in: [core/services/customers.service.ts:32](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/customers.service.ts#L32)
 
 ***
 
@@ -56,7 +56,7 @@ Defined in: core/services/customers.service.ts:32
 
 > `optional` **name?**: `string`
 
-Defined in: core/services/customers.service.ts:28
+Defined in: [core/services/customers.service.ts:28](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/customers.service.ts#L28)
 
 ***
 
@@ -64,4 +64,4 @@ Defined in: core/services/customers.service.ts:28
 
 > `optional` **phone?**: `string`
 
-Defined in: core/services/customers.service.ts:29
+Defined in: [core/services/customers.service.ts:29](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/services/customers.service.ts#L29)
