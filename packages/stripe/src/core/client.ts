@@ -3,6 +3,11 @@ import type { StripeEnvironment } from './types/index.js';
 import { PaymentsService } from './services/payments.service.js';
 import { CustomersService } from './services/customers.service.js';
 import { RefundsService } from './services/refunds.service.js';
+import { CheckoutService } from './services/checkout.service.js';
+import { BillingPortalService } from './services/billing-portal.service.js';
+import { SubscriptionsService } from './services/subscriptions.service.js';
+import { PricesService } from './services/prices.service.js';
+import { ProductsService } from './services/products.service.js';
 
 /**
  * Configuration options for the Stripe client
@@ -51,6 +56,11 @@ export class StripeClient {
   public readonly payments: PaymentsService;
   public readonly customers: CustomersService;
   public readonly refunds: RefundsService;
+  public readonly checkout: CheckoutService;
+  public readonly billingPortal: BillingPortalService;
+  public readonly subscriptions: SubscriptionsService;
+  public readonly prices: PricesService;
+  public readonly products: ProductsService;
 
   constructor(config: StripeClientConfig) {
     if (!config.apiKey) {
@@ -73,6 +83,11 @@ export class StripeClient {
     this.payments = new PaymentsService(this.client);
     this.customers = new CustomersService(this.client);
     this.refunds = new RefundsService(this.client);
+    this.checkout = new CheckoutService(this.client);
+    this.billingPortal = new BillingPortalService(this.client);
+    this.subscriptions = new SubscriptionsService(this.client);
+    this.prices = new PricesService(this.client);
+    this.products = new ProductsService(this.client);
   }
 
   /**

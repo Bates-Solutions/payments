@@ -20,6 +20,31 @@ export type {
   CreateRefundOptions,
   ListRefundsOptions,
 } from './services/refunds.service.js';
+export { CheckoutService } from './services/checkout.service.js';
+export type {
+  CheckoutSession,
+  CheckoutLineItem,
+  CreateCheckoutSessionOptions,
+  ListCheckoutSessionsOptions,
+} from './services/checkout.service.js';
+export { BillingPortalService } from './services/billing-portal.service.js';
+export type {
+  BillingPortalSession,
+  CreatePortalSessionOptions,
+} from './services/billing-portal.service.js';
+export { SubscriptionsService, normalizeSubscription } from './services/subscriptions.service.js';
+export type {
+  Subscription,
+  SubscriptionStatus,
+  NormalizedSubscription,
+  NormalizedSubscriptionItem,
+  ListSubscriptionsOptions,
+  CancelSubscriptionOptions,
+} from './services/subscriptions.service.js';
+export { PricesService } from './services/prices.service.js';
+export type { Price, ListPricesOptions } from './services/prices.service.js';
+export { ProductsService } from './services/products.service.js';
+export type { Product, ListProductsOptions } from './services/products.service.js';
 
 // Errors
 export {
@@ -33,7 +58,14 @@ export {
 export type { StripeErrorCode } from './errors.js';
 
 // Utils
-export { toMinor, fromMinor, formatMoney, createIdempotencyKey, fromUnixTime } from './utils.js';
+export {
+  toMinor,
+  fromMinor,
+  formatMoney,
+  createIdempotencyKey,
+  fromUnixTime,
+  resolveId,
+} from './utils.js';
 export type { Money } from './utils.js';
 
 // Types

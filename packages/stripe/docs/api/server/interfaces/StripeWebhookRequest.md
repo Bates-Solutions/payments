@@ -6,7 +6,7 @@
 
 # Interface: StripeWebhookRequest
 
-Defined in: [server/middleware/express.ts:8](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/server/middleware/express.ts#L8)
+Defined in: [server/middleware/express.ts:8](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/middleware/express.ts#L8)
 
 Extended Express Request carrying Stripe webhook data.
 
@@ -20,7 +20,7 @@ Extended Express Request carrying Stripe webhook data.
 
 > `optional` **rawBody?**: `string`
 
-Defined in: [server/middleware/express.ts:10](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/server/middleware/express.ts#L10)
+Defined in: [server/middleware/express.ts:10](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/middleware/express.ts#L10)
 
 The raw request body as a string
 
@@ -30,6 +30,6 @@ The raw request body as a string
 
 > `optional` **stripeEvent?**: `Event`
 
-Defined in: [server/middleware/express.ts:12](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/server/middleware/express.ts#L12)
+Defined in: [server/middleware/express.ts:12](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/middleware/express.ts#L12)
 
 The parsed Stripe webhook event

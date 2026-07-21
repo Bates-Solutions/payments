@@ -9,6 +9,10 @@ Backend API integration guides:
 - [Processing Payments](./core/payments.md) - Create, capture, and cancel payments
 - [Managing Customers](./core/customers.md) - Customer CRUD and search
 - [Refunds](./core/refunds.md) - Full and partial refunds
+- [Checkout](./core/checkout.md) - Hosted Checkout Sessions (subscription & one-time)
+- [Billing Portal](./core/billing-portal.md) - Customer self-service billing
+- [Subscriptions](./core/subscriptions.md) - Recurring billing, version-stable shape
+- [Prices & Products](./core/prices-and-products.md) - Reading the plan catalog from Stripe
 
 ## Server
 

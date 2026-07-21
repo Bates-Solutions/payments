@@ -8,7 +8,7 @@
 
 > **SubscriptionUpdatedEvent** = `Extract`\<`Stripe.Event`, \{ `type`: `"customer.subscription.updated"`; \}\>
 
-Defined in: [server/types.ts:75](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/server/types.ts#L75)
+Defined in: [server/types.ts:75](https://github.com/mbates/stripe/blob/bb852372e9af16a3818fd582f3276389107ca62a/src/server/types.ts#L75)
 
 @bates-solutions/stripe/server
 

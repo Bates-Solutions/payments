@@ -126,3 +126,27 @@ export function fromUnixTime(seconds: number | null | undefined): Date | undefin
   }
   return new Date(seconds * 1000);
 }
+
+/**
+ * Resolve a Stripe reference that may be either an ID string or an expanded
+ * object, to its ID.
+ *
+ * Stripe fields like `customer` / `subscription` / `product` are a bare ID
+ * string unless expanded, in which case they are the full object. This
+ * collapses both forms.
+ *
+ * @example
+ * ```typescript
+ * resolveId('cus_1');          // 'cus_1'
+ * resolveId({ id: 'cus_1' });  // 'cus_1'
+ * resolveId(null);             // undefined
+ * ```
+ */
+export function resolveId(
+  value: string | { id?: string } | null | undefined
+): string | undefined {
+  if (typeof value === 'string') {
+    return value;
+  }
+  return value?.id;
+}
