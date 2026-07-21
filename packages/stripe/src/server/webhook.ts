@@ -15,7 +15,7 @@ export const SIGNATURE_HEADER = 'stripe-signature';
  * Compute an HMAC-SHA256 hex digest using WebCrypto.
  *
  * Uses `globalThis.crypto.subtle` so verification runs on any modern runtime
- * (Node 20+, Deno, Bun, Cloudflare Workers) with no Node built-ins.
+ * (Node 22+, Deno, Bun, Cloudflare Workers) with no Node built-ins.
  */
 async function hmacSha256Hex(secret: string, payload: string): Promise<string> {
   const encoder = new TextEncoder();
@@ -79,7 +79,7 @@ function parseSignatureHeader(header: string): {
  *
  * Reimplements Stripe's signing scheme (HMAC-SHA256 over `${timestamp}.${body}`)
  * using WebCrypto, so verification needs neither a Stripe SDK instance, a network
- * call, nor any Node built-in — it runs on Node 20+, Deno, Bun, and Workers.
+ * call, nor any Node built-in — it runs on Node 22+, Deno, Bun, and Workers.
  *
  * @param rawBody - The raw request body as a string
  * @param signature - The `stripe-signature` header value
@@ -316,10 +316,21 @@ export function getChargeId(event: WebhookEvent): string | undefined {
 export function getCustomerId(event: WebhookEvent): string | undefined {
   const object = event.data.object as { id?: string; customer?: string | { id?: string } };
 
+  // Sub-resource events (customer.subscription.*, customer.source.*,
+  // customer.discount.*, customer.tax_id.*) and most other objects carry an
+  // explicit `customer` reference — prefer it over the object's own id.
+  const customerRef = resolveId(object.customer);
+  if (customerRef) {
+    return customerRef;
+  }
+
+  // On a Customer object event (customer.created/updated/deleted) the object
+  // itself is the customer.
   if (event.type.startsWith('customer.')) {
     return object.id;
   }
-  return resolveId(object.customer);
+
+  return undefined;
 }
 
 /**

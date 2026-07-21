@@ -8,13 +8,13 @@
 
 > **verifySignature**(`rawBody`, `signature`, `signingSecret`, `options?`): `Promise`\<[`WebhookVerificationResult`](../interfaces/WebhookVerificationResult.md)\>
 
-Defined in: [server/webhook.ts:105](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/server/webhook.ts#L105)
+Defined in: [server/webhook.ts:105](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/server/webhook.ts#L105)
 
 Verify a Stripe webhook signature.
 
 Reimplements Stripe's signing scheme (HMAC-SHA256 over `${timestamp}.${body}`)
 using WebCrypto, so verification needs neither a Stripe SDK instance, a network
-call, nor any Node built-in — it runs on Node 20+, Deno, Bun, and Workers.
+call, nor any Node built-in — it runs on Node 22+, Deno, Bun, and Workers.
 
 ## Parameters
 

@@ -196,6 +196,16 @@ describe('entity extractors', () => {
     expect(getCustomerId(event)).toBe('cus_7');
   });
 
+  it('extracts the customer id (not the object id) from a customer.subscription.* event', () => {
+    const event = parseWebhookEvent(
+      makeEvent({
+        type: 'customer.subscription.updated',
+        data: { object: { id: 'sub_1', customer: 'cus_88' } },
+      } as never)
+    );
+    expect(getCustomerId(event)).toBe('cus_88');
+  });
+
   it('extracts a subscription id from a subscription event', () => {
     const event = parseWebhookEvent(
       makeEvent({ type: 'customer.subscription.updated', data: { object: { id: 'sub_1' } } } as never)

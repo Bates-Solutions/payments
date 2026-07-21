@@ -8,7 +8,7 @@
 
 > **StripeEnvironment** = `"test"` \| `"live"`
 
-Defined in: [core/types/index.ts:7](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/core/types/index.ts#L7)
+Defined in: [core/types/index.ts:7](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/core/types/index.ts#L7)
 
 Stripe environment, derived from the API key prefix.
 

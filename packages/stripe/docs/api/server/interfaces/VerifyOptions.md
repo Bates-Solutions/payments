@@ -6,7 +6,7 @@
 
 # Interface: VerifyOptions
 
-Defined in: [server/types.ts:44](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/server/types.ts#L44)
+Defined in: [server/types.ts:44](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/server/types.ts#L44)
 
 Options controlling signature verification.
 
@@ -21,7 +21,7 @@ Options controlling signature verification.
 
 > `optional` **tolerance?**: `number`
 
-Defined in: [server/types.ts:50](https://github.com/mbates/stripe/blob/35b838ad06a203b36b707ab7be667f9e1c23ec7e/src/server/types.ts#L50)
+Defined in: [server/types.ts:50](https://github.com/mbates/stripe/blob/4dd39275a724934e08ccfff30903ed5eef5cc58d/src/server/types.ts#L50)
 
 Maximum allowed difference (seconds) between the signature timestamp and
 now. Set to `0` to disable the timestamp check.
