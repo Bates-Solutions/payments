@@ -116,7 +116,10 @@ export interface WebhookConfig {
   /** URL where webhooks are received (for signature verification) */
   notificationUrl?: string;
   /**
-   * Whether to throw on signature verification failure
+   * How `createWebhookProcessor` reports an invalid signature. When `true`
+   * (default) it throws (surfaced as `{ success: false, error }`); when `false`
+   * it returns `{ success: false, error }` without throwing. Either way an
+   * invalid signature is **never dispatched to handlers**.
    * @default true
    */
   throwOnInvalidSignature?: boolean;
