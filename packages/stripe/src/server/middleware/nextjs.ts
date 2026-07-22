@@ -56,7 +56,9 @@ interface NextPagesResponse {
  * });
  * ```
  */
-export function createNextWebhookHandler(config: WebhookConfig) {
+export function createNextWebhookHandler(
+  config: WebhookConfig
+): (request: Request) => Promise<Response> {
   // The App Router speaks the Web platform, so reuse the framework-neutral handler.
   return createWebhookHandler(config);
 }
@@ -86,7 +88,9 @@ export function createNextWebhookHandler(config: WebhookConfig) {
  * });
  * ```
  */
-export function createNextPagesWebhookHandler(config: WebhookConfig) {
+export function createNextPagesWebhookHandler(
+  config: WebhookConfig
+): (req: NextPagesRequest, res: NextPagesResponse) => Promise<void> {
   return async (req: NextPagesRequest, res: NextPagesResponse): Promise<void> => {
     if (req.method !== 'POST') {
       res.status(405).json({ error: 'Method not allowed' });
