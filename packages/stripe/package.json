@@ -29,8 +29,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "docs": "typedoc",
-    "prepublishOnly": "npm run build"
+    "docs": "typedoc"
   },
   "keywords": [
     "stripe",
@@ -63,8 +62,6 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@semantic-release/changelog": "^7.0.0",
-    "@semantic-release/git": "^11.0.0",
     "@types/express": "^5.0.6",
     "@types/node": "^26.0.0",
     "@typescript-eslint/eslint-plugin": "^8.62.0",
@@ -74,7 +71,6 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.1.0",
     "prettier": "^3.9.6",
-    "semantic-release": "^25.0.3",
     "stripe": "^22.3.2",
     "typedoc": "^0.28.18",
     "typedoc-plugin-markdown": "^4.10.0",
