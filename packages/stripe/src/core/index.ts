@@ -45,6 +45,14 @@ export { PricesService } from './services/prices.service.js';
 export type { Price, ListPricesOptions } from './services/prices.service.js';
 export { ProductsService } from './services/products.service.js';
 export type { Product, ListProductsOptions } from './services/products.service.js';
+export { InvoicesService } from './services/invoices.service.js';
+export type {
+  Invoice,
+  InvoiceItem,
+  CreateInvoiceOptions,
+  AddInvoiceItemOptions,
+  ListInvoicesOptions,
+} from './services/invoices.service.js';
 
 // Errors
 export {

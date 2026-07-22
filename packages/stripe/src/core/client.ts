@@ -8,6 +8,7 @@ import { BillingPortalService } from './services/billing-portal.service.js';
 import { SubscriptionsService } from './services/subscriptions.service.js';
 import { PricesService } from './services/prices.service.js';
 import { ProductsService } from './services/products.service.js';
+import { InvoicesService } from './services/invoices.service.js';
 
 /**
  * Configuration options for the Stripe client
@@ -61,6 +62,7 @@ export class StripeClient {
   public readonly subscriptions: SubscriptionsService;
   public readonly prices: PricesService;
   public readonly products: ProductsService;
+  public readonly invoices: InvoicesService;
 
   constructor(config: StripeClientConfig) {
     if (!config.apiKey) {
@@ -90,6 +92,7 @@ export class StripeClient {
     this.subscriptions = new SubscriptionsService(this.client);
     this.prices = new PricesService(this.client);
     this.products = new ProductsService(this.client);
+    this.invoices = new InvoicesService(this.client);
   }
 
   /**
