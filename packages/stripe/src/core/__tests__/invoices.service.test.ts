@@ -105,6 +105,13 @@ describe('InvoicesService', () => {
       await expect(service.addItem({ customerId: 'cus_1' })).rejects.toThrow(StripeValidationError);
     });
 
+    it('throws when both amount and priceId are provided', async () => {
+      const service = new InvoicesService(createMockClient());
+      await expect(
+        service.addItem({ customerId: 'cus_1', amount: 4900, currency: 'usd', priceId: 'price_1' })
+      ).rejects.toThrow(StripeValidationError);
+    });
+
     it('throws when amount is provided without a currency', async () => {
       const service = new InvoicesService(createMockClient());
       await expect(
