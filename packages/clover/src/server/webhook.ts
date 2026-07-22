@@ -203,7 +203,9 @@ export async function processWebhookEvent(
  * const result = await handleWebhook(rawBody, signature);
  * ```
  */
-export function createWebhookProcessor(config: WebhookConfig) {
+export function createWebhookProcessor(
+  config: WebhookConfig
+): (rawBody: string, signature: string) => Promise<{ success: boolean; event?: WebhookEvent; error?: string }> {
   return async (
     rawBody: string,
     signature: string

@@ -55,8 +55,9 @@ changes public API surface must update docs in the same PR:**
 
 - **Open a pull request for all changes** — nothing is pushed directly to `main`.
 - Use [Conventional Commits](https://www.conventionalcommits.org/) prefixes
-  (`feat:`, `fix:`, `chore:`, `docs:`, `test:`, …). Releases are automated by
-  semantic-release on merge to `main`.
+  (`feat:`, `fix:`, `chore:`, `docs:`, `test:`, …).
+- Releasing: bump the `version` in `jsr.json` (keep `package.json` in sync), then
+  push a matching `vX.Y.Z` tag — the JSR publish workflow (OIDC) does the rest.
 
 ## License
 

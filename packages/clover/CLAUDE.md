@@ -4,7 +4,7 @@ This file provides guidance to Claude Code when working with code in this reposi
 
 ## Project Overview
 
-`@bates-solutions/clover` — TypeScript wrapper around the Clover **Ecommerce** and **Platform** APIs with webhook helpers for Node.js and edge runtimes. Single-package npm library, published from `main`. Sibling to `@bates-solutions/squareup` and `@bates-solutions/stripe`, and intentionally mirrors their shape so consumers of one know all.
+`@bates-solutions/clover` — TypeScript wrapper around the Clover **Ecommerce** and **Platform** APIs with webhook helpers for Node.js and edge runtimes. Single-package library published to **JSR** (`jsr:@bates-solutions/clover`); JSR publishes the TypeScript source directly, so there is no build/bundle step for distribution. Sibling to `@bates-solutions/squareup` (on npm) and `@bates-solutions/stripe` (on JSR), and intentionally mirrors their shape so consumers of one know all.
 
 Clover has no first-class Node SDK, so this library talks to Clover over a small typed **fetch-based REST client** (`src/core/http.ts`) — no vendor SDK dependency.
 
@@ -50,8 +50,8 @@ Always run `typecheck`, `lint`, and `test` before committing.
 
 - **ALWAYS create a PR for code changes** — never push directly to `main`.
 - Do NOT include "Generated with Claude Code" or `Co-Authored-By` lines mentioning Claude/Anthropic.
-- Conventional commit prefixes (`feat:`, `fix:`, `chore:`, …) — release is automated via semantic-release on merge to `main`.
+- Conventional commit prefixes (`feat:`, `fix:`, `chore:`, …). Publishing goes to JSR via OIDC (`.github/workflows/publish-jsr.yml`), triggered by pushing a `v*` tag. To release: bump `version` in `jsr.json` (keep `package.json` in sync), merge, then tag `vX.Y.Z` and push the tag.
 
 ## Documentation
 
-Public npm library — every PR that adds or changes public API surface updates docs in the same PR (`README.md`, `docs/guides/core/<service>.md`, JSDoc; TypeDoc regenerates `docs/api/`).
+Public library (published on JSR) — every PR that adds or changes public API surface updates docs in the same PR (`README.md`, `docs/guides/core/<service>.md`, JSDoc; TypeDoc regenerates `docs/api/`).

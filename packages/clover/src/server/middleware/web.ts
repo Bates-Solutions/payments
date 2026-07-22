@@ -32,7 +32,9 @@ import type { WebhookConfig } from '../types.js';
  * Deno.serve(handler);
  * ```
  */
-export function createWebhookHandler(config: WebhookConfig) {
+export function createWebhookHandler(
+  config: WebhookConfig
+): (request: Request) => Promise<Response> {
   return async (request: Request): Promise<Response> => {
     if (request.method !== 'POST') {
       return Response.json({ error: 'Method not allowed' }, { status: 405 });
