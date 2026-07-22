@@ -48,7 +48,6 @@ export type { Product, ListProductsOptions } from './services/products.service.j
 export { InvoicesService } from './services/invoices.service.js';
 export type {
   Invoice,
-  PersistedInvoice,
   InvoiceItem,
   CreateInvoiceOptions,
   AddInvoiceItemOptions,
