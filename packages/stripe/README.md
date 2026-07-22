@@ -41,11 +41,29 @@ A thin, consistent wrapper over the official [`stripe`](https://www.npmjs.com/pa
 
 ## Installation
 
+This package is published on [JSR](https://jsr.io/@bates-solutions/stripe).
+
 ```bash
-npm install @bates-solutions/stripe stripe
+# npm / pnpm / yarn (via JSR's npm compatibility)
+npx jsr add @bates-solutions/stripe
+
+# Deno
+deno add jsr:@bates-solutions/stripe
 ```
 
-`stripe` is a peer dependency — install it alongside this package.
+Then install the Stripe SDK, which is a peer dependency:
+
+```bash
+npm install stripe          # Node
+# or, in Deno, import via npm:stripe
+```
+
+Deno / edge runtimes (e.g. Supabase Edge Functions) can import directly:
+
+```typescript
+import { createStripeClient } from 'jsr:@bates-solutions/stripe';
+import { createWebhookHandler } from 'jsr:@bates-solutions/stripe/server';
+```
 
 ## Quick Start
 
