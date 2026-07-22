@@ -43,8 +43,21 @@ It targets both Clover hosts transparently:
 
 ## Installation
 
+This package is published on [JSR](https://jsr.io/@bates-solutions/clover).
+
 ```bash
-npm install @bates-solutions/clover
+# npm / pnpm / yarn (via JSR's npm compatibility)
+npx jsr add @bates-solutions/clover
+
+# Deno
+deno add jsr:@bates-solutions/clover
+```
+
+Deno / edge runtimes (e.g. Supabase Edge Functions) can import directly:
+
+```typescript
+import { createCloverClient } from 'jsr:@bates-solutions/clover';
+import { createWebhookHandler } from 'jsr:@bates-solutions/clover/server';
 ```
 
 ## Quick Start
