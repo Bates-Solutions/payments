@@ -350,3 +350,18 @@ export function getSubscriptionId(event: WebhookEvent): string | undefined {
   }
   return resolveId(object.subscription);
 }
+
+/**
+ * Extract the Invoice ID from a webhook event, when present.
+ *
+ * Works on `invoice.*` events (the object is the invoice) and on objects that
+ * reference an invoice (e.g. Checkout Sessions, PaymentIntents).
+ */
+export function getInvoiceId(event: WebhookEvent): string | undefined {
+  const object = event.data.object as { id?: string; invoice?: string | { id?: string } };
+
+  if (event.type.startsWith('invoice.')) {
+    return object.id;
+  }
+  return resolveId(object.invoice);
+}
