@@ -9,6 +9,15 @@ import { createIdempotencyKey } from '../utils.js';
 export type Invoice = Stripe.Invoice;
 
 /**
+ * A persisted Stripe Invoice — one returned by the API, so its `id` is always
+ * present. (`Stripe.Invoice.id` is typed optional in v18 because an invoice
+ * object can appear inline without an id; anything this service returns has
+ * been persisted and always has one.) Returning this lets callers chain, e.g.
+ * `finalize((await create(...)).id)`, without a `string | undefined` error.
+ */
+export type PersistedInvoice = Invoice & { id: string };
+
+/**
  * A Stripe Invoice Item (a pending line item drawn onto the next invoice, or
  * attached to a specific draft invoice).
  */
@@ -107,13 +116,13 @@ export class InvoicesService {
    *
    * @throws {StripeValidationError} When `customerId` is missing
    */
-  async create(options: CreateInvoiceOptions): Promise<Invoice> {
+  async create(options: CreateInvoiceOptions): Promise<PersistedInvoice> {
     if (!options.customerId) {
       throw new StripeValidationError('customerId is required', 'customerId');
     }
 
     try {
-      return await this.client.invoices.create(
+      const invoice = await this.client.invoices.create(
         {
           customer: options.customerId,
           auto_advance: options.autoAdvance ?? false,
@@ -125,6 +134,7 @@ export class InvoicesService {
         },
         { idempotencyKey: options.idempotencyKey ?? createIdempotencyKey() }
       );
+      return invoice as PersistedInvoice;
     } catch (error) {
       throw parseStripeError(error);
     }
@@ -143,6 +153,9 @@ export class InvoicesService {
     }
     if (options.amount === undefined && !options.priceId) {
       throw new StripeValidationError('either amount or priceId is required', 'amount');
+    }
+    if (options.amount !== undefined && options.priceId) {
+      throw new StripeValidationError('amount and priceId are mutually exclusive', 'amount');
     }
     if (options.amount !== undefined && !options.currency) {
       throw new StripeValidationError('currency is required when amount is provided', 'currency');
@@ -172,9 +185,9 @@ export class InvoicesService {
   /**
    * Retrieve an invoice by ID.
    */
-  async get(invoiceId: string): Promise<Invoice> {
+  async get(invoiceId: string): Promise<PersistedInvoice> {
     try {
-      return await this.client.invoices.retrieve(invoiceId);
+      return (await this.client.invoices.retrieve(invoiceId)) as PersistedInvoice;
     } catch (error) {
       throw parseStripeError(error);
     }
@@ -183,7 +196,7 @@ export class InvoicesService {
   /**
    * List invoices with cursor-based pagination.
    */
-  async list(options?: ListInvoicesOptions): Promise<PaginatedResponse<Invoice>> {
+  async list(options?: ListInvoicesOptions): Promise<PaginatedResponse<PersistedInvoice>> {
     try {
       const page = await this.client.invoices.list({
         customer: options?.customerId,
@@ -194,7 +207,7 @@ export class InvoicesService {
       });
 
       return {
-        data: page.data,
+        data: page.data as PersistedInvoice[],
         hasMore: page.has_more,
         nextCursor: page.has_more ? page.data.at(-1)?.id : undefined,
       };
@@ -206,9 +219,9 @@ export class InvoicesService {
   /**
    * Finalize a draft invoice so it becomes payable.
    */
-  async finalize(invoiceId: string): Promise<Invoice> {
+  async finalize(invoiceId: string): Promise<PersistedInvoice> {
     try {
-      return await this.client.invoices.finalizeInvoice(invoiceId);
+      return (await this.client.invoices.finalizeInvoice(invoiceId)) as PersistedInvoice;
     } catch (error) {
       throw parseStripeError(error);
     }
@@ -217,9 +230,9 @@ export class InvoicesService {
   /**
    * Pay a finalized invoice.
    */
-  async pay(invoiceId: string): Promise<Invoice> {
+  async pay(invoiceId: string): Promise<PersistedInvoice> {
     try {
-      return await this.client.invoices.pay(invoiceId);
+      return (await this.client.invoices.pay(invoiceId)) as PersistedInvoice;
     } catch (error) {
       throw parseStripeError(error);
     }
@@ -228,9 +241,9 @@ export class InvoicesService {
   /**
    * Void a finalized invoice (it can no longer be paid).
    */
-  async voidInvoice(invoiceId: string): Promise<Invoice> {
+  async voidInvoice(invoiceId: string): Promise<PersistedInvoice> {
     try {
-      return await this.client.invoices.voidInvoice(invoiceId);
+      return (await this.client.invoices.voidInvoice(invoiceId)) as PersistedInvoice;
     } catch (error) {
       throw parseStripeError(error);
     }
@@ -240,9 +253,9 @@ export class InvoicesService {
    * Send an invoice to the customer for manual payment (`send_invoice`
    * collection). Emails a hosted invoice link.
    */
-  async send(invoiceId: string): Promise<Invoice> {
+  async send(invoiceId: string): Promise<PersistedInvoice> {
     try {
-      return await this.client.invoices.sendInvoice(invoiceId);
+      return (await this.client.invoices.sendInvoice(invoiceId)) as PersistedInvoice;
     } catch (error) {
       throw parseStripeError(error);
     }
