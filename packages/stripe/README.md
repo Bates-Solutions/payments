@@ -207,6 +207,7 @@ Stripe's epoch-seconds timestamps to a `Date`.
 | `subscriptions` | Get, list, cancel subscriptions, normalized with `Date`s     |
 | `prices`        | List/retrieve prices (with product expansion)                   |
 | `products`      | List/retrieve products                                          |
+| `invoices`      | Invoices + invoice items (create, finalize, pay, void, send)    |
 
 ## Utilities
 
