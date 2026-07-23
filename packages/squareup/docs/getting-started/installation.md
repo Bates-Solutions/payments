@@ -1,21 +1,21 @@
 # Installation
 
-## npm
+## JSR (npm / pnpm / yarn)
 
 ```bash
-npm install @bates-solutions/squareup square
+npx jsr add @bates-solutions/squareup
 ```
 
-## yarn
+## Deno
 
 ```bash
-yarn add @bates-solutions/squareup square
+deno add jsr:@bates-solutions/squareup
 ```
 
-## pnpm
+## Square SDK peer dependency
 
 ```bash
-pnpm add @bates-solutions/squareup square
+npm install square
 ```
 
 ## Peer Dependencies
