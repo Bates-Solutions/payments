@@ -1,0 +1,57 @@
+# Publishes the package to JSR (jsr.io) using GitHub OIDC — no tokens.
+# Triggered by pushing a version tag (e.g. `v1.0.0`), or manually.
+# The version published is the one in jsr.json; tag it to release.
+#
+# One-time setup (required for OIDC to authenticate): the package must exist on
+# jsr.io (jsr.io/@bates-solutions/clover) and this GitHub repo must be linked to
+# it under the package's Settings → "GitHub repository". Until then, publish
+# manually with `npx jsr publish` from a terminal.
+name: Publish (JSR)
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+concurrency:
+  group: publish-jsr-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Publish to JSR
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # OIDC token used to authenticate with JSR — no NPM_TOKEN needed.
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # On a tag push, the tag must match jsr.json's version, or the publish
+      # would either no-op-fail ("version already exists") or ship a mismatched
+      # version. Bump jsr.json before tagging.
+      - name: Verify tag matches jsr.json version
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          JSON_VERSION="$(node -p "require('./jsr.json').version")"
+          if [ "$TAG" != "$JSON_VERSION" ]; then
+            echo "::error::Tag v$TAG does not match jsr.json version $JSON_VERSION — bump jsr.json before tagging."
+            exit 1
+          fi
+
+      - name: Test
+        run: npm test
+
+      - name: Publish to JSR
+        run: npx jsr@0.14.3 publish

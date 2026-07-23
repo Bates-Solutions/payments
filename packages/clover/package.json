@@ -1,0 +1,79 @@
+{
+  "name": "@bates-solutions/clover",
+  "version": "1.0.0",
+  "description": "TypeScript wrapper for the Clover Ecommerce & Platform APIs with webhook support for Node.js and edge runtimes",
+  "type": "module",
+  "main": "./dist/core/index.js",
+  "types": "./dist/core/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/core/index.d.ts",
+      "import": "./dist/core/index.js"
+    },
+    "./server": {
+      "types": "./dist/server/index.d.ts",
+      "import": "./dist/server/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "docs": "typedoc"
+  },
+  "keywords": [
+    "clover",
+    "clover-api",
+    "clover-ecommerce",
+    "payments",
+    "payment-processing",
+    "typescript",
+    "nodejs",
+    "backend",
+    "webhooks",
+    "ecommerce",
+    "pos",
+    "sdk",
+    "api"
+  ],
+  "author": "Bates Solutions",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mbates/clover.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mbates/clover/issues"
+  },
+  "homepage": "https://github.com/mbates/clover#readme",
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.62.0",
+    "@typescript-eslint/parser": "^8.62.0",
+    "@vitest/coverage-v8": "^4.1.2",
+    "eslint": "^10.1.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.1.0",
+    "prettier": "^3.8.1",
+    "typedoc": "^0.28.18",
+    "typedoc-plugin-markdown": "^4.10.0",
+    "typescript": "^6.0.2",
+    "typescript-eslint": "^8.62.0",
+    "vitest": "^4.0.16"
+  }
+}

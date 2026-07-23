@@ -1,0 +1,20 @@
+{
+  "name": "@bates-solutions/clover",
+  "version": "1.0.0",
+  "exports": {
+    ".": "./src/core/index.ts",
+    "./server": "./src/server/index.ts"
+  },
+  "exclude": [
+    "**/__tests__",
+    "**/*.test.ts",
+    "dist",
+    "coverage",
+    "node_modules",
+    "vitest.config.ts",
+    "vitest.setup.ts",
+    "eslint.config.js",
+    "typedoc.json",
+    ".github"
+  ]
+}
