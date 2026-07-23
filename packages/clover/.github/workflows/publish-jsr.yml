@@ -1,32 +1,36 @@
-# Publishes the package to JSR (jsr.io) using GitHub OIDC — no tokens.
-# Triggered by pushing a version tag (e.g. `v1.0.0`), or manually.
-# The version published is the one in jsr.json; tag it to release.
+# Releases the package to JSR (jsr.io) automatically when jsr.json's version
+# changes. Publishing uses GitHub OIDC — no tokens.
 #
-# One-time setup (required for OIDC to authenticate): the package must exist on
-# jsr.io (jsr.io/@bates-solutions/clover) and this GitHub repo must be linked to
-# it under the package's Settings → "GitHub repository". Until then, publish
-# manually with `npx jsr publish` from a terminal.
-name: Publish (JSR)
+# Flow: bump `version` in jsr.json (+ package.json) in a PR and merge it. On the
+# push to `main`, this workflow publishes that version to JSR if it isn't there
+# yet, then tags `vX.Y.Z` and cuts a GitHub release. Merges that don't change the
+# version are a no-op (the guard sees the version already on JSR and skips).
+#
+# One-time setup (required for OIDC): the package must exist on jsr.io and this
+# repo must be linked under the package's Settings → "GitHub repository".
+name: Release (JSR)
 
 on:
   push:
-    tags: ['v*']
+    branches: [main]
   workflow_dispatch:
 
 concurrency:
-  group: publish-jsr-${{ github.ref }}
+  group: release-jsr
   cancel-in-progress: false
 
 jobs:
-  publish:
-    name: Publish to JSR
+  release:
+    name: Release to JSR
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      id-token: write # OIDC token used to authenticate with JSR — no NPM_TOKEN needed.
+      contents: write # create the version tag + GitHub release
+      id-token: write # OIDC auth to JSR — no NPM_TOKEN needed
 
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
@@ -34,24 +38,38 @@ jobs:
           node-version: 22
           cache: 'npm'
 
-      - name: Install dependencies
-        run: npm ci
-
-      # On a tag push, the tag must match jsr.json's version, or the publish
-      # would either no-op-fail ("version already exists") or ship a mismatched
-      # version. Bump jsr.json before tagging.
-      - name: Verify tag matches jsr.json version
-        if: startsWith(github.ref, 'refs/tags/v')
+      - name: Check whether this version is already on JSR
+        id: check
         run: |
-          TAG="${GITHUB_REF_NAME#v}"
-          JSON_VERSION="$(node -p "require('./jsr.json').version")"
-          if [ "$TAG" != "$JSON_VERSION" ]; then
-            echo "::error::Tag v$TAG does not match jsr.json version $JSON_VERSION — bump jsr.json before tagging."
-            exit 1
+          NAME="$(node -p "require('./jsr.json').name")"
+          VERSION="$(node -p "require('./jsr.json').version")"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          if curl -sf "https://jsr.io/${NAME}/meta.json" | jq -e --arg v "$VERSION" '.versions[$v] != null' >/dev/null; then
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::${NAME}@${VERSION} is already on JSR — nothing to release."
+          else
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::Releasing ${NAME}@${VERSION}."
           fi
 
+      - name: Install dependencies
+        if: steps.check.outputs.publish == 'true'
+        run: npm ci
+
       - name: Test
+        if: steps.check.outputs.publish == 'true'
         run: npm test
 
       - name: Publish to JSR
+        if: steps.check.outputs.publish == 'true'
         run: npx jsr@0.14.3 publish
+
+      - name: Tag and create GitHub release
+        if: steps.check.outputs.publish == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="${{ steps.check.outputs.version }}"
+          git tag "v${VERSION}"
+          git push origin "v${VERSION}"
+          gh release create "v${VERSION}" --title "v${VERSION}" --generate-notes || true
