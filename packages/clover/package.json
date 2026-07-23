@@ -1,6 +1,6 @@
 {
   "name": "@bates-solutions/clover",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "TypeScript wrapper for the Clover Ecommerce & Platform APIs with webhook support for Node.js and edge runtimes",
   "type": "module",
   "main": "./dist/core/index.js",
