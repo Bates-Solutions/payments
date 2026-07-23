@@ -50,7 +50,7 @@ Always run `typecheck`, `lint`, and `test` before committing.
 
 - **ALWAYS create a PR for code changes** — never push directly to `main`.
 - Do NOT include "Generated with Claude Code" or `Co-Authored-By` lines mentioning Claude/Anthropic.
-- Conventional commit prefixes (`feat:`, `fix:`, `chore:`, …). Publishing goes to JSR via OIDC (`.github/workflows/publish-jsr.yml`), triggered by pushing a `v*` tag. To release: bump `version` in `jsr.json` (keep `package.json` in sync), merge, then tag `vX.Y.Z` and push the tag.
+- Conventional commit prefixes (`feat:`, `fix:`, `chore:`, …). Publishing goes to JSR via OIDC (`.github/workflows/publish-jsr.yml`). To release: bump `version` in `jsr.json` (keep `package.json` in sync) in a PR and merge it — on the push to `main`, CI publishes to JSR and tags `vX.Y.Z` + cuts a GitHub release automatically (merges that don't change the version are a no-op).
 
 ## Documentation
 
