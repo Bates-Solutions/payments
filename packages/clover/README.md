@@ -155,6 +155,32 @@ formatMoney(1099, 'usd'); // "$10.99"
 - [Guides](./docs/guides/README.md)
 - [API reference](./docs/api/README.md)
 
+## Related libraries
+
+This library is one of three sibling payment-API wrappers from Bates Solutions that deliberately share the same design — learn one and you know all three:
+
+| Library | Wraps | Install (JSR) | Source |
+| --- | --- | --- | --- |
+| [`@bates-solutions/stripe`](https://jsr.io/@bates-solutions/stripe) | Stripe | `jsr:@bates-solutions/stripe` | [GitHub](https://github.com/mbates/stripe) |
+| [`@bates-solutions/squareup`](https://jsr.io/@bates-solutions/squareup) | Square | `jsr:@bates-solutions/squareup` | [GitHub](https://github.com/mbates/squareup) |
+| **[`@bates-solutions/clover`](https://jsr.io/@bates-solutions/clover)** _(this package)_ | Clover | `jsr:@bates-solutions/clover` | [GitHub](https://github.com/mbates/clover) |
+
+### How they're related
+
+All three follow one architecture, so the mental model transfers directly:
+
+- **Same client shape** — a `create<Vendor>Client({ ... })` factory returns a client exposing one readonly service per API domain (e.g. `client.customers`, `client.payments`).
+- **One service class per domain** (`src/core/services/<name>.service.ts`): input validation throws a `<Vendor>ValidationError`, every API call is wrapped `try/catch → parse<Vendor>Error`, mutating calls accept an `idempotencyKey`, and money is passed as integer minor units.
+- **Normalized error hierarchy** — a `<Vendor>Error` base with `…ApiError` / `…AuthError` / `…PaymentError` / `…ValidationError` subclasses and a single `parse<Vendor>Error` mapper.
+- **Standalone `./server` webhook module** — signature verification plus a typed handler-map dispatch, with adapters for **Express** and **AWS Lambda** (plus **Next.js** on stripe & squareup, and a framework-neutral **Web/edge** handler on stripe & clover).
+- **ESM + TypeScript source**, dual subpath exports (`.` for the client, `./server` for webhooks), Vitest tests against mocked I/O, and published to **JSR** via GitHub OIDC.
+
+The differences are only where the underlying platform forces them:
+
+- **stripe** wraps the official [`stripe`](https://www.npmjs.com/package/stripe) SDK (a peer dependency) and verifies webhooks with WebCrypto, so `./server` also runs on edge runtimes (Deno, Cloudflare Workers, Supabase Edge Functions).
+- **squareup** wraps the official [`square`](https://www.npmjs.com/package/square) SDK (a peer dependency) and verifies webhooks with Node's `crypto`.
+- **clover** ships no vendor SDK — it calls Clover over a small fetch-based REST client that targets both Clover hosts (Ecommerce and Platform) — and verifies webhooks with WebCrypto (edge-ready).
+
 ## Contributing
 
 We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md) for details.
