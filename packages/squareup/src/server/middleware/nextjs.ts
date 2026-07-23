@@ -63,7 +63,9 @@ interface NextPagesResponse {
  * });
  * ```
  */
-export function createNextWebhookHandler(config: WebhookConfig) {
+export function createNextWebhookHandler(
+  config: WebhookConfig
+): (request: Request) => Promise<Response> {
   return async (request: Request): Promise<Response> => {
     try {
       // Get raw body
@@ -135,7 +137,9 @@ export function createNextWebhookHandler(config: WebhookConfig) {
  * });
  * ```
  */
-export function createNextPagesWebhookHandler(config: WebhookConfig) {
+export function createNextPagesWebhookHandler(
+  config: WebhookConfig
+): (req: NextPagesRequest, res: NextPagesResponse) => Promise<void> {
   return async (req: NextPagesRequest, res: NextPagesResponse): Promise<void> => {
     // Only allow POST
     if (req.method !== 'POST') {

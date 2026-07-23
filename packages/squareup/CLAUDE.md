@@ -4,7 +4,7 @@ This file provides guidance to Claude Code when working with code in this reposi
 
 ## Project Overview
 
-`@bates-solutions/squareup` — TypeScript wrapper around the Square API with webhook helpers for Node.js backends. Single-package npm library, published from `main`.
+`@bates-solutions/squareup` — TypeScript wrapper around the Square API with webhook helpers for Node.js backends. Single-package library published to **JSR** (`jsr:@bates-solutions/squareup`); JSR publishes the TypeScript source directly, so there is no build/bundle step for distribution. (Formerly on npm; that package is deprecated in favor of JSR.)
 
 **Structure:**
 
@@ -46,11 +46,11 @@ Always run `typecheck`, `lint`, and `test` before committing.
 - Do NOT include "Generated with Claude Code" or similar self-references in commit messages or PR descriptions
 - Do NOT add `Co-Authored-By` lines mentioning Claude or Anthropic
 - Keep commit messages and PR descriptions focused on the changes, not how they were made
-- Release is automated via semantic-release on merge to `main` — use conventional commit prefixes (`feat:`, `fix:`, `chore:`, etc.)
+- Publishing goes to JSR via OIDC (`.github/workflows/publish-jsr.yml`), triggered by pushing a `v*` tag. To release: bump `version` in `jsr.json` (keep `package.json` in sync), merge, then tag `vX.Y.Z` and push the tag. Use conventional commit prefixes (`feat:`, `fix:`, `chore:`, etc.)
 
 ## Documentation
 
-This is a public npm library — consumers rely on docs to discover and use new functionality.
+This is a public library (published on JSR) — consumers rely on docs to discover and use new functionality.
 
 - **Every PR that adds or changes public API surface must update docs in the same PR** (or a follow-up PR opened immediately after merge):
   - `README.md` — feature list and service table
