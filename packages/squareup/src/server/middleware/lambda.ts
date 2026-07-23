@@ -123,7 +123,9 @@ function normalizeHeaders(
  * });
  * ```
  */
-export function createLambdaWebhookHandler(config: LambdaWebhookConfig) {
+export function createLambdaWebhookHandler(
+  config: LambdaWebhookConfig
+): (proxyEvent: LambdaProxyEvent) => Promise<LambdaProxyResult> {
   const corsHeaders = { ...DEFAULT_CORS_HEADERS, ...config.corsHeaders };
   const logger = config.logger === false ? undefined : (config.logger ?? defaultLogger);
 

@@ -40,9 +40,24 @@ Stop wrestling with Square's low-level APIs. **squareup** gives you a simplified
 
 ## Installation
 
+This package is published on [JSR](https://jsr.io/@bates-solutions/squareup).
+
 ```bash
-npm install @bates-solutions/squareup square
+# npm / pnpm / yarn (via JSR's npm compatibility)
+npx jsr add @bates-solutions/squareup
+
+# Deno
+deno add jsr:@bates-solutions/squareup
 ```
+
+Then install the Square SDK, which is a peer dependency:
+
+```bash
+npm install square
+```
+
+> Previously published on npm as `@bates-solutions/squareup`; that package is
+> deprecated in favor of JSR.
 
 ## Quick Start
 
