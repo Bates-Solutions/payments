@@ -13,7 +13,8 @@ Get up and running with `@bates-solutions/squareup` in 5 minutes.
 ### 1. Install the package
 
 ```bash
-npm install @bates-solutions/squareup square
+npx jsr add @bates-solutions/squareup   # or: deno add jsr:@bates-solutions/squareup
+npm install square                        # peer dependency
 ```
 
 ### 2. Create the client

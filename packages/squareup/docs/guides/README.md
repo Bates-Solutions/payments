@@ -24,7 +24,8 @@ Backend webhook handling:
 ### 1. Install
 
 ```bash
-npm install @bates-solutions/squareup square
+npx jsr add @bates-solutions/squareup   # or: deno add jsr:@bates-solutions/squareup
+npm install square                        # peer dependency
 ```
 
 ### 2. Backend Setup
