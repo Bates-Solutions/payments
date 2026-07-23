@@ -104,7 +104,15 @@ export class CloverHttp {
     });
 
     const text = await response.text();
-    const json: unknown = text ? JSON.parse(text) : undefined;
+    // A fronting gateway can return a non-JSON body (e.g. an HTML 502/503).
+    // Don't let JSON.parse throw and discard the HTTP status — callers need the
+    // status to distinguish retryable errors (429/503) from the rest.
+    let json: unknown;
+    try {
+      json = text ? JSON.parse(text) : undefined;
+    } catch {
+      json = undefined;
+    }
 
     if (!response.ok) {
       throw cloverErrorFromResponse(response.status, json, response.headers.get('x-request-id'));

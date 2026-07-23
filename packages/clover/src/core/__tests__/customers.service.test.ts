@@ -38,6 +38,8 @@ describe('CustomersService', () => {
     const [url, init] = (fetchImpl as ReturnType<typeof vi.fn>).mock.calls[0];
     expect(String(url)).toBe('https://api.clover.com/v3/merchants/MERCH_1/customers');
     expect(init.method).toBe('POST');
+    // A mutating call defaults to a generated idempotency key.
+    expect(init.headers['idempotency-key']).toEqual(expect.any(String));
     expect(JSON.parse(init.body)).toMatchObject({
       firstName: 'John',
       lastName: 'Doe',

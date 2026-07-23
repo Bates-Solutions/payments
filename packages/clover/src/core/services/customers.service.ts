@@ -1,6 +1,7 @@
 import type { CloverHttp } from '../http.js';
 import type { PaginatedResponse, PaginationOptions } from '../types/index.js';
 import { parseCloverError, CloverValidationError } from '../errors.js';
+import { createIdempotencyKey } from '../utils.js';
 
 /**
  * A Clover Platform customer (`/v3/merchants/{mId}/customers`).
@@ -26,6 +27,8 @@ export interface CreateCustomerOptions {
   phone?: string;
   marketingAllowed?: boolean;
   metadata?: Record<string, unknown>;
+  /** Idempotency key (defaults to a generated UUID) */
+  idempotencyKey?: string;
 }
 
 /**
@@ -101,6 +104,7 @@ export class CustomersService {
     try {
       return await this.http.request<Customer>('platform', 'POST', this.basePath(), {
         body: toCustomerBody(options),
+        idempotencyKey: options.idempotencyKey ?? createIdempotencyKey(),
       });
     } catch (error) {
       throw parseCloverError(error);
@@ -131,7 +135,10 @@ export class CustomersService {
         'platform',
         'POST',
         `${this.basePath()}/${encodeURIComponent(customerId)}`,
-        { body: toCustomerBody(options) }
+        {
+          body: toCustomerBody(options),
+          idempotencyKey: options.idempotencyKey ?? createIdempotencyKey(),
+        }
       );
     } catch (error) {
       throw parseCloverError(error);
@@ -141,12 +148,13 @@ export class CustomersService {
   /**
    * Delete a customer.
    */
-  async delete(customerId: string): Promise<void> {
+  async delete(customerId: string, options?: { idempotencyKey?: string }): Promise<void> {
     try {
       await this.http.request<unknown>(
         'platform',
         'DELETE',
-        `${this.basePath()}/${encodeURIComponent(customerId)}`
+        `${this.basePath()}/${encodeURIComponent(customerId)}`,
+        { idempotencyKey: options?.idempotencyKey ?? createIdempotencyKey() }
       );
     } catch (error) {
       throw parseCloverError(error);

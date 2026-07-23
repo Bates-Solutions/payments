@@ -66,9 +66,21 @@ export class CloverApiError extends CloverError {
  * Authentication / authorization errors (401 / 403)
  */
 export class CloverAuthError extends CloverError {
-  constructor(message: string, statusCode = 401, code: CloverErrorCode = 'UNAUTHORIZED') {
+  /** Clover's own error code, when present */
+  public readonly cloverCode?: string;
+  /** Request id for tracing with Clover support */
+  public readonly requestId?: string;
+
+  constructor(
+    message: string,
+    statusCode = 401,
+    code: CloverErrorCode = 'UNAUTHORIZED',
+    options?: { cloverCode?: string; requestId?: string }
+  ) {
     super(message, code, statusCode);
     this.name = 'CloverAuthError';
+    this.cloverCode = options?.cloverCode;
+    this.requestId = options?.requestId;
   }
 }
 
@@ -78,16 +90,22 @@ export class CloverAuthError extends CloverError {
 export class CloverPaymentError extends CloverError {
   public readonly chargeId?: string;
   public readonly declineCode?: string;
+  /** Clover's own error code, when present */
+  public readonly cloverCode?: string;
+  /** Request id for tracing with Clover support */
+  public readonly requestId?: string;
 
   constructor(
     message: string,
     code: CloverErrorCode = 'CARD_DECLINED',
-    options?: { chargeId?: string; declineCode?: string }
+    options?: { chargeId?: string; declineCode?: string; cloverCode?: string; requestId?: string }
   ) {
     super(message, code, 402);
     this.name = 'CloverPaymentError';
     this.chargeId = options?.chargeId;
     this.declineCode = options?.declineCode;
+    this.cloverCode = options?.cloverCode;
+    this.requestId = options?.requestId;
   }
 }
 
@@ -153,13 +171,18 @@ export function cloverErrorFromResponse(
   const reqId = requestId ?? undefined;
 
   if (status === 401 || status === 403) {
-    return new CloverAuthError(message, status, code);
+    return new CloverAuthError(message, status, code, {
+      cloverCode: inner?.code,
+      requestId: reqId,
+    });
   }
 
   if (status === 402) {
     return new CloverPaymentError(message, 'CARD_DECLINED', {
       chargeId: inner?.charge,
       declineCode: inner?.decline_code,
+      cloverCode: inner?.code,
+      requestId: reqId,
     });
   }
 
