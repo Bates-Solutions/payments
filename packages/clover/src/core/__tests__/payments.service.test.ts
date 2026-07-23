@@ -81,6 +81,21 @@ describe('PaymentsService', () => {
         CloverPaymentError
       );
     });
+
+    it('preserves the HTTP status when the error body is not JSON (gateway HTML)', async () => {
+      const fetchImpl = vi.fn().mockResolvedValue({
+        ok: false,
+        status: 503,
+        text: () => Promise.resolve('<html><body>503 Service Unavailable</body></html>'),
+        headers: { get: () => null },
+      });
+      const service = makeService(fetchImpl as unknown as typeof fetch);
+      // The non-JSON body must not surface as a raw SyntaxError; the 503 status
+      // is preserved so callers can distinguish retryable failures.
+      await expect(service.create({ amount: 1000, source: 'clv_tok' })).rejects.toMatchObject({
+        statusCode: 503,
+      });
+    });
   });
 
   describe('get', () => {

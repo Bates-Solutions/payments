@@ -51,7 +51,15 @@ export function createExpressWebhookHandler(config: ExpressWebhookOptions): Requ
       } else if (req.rawBody) {
         rawBody = req.rawBody;
       } else {
-        rawBody = JSON.stringify(req.body);
+        // req.body is an already-parsed object (e.g. express.json() ran first),
+        // so the exact signed bytes are gone. Re-serializing would not reproduce
+        // them and signature verification would fail with a misleading error, so
+        // fail loudly with actionable guidance instead.
+        throw new Error(
+          'Raw request body unavailable for signature verification. Mount this route with ' +
+            'express.raw({ type: "*/*" }) (or capture req.rawBody via a body-parser verify hook) ' +
+            'before the webhook handler — not express.json().'
+        );
       }
 
       const signature = req.headers[SIGNATURE_HEADER];

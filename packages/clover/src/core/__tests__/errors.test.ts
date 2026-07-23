@@ -17,6 +17,20 @@ describe('cloverErrorFromResponse', () => {
     expect(err.statusCode).toBe(401);
   });
 
+  it('carries requestId and cloverCode on auth errors', () => {
+    const err = cloverErrorFromResponse(403, { error: { code: 'forbidden', message: 'nope' } }, 'req_9');
+    expect(err).toBeInstanceOf(CloverAuthError);
+    expect((err as CloverAuthError).requestId).toBe('req_9');
+    expect((err as CloverAuthError).cloverCode).toBe('forbidden');
+  });
+
+  it('carries requestId and cloverCode on payment errors', () => {
+    const err = cloverErrorFromResponse(402, { error: { code: 'card_declined', message: 'declined' } }, 'req_10');
+    expect(err).toBeInstanceOf(CloverPaymentError);
+    expect((err as CloverPaymentError).requestId).toBe('req_10');
+    expect((err as CloverPaymentError).cloverCode).toBe('card_declined');
+  });
+
   it('maps 402 to CloverPaymentError with decline metadata', () => {
     const err = cloverErrorFromResponse(402, {
       error: { code: 'card_declined', message: 'declined', decline_code: 'insufficient_funds', charge: 'CHG_1' },
