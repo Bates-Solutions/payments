@@ -1,7 +1,11 @@
 /**
- * @bates-solutions/stripe/server
+ * `@bates-solutions/stripe/server` — webhook helpers for the Stripe wrapper.
  *
- * Server utilities for handling Stripe webhooks.
+ * Server utilities for handling Stripe webhooks: signature verification plus a
+ * typed handler-map dispatch, with adapters for Express, Next.js, AWS Lambda,
+ * and a framework-neutral Web/edge handler.
+ *
+ * @module
  *
  * @example
  * ```typescript
