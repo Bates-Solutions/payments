@@ -1,3 +1,25 @@
+/**
+ * `@bates-solutions/stripe` — a TypeScript wrapper for the Stripe API.
+ *
+ * The package's main entrypoint. Exports `createStripeClient` / `StripeClient`
+ * (one service per Stripe domain — `customers`, `checkout`, `billingPortal`,
+ * `subscriptions`, `prices`, `products`, `invoices`, `payments`, `refunds`), the
+ * normalized error hierarchy (`StripeError` + `parseStripeError`), and money /
+ * idempotency utilities (`toMinor`, `fromMinor`, `formatMoney`,
+ * `createIdempotencyKey`). Webhook helpers live in the
+ * `@bates-solutions/stripe/server` entrypoint.
+ *
+ * @example
+ * ```ts
+ * import { createStripeClient } from '@bates-solutions/stripe';
+ *
+ * const stripe = createStripeClient({ apiKey: process.env.STRIPE_SECRET_KEY! });
+ * const customer = await stripe.customers.create({ email: 'jane@example.com' });
+ * ```
+ *
+ * @module
+ */
+
 // Core exports
 export { createStripeClient, StripeClient } from './client.js';
 export type { StripeClientConfig } from './client.js';
