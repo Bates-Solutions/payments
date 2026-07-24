@@ -1,3 +1,25 @@
+/**
+ * `@bates-solutions/clover` — a TypeScript wrapper for the Clover Ecommerce and
+ * Platform APIs.
+ *
+ * The package's main entrypoint. Exports `createCloverClient` / `CloverClient`
+ * (one service per Clover domain — `payments`, `refunds`, `customers`), the
+ * normalized error hierarchy (`CloverError` + `parseCloverError`), and money /
+ * idempotency utilities. It ships no vendor SDK — it talks to Clover over a
+ * small fetch-based REST client that targets both Clover hosts. Webhook helpers
+ * live in the `@bates-solutions/clover/server` entrypoint.
+ *
+ * @example
+ * ```ts
+ * import { createCloverClient } from '@bates-solutions/clover';
+ *
+ * const clover = createCloverClient({ apiToken: process.env.CLOVER_API_TOKEN! });
+ * const charge = await clover.payments.create({ amount: 1000, source: 'clv_tok' });
+ * ```
+ *
+ * @module
+ */
+
 // Core exports
 export { createCloverClient, CloverClient } from './client.js';
 export type { CloverClientConfig } from './client.js';
