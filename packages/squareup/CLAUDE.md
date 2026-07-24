@@ -46,7 +46,7 @@ Always run `typecheck`, `lint`, and `test` before committing.
 - Do NOT include "Generated with Claude Code" or similar self-references in commit messages or PR descriptions
 - Do NOT add `Co-Authored-By` lines mentioning Claude or Anthropic
 - Keep commit messages and PR descriptions focused on the changes, not how they were made
-- Publishing goes to JSR via OIDC (`.github/workflows/publish-jsr.yml`), triggered by pushing a `v*` tag. To release: bump `version` in `jsr.json` (keep `package.json` in sync), merge, then tag `vX.Y.Z` and push the tag. Use conventional commit prefixes (`feat:`, `fix:`, `chore:`, etc.)
+- Publishing goes to JSR via OIDC (`.github/workflows/publish-jsr.yml`). To release: bump `version` in `jsr.json` (keep `package.json` in sync) in a PR and merge it — on the push to `main`, CI publishes the new version to JSR and tags `vX.Y.Z` + cuts a GitHub release automatically. Merges that don't change the version are a no-op. Use conventional commit prefixes (`feat:`, `fix:`, `chore:`, etc.)
 
 ## Documentation
 
