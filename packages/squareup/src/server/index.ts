@@ -1,7 +1,10 @@
 /**
- * @bates-solutions/squareup/server
+ * `@bates-solutions/squareup/server` — webhook helpers for the Square wrapper.
  *
- * Server utilities for handling Square webhooks
+ * Server utilities for handling Square webhooks: signature verification plus a
+ * typed handler-map dispatch, with adapters for Express, Next.js, and AWS Lambda.
+ *
+ * @module
  *
  * @example
  * ```typescript
