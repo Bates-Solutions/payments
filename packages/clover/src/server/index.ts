@@ -1,8 +1,12 @@
 /**
- * @bates-solutions/clover/server
+ * `@bates-solutions/clover/server` — webhook helpers for the Clover wrapper.
  *
- * Server utilities for handling Clover webhooks. Signature verification uses
- * WebCrypto, so it runs on Node, Deno, Bun, and Cloudflare Workers.
+ * Server utilities for handling Clover webhooks: signature verification plus a
+ * typed handler-map dispatch, with adapters for Express, AWS Lambda, and a
+ * framework-neutral Web/edge handler. Verification uses WebCrypto, so it runs on
+ * Node, Deno, Bun, and Cloudflare Workers.
+ *
+ * @module
  *
  * @example
  * ```typescript
