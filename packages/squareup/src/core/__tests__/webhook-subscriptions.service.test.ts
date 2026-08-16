@@ -172,4 +172,55 @@ describe('WebhookSubscriptionsService', () => {
       );
     });
   });
+
+  describe('empty/failed responses', () => {
+    it('create throws when no subscription is returned', async () => {
+      const client = createMockClient({ create: vi.fn().mockResolvedValue({}) });
+      await expect(new WebhookSubscriptionsService(client).create(validCreate)).rejects.toThrow(
+        'Webhook subscription was not created'
+      );
+    });
+
+    it('update throws when no subscription is returned', async () => {
+      const client = createMockClient({ update: vi.fn().mockResolvedValue({}) });
+      await expect(new WebhookSubscriptionsService(client).update('wbhk_1', {})).rejects.toThrow(
+        'Webhook subscription update failed'
+      );
+    });
+
+    it('test throws when no result is returned', async () => {
+      const client = createMockClient({ test: vi.fn().mockResolvedValue({}) });
+      await expect(new WebhookSubscriptionsService(client).test('wbhk_1')).rejects.toThrow(
+        'Webhook subscription test failed'
+      );
+    });
+  });
+
+  describe('error paths', () => {
+    const err = {
+      statusCode: 401,
+      body: { errors: [{ category: 'AUTHENTICATION_ERROR', code: 'UNAUTHORIZED' }] },
+    };
+    const svc = (method: string) =>
+      new WebhookSubscriptionsService(createMockClient({ [method]: vi.fn().mockRejectedValue(err) }));
+
+    it('rethrows on list failure', async () => {
+      await expect(svc('list').list()).rejects.toThrow();
+    });
+    it('rethrows on get failure', async () => {
+      await expect(svc('get').get('wbhk_1')).rejects.toThrow();
+    });
+    it('rethrows on update failure', async () => {
+      await expect(svc('update').update('wbhk_1', {})).rejects.toThrow();
+    });
+    it('rethrows on delete failure', async () => {
+      await expect(svc('delete').delete('wbhk_1')).rejects.toThrow();
+    });
+    it('rethrows on test failure', async () => {
+      await expect(svc('test').test('wbhk_1')).rejects.toThrow();
+    });
+    it('rethrows on rotateSignatureKey failure', async () => {
+      await expect(svc('updateSignatureKey').rotateSignatureKey('wbhk_1')).rejects.toThrow();
+    });
+  });
 });
