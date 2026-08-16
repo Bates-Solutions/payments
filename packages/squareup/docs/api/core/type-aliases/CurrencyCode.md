@@ -8,6 +8,6 @@
 
 > **CurrencyCode** = *typeof* [`CURRENCY_CODES`](../variables/CURRENCY_CODES.md)\[`number`\]
 
-Defined in: [core/types/index.ts:15](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/core/types/index.ts#L15)
+Defined in: [core/types/index.ts:15](https://github.com/mbates/squareup/blob/main/src/core/types/index.ts#L15)
 
 Currency codes supported by Square

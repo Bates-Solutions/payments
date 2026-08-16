@@ -8,7 +8,7 @@
 
 > **createWebhookProcessor**(`config`): (`rawBody`, `signature`) => `Promise`\<\{ `error?`: `string`; `event?`: [`WebhookEvent`](../interfaces/WebhookEvent.md)\<`unknown`\>; `success`: `boolean`; \}\>
 
-Defined in: [server/webhook.ts:207](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/server/webhook.ts#L207)
+Defined in: [server/webhook.ts:207](https://github.com/mbates/squareup/blob/main/src/server/webhook.ts#L207)
 
 Create a webhook handler function that verifies and processes events
 

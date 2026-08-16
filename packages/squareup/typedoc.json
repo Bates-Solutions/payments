@@ -9,6 +9,7 @@
   "out": "docs/api",
   "plugin": ["typedoc-plugin-markdown"],
   "readme": "none",
+  "gitRevision": "main",
   "excludePrivate": true,
   "excludeInternal": true,
   "excludeExternals": true,

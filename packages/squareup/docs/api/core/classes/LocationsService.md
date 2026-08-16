@@ -6,7 +6,7 @@
 
 # Class: LocationsService
 
-Defined in: core/services/locations.service.ts:33
+Defined in: [core/services/locations.service.ts:33](https://github.com/mbates/squareup/blob/main/src/core/services/locations.service.ts#L33)
 
 Locations service for reading a merchant's Square locations.
 
@@ -24,7 +24,7 @@ const currency = location?.currency; // e.g. 'CAD'
 
 > **new LocationsService**(`client`): `LocationsService`
 
-Defined in: core/services/locations.service.ts:34
+Defined in: [core/services/locations.service.ts:34](https://github.com/mbates/squareup/blob/main/src/core/services/locations.service.ts#L34)
 
 #### Parameters
 
@@ -42,7 +42,7 @@ Defined in: core/services/locations.service.ts:34
 
 > **get**(`locationId`): `Promise`\<[`Location`](../interfaces/Location.md)\>
 
-Defined in: core/services/locations.service.ts:69
+Defined in: [core/services/locations.service.ts:69](https://github.com/mbates/squareup/blob/main/src/core/services/locations.service.ts#L69)
 
 Get a single location by ID.
 
@@ -73,7 +73,7 @@ console.log(location.currency); // 'CAD'
 
 > **list**(): `Promise`\<[`Location`](../interfaces/Location.md)[]\>
 
-Defined in: core/services/locations.service.ts:48
+Defined in: [core/services/locations.service.ts:48](https://github.com/mbates/squareup/blob/main/src/core/services/locations.service.ts#L48)
 
 List all locations for the merchant.
 

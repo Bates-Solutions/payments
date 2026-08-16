@@ -8,7 +8,7 @@
 
 > **getPaymentId**(`event`): `string` \| `undefined`
 
-Defined in: [server/webhook.ts:247](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/server/webhook.ts#L247)
+Defined in: [server/webhook.ts:247](https://github.com/mbates/squareup/blob/main/src/server/webhook.ts#L247)
 
 Extract the payment ID from a webhook event
 
