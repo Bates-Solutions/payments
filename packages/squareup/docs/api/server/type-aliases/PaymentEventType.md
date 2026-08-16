@@ -8,7 +8,7 @@
 
 > **PaymentEventType** = `"payment.created"` \| `"payment.updated"` \| `"payment.completed"`
 
-Defined in: [server/types.ts:8](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/server/types.ts#L8)
+Defined in: [server/types.ts:8](https://github.com/mbates/squareup/blob/main/src/server/types.ts#L8)
 
 Square Webhook Event Types
 
