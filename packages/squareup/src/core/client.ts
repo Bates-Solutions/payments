@@ -1,5 +1,7 @@
 import { SquareClient as SdkClient, SquareEnvironment as SdkEnvironment } from 'square';
-import type { CurrencyCode, SquareEnvironment } from './types/index.js';
+import type { SquareEnvironment } from './types/index.js';
+import { CURRENCY_CODES, isCurrencyCode } from './types/index.js';
+import { SquareValidationError } from './errors.js';
 import { PaymentsService } from './services/payments.service.js';
 import { OrdersService } from './services/orders.service.js';
 import { CustomersService } from './services/customers.service.js';
@@ -76,11 +78,19 @@ export class SquareClient {
   public readonly giftCards: GiftCardsService;
 
   constructor(config: SquareClientConfig) {
+    const defaultCurrency = config.defaultCurrency ?? 'USD';
+    if (!isCurrencyCode(defaultCurrency)) {
+      throw new SquareValidationError(
+        `Unsupported defaultCurrency '${defaultCurrency}'. Supported: ${CURRENCY_CODES.join(', ')}.`,
+        'defaultCurrency'
+      );
+    }
+
     this.config = {
       accessToken: config.accessToken,
       environment: config.environment ?? 'sandbox',
       locationId: config.locationId,
-      defaultCurrency: config.defaultCurrency ?? 'USD',
+      defaultCurrency,
     };
 
     this.client = new SdkClient({
@@ -91,9 +101,8 @@ export class SquareClient {
           : SdkEnvironment.Sandbox,
     });
 
-    // The config default currency drives every money-carrying service's fallback
-    // so a non-USD merchant doesn't have to pass `currency` on every call.
-    const defaultCurrency = this.config.defaultCurrency as CurrencyCode;
+    // `defaultCurrency` (validated above) drives every money-carrying service's
+    // fallback so a non-USD merchant doesn't have to pass `currency` on every call.
     const { locationId } = this.config;
 
     // Initialize services

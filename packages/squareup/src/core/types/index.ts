@@ -4,9 +4,22 @@
 export type SquareEnvironment = 'sandbox' | 'production';
 
 /**
+ * Currency codes supported by this wrapper. Runtime array so the value can be
+ * validated; the {@link CurrencyCode} type is derived from it to prevent drift.
+ */
+export const CURRENCY_CODES = ['USD', 'CAD', 'GBP', 'EUR', 'AUD', 'JPY'] as const;
+
+/**
  * Currency codes supported by Square
  */
-export type CurrencyCode = 'USD' | 'CAD' | 'GBP' | 'EUR' | 'AUD' | 'JPY';
+export type CurrencyCode = (typeof CURRENCY_CODES)[number];
+
+/**
+ * Type guard: is `value` a supported {@link CurrencyCode}?
+ */
+export function isCurrencyCode(value: string): value is CurrencyCode {
+  return (CURRENCY_CODES as readonly string[]).includes(value);
+}
 
 /**
  * Payment source identifier
