@@ -8,7 +8,7 @@
 
 > **createIdempotencyKey**(): `string`
 
-Defined in: [core/utils.ts:102](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/core/utils.ts#L102)
+Defined in: [core/utils.ts:102](https://github.com/mbates/squareup/blob/main/src/core/utils.ts#L102)
 
 Create a unique idempotency key for Square API requests
 

@@ -8,7 +8,7 @@
 
 > **RefundWebhookEvent** = [`WebhookEvent`](../interfaces/WebhookEvent.md)\<[`RefundWebhookObject`](../interfaces/RefundWebhookObject.md)\> & `object`
 
-Defined in: [server/types.ts:215](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/server/types.ts#L215)
+Defined in: [server/types.ts:215](https://github.com/mbates/squareup/blob/main/src/server/types.ts#L215)
 
 ## Type Declaration
 

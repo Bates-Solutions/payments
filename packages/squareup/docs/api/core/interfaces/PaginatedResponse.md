@@ -6,7 +6,7 @@
 
 # Interface: PaginatedResponse\<T\>
 
-Defined in: [core/types/index.ts:41](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/core/types/index.ts#L41)
+Defined in: [core/types/index.ts:41](https://github.com/mbates/squareup/blob/main/src/core/types/index.ts#L41)
 
 Common response with pagination
 
@@ -22,7 +22,7 @@ Common response with pagination
 
 > `optional` **cursor?**: `string`
 
-Defined in: [core/types/index.ts:43](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/core/types/index.ts#L43)
+Defined in: [core/types/index.ts:43](https://github.com/mbates/squareup/blob/main/src/core/types/index.ts#L43)
 
 ***
 
@@ -30,4 +30,4 @@ Defined in: [core/types/index.ts:43](https://github.com/mbates/squareup/blob/a11
 
 > **data**: `T`[]
 
-Defined in: [core/types/index.ts:42](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/core/types/index.ts#L42)
+Defined in: [core/types/index.ts:42](https://github.com/mbates/squareup/blob/main/src/core/types/index.ts#L42)
