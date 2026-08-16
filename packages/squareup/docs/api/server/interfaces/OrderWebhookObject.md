@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v1.13.1**](../../README.md)
+[**@bates-solutions/squareup API Reference v1.14.2**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: OrderWebhookObject
 
-Defined in: [server/types.ts:169](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/server/types.ts#L169)
+Defined in: [server/types.ts:172](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/server/types.ts#L172)
 
 Order update object in a webhook event payload
 
@@ -16,7 +16,7 @@ Order update object in a webhook event payload
 
 > `optional` **order\_update?**: `object`
 
-Defined in: [server/types.ts:170](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/server/types.ts#L170)
+Defined in: [server/types.ts:173](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/server/types.ts#L173)
 
 #### order\_id
 

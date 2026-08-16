@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v1.13.1**](../../README.md)
+[**@bates-solutions/squareup API Reference v1.14.2**](../../README.md)
 
 ***
 
@@ -8,41 +8,4 @@
 
 > **LoyaltyEventType** = `"loyalty.account.created"` \| `"loyalty.account.updated"` \| `"loyalty.program.created"` \| `"loyalty.promotion.created"`
 
-Defined in: [server/types.ts:37](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/server/types.ts#L37)
-
-@bates-solutions/squareup/server
-
-Server utilities for handling Square webhooks
-
-## Examples
-
-```typescript
-// Next.js App Router
-import { createNextWebhookHandler } from '@bates-solutions/squareup/server';
-
-export const POST = createNextWebhookHandler({
-  signatureKey: process.env.SQUARE_WEBHOOK_KEY!,
-  handlers: {
-    'payment.created': async (event) => {
-      console.log('Payment:', event.data.id);
-    },
-  },
-});
-```
-
-```typescript
-// Express
-import express from 'express';
-import { createExpressWebhookHandler } from '@bates-solutions/squareup/server';
-
-const app = express();
-app.use('/webhook', express.raw({ type: 'application/json' }));
-app.post('/webhook', createExpressWebhookHandler({
-  signatureKey: process.env.SQUARE_WEBHOOK_KEY!,
-  handlers: {
-    'payment.created': async (event) => {
-      console.log('Payment:', event.data.id);
-    },
-  },
-}));
-```
+Defined in: [server/types.ts:37](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/server/types.ts#L37)
