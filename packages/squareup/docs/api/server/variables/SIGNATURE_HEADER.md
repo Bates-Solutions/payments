@@ -8,6 +8,6 @@
 
 > `const` **SIGNATURE\_HEADER**: `"x-square-hmacsha256-signature"` = `'x-square-hmacsha256-signature'`
 
-Defined in: [server/webhook.ts:14](https://github.com/mbates/squareup/blob/9247d66f2d6844e833a2dc69bc01a9537b493e7a/src/server/webhook.ts#L14)
+Defined in: [server/webhook.ts:14](https://github.com/mbates/squareup/blob/main/src/server/webhook.ts#L14)
 
 Header name for Square webhook signature

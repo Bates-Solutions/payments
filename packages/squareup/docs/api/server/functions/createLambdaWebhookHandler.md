@@ -8,7 +8,7 @@
 
 > **createLambdaWebhookHandler**(`config`): (`proxyEvent`) => `Promise`\<[`LambdaProxyResult`](../interfaces/LambdaProxyResult.md)\>
 
-Defined in: [server/middleware/lambda.ts:126](https://github.com/mbates/squareup/blob/9247d66f2d6844e833a2dc69bc01a9537b493e7a/src/server/middleware/lambda.ts#L126)
+Defined in: [server/middleware/lambda.ts:126](https://github.com/mbates/squareup/blob/main/src/server/middleware/lambda.ts#L126)
 
 Create an AWS Lambda handler for Square webhooks
 

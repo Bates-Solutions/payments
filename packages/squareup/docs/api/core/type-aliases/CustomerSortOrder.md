@@ -8,6 +8,6 @@
 
 > **CustomerSortOrder** = `"ASC"` \| `"DESC"`
 
-Defined in: [core/services/customers.service.ts:89](https://github.com/mbates/squareup/blob/9247d66f2d6844e833a2dc69bc01a9537b493e7a/src/core/services/customers.service.ts#L89)
+Defined in: [core/services/customers.service.ts:89](https://github.com/mbates/squareup/blob/main/src/core/services/customers.service.ts#L89)
 
 Sort direction for list results.

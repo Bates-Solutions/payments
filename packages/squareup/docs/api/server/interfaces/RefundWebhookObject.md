@@ -6,7 +6,7 @@
 
 # Interface: RefundWebhookObject
 
-Defined in: [server/types.ts:183](https://github.com/mbates/squareup/blob/9247d66f2d6844e833a2dc69bc01a9537b493e7a/src/server/types.ts#L183)
+Defined in: [server/types.ts:183](https://github.com/mbates/squareup/blob/main/src/server/types.ts#L183)
 
 Refund object in a webhook event payload
 
@@ -16,7 +16,7 @@ Refund object in a webhook event payload
 
 > **refund**: `object`
 
-Defined in: [server/types.ts:184](https://github.com/mbates/squareup/blob/9247d66f2d6844e833a2dc69bc01a9537b493e7a/src/server/types.ts#L184)
+Defined in: [server/types.ts:184](https://github.com/mbates/squareup/blob/main/src/server/types.ts#L184)
 
 #### amount\_money?
 
