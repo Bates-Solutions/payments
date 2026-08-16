@@ -110,7 +110,8 @@ export interface CreateInvoiceOptions {
 export class InvoicesService {
   constructor(
     private readonly client: SquareClient,
-    private readonly defaultLocationId?: string
+    private readonly defaultLocationId?: string,
+    private readonly defaultCurrency: CurrencyCode = 'USD'
   ) {}
 
   /**
@@ -161,7 +162,7 @@ export class InvoicesService {
             quantity: String(item.quantity),
             basePriceMoney: {
               amount: BigInt(item.amount),
-              currency: item.currency ?? 'USD',
+              currency: item.currency ?? this.defaultCurrency,
             },
             note: item.description,
           })),

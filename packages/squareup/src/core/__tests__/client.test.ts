@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { createSquareClient, SquareClient } from '../client.js';
+import { SquareValidationError } from '../errors.js';
 
 describe('SquareClient', () => {
   describe('createSquareClient', () => {
@@ -23,6 +24,23 @@ describe('SquareClient', () => {
 
       expect(client.environment).toBe('production');
       expect(client.locationId).toBe('LXXX');
+    });
+
+    it('should reject an unsupported defaultCurrency at construction', () => {
+      // `defaultCurrency` is typed `string`, so invalid values are caught at
+      // runtime (fail fast) rather than deferring to Square's opaque error.
+      expect(() =>
+        createSquareClient({ accessToken: 'test-token', defaultCurrency: 'XYZ' })
+      ).toThrow(SquareValidationError);
+      expect(() =>
+        createSquareClient({ accessToken: 'test-token', defaultCurrency: 'cad' })
+      ).toThrow(/Unsupported defaultCurrency/);
+    });
+
+    it('should accept a supported non-USD defaultCurrency', () => {
+      expect(() =>
+        createSquareClient({ accessToken: 'test-token', defaultCurrency: 'CAD' })
+      ).not.toThrow();
     });
 
     it('should expose payments service', () => {

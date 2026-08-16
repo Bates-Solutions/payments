@@ -1,4 +1,5 @@
 import type { SquareClient } from 'square';
+import type { CurrencyCode } from '../types/index.js';
 import { parseSquareError, SquareValidationError } from '../errors.js';
 import { createIdempotencyKey } from '../utils.js';
 
@@ -143,7 +144,8 @@ export interface CreateSubscriptionOptions {
 export class SubscriptionsService {
   constructor(
     private readonly client: SquareClient,
-    private readonly defaultLocationId?: string
+    private readonly defaultLocationId?: string,
+    private readonly defaultCurrency: CurrencyCode = 'USD'
   ) {}
 
   /**
@@ -209,7 +211,7 @@ export class SubscriptionsService {
         priceOverrideMoney: options.priceOverride
           ? {
               amount: BigInt(options.priceOverride),
-              currency: 'USD',
+              currency: this.defaultCurrency,
             }
           : undefined,
         taxPercentage: options.taxPercentage,
@@ -279,7 +281,7 @@ export class SubscriptionsService {
           priceOverrideMoney: options.priceOverride
             ? {
                 amount: BigInt(options.priceOverride),
-                currency: 'USD',
+                currency: this.defaultCurrency,
               }
             : undefined,
           cardId: options.cardId,

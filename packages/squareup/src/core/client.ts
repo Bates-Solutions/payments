@@ -1,5 +1,7 @@
 import { SquareClient as SdkClient, SquareEnvironment as SdkEnvironment } from 'square';
 import type { SquareEnvironment } from './types/index.js';
+import { CURRENCY_CODES, isCurrencyCode } from './types/index.js';
+import { SquareValidationError } from './errors.js';
 import { PaymentsService } from './services/payments.service.js';
 import { OrdersService } from './services/orders.service.js';
 import { CustomersService } from './services/customers.service.js';
@@ -76,11 +78,19 @@ export class SquareClient {
   public readonly giftCards: GiftCardsService;
 
   constructor(config: SquareClientConfig) {
+    const defaultCurrency = config.defaultCurrency ?? 'USD';
+    if (!isCurrencyCode(defaultCurrency)) {
+      throw new SquareValidationError(
+        `Unsupported defaultCurrency '${defaultCurrency}'. Supported: ${CURRENCY_CODES.join(', ')}.`,
+        'defaultCurrency'
+      );
+    }
+
     this.config = {
       accessToken: config.accessToken,
       environment: config.environment ?? 'sandbox',
       locationId: config.locationId,
-      defaultCurrency: config.defaultCurrency ?? 'USD',
+      defaultCurrency,
     };
 
     this.client = new SdkClient({
@@ -91,18 +101,22 @@ export class SquareClient {
           : SdkEnvironment.Sandbox,
     });
 
+    // `defaultCurrency` (validated above) drives every money-carrying service's
+    // fallback so a non-USD merchant doesn't have to pass `currency` on every call.
+    const { locationId } = this.config;
+
     // Initialize services
-    this.payments = new PaymentsService(this.client, this.config.locationId);
-    this.orders = new OrdersService(this.client, this.config.locationId);
+    this.payments = new PaymentsService(this.client, locationId, defaultCurrency);
+    this.orders = new OrdersService(this.client, locationId, defaultCurrency);
     this.customers = new CustomersService(this.client);
     this.customerGroups = new CustomerGroupsService(this.client);
-    this.catalog = new CatalogService(this.client);
-    this.inventory = new InventoryService(this.client, this.config.locationId);
-    this.subscriptions = new SubscriptionsService(this.client, this.config.locationId);
-    this.invoices = new InvoicesService(this.client, this.config.locationId);
-    this.loyalty = new LoyaltyService(this.client, this.config.locationId);
+    this.catalog = new CatalogService(this.client, defaultCurrency);
+    this.inventory = new InventoryService(this.client, locationId);
+    this.subscriptions = new SubscriptionsService(this.client, locationId, defaultCurrency);
+    this.invoices = new InvoicesService(this.client, locationId, defaultCurrency);
+    this.loyalty = new LoyaltyService(this.client, locationId);
     this.checkout = new CheckoutService(this.client);
-    this.giftCards = new GiftCardsService(this.client, this.config.locationId);
+    this.giftCards = new GiftCardsService(this.client, locationId, defaultCurrency);
   }
 
   /**

@@ -1,5 +1,10 @@
 import type { SquareClient } from 'square';
-import type { CreateOrderOptions, SearchOrdersOptions, SearchRecentOrdersOptions } from '../types/index.js';
+import type {
+  CreateOrderOptions,
+  CurrencyCode,
+  SearchOrdersOptions,
+  SearchRecentOrdersOptions,
+} from '../types/index.js';
 import { parseSquareError, SquareValidationError } from '../errors.js';
 import { createIdempotencyKey } from '../utils.js';
 import { OrderBuilder, type Order } from '../builders/order.builder.js';
@@ -25,7 +30,8 @@ import { OrderBuilder, type Order } from '../builders/order.builder.js';
 export class OrdersService {
   constructor(
     private readonly client: SquareClient,
-    private readonly defaultLocationId?: string
+    private readonly defaultLocationId?: string,
+    private readonly defaultCurrency: CurrencyCode = 'USD'
   ) {}
 
   /**
@@ -52,7 +58,7 @@ export class OrdersService {
         'locationId'
       );
     }
-    return new OrderBuilder(this.client, location);
+    return new OrderBuilder(this.client, location, this.defaultCurrency);
   }
 
   /**
@@ -87,7 +93,7 @@ export class OrdersService {
     }
 
     // Use builder internally for consistent validation
-    const builder = new OrderBuilder(this.client, location);
+    const builder = new OrderBuilder(this.client, location, this.defaultCurrency);
 
     for (const item of options.lineItems) {
       builder.addItem(item);
