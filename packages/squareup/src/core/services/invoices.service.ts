@@ -1,4 +1,4 @@
-import type { SquareClient } from 'square';
+import type { Square, SquareClient } from 'square';
 import { parseSquareError, SquareValidationError } from '../errors.js';
 import { createIdempotencyKey } from '../utils.js';
 import type { CurrencyCode } from '../types/index.js';
@@ -94,13 +94,9 @@ export interface AcceptedPaymentMethodsInput {
  * Map the wrapper's accepted-payment-methods input to the Square SDK shape.
  * The field names already match the SDK, so this is a normalizing passthrough.
  */
-function toAcceptedPaymentMethods(input: AcceptedPaymentMethodsInput): {
-  card?: boolean;
-  squareGiftCard?: boolean;
-  bankAccount?: boolean;
-  buyNowPayLater?: boolean;
-  cashAppPay?: boolean;
-} {
+function toAcceptedPaymentMethods(
+  input: AcceptedPaymentMethodsInput
+): Square.InvoiceAcceptedPaymentMethods {
   return {
     card: input.card,
     squareGiftCard: input.squareGiftCard,
