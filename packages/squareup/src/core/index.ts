@@ -62,6 +62,8 @@ export {
   GiftCardsService,
   GiftCardActivitiesService,
 } from './services/gift-cards.service.js';
+export { LocationsService } from './services/locations.service.js';
+export type { Location } from './services/locations.service.js';
 export type {
   GiftCard,
   GiftCardType,

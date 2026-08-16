@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v1.13.1**](../../README.md)
+[**@bates-solutions/squareup API Reference v1.14.2**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **PaymentWebhookEvent** = [`WebhookEvent`](../interfaces/WebhookEvent.md)\<[`PaymentWebhookObject`](../interfaces/PaymentWebhookObject.md)\> & `object`
 
-Defined in: [server/types.ts:206](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/server/types.ts#L206)
+Defined in: [server/types.ts:209](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/server/types.ts#L209)
 
 Typed webhook events for common event types
 

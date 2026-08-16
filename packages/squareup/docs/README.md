@@ -19,6 +19,7 @@ Welcome to the documentation for `@bates-solutions/squareup`, a TypeScript wrapp
 - [Catalog](./guides/core/catalog.md) - Product catalog and pricing rules
 - [Subscriptions](./guides/core/subscriptions.md) - Recurring billing (flat-rate and product-driven via order templates)
 - [Gift Cards](./guides/core/gift-cards.md) - Gift card lifecycle: issue, activate, load, redeem, link to customers
+- [Locations](./guides/core/locations.md) - List/get merchant locations; derive currency, country, status
 
 ### Server
 

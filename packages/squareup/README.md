@@ -213,6 +213,7 @@ export const handler = createLambdaWebhookHandler({
 | `loyalty`        | Loyalty program management                                     |
 | `checkout`       | Hosted checkout sessions                                       |
 | `giftCards`      | Gift card lifecycle (issue, activate, load, redeem, deactivate) + activities |
+| `locations`      | List/get merchant locations (derive currency, country, status) |
 
 ## Utilities
 
