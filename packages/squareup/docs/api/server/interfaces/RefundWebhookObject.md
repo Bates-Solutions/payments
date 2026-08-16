@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v1.13.1**](../../README.md)
+[**@bates-solutions/squareup API Reference v1.14.2**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: RefundWebhookObject
 
-Defined in: [server/types.ts:180](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/server/types.ts#L180)
+Defined in: [server/types.ts:183](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/server/types.ts#L183)
 
 Refund object in a webhook event payload
 
@@ -16,7 +16,7 @@ Refund object in a webhook event payload
 
 > **refund**: `object`
 
-Defined in: [server/types.ts:181](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/server/types.ts#L181)
+Defined in: [server/types.ts:184](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/server/types.ts#L184)
 
 #### amount\_money?
 

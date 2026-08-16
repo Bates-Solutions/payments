@@ -1,10 +1,35 @@
-[**@bates-solutions/squareup API Reference v1.13.1**](../README.md)
+[**@bates-solutions/squareup API Reference v1.14.2**](../README.md)
 
 ***
 
 [@bates-solutions/squareup API Reference](../README.md) / core
 
 # core
+
+`@bates-solutions/squareup` — a TypeScript wrapper for the Square API.
+
+The package's main entrypoint. Exports `createSquareClient` / `SquareClient`
+(one service per Square domain — payments, orders, customers, catalog,
+inventory, subscriptions, invoices, loyalty, gift cards, and more), the
+normalized error hierarchy (`SquareError` + `parseSquareError`), and money /
+idempotency utilities. Webhook helpers live in the
+`@bates-solutions/squareup/server` entrypoint.
+
+## Example
+
+```ts
+import { createSquareClient } from '@bates-solutions/squareup';
+
+const square = createSquareClient({
+  accessToken: process.env.SQUARE_ACCESS_TOKEN!,
+  environment: 'sandbox',
+});
+const payment = await square.payments.create({
+  sourceId: 'cnon:card-nonce',
+  amount: 1000,
+  currency: 'USD',
+});
+```
 
 ## Classes
 
@@ -16,6 +41,7 @@
 - [GiftCardsService](classes/GiftCardsService.md)
 - [InventoryService](classes/InventoryService.md)
 - [InvoicesService](classes/InvoicesService.md)
+- [LocationsService](classes/LocationsService.md)
 - [LoyaltyService](classes/LoyaltyService.md)
 - [OrderBuilder](classes/OrderBuilder.md)
 - [OrdersService](classes/OrdersService.md)
@@ -47,6 +73,7 @@
 - [ListGiftCardActivitiesOptions](interfaces/ListGiftCardActivitiesOptions.md)
 - [ListGiftCardsOptions](interfaces/ListGiftCardsOptions.md)
 - [LoadActivityDetails](interfaces/LoadActivityDetails.md)
+- [Location](interfaces/Location.md)
 - [Money](interfaces/Money.md)
 - [MoneyInput](interfaces/MoneyInput.md)
 - [Order](interfaces/Order.md)
@@ -81,10 +108,15 @@
 - [SubscriptionCadence](type-aliases/SubscriptionCadence.md)
 - [SubscriptionStatus](type-aliases/SubscriptionStatus.md)
 
+## Variables
+
+- [CURRENCY\_CODES](variables/CURRENCY_CODES.md)
+
 ## Functions
 
 - [createIdempotencyKey](functions/createIdempotencyKey.md)
 - [createSquareClient](functions/createSquareClient.md)
 - [formatMoney](functions/formatMoney.md)
 - [fromCents](functions/fromCents.md)
+- [isCurrencyCode](functions/isCurrencyCode.md)
 - [toCents](functions/toCents.md)

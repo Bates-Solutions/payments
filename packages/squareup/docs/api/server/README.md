@@ -1,10 +1,48 @@
-[**@bates-solutions/squareup API Reference v1.13.1**](../README.md)
+[**@bates-solutions/squareup API Reference v1.14.2**](../README.md)
 
 ***
 
 [@bates-solutions/squareup API Reference](../README.md) / server
 
 # server
+
+`@bates-solutions/squareup/server` — webhook helpers for the Square wrapper.
+
+Server utilities for handling Square webhooks: signature verification plus a
+typed handler-map dispatch, with adapters for Express, Next.js, and AWS Lambda.
+
+## Examples
+
+```typescript
+// Next.js App Router
+import { createNextWebhookHandler } from '@bates-solutions/squareup/server';
+
+export const POST = createNextWebhookHandler({
+  signatureKey: process.env.SQUARE_WEBHOOK_KEY!,
+  handlers: {
+    'payment.created': async (event) => {
+      console.log('Payment:', event.data.id);
+    },
+  },
+});
+```
+
+```typescript
+// Express
+import express from 'express';
+import { createExpressWebhookHandler } from '@bates-solutions/squareup/server';
+
+const app = express();
+app.use('/webhook', express.raw({ type: 'application/json' }));
+app.post('/webhook', createExpressWebhookHandler({
+  signatureKey: process.env.SQUARE_WEBHOOK_KEY!,
+  handlers: {
+    'payment.created': async (event) => {
+      console.log('Payment:', event.data.id);
+    },
+  },
+}));
+```
 
 ## Interfaces
 
