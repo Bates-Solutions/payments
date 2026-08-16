@@ -13,6 +13,7 @@ import { InvoicesService } from './services/invoices.service.js';
 import { LoyaltyService } from './services/loyalty.service.js';
 import { CheckoutService } from './services/checkout.service.js';
 import { GiftCardsService } from './services/gift-cards.service.js';
+import { LocationsService } from './services/locations.service.js';
 
 /**
  * Configuration options for the Square client
@@ -76,6 +77,7 @@ export class SquareClient {
   public readonly loyalty: LoyaltyService;
   public readonly checkout: CheckoutService;
   public readonly giftCards: GiftCardsService;
+  public readonly locations: LocationsService;
 
   constructor(config: SquareClientConfig) {
     const defaultCurrency = config.defaultCurrency ?? 'USD';
@@ -117,6 +119,7 @@ export class SquareClient {
     this.loyalty = new LoyaltyService(this.client, locationId);
     this.checkout = new CheckoutService(this.client);
     this.giftCards = new GiftCardsService(this.client, locationId, defaultCurrency);
+    this.locations = new LocationsService(this.client);
   }
 
   /**

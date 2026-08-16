@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v1.13.1**](../../README.md)
+[**@bates-solutions/squareup API Reference v1.14.2**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: SubscriptionsService
 
-Defined in: [core/services/subscriptions.service.ts:143](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/services/subscriptions.service.ts#L143)
+Defined in: [core/services/subscriptions.service.ts:144](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/core/services/subscriptions.service.ts#L144)
 
 Subscriptions service for managing Square subscriptions
 
@@ -27,9 +27,9 @@ await square.subscriptions.cancel('SUB_123');
 
 ### Constructor
 
-> **new SubscriptionsService**(`client`, `defaultLocationId?`): `SubscriptionsService`
+> **new SubscriptionsService**(`client`, `defaultLocationId?`, `defaultCurrency?`): `SubscriptionsService`
 
-Defined in: [core/services/subscriptions.service.ts:144](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/services/subscriptions.service.ts#L144)
+Defined in: [core/services/subscriptions.service.ts:145](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/core/services/subscriptions.service.ts#L145)
 
 #### Parameters
 
@@ -41,6 +41,10 @@ Defined in: [core/services/subscriptions.service.ts:144](https://github.com/mbat
 
 `string`
 
+##### defaultCurrency?
+
+`"USD"` \| `"CAD"` \| `"GBP"` \| `"EUR"` \| `"AUD"` \| `"JPY"`
+
 #### Returns
 
 `SubscriptionsService`
@@ -51,7 +55,7 @@ Defined in: [core/services/subscriptions.service.ts:144](https://github.com/mbat
 
 > **cancel**(`subscriptionId`): `Promise`\<[`Subscription`](../interfaces/Subscription.md)\>
 
-Defined in: [core/services/subscriptions.service.ts:311](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/services/subscriptions.service.ts#L311)
+Defined in: [core/services/subscriptions.service.ts:313](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/core/services/subscriptions.service.ts#L313)
 
 Cancel a subscription
 
@@ -81,7 +85,7 @@ const subscription = await square.subscriptions.cancel('SUB_123');
 
 > **create**(`options`): `Promise`\<[`Subscription`](../interfaces/Subscription.md)\>
 
-Defined in: [core/services/subscriptions.service.ts:164](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/services/subscriptions.service.ts#L164)
+Defined in: [core/services/subscriptions.service.ts:166](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/core/services/subscriptions.service.ts#L166)
 
 Create a new subscription
 
@@ -115,7 +119,7 @@ const subscription = await square.subscriptions.create({
 
 > **get**(`subscriptionId`): `Promise`\<[`Subscription`](../interfaces/Subscription.md)\>
 
-Defined in: [core/services/subscriptions.service.ts:239](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/services/subscriptions.service.ts#L239)
+Defined in: [core/services/subscriptions.service.ts:241](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/core/services/subscriptions.service.ts#L241)
 
 Get a subscription by ID
 
@@ -145,7 +149,7 @@ const subscription = await square.subscriptions.get('SUB_123');
 
 > **pause**(`subscriptionId`, `options?`): `Promise`\<[`Subscription`](../interfaces/Subscription.md)\>
 
-Defined in: [core/services/subscriptions.service.ts:339](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/services/subscriptions.service.ts#L339)
+Defined in: [core/services/subscriptions.service.ts:341](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/core/services/subscriptions.service.ts#L341)
 
 Pause a subscription
 
@@ -189,7 +193,7 @@ const subscription = await square.subscriptions.pause('SUB_123', {
 
 > **resume**(`subscriptionId`, `resumeEffectiveDate?`): `Promise`\<[`Subscription`](../interfaces/Subscription.md)\>
 
-Defined in: [core/services/subscriptions.service.ts:377](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/services/subscriptions.service.ts#L377)
+Defined in: [core/services/subscriptions.service.ts:379](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/core/services/subscriptions.service.ts#L379)
 
 Resume a paused subscription
 
@@ -225,7 +229,7 @@ const subscription = await square.subscriptions.resume('SUB_123');
 
 > **search**(`options?`): `Promise`\<\{ `cursor?`: `string`; `data`: [`Subscription`](../interfaces/Subscription.md)[]; \}\>
 
-Defined in: [core/services/subscriptions.service.ts:407](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/services/subscriptions.service.ts#L407)
+Defined in: [core/services/subscriptions.service.ts:409](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/core/services/subscriptions.service.ts#L409)
 
 Search for subscriptions
 
@@ -271,7 +275,7 @@ const results = await square.subscriptions.search({
 
 > **update**(`subscriptionId`, `options`): `Promise`\<[`Subscription`](../interfaces/Subscription.md)\>
 
-Defined in: [core/services/subscriptions.service.ts:267](https://github.com/mbates/squareup/blob/26c398e8822da078165ab8a6372621257716b376/src/core/services/subscriptions.service.ts#L267)
+Defined in: [core/services/subscriptions.service.ts:269](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/core/services/subscriptions.service.ts#L269)
 
 Update a subscription
 
