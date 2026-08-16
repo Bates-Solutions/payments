@@ -76,6 +76,40 @@ export interface InvoiceLineItem {
 /**
  * Options for creating an invoice
  */
+/**
+ * Payment methods a customer may use to pay an invoice on Square's hosted
+ * invoice payment page.
+ *
+ * @see https://developer.squareup.com/reference/square/objects/InvoiceAcceptedPaymentMethods
+ */
+export interface AcceptedPaymentMethodsInput {
+  card?: boolean;
+  squareGiftCard?: boolean;
+  bankAccount?: boolean;
+  buyNowPayLater?: boolean;
+  cashAppPay?: boolean;
+}
+
+/**
+ * Map the wrapper's accepted-payment-methods input to the Square SDK shape.
+ * The field names already match the SDK, so this is a normalizing passthrough.
+ */
+function toAcceptedPaymentMethods(input: AcceptedPaymentMethodsInput): {
+  card?: boolean;
+  squareGiftCard?: boolean;
+  bankAccount?: boolean;
+  buyNowPayLater?: boolean;
+  cashAppPay?: boolean;
+} {
+  return {
+    card: input.card,
+    squareGiftCard: input.squareGiftCard,
+    bankAccount: input.bankAccount,
+    buyNowPayLater: input.buyNowPayLater,
+    cashAppPay: input.cashAppPay,
+  };
+}
+
 export interface CreateInvoiceOptions {
   customerId: string;
   locationId?: string;
@@ -86,6 +120,11 @@ export interface CreateInvoiceOptions {
   deliveryMethod?: InvoiceDeliveryMethod;
   invoiceNumber?: string;
   tippingEnabled?: boolean;
+  /**
+   * Payment methods customers may use. Square **requires** this on the invoice,
+   * so when omitted it defaults to `{ card: true }`.
+   */
+  acceptedPaymentMethods?: AcceptedPaymentMethodsInput;
   idempotencyKey?: string;
 }
 
@@ -186,6 +225,10 @@ export class InvoicesService {
           description: options.description,
           invoiceNumber: options.invoiceNumber,
           deliveryMethod: options.deliveryMethod ?? 'EMAIL',
+          // Square requires accepted_payment_methods; default to card when omitted.
+          acceptedPaymentMethods: toAcceptedPaymentMethods(
+            options.acceptedPaymentMethods ?? { card: true }
+          ),
           paymentRequests: [
             {
               requestType: 'BALANCE',
@@ -314,6 +357,7 @@ export class InvoicesService {
       title?: string;
       description?: string;
       dueDate?: string;
+      acceptedPaymentMethods?: AcceptedPaymentMethodsInput;
     }
   ): Promise<Invoice> {
     try {
@@ -327,6 +371,11 @@ export class InvoicesService {
           version,
           title: options.title ?? undefined,
           description: options.description ?? undefined,
+          // Only send when the caller provides it, so an unrelated update doesn't
+          // clobber the invoice's existing accepted payment methods.
+          acceptedPaymentMethods: options.acceptedPaymentMethods
+            ? toAcceptedPaymentMethods(options.acceptedPaymentMethods)
+            : undefined,
           paymentRequests: options.dueDate
             ? [
                 {

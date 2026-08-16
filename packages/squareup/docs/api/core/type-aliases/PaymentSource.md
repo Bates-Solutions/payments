@@ -8,7 +8,7 @@
 
 > **PaymentSource** = `string`
 
-Defined in: [core/types/index.ts:28](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/core/types/index.ts#L28)
+Defined in: [core/types/index.ts:28](https://github.com/mbates/squareup/blob/9247d66f2d6844e833a2dc69bc01a9537b493e7a/src/core/types/index.ts#L28)
 
 Payment source identifier
 Can be a card nonce, card ID, or digital wallet token

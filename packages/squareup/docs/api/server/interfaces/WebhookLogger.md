@@ -6,7 +6,7 @@
 
 # Interface: WebhookLogger
 
-Defined in: [server/middleware/lambda.ts:57](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/server/middleware/lambda.ts#L57)
+Defined in: [server/middleware/lambda.ts:57](https://github.com/mbates/squareup/blob/9247d66f2d6844e833a2dc69bc01a9537b493e7a/src/server/middleware/lambda.ts#L57)
 
 Logger interface for Lambda webhook handler
 
@@ -16,7 +16,7 @@ Logger interface for Lambda webhook handler
 
 > **error**: (`message`, `data?`) => `void`
 
-Defined in: [server/middleware/lambda.ts:59](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/server/middleware/lambda.ts#L59)
+Defined in: [server/middleware/lambda.ts:59](https://github.com/mbates/squareup/blob/9247d66f2d6844e833a2dc69bc01a9537b493e7a/src/server/middleware/lambda.ts#L59)
 
 #### Parameters
 
@@ -38,7 +38,7 @@ Defined in: [server/middleware/lambda.ts:59](https://github.com/mbates/squareup/
 
 > **info**: (`message`, `data?`) => `void`
 
-Defined in: [server/middleware/lambda.ts:58](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/server/middleware/lambda.ts#L58)
+Defined in: [server/middleware/lambda.ts:58](https://github.com/mbates/squareup/blob/9247d66f2d6844e833a2dc69bc01a9537b493e7a/src/server/middleware/lambda.ts#L58)
 
 #### Parameters
 

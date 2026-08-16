@@ -119,6 +119,47 @@ describe('InvoicesService', () => {
         service.create({ customerId: 'CUST_123', lineItems: [{ name: 'X', quantity: 1, amount: 100 }] })
       ).rejects.toThrow('Invoice was not created');
     });
+
+    it('defaults acceptedPaymentMethods to { card: true } (issue #120)', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ invoice: { id: 'INV_123' } }),
+      });
+
+      const service = new InvoicesService(client, defaultLocationId);
+      await service.create({
+        customerId: 'CUST_123',
+        lineItems: [{ name: 'X', quantity: 1, amount: 100 }],
+      });
+
+      // Square requires accepted_payment_methods — previously omitted, so every
+      // invoice was rejected. It must be present and default to card.
+      const arg = (client.invoices.create as ReturnType<typeof vi.fn>).mock.calls[0][0] as {
+        invoice: { acceptedPaymentMethods?: { card?: boolean } };
+      };
+      expect(arg.invoice.acceptedPaymentMethods).toEqual(
+        expect.objectContaining({ card: true })
+      );
+    });
+
+    it('maps explicit acceptedPaymentMethods', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ invoice: { id: 'INV_123' } }),
+      });
+
+      const service = new InvoicesService(client, defaultLocationId);
+      await service.create({
+        customerId: 'CUST_123',
+        lineItems: [{ name: 'X', quantity: 1, amount: 100 }],
+        acceptedPaymentMethods: { card: false, squareGiftCard: true, cashAppPay: true },
+      });
+
+      const arg = (client.invoices.create as ReturnType<typeof vi.fn>).mock.calls[0][0] as {
+        invoice: { acceptedPaymentMethods?: Record<string, boolean> };
+      };
+      expect(arg.invoice.acceptedPaymentMethods).toEqual(
+        expect.objectContaining({ card: false, squareGiftCard: true, cashAppPay: true })
+      );
+    });
   });
 
   describe('get', () => {
@@ -205,6 +246,32 @@ describe('InvoicesService', () => {
 
       const service = new InvoicesService(client);
       await expect(service.update('INV_123', 0, {})).rejects.toThrow('Invoice update failed');
+    });
+
+    it('omits acceptedPaymentMethods on update unless provided (no clobber)', async () => {
+      const client = createMockClient({ update: vi.fn().mockResolvedValue({ invoice: { id: 'INV_123' } }) });
+
+      const service = new InvoicesService(client);
+      await service.update('INV_123', 0, { title: 'New Title' });
+
+      const arg = (client.invoices.update as ReturnType<typeof vi.fn>).mock.calls[0][0] as {
+        invoice: { acceptedPaymentMethods?: unknown };
+      };
+      expect(arg.invoice.acceptedPaymentMethods).toBeUndefined();
+    });
+
+    it('sends acceptedPaymentMethods on update when provided', async () => {
+      const client = createMockClient({ update: vi.fn().mockResolvedValue({ invoice: { id: 'INV_123' } }) });
+
+      const service = new InvoicesService(client);
+      await service.update('INV_123', 0, { acceptedPaymentMethods: { card: true, bankAccount: true } });
+
+      const arg = (client.invoices.update as ReturnType<typeof vi.fn>).mock.calls[0][0] as {
+        invoice: { acceptedPaymentMethods?: Record<string, boolean> };
+      };
+      expect(arg.invoice.acceptedPaymentMethods).toEqual(
+        expect.objectContaining({ card: true, bankAccount: true })
+      );
     });
   });
 
