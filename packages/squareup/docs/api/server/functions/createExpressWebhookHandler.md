@@ -8,7 +8,7 @@
 
 > **createExpressWebhookHandler**(`config`): `RequestHandler`
 
-Defined in: [server/middleware/express.ts:68](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/server/middleware/express.ts#L68)
+Defined in: [server/middleware/express.ts:68](https://github.com/mbates/squareup/blob/9247d66f2d6844e833a2dc69bc01a9537b493e7a/src/server/middleware/express.ts#L68)
 
 Create Express middleware for handling Square webhooks
 

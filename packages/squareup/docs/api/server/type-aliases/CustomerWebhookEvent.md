@@ -8,7 +8,7 @@
 
 > **CustomerWebhookEvent** = [`WebhookEvent`](../interfaces/WebhookEvent.md)\<[`CustomerWebhookObject`](../interfaces/CustomerWebhookObject.md)\> & `object`
 
-Defined in: [server/types.ts:218](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/server/types.ts#L218)
+Defined in: [server/types.ts:218](https://github.com/mbates/squareup/blob/9247d66f2d6844e833a2dc69bc01a9537b493e7a/src/server/types.ts#L218)
 
 ## Type Declaration
 

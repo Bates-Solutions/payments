@@ -8,7 +8,7 @@
 
 > **isCurrencyCode**(`value`): value is "USD" \| "CAD" \| "GBP" \| "EUR" \| "AUD" \| "JPY"
 
-Defined in: [core/types/index.ts:20](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/core/types/index.ts#L20)
+Defined in: [core/types/index.ts:20](https://github.com/mbates/squareup/blob/9247d66f2d6844e833a2dc69bc01a9537b493e7a/src/core/types/index.ts#L20)
 
 Type guard: is `value` a supported [CurrencyCode](../type-aliases/CurrencyCode.md)?
 
