@@ -14,6 +14,7 @@ import { LoyaltyService } from './services/loyalty.service.js';
 import { CheckoutService } from './services/checkout.service.js';
 import { GiftCardsService } from './services/gift-cards.service.js';
 import { LocationsService } from './services/locations.service.js';
+import { WebhookSubscriptionsService } from './services/webhook-subscriptions.service.js';
 
 /**
  * Configuration options for the Square client
@@ -78,6 +79,8 @@ export class SquareClient {
   public readonly checkout: CheckoutService;
   public readonly giftCards: GiftCardsService;
   public readonly locations: LocationsService;
+  /** Webhook subscription management (`webhooks.subscriptions.*`) */
+  public readonly webhooks: { subscriptions: WebhookSubscriptionsService };
 
   constructor(config: SquareClientConfig) {
     const defaultCurrency = config.defaultCurrency ?? 'USD';
@@ -120,6 +123,7 @@ export class SquareClient {
     this.checkout = new CheckoutService(this.client);
     this.giftCards = new GiftCardsService(this.client, locationId, defaultCurrency);
     this.locations = new LocationsService(this.client);
+    this.webhooks = { subscriptions: new WebhookSubscriptionsService(this.client) };
   }
 
   /**

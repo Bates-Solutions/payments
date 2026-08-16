@@ -66,6 +66,15 @@ describe('SquareClient', () => {
       expect(typeof client.orders.builder).toBe('function');
     });
 
+    it('should expose webhook subscription management', () => {
+      const client = createSquareClient({ accessToken: 'test-token' });
+
+      expect(client.webhooks.subscriptions).toBeDefined();
+      expect(typeof client.webhooks.subscriptions.create).toBe('function');
+      expect(typeof client.webhooks.subscriptions.list).toBe('function');
+      expect(typeof client.webhooks.subscriptions.rotateSignatureKey).toBe('function');
+    });
+
     it('should expose underlying SDK client', () => {
       const client = createSquareClient({
         accessToken: 'test-token',

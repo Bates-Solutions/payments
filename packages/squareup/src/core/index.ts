@@ -64,6 +64,15 @@ export {
 } from './services/gift-cards.service.js';
 export { LocationsService } from './services/locations.service.js';
 export type { Location } from './services/locations.service.js';
+export { WebhookSubscriptionsService } from './services/webhook-subscriptions.service.js';
+export type {
+  WebhookSubscription,
+  CreatedWebhookSubscription,
+  SubscriptionTestResult,
+  CreateWebhookSubscriptionOptions,
+  UpdateWebhookSubscriptionOptions,
+  ListWebhookSubscriptionsOptions,
+} from './services/webhook-subscriptions.service.js';
 export type {
   GiftCard,
   GiftCardType,
