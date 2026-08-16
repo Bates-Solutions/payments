@@ -391,7 +391,8 @@ export class GiftCardsService {
 
   constructor(
     private readonly client: SquareClient,
-    private readonly defaultLocationId?: string
+    private readonly defaultLocationId?: string,
+    private readonly defaultCurrency: CurrencyCode = 'USD'
   ) {
     this.activities = new GiftCardActivitiesService(client, defaultLocationId);
   }
@@ -601,7 +602,7 @@ export class GiftCardsService {
       locationId: options?.locationId,
       idempotencyKey: options?.idempotencyKey,
       activateActivityDetails: {
-        amountMoney: { amount: BigInt(amount), currency: options?.currency ?? 'USD' },
+        amountMoney: { amount: BigInt(amount), currency: options?.currency ?? this.defaultCurrency },
         orderId: options?.orderId,
         lineItemUid: options?.lineItemUid,
         referenceId: options?.referenceId,
@@ -630,7 +631,7 @@ export class GiftCardsService {
       locationId: options?.locationId,
       idempotencyKey: options?.idempotencyKey,
       loadActivityDetails: {
-        amountMoney: { amount: BigInt(amount), currency: options?.currency ?? 'USD' },
+        amountMoney: { amount: BigInt(amount), currency: options?.currency ?? this.defaultCurrency },
         orderId: options?.orderId,
         lineItemUid: options?.lineItemUid,
         referenceId: options?.referenceId,
@@ -660,7 +661,7 @@ export class GiftCardsService {
       locationId: options?.locationId,
       idempotencyKey: options?.idempotencyKey,
       redeemActivityDetails: {
-        amountMoney: { amount: BigInt(amount), currency: options?.currency ?? 'USD' },
+        amountMoney: { amount: BigInt(amount), currency: options?.currency ?? this.defaultCurrency },
         paymentId: options?.paymentId,
         referenceId: options?.referenceId,
       },

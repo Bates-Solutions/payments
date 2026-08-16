@@ -37,7 +37,8 @@ export interface Payment {
 export class PaymentsService {
   constructor(
     private readonly client: SquareClient,
-    private readonly defaultLocationId?: string
+    private readonly defaultLocationId?: string,
+    private readonly defaultCurrency: CurrencyCode = 'USD'
   ) {}
 
   /**
@@ -86,7 +87,7 @@ export class PaymentsService {
       );
     }
 
-    const currency: CurrencyCode = options.currency ?? 'USD';
+    const currency: CurrencyCode = options.currency ?? this.defaultCurrency;
 
     try {
       const response = await this.client.payments.create({
