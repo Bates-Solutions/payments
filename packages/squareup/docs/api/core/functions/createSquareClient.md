@@ -8,7 +8,7 @@
 
 > **createSquareClient**(`config`): [`SquareClient`](../classes/SquareClient.md)
 
-Defined in: [core/client.ts:162](https://github.com/mbates/squareup/blob/9247d66f2d6844e833a2dc69bc01a9537b493e7a/src/core/client.ts#L162)
+Defined in: [core/client.ts:162](https://github.com/mbates/squareup/blob/main/src/core/client.ts#L162)
 
 Create a new Square client instance
 

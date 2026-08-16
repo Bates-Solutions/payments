@@ -8,7 +8,7 @@
 
 > **processWebhookEvent**(`event`, `config`): `Promise`\<`void`\>
 
-Defined in: [server/webhook.ts:172](https://github.com/mbates/squareup/blob/9247d66f2d6844e833a2dc69bc01a9537b493e7a/src/server/webhook.ts#L172)
+Defined in: [server/webhook.ts:172](https://github.com/mbates/squareup/blob/main/src/server/webhook.ts#L172)
 
 Process a webhook event by calling the appropriate handler
 

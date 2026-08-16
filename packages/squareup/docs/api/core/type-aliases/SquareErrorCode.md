@@ -8,6 +8,6 @@
 
 > **SquareErrorCode** = `"UNAUTHORIZED"` \| `"ACCESS_TOKEN_EXPIRED"` \| `"ACCESS_TOKEN_REVOKED"` \| `"FORBIDDEN"` \| `"INSUFFICIENT_SCOPES"` \| `"BAD_REQUEST"` \| `"INVALID_VALUE"` \| `"MISSING_REQUIRED_PARAMETER"` \| `"NOT_FOUND"` \| `"CONFLICT"` \| `"RATE_LIMITED"` \| `"INTERNAL_SERVER_ERROR"` \| `"SERVICE_UNAVAILABLE"` \| `"CARD_DECLINED"` \| `"VERIFY_CVV_FAILURE"` \| `"VERIFY_AVS_FAILURE"` \| `"INVALID_EXPIRATION"` \| `"CARD_EXPIRED"` \| `"INVALID_CARD"` \| `"GENERIC_DECLINE"` \| `"UNKNOWN"`
 
-Defined in: [core/errors.ts:4](https://github.com/mbates/squareup/blob/9247d66f2d6844e833a2dc69bc01a9537b493e7a/src/core/errors.ts#L4)
+Defined in: [core/errors.ts:4](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L4)
 
 Square error codes
