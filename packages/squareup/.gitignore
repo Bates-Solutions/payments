@@ -35,6 +35,7 @@ temp/
 
 # Internal planning docs
 docs/plans/
+.issues/
 
 # AI assistants
 .claude/

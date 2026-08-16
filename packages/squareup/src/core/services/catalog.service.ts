@@ -277,7 +277,10 @@ export interface SearchCatalogOptions {
  * ```
  */
 export class CatalogService {
-  constructor(private readonly client: SquareClient) {}
+  constructor(
+    private readonly client: SquareClient,
+    private readonly defaultCurrency: CurrencyCode = 'USD'
+  ) {}
 
   /**
    * Create a catalog item with variations
@@ -328,7 +331,7 @@ export class CatalogService {
                 pricingType: 'FIXED_PRICING' as const,
                 priceMoney: {
                   amount: BigInt(v.price),
-                  currency: v.currency ?? 'USD',
+                  currency: v.currency ?? this.defaultCurrency,
                 },
               },
             })),
@@ -491,7 +494,7 @@ export class CatalogService {
               options.minimumOrderSubtotal !== undefined
                 ? {
                     amount: BigInt(options.minimumOrderSubtotal),
-                    currency: options.currency ?? 'USD',
+                    currency: options.currency ?? this.defaultCurrency,
                   }
                 : undefined,
           },
@@ -599,7 +602,7 @@ export class CatalogService {
             discountType: 'FIXED_AMOUNT' as const,
             amountMoney: {
               amount: BigInt(discountInput.amount),
-              currency: discountInput.currency ?? 'USD',
+              currency: discountInput.currency ?? this.defaultCurrency,
             },
           };
 

@@ -49,6 +49,22 @@ describe('PaymentsService', () => {
       );
     });
 
+    it('should fall back to the client default currency (issue #119)', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ payment: { id: 'PAY_123' } }),
+      });
+
+      // Third constructor arg is the client's configured defaultCurrency.
+      const service = new PaymentsService(client, defaultLocationId, 'CAD');
+      await service.create({ sourceId: 'cnon:card-nonce-ok', amount: 1000 });
+
+      expect(client.payments.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          amountMoney: { amount: BigInt(1000), currency: 'CAD' },
+        })
+      );
+    });
+
     it('should use custom currency', async () => {
       const client = createMockClient({
         create: vi.fn().mockResolvedValue({ payment: { id: 'PAY_123' } }),

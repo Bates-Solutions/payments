@@ -38,6 +38,42 @@ describe('InvoicesService', () => {
       expect(result).toEqual(mockInvoice);
     });
 
+    it('applies the client default currency to a custom line item (issue #119)', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ invoice: { id: 'INV_123' } }),
+      });
+
+      // A Canadian merchant configures CAD once on the client.
+      const service = new InvoicesService(client, defaultLocationId, 'CAD');
+      await service.create({
+        customerId: 'CUST_123',
+        lineItems: [{ name: 'Custom item', quantity: 1, amount: 1000 }],
+      });
+
+      // The custom line item's money must carry CAD, not a hardcoded USD.
+      const orderArg = (client.orders.create as ReturnType<typeof vi.fn>).mock.calls[0][0] as {
+        order: { lineItems: Array<{ basePriceMoney?: { currency?: string } }> };
+      };
+      expect(orderArg.order.lineItems[0].basePriceMoney?.currency).toBe('CAD');
+    });
+
+    it('still lets a per-line currency override the client default', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ invoice: { id: 'INV_123' } }),
+      });
+
+      const service = new InvoicesService(client, defaultLocationId, 'CAD');
+      await service.create({
+        customerId: 'CUST_123',
+        lineItems: [{ name: 'Custom item', quantity: 1, amount: 1000, currency: 'EUR' }],
+      });
+
+      const orderArg = (client.orders.create as ReturnType<typeof vi.fn>).mock.calls[0][0] as {
+        order: { lineItems: Array<{ basePriceMoney?: { currency?: string } }> };
+      };
+      expect(orderArg.order.lineItems[0].basePriceMoney?.currency).toBe('EUR');
+    });
+
     it('should throw SquareValidationError for missing locationId', async () => {
       const client = createMockClient();
       const service = new InvoicesService(client);

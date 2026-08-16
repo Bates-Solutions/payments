@@ -58,15 +58,18 @@ export class OrderBuilder {
   private customerId?: string;
   private referenceId?: string;
   private tipAmount?: bigint;
-  private currency: CurrencyCode = 'USD';
+  private currency: CurrencyCode;
   private state?: OrderState;
   private pricingOptions?: OrderPricingOptions;
   private idempotencyKey?: string;
 
   constructor(
     private readonly client: SquareClient,
-    private readonly locationId: string
-  ) {}
+    private readonly locationId: string,
+    defaultCurrency: CurrencyCode = 'USD'
+  ) {
+    this.currency = defaultCurrency;
+  }
 
   /**
    * Set the currency for the order

@@ -35,7 +35,12 @@ const square = createSquareClient({
 | `accessToken`     | `string`                    | Yes      | -           | Square API access token |
 | `environment`     | `'sandbox' \| 'production'` | No       | `'sandbox'` | API environment |
 | `locationId`      | `string`                    | No       | -           | Default location ID for operations that require one |
-| `defaultCurrency` | `string`                    | No       | `'USD'`     | Default currency code |
+| `defaultCurrency` | `string`                    | No       | `'USD'`     | Default currency code applied to every money-carrying call when you don't pass `currency` explicitly (e.g. `'CAD'`) |
+
+> **Non-USD merchants:** set `defaultCurrency` once on the client and every service
+> (payments, invoices, catalog, subscriptions, gift cards, orders) uses it as the
+> fallback — so a Canadian merchant no longer has to pass `currency: 'CAD'` on each
+> call. A per-call `currency` still overrides it.
 
 ## Getting Credentials
 
