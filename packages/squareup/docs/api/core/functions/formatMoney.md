@@ -8,7 +8,7 @@
 
 > **formatMoney**(`cents`, `currency?`, `locale?`): `string`
 
-Defined in: [core/utils.ts:79](https://github.com/mbates/squareup/blob/a11d73be94c41c40737dd6a6343798e7b8db84de/src/core/utils.ts#L79)
+Defined in: [core/utils.ts:79](https://github.com/mbates/squareup/blob/main/src/core/utils.ts#L79)
 
 Format money for display
 
