@@ -145,7 +145,7 @@ describe('WebhookSubscriptionsService', () => {
   });
 
   describe('test', () => {
-    it('sends a test event and returns the result', async () => {
+    it('sends a test event and returns the nested result', async () => {
       const client = createMockClient({
         test: vi.fn().mockResolvedValue({ subscriptionTestResult: { id: 'test_1', statusCode: 200 } }),
       });
@@ -157,6 +157,17 @@ describe('WebhookSubscriptionsService', () => {
         subscriptionId: 'wbhk_1',
         eventType: 'payment.created',
       });
+    });
+
+    it('falls back to root-level result fields when not nested', async () => {
+      // Square's TestWebhookSubscriptionResponse also carries the result fields
+      // at the root; test() must handle that shape, not throw.
+      const client = createMockClient({
+        test: vi.fn().mockResolvedValue({ statusCode: 200, passesFilter: true, notificationUrl: 'https://x' }),
+      });
+      const result = await new WebhookSubscriptionsService(client).test('wbhk_1');
+      expect(result.statusCode).toBe(200);
+      expect(result.passesFilter).toBe(true);
     });
   });
 
@@ -185,13 +196,6 @@ describe('WebhookSubscriptionsService', () => {
       const client = createMockClient({ update: vi.fn().mockResolvedValue({}) });
       await expect(new WebhookSubscriptionsService(client).update('wbhk_1', {})).rejects.toThrow(
         'Webhook subscription update failed'
-      );
-    });
-
-    it('test throws when no result is returned', async () => {
-      const client = createMockClient({ test: vi.fn().mockResolvedValue({}) });
-      await expect(new WebhookSubscriptionsService(client).test('wbhk_1')).rejects.toThrow(
-        'Webhook subscription test failed'
       );
     });
   });

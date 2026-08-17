@@ -222,11 +222,16 @@ export class WebhookSubscriptionsService {
         eventType: options?.eventType,
       });
 
-      if (!response.subscriptionTestResult) {
-        throw new Error('Webhook subscription test failed');
-      }
-
-      return response.subscriptionTestResult;
+      // The result may come nested under `subscriptionTestResult` or as the
+      // same fields at the response root; normalize both to one shape.
+      return (
+        response.subscriptionTestResult ?? {
+          statusCode: response.statusCode,
+          passesFilter: response.passesFilter,
+          payload: response.payload,
+          notificationUrl: response.notificationUrl,
+        }
+      );
     } catch (error) {
       throw parseSquareError(error);
     }
