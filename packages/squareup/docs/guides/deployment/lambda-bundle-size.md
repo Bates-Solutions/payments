@@ -6,7 +6,8 @@ the levers you actually have.
 
 ## The measurements
 
-On Node 22, RSS delta from `require()` (this wrapper adds ~0.09 MB on top):
+On Node 22, RSS delta from `require()` (the `square` SDK dominates; this wrapper's
+own runtime cost is negligible):
 
 | What you load | RSS delta |
 | ------------- | --------- |
@@ -14,8 +15,8 @@ On Node 22, RSS delta from `require()` (this wrapper adds ~0.09 MB on top):
 | A single namespace client (e.g. `catalog`) | **~78 MB** |
 | The SDK `core` only | ~18 MB |
 
-The wrapper's own bundle contribution is ~0.09 MB (about 1%); the `square` SDK is
-~6.6 MB of a typical Lambda bundle (about 77%).
+By bundle size the split is similar: the wrapper's own contribution is ~0.09 MB
+(about 1%); the `square` SDK is ~6.5 MB of a typical Lambda bundle (about 77%).
 
 ## Why it does not tree-shake, and why "lazy require" won't help
 
