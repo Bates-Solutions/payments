@@ -214,6 +214,7 @@ export const handler = createLambdaWebhookHandler({
 | `checkout`       | Hosted checkout sessions                                       |
 | `giftCards`      | Gift card lifecycle (issue, activate, load, redeem, deactivate) + activities |
 | `locations`      | List/get merchant locations (derive currency, country, status) |
+| `webhooks`       | Webhook subscription management (`webhooks.subscriptions`: create/list/update/delete/test/rotate key) |
 
 ## Utilities
 

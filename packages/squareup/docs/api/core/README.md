@@ -53,6 +53,7 @@ const payment = await square.payments.create({
 - [SquarePaymentError](classes/SquarePaymentError.md)
 - [SquareValidationError](classes/SquareValidationError.md)
 - [SubscriptionsService](classes/SubscriptionsService.md)
+- [WebhookSubscriptionsService](classes/WebhookSubscriptionsService.md)
 
 ## Interfaces
 
@@ -65,6 +66,7 @@ const payment = await square.payments.create({
 - [CreateOrderOptions](interfaces/CreateOrderOptions.md)
 - [CreatePaymentOptions](interfaces/CreatePaymentOptions.md)
 - [CreateSubscriptionOptions](interfaces/CreateSubscriptionOptions.md)
+- [CreateWebhookSubscriptionOptions](interfaces/CreateWebhookSubscriptionOptions.md)
 - [Customer](interfaces/Customer.md)
 - [GiftCard](interfaces/GiftCard.md)
 - [GiftCardActivity](interfaces/GiftCardActivity.md)
@@ -72,6 +74,7 @@ const payment = await square.payments.create({
 - [ListCustomersOptions](interfaces/ListCustomersOptions.md)
 - [ListGiftCardActivitiesOptions](interfaces/ListGiftCardActivitiesOptions.md)
 - [ListGiftCardsOptions](interfaces/ListGiftCardsOptions.md)
+- [ListWebhookSubscriptionsOptions](interfaces/ListWebhookSubscriptionsOptions.md)
 - [LoadActivityDetails](interfaces/LoadActivityDetails.md)
 - [Location](interfaces/Location.md)
 - [Money](interfaces/Money.md)
@@ -89,11 +92,13 @@ const payment = await square.payments.create({
 - [SubscriptionPhaseInput](interfaces/SubscriptionPhaseInput.md)
 - [SubscriptionPlan](interfaces/SubscriptionPlan.md)
 - [UpdateCustomerOptions](interfaces/UpdateCustomerOptions.md)
+- [UpdateWebhookSubscriptionOptions](interfaces/UpdateWebhookSubscriptionOptions.md)
 
 ## Type Aliases
 
 - [AdjustDecrementReason](type-aliases/AdjustDecrementReason.md)
 - [AdjustIncrementReason](type-aliases/AdjustIncrementReason.md)
+- [CreatedWebhookSubscription](type-aliases/CreatedWebhookSubscription.md)
 - [CurrencyCode](type-aliases/CurrencyCode.md)
 - [CustomerSortField](type-aliases/CustomerSortField.md)
 - [CustomerSortOrder](type-aliases/CustomerSortOrder.md)
@@ -107,6 +112,8 @@ const payment = await square.payments.create({
 - [SquareErrorCode](type-aliases/SquareErrorCode.md)
 - [SubscriptionCadence](type-aliases/SubscriptionCadence.md)
 - [SubscriptionStatus](type-aliases/SubscriptionStatus.md)
+- [SubscriptionTestResult](type-aliases/SubscriptionTestResult.md)
+- [WebhookSubscription](type-aliases/WebhookSubscription.md)
 
 ## Variables
 
