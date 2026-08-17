@@ -28,6 +28,10 @@ Welcome to the documentation for `@bates-solutions/squareup`, a TypeScript wrapp
 - [Webhook Subscriptions](./guides/server/webhook-subscriptions.md) - Manage subscriptions (create/list/update/delete/test/rotate key)
 - [Middleware](./guides/server/middleware.md) - Express, Next.js integration
 
+### Deployment
+
+- [Bundle Size & Memory on AWS Lambda](./guides/deployment/lambda-bundle-size.md) - `--external:square`, memory sizing, why RSS is upstream
+
 ## API Reference
 
 Complete API reference generated from source code with TypeDoc:
