@@ -25,6 +25,7 @@ Welcome to the documentation for `@bates-solutions/squareup`, a TypeScript wrapp
 ### Server
 
 - [Webhooks](./guides/server/webhooks.md) - Webhook handling
+- [Webhook Subscriptions](./guides/server/webhook-subscriptions.md) - Manage subscriptions (create/list/update/delete/test/rotate key)
 - [Middleware](./guides/server/middleware.md) - Express, Next.js integration
 
 ## API Reference
