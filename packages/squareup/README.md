@@ -34,9 +34,11 @@ Stop wrestling with Square's low-level APIs. **squareup** gives you a simplified
 
 | Dependency | Version |
 | ---------- | ------- |
-| Square SDK | ^43.0.0 |
+| Square SDK | `>=43.2.1 <45` (pin `square@^44`) |
 | Node.js    | 22+     |
 | TypeScript | 5.0+    |
+
+> **`square@45` is not yet supported** — it makes breaking changes to the Inventory API. Pin `square@^44`. Deploying on AWS Lambda? See [Bundle Size & Memory](./docs/guides/deployment/lambda-bundle-size.md).
 
 ## Installation
 
