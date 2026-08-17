@@ -1,3 +1,22 @@
+## [1.15.0](https://github.com/mbates/squareup/compare/v1.14.2...v1.15.0) (2026-07-22)
+
+
+### Features
+
+* **locations:** add `LocationsService` to read merchant locations (list/get → id, name, country, currency, status) ([#122](https://github.com/mbates/squareup/pull/122)), closes [#119](https://github.com/mbates/squareup/issues/119)
+* **webhooks:** add webhook subscription management via `client.webhooks.subscriptions` (create/list/get/update/delete/test/rotateSignatureKey) ([#125](https://github.com/mbates/squareup/pull/125)), closes [#118](https://github.com/mbates/squareup/issues/118)
+
+
+### Bug Fixes
+
+* **currency:** honor the client's `defaultCurrency` instead of hardcoding `USD` in every service ([#121](https://github.com/mbates/squareup/pull/121)), closes [#119](https://github.com/mbates/squareup/issues/119)
+* **invoices:** set `accepted_payment_methods` on create so Square accepts invoices ([#123](https://github.com/mbates/squareup/pull/123)), closes [#120](https://github.com/mbates/squareup/issues/120)
+
+
+### Documentation
+
+* add AWS Lambda bundle-size / RSS guide and document that `square@45` is unsupported (pin `square@^44`) ([#126](https://github.com/mbates/squareup/pull/126)), closes [#117](https://github.com/mbates/squareup/issues/117)
+
 ## [1.13.3](https://github.com/mbates/squareup/compare/v1.13.2...v1.13.3) (2026-07-21)
 
 
