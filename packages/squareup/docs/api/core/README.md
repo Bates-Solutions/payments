@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v1.14.2**](../README.md)
+[**@bates-solutions/squareup API Reference v1.15.0**](../README.md)
 
 ***
 
@@ -80,6 +80,7 @@ const payment = await square.payments.create({
 - [Money](interfaces/Money.md)
 - [MoneyInput](interfaces/MoneyInput.md)
 - [Order](interfaces/Order.md)
+- [OrderDiscountInput](interfaces/OrderDiscountInput.md)
 - [OrderPricingOptions](interfaces/OrderPricingOptions.md)
 - [PaginatedResponse](interfaces/PaginatedResponse.md)
 - [PaginationOptions](interfaces/PaginationOptions.md)
@@ -107,6 +108,8 @@ const payment = await square.payments.create({
 - [GiftCardGanSource](type-aliases/GiftCardGanSource.md)
 - [GiftCardState](type-aliases/GiftCardState.md)
 - [GiftCardType](type-aliases/GiftCardType.md)
+- [OrderDiscountScope](type-aliases/OrderDiscountScope.md)
+- [OrderDiscountType](type-aliases/OrderDiscountType.md)
 - [PaymentSource](type-aliases/PaymentSource.md)
 - [SquareEnvironment](type-aliases/SquareEnvironment.md)
 - [SquareErrorCode](type-aliases/SquareErrorCode.md)

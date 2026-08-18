@@ -143,6 +143,27 @@ describe('OrdersService', () => {
       );
     });
 
+    it('should forward discounts and per-line appliedDiscounts (issue #129)', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      await service.create({
+        lineItems: [{ catalogObjectId: 'VAR_1', quantity: 1, appliedDiscounts: [{ discountUid: 'w' }] }],
+        discounts: [{ uid: 'w', catalogObjectId: 'DISCOUNT_1', scope: 'LINE_ITEM' }],
+      });
+
+      const arg = (client.orders.create as ReturnType<typeof vi.fn>).mock.calls[0][0] as {
+        order: {
+          discounts?: Array<{ uid?: string; catalogObjectId?: string }>;
+          lineItems: Array<{ appliedDiscounts?: Array<{ discountUid: string }> }>;
+        };
+      };
+      expect(arg.order.discounts).toEqual([{ uid: 'w', catalogObjectId: 'DISCOUNT_1', scope: 'LINE_ITEM' }]);
+      expect(arg.order.lineItems[0].appliedDiscounts).toEqual([{ discountUid: 'w' }]);
+    });
+
     it('should honor locationId from options over default', async () => {
       const client = createMockClient({
         create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
