@@ -167,9 +167,37 @@ const template = await square.orders.create({
 });
 ```
 
+> ⚠️ **`autoApplyDiscounts` is rejected on a subscription order template.** Square
+> returns `The order template amount must not have auto_apply_discounts set to true`.
+> For a template that backs a subscription, make the amount well-defined explicitly —
+> either **`basePriceMoney` per line** (below) or **catalog `discounts`** (below) —
+> rather than relying on auto-application. `autoApplyDiscounts` is still fine on a
+> non-template DRAFT/OPEN order.
+
 ### Why `autoApplyDiscounts`
 
-When `autoApplyDiscounts: true`, Square re-evaluates catalog pricing rules every time the order is used (including at each subscription billing cycle). That means customer-group-gated wholesale tiers, time-bounded promos, and other rules applied via [`catalog.createPricingRule`](./catalog.md#wholesale-pricing) fire automatically — no app-side price overrides needed.
+On a non-template order, `autoApplyDiscounts: true` makes Square re-evaluate catalog pricing rules at calculation time, so customer-group-gated wholesale tiers, time-bounded promos, and other rules applied via [`catalog.createPricingRule`](./catalog.md#wholesale-pricing) fire automatically — no app-side price overrides needed. (See the caveat above for why this can't be used on a subscription template.)
+
+### Explicit `discounts` (catalog-authoritative)
+
+Reference a `CatalogDiscount` by id so the amount **tracks the catalog** rather than being copied into the order — the right choice for a subscription template that should reprice when a wholesale rule changes:
+
+```typescript
+const template = await square.orders.create({
+  lineItems: [
+    // Line-scoped discounts must be listed on the line they apply to.
+    { catalogObjectId: 'VAR_1', quantity: 2, appliedDiscounts: [{ discountUid: 'wholesale' }] },
+  ],
+  discounts: [
+    { uid: 'wholesale', catalogObjectId: 'DISCOUNT_1', scope: 'LINE_ITEM' },
+    // An ORDER-scoped discount is auto-applied to every line:
+    // { uid: 'promo', catalogObjectId: 'DISCOUNT_2', scope: 'ORDER' },
+  ],
+  state: 'DRAFT',
+});
+```
+
+`ORDER`-scoped discounts apply to the whole order; `LINE_ITEM`-scoped discounts apply only to lines that reference the discount's `uid` in `appliedDiscounts`. You can also define an ad-hoc discount inline with `type` + `percentage`/`amountMoney` instead of `catalogObjectId`.
 
 ### Explicit `basePriceMoney` on Ad-hoc Items
 

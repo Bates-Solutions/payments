@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v1.14.2**](../../README.md)
+[**@bates-solutions/squareup API Reference v1.15.0**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **WebhookSubscription** = `Omit`\<`Square.WebhookSubscription`, `"signatureKey"`\>
 
-Defined in: core/services/webhook-subscriptions.service.ts:13
+Defined in: [core/services/webhook-subscriptions.service.ts:13](https://github.com/mbates/squareup/blob/main/src/core/services/webhook-subscriptions.service.ts#L13)
 
 A webhook subscription as returned by `get`, `list`, and `update`.
 
