@@ -1,3 +1,20 @@
+## [1.17.0](https://github.com/mbates/squareup/compare/v1.16.0...v1.17.0) (2026-08-18)
+
+
+### Bug Fixes
+
+* **server:** make the Express middleware's declaration self-contained so the JSR npm tarball no longer imports untranspiled `.ts` source, which broke every `@bates-solutions/squareup/server` consumer — including Lambda/Next.js apps that never touch Express ([#128](https://github.com/mbates/squareup/issues/128))
+
+
+### Features
+
+* **server:** export each framework adapter from its own subpath — `@bates-solutions/squareup/server/express`, `.../server/nextjs`, `.../server/lambda` — so an app pulls in only the adapter it uses ([#128](https://github.com/mbates/squareup/issues/128))
+
+
+### Documentation
+
+* **README:** document the `moduleResolution: "Bundler"`/`"Node16"` requirement (JSR ships `exports`-only, so node10 resolution reports TS2307)
+
 ## [1.16.0](https://github.com/mbates/squareup/compare/v1.15.0...v1.16.0) (2026-08-17)
 
 
