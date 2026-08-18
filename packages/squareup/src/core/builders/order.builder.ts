@@ -302,6 +302,41 @@ export class OrderBuilder {
   }
 
   /**
+   * Cross-check discount references so mistakes fail clearly here instead of as
+   * an opaque Square error (or a silent no-op):
+   * - a line's `appliedDiscounts.discountUid` must match an order discount `uid`;
+   * - a `LINE_ITEM`-scoped discount must be referenced by at least one line
+   *   (otherwise it applies to nothing).
+   */
+  private validateDiscountReferences(): void {
+    const discountUids = new Set(
+      this.discounts.map((d) => d.uid).filter((uid): uid is string => uid !== undefined)
+    );
+    const referencedUids = new Set<string>();
+
+    for (const item of this.lineItems) {
+      for (const applied of item.appliedDiscounts ?? []) {
+        if (!discountUids.has(applied.discountUid)) {
+          throw new SquareValidationError(
+            `Line item references discount '${applied.discountUid}', which is not in the order's discounts. Add it with addDiscount({ uid: '${applied.discountUid}', … }).`,
+            'appliedDiscounts'
+          );
+        }
+        referencedUids.add(applied.discountUid);
+      }
+    }
+
+    for (const discount of this.discounts) {
+      if (discount.scope === 'LINE_ITEM' && discount.uid && !referencedUids.has(discount.uid)) {
+        throw new SquareValidationError(
+          `LINE_ITEM discount '${discount.uid}' is not referenced by any line item's appliedDiscounts, so it would apply to nothing.`,
+          'discounts'
+        );
+      }
+    }
+  }
+
+  /**
    * Build and create the order
    *
    * @returns Created order
@@ -313,6 +348,8 @@ export class OrderBuilder {
     if (this.lineItems.length === 0) {
       throw new SquareValidationError('Order must have at least one line item');
     }
+
+    this.validateDiscountReferences();
 
     try {
       const response = await this.client.orders.create({
