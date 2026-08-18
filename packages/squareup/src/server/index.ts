@@ -89,6 +89,10 @@ export {
   rawBodyMiddleware,
   type SquareWebhookRequest,
   type ExpressWebhookOptions,
+  type ExpressRequestLike,
+  type ExpressResponseLike,
+  type ExpressNextFunction,
+  type ExpressRequestHandler,
 } from './middleware/express.js';
 
 // Next.js handlers

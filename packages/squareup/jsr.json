@@ -1,12 +1,16 @@
 {
   "name": "@bates-solutions/squareup",
-  "version": "1.16.0",
+  "version": "1.17.0",
   "exports": {
     ".": "./src/core/index.ts",
-    "./server": "./src/server/index.ts"
+    "./server": "./src/server/index.ts",
+    "./server/express": "./src/server/middleware/express.ts",
+    "./server/nextjs": "./src/server/middleware/nextjs.ts",
+    "./server/lambda": "./src/server/middleware/lambda.ts"
   },
   "exclude": [
     "**/__tests__",
+    "**/__type-tests__",
     "**/*.test.ts",
     "dist",
     "coverage",
@@ -14,6 +18,7 @@
     "vitest.config.ts",
     "vitest.setup.ts",
     "eslint.config.js",
+    "tsconfig.type-tests.json",
     "typedoc.json",
     ".github"
   ]
