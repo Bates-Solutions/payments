@@ -1,3 +1,10 @@
+## [1.16.0](https://github.com/mbates/squareup/compare/v1.15.0...v1.16.0) (2026-08-17)
+
+
+### Features
+
+* **orders:** add order- and line-item-level discounts — `CreateOrderOptions.discounts` + per-line `appliedDiscounts`, builder `addDiscount`/`addDiscounts`, with client-side reference validation ([#130](https://github.com/mbates/squareup/pull/130)), closes [#129](https://github.com/mbates/squareup/issues/129)
+
 ## [1.15.0](https://github.com/mbates/squareup/compare/v1.14.2...v1.15.0) (2026-07-22)
 
 
