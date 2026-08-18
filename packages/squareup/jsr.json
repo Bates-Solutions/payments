@@ -10,6 +10,7 @@
   },
   "exclude": [
     "**/__tests__",
+    "**/__type-tests__",
     "**/*.test.ts",
     "dist",
     "coverage",
@@ -17,6 +18,7 @@
     "vitest.config.ts",
     "vitest.setup.ts",
     "eslint.config.js",
+    "tsconfig.type-tests.json",
     "typedoc.json",
     ".github"
   ]
