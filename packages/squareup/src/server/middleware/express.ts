@@ -46,7 +46,14 @@ export type ExpressRequestHandler = (
 ) => void | Promise<void>;
 
 /**
- * Extended Express Request with Square webhook data
+ * Request object as seen by the webhook middleware, carrying the Square webhook
+ * data it attaches.
+ *
+ * This extends the minimal {@link ExpressRequestLike} rather than Express's full
+ * `Request` (see the note above), so it exposes only `body`, `headers`, `on`,
+ * plus the fields below. If you type your own downstream middleware against it
+ * and need Express's extras (`params`, `query`, `get(...)`, …), intersect it
+ * with the real Express request: `req: SquareWebhookRequest & express.Request`.
  */
 export interface SquareWebhookRequest extends ExpressRequestLike {
   /** The raw request body as a string */
