@@ -2,6 +2,23 @@
 
 This guide covers webhook middleware for Express and Next.js with `@bates-solutions/squareup`.
 
+## Import paths
+
+Every helper is available from the `@bates-solutions/squareup/server` barrel (used
+throughout this guide). Each framework adapter is **also** exported from its own
+subpath, so an app pulls in only the adapter it uses — a Lambda or Next.js app
+never drags Express's types into its type-check, and vice versa:
+
+| Adapter | Barrel | Dedicated subpath |
+| --- | --- | --- |
+| Express | `@bates-solutions/squareup/server` | `@bates-solutions/squareup/server/express` |
+| Next.js | `@bates-solutions/squareup/server` | `@bates-solutions/squareup/server/nextjs` |
+| Lambda  | `@bates-solutions/squareup/server` | `@bates-solutions/squareup/server/lambda` |
+
+The framework-agnostic core (`verifySignature`, `parseWebhookEvent`,
+`processWebhookEvent`, the typed event objects, the id extractors) lives on the
+barrel and carries no framework dependency.
+
 ## Prerequisites
 
 - Square account with webhook configured
@@ -372,6 +389,22 @@ app.post('/webhook', handler, (req: SquareWebhookRequest, res) => {
   console.log('Event:', req.squareEvent);
 });
 ```
+
+> `SquareWebhookRequest` extends a **minimal structural** request type (so the
+> package carries no Express dependency in its published types — see
+> [#128](https://github.com/mbates/squareup/issues/128)). It exposes `body`,
+> `headers`, `on`, `rawBody`, and `squareEvent`. If your downstream handler also
+> needs Express extras like `req.params`, `req.query`, or `req.get(...)`, type the
+> parameter as an intersection with the real Express request:
+>
+> ```typescript
+> import type { Request } from 'express';
+>
+> app.post('/webhook', handler, (req: SquareWebhookRequest & Request, res) => {
+>   console.log('Event:', req.squareEvent); // from squareup
+>   console.log('Query:', req.query);        // from express
+> });
+> ```
 
 ### Next.js Webhook Response
 

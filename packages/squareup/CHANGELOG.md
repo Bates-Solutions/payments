@@ -1,3 +1,25 @@
+## [1.17.0](https://github.com/mbates/squareup/compare/v1.16.0...v1.17.0) (2026-08-18)
+
+
+### Bug Fixes
+
+* **server:** make the Express middleware's declaration self-contained so the JSR npm tarball no longer imports untranspiled `.ts` source, which broke every `@bates-solutions/squareup/server` consumer — including Lambda/Next.js apps that never touch Express ([#128](https://github.com/mbates/squareup/issues/128))
+
+
+### Features
+
+* **server:** export each framework adapter from its own subpath — `@bates-solutions/squareup/server/express`, `.../server/nextjs`, `.../server/lambda` — so an app pulls in only the adapter it uses ([#128](https://github.com/mbates/squareup/issues/128))
+
+
+### Documentation
+
+* **README:** document the `moduleResolution: "Bundler"`/`"Node16"` requirement (JSR ships `exports`-only, so node10 resolution reports TS2307)
+
+
+### ⚠️ Type-level note (not runtime-breaking)
+
+* **server:** `SquareWebhookRequest` now extends a minimal structural request type instead of Express's `Request`. The primary path — `app.post(path, createExpressWebhookHandler(...))` — is unaffected and still fully type-checks. Only consumers who imported `SquareWebhookRequest` to type their **own** downstream middleware and read Express extras off it (`req.params`, `req.query`, `req.get(...)`) are affected: type such a parameter as `SquareWebhookRequest & import('express').Request` to restore the full Express surface. Runtime behavior is unchanged.
+
 ## [1.16.0](https://github.com/mbates/squareup/compare/v1.15.0...v1.16.0) (2026-08-17)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@bates-solutions/squareup",
-  "version": "1.16.0",
+  "version": "1.17.0",
   "description": "TypeScript wrapper for Square API with webhook support for Node.js backends",
   "type": "module",
   "main": "./dist/core/index.js",
@@ -13,6 +13,18 @@
     "./server": {
       "types": "./dist/server/index.d.ts",
       "import": "./dist/server/index.js"
+    },
+    "./server/express": {
+      "types": "./dist/server/middleware/express.d.ts",
+      "import": "./dist/server/middleware/express.js"
+    },
+    "./server/nextjs": {
+      "types": "./dist/server/middleware/nextjs.d.ts",
+      "import": "./dist/server/middleware/nextjs.js"
+    },
+    "./server/lambda": {
+      "types": "./dist/server/middleware/lambda.d.ts",
+      "import": "./dist/server/middleware/lambda.js"
     }
   },
   "files": [
@@ -25,7 +37,7 @@
     "dev": "tsc --watch",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.type-tests.json",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
