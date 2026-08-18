@@ -137,49 +137,52 @@ const order = await square.orders.create({
 
 ## Order Templates
 
-A **DRAFT** order with pricing options becomes a reusable template — most commonly used as the source for a subscription phase (see [Subscriptions Guide](./subscriptions.md#product-driven-subscriptions)).
+A **DRAFT** order becomes a reusable template — most commonly the source for a subscription phase (see [Subscriptions Guide](./subscriptions.md#product-driven-subscriptions)).
 
-Use `asTemplate()` as shorthand for `state: 'DRAFT'` + `pricingOptions.autoApplyDiscounts: true`:
+> ⚠️ **A subscription order template must not set `autoApplyDiscounts`.** Square rejects it
+> (`The order template amount must not have auto_apply_discounts set to true`). Make the amount
+> explicit instead — reference catalog `discounts` (recommended, below) or set `basePriceMoney`
+> per line. `asTemplate()` / `autoApplyDiscounts` are for **non-subscription** DRAFT orders only.
 
-```typescript
-const template = await square.orders
-  .builder()
-  .addItem({ catalogObjectId: 'VAR_1', quantity: 2 })
-  .addItem({ catalogObjectId: 'VAR_2', quantity: 1 })
-  .withCustomer('CUST_123')
-  .asTemplate()
-  .build();
+### Subscription templates: explicit `discounts` (catalog-authoritative)
 
-console.log('Template order ID:', template.id);
-```
-
-Or pass the equivalent options to `create()`:
+Reference a `CatalogDiscount` by id so the amount **tracks the catalog** rather than being copied into the order — so changing a wholesale rate reprices existing subscriptions:
 
 ```typescript
 const template = await square.orders.create({
   lineItems: [
-    { catalogObjectId: 'VAR_1', quantity: 2 },
-    { catalogObjectId: 'VAR_2', quantity: 1 },
+    // Line-scoped discounts must be listed on the line they apply to.
+    { catalogObjectId: 'VAR_1', quantity: 2, appliedDiscounts: [{ discountUid: 'wholesale' }] },
   ],
-  customerId: 'CUST_123',
+  discounts: [
+    { uid: 'wholesale', catalogObjectId: 'DISCOUNT_1', scope: 'LINE_ITEM' },
+    // An ORDER-scoped discount is auto-applied to every line:
+    // { uid: 'promo', catalogObjectId: 'DISCOUNT_2', scope: 'ORDER' },
+  ],
   state: 'DRAFT',
-  pricingOptions: { autoApplyDiscounts: true },
 });
 ```
 
-### Why `autoApplyDiscounts`
+`ORDER`-scoped discounts apply to the whole order; `LINE_ITEM`-scoped discounts apply only to lines that reference the discount's `uid` in `appliedDiscounts` — the builder validates that these line up and throws a `SquareValidationError` if a reference dangles or a `LINE_ITEM` discount goes unreferenced. You can also define an ad-hoc discount inline with `type` + `percentage`/`amountMoney` instead of `catalogObjectId`.
 
-When `autoApplyDiscounts: true`, Square re-evaluates catalog pricing rules every time the order is used (including at each subscription billing cycle). That means customer-group-gated wholesale tiers, time-bounded promos, and other rules applied via [`catalog.createPricingRule`](./catalog.md#wholesale-pricing) fire automatically — no app-side price overrides needed.
+### Subscription templates: explicit `basePriceMoney`
 
-### Explicit `basePriceMoney` on Ad-hoc Items
-
-For templates where you want a specific currency or the price is derived at runtime:
+If you'd rather pin the price at creation (it will **not** reprice when the catalog changes):
 
 ```typescript
-.addItem({
-  name: 'Wholesale bundle',
-  basePriceMoney: { amount: 2499, currency: 'USD' },
-})
+.addItem({ name: 'Wholesale bundle', basePriceMoney: { amount: 2499, currency: 'USD' } })
+```
+
+### Non-subscription DRAFT orders: `asTemplate()` / `autoApplyDiscounts`
+
+For a **non-subscription** DRAFT/OPEN order, `autoApplyDiscounts: true` makes Square re-evaluate catalog pricing rules at calculation time, so customer-group-gated wholesale tiers, time-bounded promos, and other rules applied via [`catalog.createPricingRule`](./catalog.md#wholesale-pricing) fire automatically. `asTemplate()` is shorthand for `state: 'DRAFT'` + `pricingOptions.autoApplyDiscounts: true`:
+
+```typescript
+const order = await square.orders
+  .builder()
+  .addItem({ catalogObjectId: 'VAR_1', quantity: 2 })
+  .asTemplate()
+  .build();
 ```
 
 ### Stable Idempotency for Retries

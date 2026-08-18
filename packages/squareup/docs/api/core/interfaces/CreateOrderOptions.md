@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v1.14.2**](../../README.md)
+[**@bates-solutions/squareup API Reference v1.15.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: CreateOrderOptions
 
-Defined in: [core/types/index.ts:109](https://github.com/mbates/squareup/blob/main/src/core/types/index.ts#L109)
+Defined in: [core/types/index.ts:162](https://github.com/mbates/squareup/blob/main/src/core/types/index.ts#L162)
 
 Create order options
 
@@ -16,7 +16,21 @@ Create order options
 
 > `optional` **customerId?**: `string`
 
-Defined in: [core/types/index.ts:111](https://github.com/mbates/squareup/blob/main/src/core/types/index.ts#L111)
+Defined in: [core/types/index.ts:164](https://github.com/mbates/squareup/blob/main/src/core/types/index.ts#L164)
+
+***
+
+### discounts?
+
+> `optional` **discounts?**: [`OrderDiscountInput`](OrderDiscountInput.md)[]
+
+Defined in: [core/types/index.ts:173](https://github.com/mbates/squareup/blob/main/src/core/types/index.ts#L173)
+
+Order-level and line-level discounts. Reference `CatalogDiscount` ids to
+keep pricing authoritative (the number tracks the catalog rather than being
+copied into the order). For a subscription order template, carry discounts
+(or explicit `basePriceMoney`) here rather than relying on
+`pricingOptions.autoApplyDiscounts` — see [OrderPricingOptions](OrderPricingOptions.md).
 
 ***
 
@@ -24,7 +38,7 @@ Defined in: [core/types/index.ts:111](https://github.com/mbates/squareup/blob/ma
 
 > `optional` **idempotencyKey?**: `string`
 
-Defined in: [core/types/index.ts:123](https://github.com/mbates/squareup/blob/main/src/core/types/index.ts#L123)
+Defined in: [core/types/index.ts:184](https://github.com/mbates/squareup/blob/main/src/core/types/index.ts#L184)
 
 ***
 
@@ -32,7 +46,7 @@ Defined in: [core/types/index.ts:123](https://github.com/mbates/squareup/blob/ma
 
 > **lineItems**: [`LineItemInput`](LineItemInput.md)[]
 
-Defined in: [core/types/index.ts:110](https://github.com/mbates/squareup/blob/main/src/core/types/index.ts#L110)
+Defined in: [core/types/index.ts:163](https://github.com/mbates/squareup/blob/main/src/core/types/index.ts#L163)
 
 ***
 
@@ -40,7 +54,7 @@ Defined in: [core/types/index.ts:110](https://github.com/mbates/squareup/blob/ma
 
 > `optional` **locationId?**: `string`
 
-Defined in: [core/types/index.ts:122](https://github.com/mbates/squareup/blob/main/src/core/types/index.ts#L122)
+Defined in: [core/types/index.ts:183](https://github.com/mbates/squareup/blob/main/src/core/types/index.ts#L183)
 
 Override the client's default location for this order.
 
@@ -50,7 +64,7 @@ Override the client's default location for this order.
 
 > `optional` **pricingOptions?**: [`OrderPricingOptions`](OrderPricingOptions.md)
 
-Defined in: [core/types/index.ts:118](https://github.com/mbates/squareup/blob/main/src/core/types/index.ts#L118)
+Defined in: [core/types/index.ts:179](https://github.com/mbates/squareup/blob/main/src/core/types/index.ts#L179)
 
 ***
 
@@ -58,7 +72,7 @@ Defined in: [core/types/index.ts:118](https://github.com/mbates/squareup/blob/ma
 
 > `optional` **referenceId?**: `string`
 
-Defined in: [core/types/index.ts:112](https://github.com/mbates/squareup/blob/main/src/core/types/index.ts#L112)
+Defined in: [core/types/index.ts:165](https://github.com/mbates/squareup/blob/main/src/core/types/index.ts#L165)
 
 ***
 
@@ -66,7 +80,7 @@ Defined in: [core/types/index.ts:112](https://github.com/mbates/squareup/blob/ma
 
 > `optional` **state?**: `"DRAFT"` \| `"OPEN"`
 
-Defined in: [core/types/index.ts:117](https://github.com/mbates/squareup/blob/main/src/core/types/index.ts#L117)
+Defined in: [core/types/index.ts:178](https://github.com/mbates/squareup/blob/main/src/core/types/index.ts#L178)
 
 Order state. Use `'DRAFT'` when creating an order template that will back
 a subscription phase (`subscriptions.create({ phases: [...] })`).

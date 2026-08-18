@@ -1,5 +1,10 @@
 import type { SquareClient } from 'square';
-import type { CurrencyCode, LineItemInput, OrderPricingOptions } from '../types/index.js';
+import type {
+  CurrencyCode,
+  LineItemInput,
+  OrderDiscountInput,
+  OrderPricingOptions,
+} from '../types/index.js';
 import { parseSquareError, SquareValidationError } from '../errors.js';
 import { createIdempotencyKey } from '../utils.js';
 
@@ -16,7 +21,21 @@ interface OrderLineItem {
     amount: bigint;
     currency: CurrencyCode;
   };
+  appliedDiscounts?: Array<{ discountUid: string }>;
   note?: string;
+}
+
+/**
+ * Order-level discount, in the shape Square's `order.discounts` expects.
+ */
+interface OrderDiscount {
+  uid?: string;
+  catalogObjectId?: string;
+  name?: string;
+  type?: OrderDiscountInput['type'];
+  percentage?: string;
+  amountMoney?: { amount: bigint; currency: CurrencyCode };
+  scope?: OrderDiscountInput['scope'];
 }
 
 /**
@@ -55,6 +74,7 @@ export interface Order {
  */
 export class OrderBuilder {
   private lineItems: OrderLineItem[] = [];
+  private discounts: OrderDiscount[] = [];
   private customerId?: string;
   private referenceId?: string;
   private tipAmount?: bigint;
@@ -127,6 +147,10 @@ export class OrderBuilder {
       );
     }
 
+    if (item.appliedDiscounts && item.appliedDiscounts.length > 0) {
+      lineItem.appliedDiscounts = item.appliedDiscounts;
+    }
+
     if (item.note) {
       lineItem.note = item.note;
     }
@@ -144,6 +168,48 @@ export class OrderBuilder {
   addItems(items: LineItemInput[]): this {
     for (const item of items) {
       this.addItem(item);
+    }
+    return this;
+  }
+
+  /**
+   * Add an order discount. Reference an existing `CatalogDiscount` by
+   * `catalogObjectId` (price tracks the catalog), or define one inline. For a
+   * `LINE_ITEM`-scoped discount, give it a `uid` and reference that from each
+   * line's `appliedDiscounts`.
+   *
+   * @example
+   * ```typescript
+   * builder
+   *   .addItem({ catalogObjectId: 'ITEM_1', quantity: 1, appliedDiscounts: [{ discountUid: 'wholesale' }] })
+   *   .addDiscount({ uid: 'wholesale', catalogObjectId: 'DISCOUNT_1', scope: 'LINE_ITEM' });
+   * ```
+   */
+  addDiscount(discount: OrderDiscountInput): this {
+    const mapped: OrderDiscount = {
+      uid: discount.uid,
+      catalogObjectId: discount.catalogObjectId,
+      name: discount.name,
+      type: discount.type,
+      percentage: discount.percentage,
+      scope: discount.scope,
+    };
+    if (discount.amountMoney) {
+      mapped.amountMoney = {
+        amount: BigInt(discount.amountMoney.amount),
+        currency: discount.amountMoney.currency,
+      };
+    }
+    this.discounts.push(mapped);
+    return this;
+  }
+
+  /**
+   * Add multiple order discounts at once.
+   */
+  addDiscounts(discounts: OrderDiscountInput[]): this {
+    for (const discount of discounts) {
+      this.addDiscount(discount);
     }
     return this;
   }
@@ -213,9 +279,14 @@ export class OrderBuilder {
   }
 
   /**
-   * Shorthand for configuring an order as a subscription template: sets state
-   * to `DRAFT` and enables automatic discount application so pricing rules fire
-   * at billing time.
+   * Shorthand for a DRAFT order with `autoApplyDiscounts: true`.
+   *
+   * ⚠️ **Not valid for a subscription order template** — Square rejects
+   * `auto_apply_discounts` there (`The order template amount must not have
+   * auto_apply_discounts set to true`). For a subscription template, use
+   * `withState('DRAFT')` and make the amount explicit via `addDiscount(...)`
+   * (catalog-authoritative) or per-line `basePriceMoney`. This helper remains
+   * for non-subscription DRAFT orders that do want auto-applied pricing rules.
    */
   asTemplate(): this {
     return this.withState('DRAFT').withPricingOptions({ autoApplyDiscounts: true });
@@ -231,6 +302,41 @@ export class OrderBuilder {
   }
 
   /**
+   * Cross-check discount references so mistakes fail clearly here instead of as
+   * an opaque Square error (or a silent no-op):
+   * - a line's `appliedDiscounts.discountUid` must match an order discount `uid`;
+   * - a `LINE_ITEM`-scoped discount must be referenced by at least one line
+   *   (otherwise it applies to nothing).
+   */
+  private validateDiscountReferences(): void {
+    const discountUids = new Set(
+      this.discounts.map((d) => d.uid).filter((uid): uid is string => uid !== undefined)
+    );
+    const referencedUids = new Set<string>();
+
+    for (const item of this.lineItems) {
+      for (const applied of item.appliedDiscounts ?? []) {
+        if (!discountUids.has(applied.discountUid)) {
+          throw new SquareValidationError(
+            `Line item references discount '${applied.discountUid}', which is not in the order's discounts. Add it with addDiscount({ uid: '${applied.discountUid}', … }).`,
+            'appliedDiscounts'
+          );
+        }
+        referencedUids.add(applied.discountUid);
+      }
+    }
+
+    for (const discount of this.discounts) {
+      if (discount.scope === 'LINE_ITEM' && discount.uid && !referencedUids.has(discount.uid)) {
+        throw new SquareValidationError(
+          `LINE_ITEM discount '${discount.uid}' is not referenced by any line item's appliedDiscounts, so it would apply to nothing.`,
+          'discounts'
+        );
+      }
+    }
+  }
+
+  /**
    * Build and create the order
    *
    * @returns Created order
@@ -243,11 +349,14 @@ export class OrderBuilder {
       throw new SquareValidationError('Order must have at least one line item');
     }
 
+    this.validateDiscountReferences();
+
     try {
       const response = await this.client.orders.create({
         order: {
           locationId: this.locationId,
           lineItems: this.lineItems,
+          discounts: this.discounts.length > 0 ? this.discounts : undefined,
           customerId: this.customerId,
           referenceId: this.referenceId,
           state: this.state,
@@ -273,6 +382,7 @@ export class OrderBuilder {
   preview(): {
     locationId: string;
     lineItems: OrderLineItem[];
+    discounts: OrderDiscount[];
     customerId?: string;
     referenceId?: string;
     tipAmount?: bigint;
@@ -284,6 +394,7 @@ export class OrderBuilder {
     return {
       locationId: this.locationId,
       lineItems: [...this.lineItems],
+      discounts: [...this.discounts],
       customerId: this.customerId,
       referenceId: this.referenceId,
       tipAmount: this.tipAmount,
@@ -299,6 +410,7 @@ export class OrderBuilder {
    */
   reset(): this {
     this.lineItems = [];
+    this.discounts = [];
     this.customerId = undefined;
     this.referenceId = undefined;
     this.tipAmount = undefined;

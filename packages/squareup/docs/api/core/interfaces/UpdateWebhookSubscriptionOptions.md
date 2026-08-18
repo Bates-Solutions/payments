@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v1.14.2**](../../README.md)
+[**@bates-solutions/squareup API Reference v1.15.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: UpdateWebhookSubscriptionOptions
 
-Defined in: core/services/webhook-subscriptions.service.ts:48
+Defined in: [core/services/webhook-subscriptions.service.ts:48](https://github.com/mbates/squareup/blob/main/src/core/services/webhook-subscriptions.service.ts#L48)
 
 Options for updating a webhook subscription. Only the provided fields change.
 
@@ -16,7 +16,7 @@ Options for updating a webhook subscription. Only the provided fields change.
 
 > `optional` **enabled?**: `boolean`
 
-Defined in: core/services/webhook-subscriptions.service.ts:52
+Defined in: [core/services/webhook-subscriptions.service.ts:52](https://github.com/mbates/squareup/blob/main/src/core/services/webhook-subscriptions.service.ts#L52)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: core/services/webhook-subscriptions.service.ts:52
 
 > `optional` **eventTypes?**: `string`[]
 
-Defined in: core/services/webhook-subscriptions.service.ts:51
+Defined in: [core/services/webhook-subscriptions.service.ts:51](https://github.com/mbates/squareup/blob/main/src/core/services/webhook-subscriptions.service.ts#L51)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: core/services/webhook-subscriptions.service.ts:51
 
 > `optional` **name?**: `string`
 
-Defined in: core/services/webhook-subscriptions.service.ts:49
+Defined in: [core/services/webhook-subscriptions.service.ts:49](https://github.com/mbates/squareup/blob/main/src/core/services/webhook-subscriptions.service.ts#L49)
 
 ***
 
@@ -40,4 +40,4 @@ Defined in: core/services/webhook-subscriptions.service.ts:49
 
 > `optional` **notificationUrl?**: `string`
 
-Defined in: core/services/webhook-subscriptions.service.ts:50
+Defined in: [core/services/webhook-subscriptions.service.ts:50](https://github.com/mbates/squareup/blob/main/src/core/services/webhook-subscriptions.service.ts#L50)

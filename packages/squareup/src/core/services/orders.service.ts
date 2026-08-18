@@ -99,6 +99,10 @@ export class OrdersService {
       builder.addItem(item);
     }
 
+    if (options.discounts && options.discounts.length > 0) {
+      builder.addDiscounts(options.discounts);
+    }
+
     if (options.customerId) {
       builder.withCustomer(options.customerId);
     }

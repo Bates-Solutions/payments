@@ -225,6 +225,7 @@ describe('OrderBuilder', () => {
             basePriceMoney: { amount: BigInt(350), currency: 'EUR' },
           },
         ],
+        discounts: [],
         customerId: 'CUST_123',
         referenceId: 'REF_123',
         tipAmount: BigInt(100),
@@ -457,6 +458,87 @@ describe('OrderBuilder', () => {
           }),
         })
       );
+    });
+  });
+
+  describe('discounts', () => {
+    it('sends order-level discounts and per-line appliedDiscounts (issue #129)', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
+      });
+
+      await new OrderBuilder(client, locationId)
+        .addItem({
+          catalogObjectId: 'VAR_1',
+          quantity: 1,
+          appliedDiscounts: [{ discountUid: 'wholesale' }],
+        })
+        .addDiscount({ uid: 'wholesale', catalogObjectId: 'DISCOUNT_1', scope: 'LINE_ITEM' })
+        .build();
+
+      const arg = (client.orders.create as ReturnType<typeof vi.fn>).mock.calls[0][0] as {
+        order: {
+          discounts?: Array<{ uid?: string; catalogObjectId?: string; scope?: string }>;
+          lineItems: Array<{ appliedDiscounts?: Array<{ discountUid: string }> }>;
+        };
+      };
+      expect(arg.order.discounts).toEqual([
+        { uid: 'wholesale', catalogObjectId: 'DISCOUNT_1', scope: 'LINE_ITEM' },
+      ]);
+      expect(arg.order.lineItems[0].appliedDiscounts).toEqual([{ discountUid: 'wholesale' }]);
+    });
+
+    it('coerces an inline amount discount to bigint', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
+      });
+
+      await new OrderBuilder(client, locationId)
+        .addItem({ name: 'X', amount: 1000 })
+        .addDiscounts([
+          { name: '$2 off', type: 'FIXED_AMOUNT', amountMoney: { amount: 200, currency: 'USD' }, scope: 'ORDER' },
+        ])
+        .build();
+
+      const arg = (client.orders.create as ReturnType<typeof vi.fn>).mock.calls[0][0] as {
+        order: { discounts?: Array<{ amountMoney?: { amount: bigint; currency: string } }> };
+      };
+      expect(arg.order.discounts?.[0].amountMoney).toEqual({ amount: BigInt(200), currency: 'USD' });
+    });
+
+    it('omits discounts entirely when none are added', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
+      });
+
+      await new OrderBuilder(client, locationId).addItem({ name: 'X', amount: 100 }).build();
+
+      const arg = (client.orders.create as ReturnType<typeof vi.fn>).mock.calls[0][0] as {
+        order: { discounts?: unknown };
+      };
+      expect(arg.order.discounts).toBeUndefined();
+    });
+
+    it('throws when a line references a discount uid not in the order', async () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId).addItem({
+        name: 'X',
+        amount: 100,
+        appliedDiscounts: [{ discountUid: 'missing' }],
+      });
+
+      await expect(builder.build()).rejects.toThrow(SquareValidationError);
+      expect(client.orders.create).not.toHaveBeenCalled();
+    });
+
+    it('throws when a LINE_ITEM discount is referenced by no line item', async () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId)
+        .addItem({ name: 'X', amount: 100 })
+        .addDiscount({ uid: 'orphan', catalogObjectId: 'DISCOUNT_1', scope: 'LINE_ITEM' });
+
+      await expect(builder.build()).rejects.toThrow(/apply to nothing/i);
+      expect(client.orders.create).not.toHaveBeenCalled();
     });
   });
 
