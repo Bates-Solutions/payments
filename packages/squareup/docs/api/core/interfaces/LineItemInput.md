@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v1.14.2**](../../README.md)
+[**@bates-solutions/squareup API Reference v1.15.0**](../../README.md)
 
 ***
 
@@ -17,6 +17,22 @@ Line item for orders
 > `optional` **amount?**: `number`
 
 Defined in: [core/types/index.ts:61](https://github.com/mbates/squareup/blob/main/src/core/types/index.ts#L61)
+
+***
+
+### appliedDiscounts?
+
+> `optional` **appliedDiscounts?**: `object`[]
+
+Defined in: [core/types/index.ts:76](https://github.com/mbates/squareup/blob/main/src/core/types/index.ts#L76)
+
+References to order-level `discounts` (by their `uid`) that apply to this
+line item. Required for `LINE_ITEM`-scoped discounts — Square only applies
+a line-item discount to a line that lists it here.
+
+#### discountUid
+
+> **discountUid**: `string`
 
 ***
 
@@ -60,7 +76,7 @@ Defined in: [core/types/index.ts:58](https://github.com/mbates/squareup/blob/mai
 
 > `optional` **note?**: `string`
 
-Defined in: [core/types/index.ts:71](https://github.com/mbates/squareup/blob/main/src/core/types/index.ts#L71)
+Defined in: [core/types/index.ts:77](https://github.com/mbates/squareup/blob/main/src/core/types/index.ts#L77)
 
 ***
 

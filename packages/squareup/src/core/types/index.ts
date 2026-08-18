@@ -68,6 +68,12 @@ export interface LineItemInput {
     amount: bigint | number;
     currency: CurrencyCode;
   };
+  /**
+   * References to order-level `discounts` (by their `uid`) that apply to this
+   * line item. Required for `LINE_ITEM`-scoped discounts — Square only applies
+   * a line-item discount to a line that lists it here.
+   */
+  appliedDiscounts?: Array<{ discountUid: string }>;
   note?: string;
 }
 
@@ -93,8 +99,14 @@ export interface CreatePaymentOptions {
 export interface OrderPricingOptions {
   /**
    * Apply catalog pricing rules (incl. customer-group-gated wholesale rules)
-   * automatically at calculation time. Required for order templates that back
-   * subscriptions with per-retailer wholesale pricing.
+   * automatically at calculation time.
+   *
+   * ⚠️ **Not for subscription order templates.** Square rejects a subscription
+   * template that sets this (`The order template amount must not have
+   * auto_apply_discounts set to true`). For a template, carry prices explicitly
+   * via each line's `basePriceMoney`, or reference discounts explicitly via the
+   * order's `discounts` — either keeps the amount well-defined without
+   * auto-application.
    */
   autoApplyDiscounts?: boolean;
   /**
@@ -104,12 +116,61 @@ export interface OrderPricingOptions {
 }
 
 /**
+ * Discount type. `FIXED_*` uses the exact `percentage`/`amountMoney` given;
+ * `VARIABLE_*` is resolved from the referenced catalog discount.
+ */
+export type OrderDiscountType =
+  | 'FIXED_PERCENTAGE'
+  | 'FIXED_AMOUNT'
+  | 'VARIABLE_PERCENTAGE'
+  | 'VARIABLE_AMOUNT';
+
+/**
+ * Whether a discount applies to the whole order or to specific line items.
+ */
+export type OrderDiscountScope = 'ORDER' | 'LINE_ITEM';
+
+/**
+ * An order discount. Reference an existing `CatalogDiscount` by
+ * `catalogObjectId` (keeps the catalog authoritative — the price tracks the
+ * rule), or define an ad-hoc discount inline with `type` + `percentage`/`amountMoney`.
+ *
+ * @see https://developer.squareup.com/docs/orders-api/discounts
+ */
+export interface OrderDiscountInput {
+  /** Client-side id; reference it from a line item's `appliedDiscounts`. */
+  uid?: string;
+  /** Reference an existing `CatalogDiscount` by id. */
+  catalogObjectId?: string;
+  name?: string;
+  type?: OrderDiscountType;
+  /** Percentage as a string, e.g. `"7.25"` (for percentage types). */
+  percentage?: string;
+  /** Fixed amount (for amount types). */
+  amountMoney?: { amount: bigint | number; currency: CurrencyCode };
+  /**
+   * `ORDER` applies to the whole order (Square auto-applies to every line);
+   * `LINE_ITEM` applies only to lines that list this discount's `uid` in their
+   * `appliedDiscounts`.
+   */
+  scope?: OrderDiscountScope;
+}
+
+/**
  * Create order options
  */
 export interface CreateOrderOptions {
   lineItems: LineItemInput[];
   customerId?: string;
   referenceId?: string;
+  /**
+   * Order-level and line-level discounts. Reference `CatalogDiscount` ids to
+   * keep pricing authoritative (the number tracks the catalog rather than being
+   * copied into the order). For a subscription order template, carry discounts
+   * (or explicit `basePriceMoney`) here rather than relying on
+   * `pricingOptions.autoApplyDiscounts` — see {@link OrderPricingOptions}.
+   */
+  discounts?: OrderDiscountInput[];
   /**
    * Order state. Use `'DRAFT'` when creating an order template that will back
    * a subscription phase (`subscriptions.create({ phases: [...] })`).

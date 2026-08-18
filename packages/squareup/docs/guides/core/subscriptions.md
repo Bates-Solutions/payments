@@ -37,17 +37,27 @@ const subscription = await square.subscriptions.create({
 
 ### Product-Driven Subscriptions
 
-For subscriptions that ship specific catalog items each cycle — and re-apply pricing rules (wholesale tiers, member discounts) at each billing cycle — use an **order template** in a phase:
+For subscriptions that ship specific catalog items each cycle at a wholesale rate, use an **order template** in a phase:
 
 ```typescript
-// 1. Create the order template (DRAFT state + auto-apply discounts).
-//    See docs/guides/core/orders.md#order-templates for details.
+// 1. Create the DRAFT order template. Reference the wholesale CatalogDiscount
+//    explicitly so the amount stays catalog-authoritative (it reprices if the
+//    discount changes). See docs/guides/core/orders.md#order-templates.
 const template = await square.orders
   .builder()
-  .addItem({ catalogObjectId: 'VAR_PICKLES_DILL', quantity: 2 })
-  .addItem({ catalogObjectId: 'VAR_PICKLES_SPICY', quantity: 1 })
+  .addItem({
+    catalogObjectId: 'VAR_PICKLES_DILL',
+    quantity: 2,
+    appliedDiscounts: [{ discountUid: 'wholesale' }],
+  })
+  .addItem({
+    catalogObjectId: 'VAR_PICKLES_SPICY',
+    quantity: 1,
+    appliedDiscounts: [{ discountUid: 'wholesale' }],
+  })
   .withCustomer('CUST_RETAILER_42')
-  .asTemplate()
+  .addDiscount({ uid: 'wholesale', catalogObjectId: 'DISCOUNT_WHOLESALE', scope: 'LINE_ITEM' })
+  .withState('DRAFT')
   .build();
 
 // 2. Create the subscription with a phase pointing at the template.
@@ -59,7 +69,9 @@ const subscription = await square.subscriptions.create({
 });
 ```
 
-At each billing cycle Square invoices the template's line items and re-evaluates catalog pricing rules. If the retailer is a member of a wholesale customer group, the wholesale rule fires automatically — no app-side price math.
+At each billing cycle Square invoices the template's line items with the referenced discount. Because the template references the `CatalogDiscount` by id (rather than copying a price), changing the wholesale rate in the catalog reprices existing subscriptions — no app-side price math.
+
+> ⚠️ **Don't use `autoApplyDiscounts` on a subscription template.** Square rejects it (`The order template amount must not have auto_apply_discounts set to true`). Make the amount explicit instead: reference discounts as above, or set `basePriceMoney` per line (which pins the price at creation and won't reprice). See [Order Templates](./orders.md#order-templates).
 
 ### Multiple Phases
 
