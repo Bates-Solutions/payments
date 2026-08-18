@@ -61,6 +61,34 @@ npm install square
 > Previously published on npm as `@bates-solutions/squareup`; that package is
 > deprecated in favor of JSR.
 
+### TypeScript module resolution
+
+JSR's npm tarball ships with `exports` only (no legacy `main`/`types`). Set your
+`tsconfig.json` to a modern resolver so both entry points resolve:
+
+```jsonc
+{
+  "compilerOptions": {
+    // "Bundler" or "Node16"/"NodeNext" — the legacy "Node" (node10) resolver
+    // cannot read the "exports" map and will report TS2307 for both `.` and `./server`.
+    "moduleResolution": "Bundler"
+  }
+}
+```
+
+### Importing the server webhook helpers
+
+`@bates-solutions/squareup/server` re-exports every helper — signature
+verification, the typed dispatcher, and the Express, Next.js, and Lambda
+adapters. Framework adapters are **also** available as their own subpaths, so a
+Lambda or Next.js app never pulls Express's types (or vice versa):
+
+```ts
+import { createLambdaWebhookHandler } from '@bates-solutions/squareup/server/lambda';
+import { createNextWebhookHandler }   from '@bates-solutions/squareup/server/nextjs';
+import { createExpressWebhookHandler } from '@bates-solutions/squareup/server/express';
+```
+
 ## Quick Start
 
 ### Basic Usage

@@ -1,9 +1,15 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { createHmac } from 'crypto';
-import type { Request, Response, NextFunction } from 'express';
 import { createExpressWebhookHandler, rawBodyMiddleware } from '../express.js';
-import type { SquareWebhookRequest } from '../express.js';
+import type {
+  SquareWebhookRequest,
+  ExpressResponseLike,
+  ExpressNextFunction,
+} from '../express.js';
 import { SIGNATURE_HEADER } from '../../webhook.js';
+
+// Intentionally no `express` / `@types/express` import: the middleware must be
+// fully usable without Express in the type graph (see issue #128).
 
 // Helper to generate valid signature
 function generateSignature(body: string, key: string, url?: string): string {
@@ -25,11 +31,11 @@ const sampleEvent = {
 };
 
 // Mock response helper
-function createMockResponse(): Response {
+function createMockResponse(): ExpressResponseLike {
   const res = {
     status: vi.fn().mockReturnThis(),
     json: vi.fn().mockReturnThis(),
-  } as unknown as Response;
+  } as unknown as ExpressResponseLike;
   return res;
 }
 
@@ -52,8 +58,8 @@ describe('express middleware', () => {
   const rawBody = JSON.stringify(sampleEvent);
 
   describe('createExpressWebhookHandler', () => {
-    let mockRes: Response;
-    let mockNext: NextFunction;
+    let mockRes: ExpressResponseLike;
+    let mockNext: ExpressNextFunction;
 
     beforeEach(() => {
       mockRes = createMockResponse();

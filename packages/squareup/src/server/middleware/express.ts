@@ -1,4 +1,3 @@
-import type { Request, Response, NextFunction, RequestHandler } from 'express';
 import {
   verifySignature,
   parseWebhookEvent,
@@ -8,9 +7,48 @@ import {
 import type { WebhookConfig, WebhookEvent } from '../types.js';
 
 /**
+ * Minimal structural stand-ins for the Express types this middleware touches.
+ *
+ * Express is only a peer/dev dependency, so it is deliberately kept out of the
+ * published type graph. Importing `Request`/`Response`/`RequestHandler` from
+ * `express` here would make the generated declaration file reach back into
+ * untranspiled TypeScript source in the JSR npm tarball, breaking every
+ * `/server` consumer — including ones that never touch Express (see
+ * [#128](https://github.com/mbates/squareup/issues/128)). The sibling Next.js
+ * and Lambda middleware already declare their own local types for the same
+ * reason. These interfaces are structurally compatible with Express 4 and 5, so
+ * `createExpressWebhookHandler(...)` still drops straight into
+ * `app.post(path, handler)` with full type-checking.
+ */
+export interface ExpressRequestLike {
+  /** Parsed or raw request body (Buffer, string, or parsed JSON). */
+  body?: unknown;
+  /** Request headers, keyed lowercase as Node/Express provide them. */
+  headers: Record<string, string | string[] | undefined>;
+  /** Node stream event subscription, used to capture the raw body. */
+  on(event: string, listener: (...args: unknown[]) => void): unknown;
+}
+
+/** Minimal structural stand-in for the Express `Response` methods used here. */
+export interface ExpressResponseLike {
+  status(code: number): ExpressResponseLike;
+  json(body: unknown): ExpressResponseLike;
+}
+
+/** Minimal structural stand-in for the Express `NextFunction`. */
+export type ExpressNextFunction = (err?: unknown) => void;
+
+/** Minimal structural stand-in for the Express `RequestHandler`. */
+export type ExpressRequestHandler = (
+  req: ExpressRequestLike,
+  res: ExpressResponseLike,
+  next: ExpressNextFunction
+) => void | Promise<void>;
+
+/**
  * Extended Express Request with Square webhook data
  */
-export interface SquareWebhookRequest extends Request {
+export interface SquareWebhookRequest extends ExpressRequestLike {
   /** The raw request body as a string */
   rawBody?: string;
   /** The parsed Square webhook event */
@@ -67,13 +105,13 @@ export interface ExpressWebhookOptions extends WebhookConfig {
  */
 export function createExpressWebhookHandler(
   config: ExpressWebhookOptions
-): RequestHandler {
+): ExpressRequestHandler {
   const { autoRespond = true, ...webhookConfig } = config;
 
   return async (
     req: SquareWebhookRequest,
-    res: Response,
-    next: NextFunction
+    res: ExpressResponseLike,
+    next: ExpressNextFunction
   ): Promise<void> => {
     try {
       // Get raw body - Express with raw() parser stores it as Buffer
@@ -160,15 +198,15 @@ export function createExpressWebhookHandler(
  * app.use('/webhook', express.json());
  * ```
  */
-export const rawBodyMiddleware: RequestHandler = (
+export const rawBodyMiddleware: ExpressRequestHandler = (
   req: SquareWebhookRequest,
-  _res: Response,
-  next: NextFunction
+  _res: ExpressResponseLike,
+  next: ExpressNextFunction
 ): void => {
   const chunks: Buffer[] = [];
 
-  req.on('data', (chunk: Buffer) => {
-    chunks.push(chunk);
+  req.on('data', (chunk: unknown) => {
+    chunks.push(chunk as Buffer);
   });
 
   req.on('end', () => {
