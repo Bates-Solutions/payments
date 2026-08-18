@@ -137,50 +137,16 @@ const order = await square.orders.create({
 
 ## Order Templates
 
-A **DRAFT** order with pricing options becomes a reusable template — most commonly used as the source for a subscription phase (see [Subscriptions Guide](./subscriptions.md#product-driven-subscriptions)).
+A **DRAFT** order becomes a reusable template — most commonly the source for a subscription phase (see [Subscriptions Guide](./subscriptions.md#product-driven-subscriptions)).
 
-Use `asTemplate()` as shorthand for `state: 'DRAFT'` + `pricingOptions.autoApplyDiscounts: true`:
+> ⚠️ **A subscription order template must not set `autoApplyDiscounts`.** Square rejects it
+> (`The order template amount must not have auto_apply_discounts set to true`). Make the amount
+> explicit instead — reference catalog `discounts` (recommended, below) or set `basePriceMoney`
+> per line. `asTemplate()` / `autoApplyDiscounts` are for **non-subscription** DRAFT orders only.
 
-```typescript
-const template = await square.orders
-  .builder()
-  .addItem({ catalogObjectId: 'VAR_1', quantity: 2 })
-  .addItem({ catalogObjectId: 'VAR_2', quantity: 1 })
-  .withCustomer('CUST_123')
-  .asTemplate()
-  .build();
+### Subscription templates: explicit `discounts` (catalog-authoritative)
 
-console.log('Template order ID:', template.id);
-```
-
-Or pass the equivalent options to `create()`:
-
-```typescript
-const template = await square.orders.create({
-  lineItems: [
-    { catalogObjectId: 'VAR_1', quantity: 2 },
-    { catalogObjectId: 'VAR_2', quantity: 1 },
-  ],
-  customerId: 'CUST_123',
-  state: 'DRAFT',
-  pricingOptions: { autoApplyDiscounts: true },
-});
-```
-
-> ⚠️ **`autoApplyDiscounts` is rejected on a subscription order template.** Square
-> returns `The order template amount must not have auto_apply_discounts set to true`.
-> For a template that backs a subscription, make the amount well-defined explicitly —
-> either **`basePriceMoney` per line** (below) or **catalog `discounts`** (below) —
-> rather than relying on auto-application. `autoApplyDiscounts` is still fine on a
-> non-template DRAFT/OPEN order.
-
-### Why `autoApplyDiscounts`
-
-On a non-template order, `autoApplyDiscounts: true` makes Square re-evaluate catalog pricing rules at calculation time, so customer-group-gated wholesale tiers, time-bounded promos, and other rules applied via [`catalog.createPricingRule`](./catalog.md#wholesale-pricing) fire automatically — no app-side price overrides needed. (See the caveat above for why this can't be used on a subscription template.)
-
-### Explicit `discounts` (catalog-authoritative)
-
-Reference a `CatalogDiscount` by id so the amount **tracks the catalog** rather than being copied into the order — the right choice for a subscription template that should reprice when a wholesale rule changes:
+Reference a `CatalogDiscount` by id so the amount **tracks the catalog** rather than being copied into the order — so changing a wholesale rate reprices existing subscriptions:
 
 ```typescript
 const template = await square.orders.create({
@@ -197,17 +163,26 @@ const template = await square.orders.create({
 });
 ```
 
-`ORDER`-scoped discounts apply to the whole order; `LINE_ITEM`-scoped discounts apply only to lines that reference the discount's `uid` in `appliedDiscounts`. You can also define an ad-hoc discount inline with `type` + `percentage`/`amountMoney` instead of `catalogObjectId`.
+`ORDER`-scoped discounts apply to the whole order; `LINE_ITEM`-scoped discounts apply only to lines that reference the discount's `uid` in `appliedDiscounts` — the builder validates that these line up and throws a `SquareValidationError` if a reference dangles or a `LINE_ITEM` discount goes unreferenced. You can also define an ad-hoc discount inline with `type` + `percentage`/`amountMoney` instead of `catalogObjectId`.
 
-### Explicit `basePriceMoney` on Ad-hoc Items
+### Subscription templates: explicit `basePriceMoney`
 
-For templates where you want a specific currency or the price is derived at runtime:
+If you'd rather pin the price at creation (it will **not** reprice when the catalog changes):
 
 ```typescript
-.addItem({
-  name: 'Wholesale bundle',
-  basePriceMoney: { amount: 2499, currency: 'USD' },
-})
+.addItem({ name: 'Wholesale bundle', basePriceMoney: { amount: 2499, currency: 'USD' } })
+```
+
+### Non-subscription DRAFT orders: `asTemplate()` / `autoApplyDiscounts`
+
+For a **non-subscription** DRAFT/OPEN order, `autoApplyDiscounts: true` makes Square re-evaluate catalog pricing rules at calculation time, so customer-group-gated wholesale tiers, time-bounded promos, and other rules applied via [`catalog.createPricingRule`](./catalog.md#wholesale-pricing) fire automatically. `asTemplate()` is shorthand for `state: 'DRAFT'` + `pricingOptions.autoApplyDiscounts: true`:
+
+```typescript
+const order = await square.orders
+  .builder()
+  .addItem({ catalogObjectId: 'VAR_1', quantity: 2 })
+  .asTemplate()
+  .build();
 ```
 
 ### Stable Idempotency for Retries

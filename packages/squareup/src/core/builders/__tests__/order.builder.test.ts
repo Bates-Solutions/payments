@@ -518,6 +518,28 @@ describe('OrderBuilder', () => {
       };
       expect(arg.order.discounts).toBeUndefined();
     });
+
+    it('throws when a line references a discount uid not in the order', async () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId).addItem({
+        name: 'X',
+        amount: 100,
+        appliedDiscounts: [{ discountUid: 'missing' }],
+      });
+
+      await expect(builder.build()).rejects.toThrow(SquareValidationError);
+      expect(client.orders.create).not.toHaveBeenCalled();
+    });
+
+    it('throws when a LINE_ITEM discount is referenced by no line item', async () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId)
+        .addItem({ name: 'X', amount: 100 })
+        .addDiscount({ uid: 'orphan', catalogObjectId: 'DISCOUNT_1', scope: 'LINE_ITEM' });
+
+      await expect(builder.build()).rejects.toThrow(/apply to nothing/i);
+      expect(client.orders.create).not.toHaveBeenCalled();
+    });
   });
 
   describe('withIdempotencyKey', () => {
