@@ -85,7 +85,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.1.0",
     "prettier": "^3.8.1",
-    "square": "^44.2.0",
+    "square": "^45.1.0",
     "typedoc": "^0.28.18",
     "typedoc-plugin-markdown": "^4.10.0",
     "typescript": "^6.0.2",
