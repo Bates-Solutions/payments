@@ -1,3 +1,27 @@
+## [2.0.0](https://github.com/mbates/squareup/compare/v1.17.0...v2.0.0) (2026-09-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** the `square` peer dependency is now `>=45.0.1 <46` (was `>=43.2.1 <45`). Square API version `2026-07-15`, which `square@45` targets, retired the `TRANSFER` inventory change type and `InventoryAdjustment.location_id`. The two SDK majors need different request shapes, so 2.x supports `square@45` only. Upgrade both together: `npx jsr add @bates-solutions/squareup@^2` and `npm install square@^45`. Wrapper code written against 1.x keeps compiling and running; see [Upgrading from 1.x](./docs/guides/core/inventory.md#upgrading-from-1x) ([#138](https://github.com/mbates/squareup/pull/138))
+
+
+### Features
+
+* **oauth:** add OAuth support for multi-tenant apps. `buildAuthorizeUrl()` builds the authorize link (no network call). `createSquareOAuthClient({ clientId, clientSecret })` provides `obtainToken` / `refreshToken` / `revokeToken`, authenticated with application credentials. `square.oauth.tokenStatus()` checks a merchant token. Token responses always carry `expiresAt` as a `Date`, scopes are typed as `OAuthScope`, and the client secret never appears in errors or logs ([#139](https://github.com/mbates/squareup/pull/139)), closes [#135](https://github.com/mbates/squareup/issues/135)
+* **inventory:** `adjust()` and `transfer()` now send `ADJUSTMENT` changes with `fromLocationId` / `toLocationId`. `InventoryChange.adjustment` gains `fromLocationId` / `toLocationId`. `batchChange()` still accepts `adjustment.locationId` and `TRANSFER` changes (now `@deprecated`) and converts them to the new shape. A change missing its payload or a location throws `SquareValidationError` before calling Square ([#138](https://github.com/mbates/squareup/pull/138))
+
+
+### Bug Fixes
+
+* **locations:** `list()` and `get()` now throw `SquareApiError` (e.g. `code: 'INSUFFICIENT_SCOPES'`) when Square answers with an `errors` body. Before, `list()` returned `[]` and `get()` threw `Location not found`, so a token missing `MERCHANT_PROFILE_READ` looked like a merchant with no locations ([#136](https://github.com/mbates/squareup/pull/136)), closes [#133](https://github.com/mbates/squareup/issues/133)
+* **errors:** `parseSquareError()` now returns an existing `SquareError` unchanged. Before, it re-wrapped it as a generic `SquareApiError('Square API error')` and discarded its `errors` ([#136](https://github.com/mbates/squareup/pull/136))
+
+
+### Documentation
+
+* add [Inventory](./docs/guides/core/inventory.md) and [OAuth](./docs/guides/core/oauth.md) guides; document the `MERCHANT_PROFILE_READ` scope requirement in the Locations guide; regenerate the API reference
+
 ## [1.17.0](https://github.com/mbates/squareup/compare/v1.16.0...v1.17.0) (2026-08-18)
 
 

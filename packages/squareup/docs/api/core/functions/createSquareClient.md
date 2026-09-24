@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v1.15.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **createSquareClient**(`config`): [`SquareClient`](../classes/SquareClient.md)
 
-Defined in: [core/client.ts:166](https://github.com/mbates/squareup/blob/main/src/core/client.ts#L166)
+Defined in: [core/client.ts:170](https://github.com/mbates/squareup/blob/main/src/core/client.ts#L170)
 
 Create a new Square client instance
 
