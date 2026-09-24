@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.1.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.2.0**](../../README.md)
 
 ***
 
@@ -58,7 +58,7 @@ Defined in: [core/services/invoices.service.ts:146](https://github.com/mbates/sq
 
 > **cancel**(`invoiceId`, `version`): `Promise`\<`Invoice`\>
 
-Defined in: [core/services/invoices.service.ts:317](https://github.com/mbates/squareup/blob/main/src/core/services/invoices.service.ts#L317)
+Defined in: [core/services/invoices.service.ts:321](https://github.com/mbates/squareup/blob/main/src/core/services/invoices.service.ts#L321)
 
 Cancel an invoice
 
@@ -133,7 +133,7 @@ const invoice = await square.invoices.create({
 
 > **delete**(`invoiceId`, `version`): `Promise`\<`void`\>
 
-Defined in: [core/services/invoices.service.ts:409](https://github.com/mbates/squareup/blob/main/src/core/services/invoices.service.ts#L409)
+Defined in: [core/services/invoices.service.ts:415](https://github.com/mbates/squareup/blob/main/src/core/services/invoices.service.ts#L415)
 
 Delete a draft invoice
 
@@ -167,7 +167,7 @@ await square.invoices.delete('INV_123', 0);
 
 > **get**(`invoiceId`): `Promise`\<`Invoice`\>
 
-Defined in: [core/services/invoices.service.ts:260](https://github.com/mbates/squareup/blob/main/src/core/services/invoices.service.ts#L260)
+Defined in: [core/services/invoices.service.ts:262](https://github.com/mbates/squareup/blob/main/src/core/services/invoices.service.ts#L262)
 
 Get an invoice by ID
 
@@ -197,7 +197,7 @@ const invoice = await square.invoices.get('INV_123');
 
 > **publish**(`invoiceId`, `version`): `Promise`\<`Invoice`\>
 
-Defined in: [core/services/invoices.service.ts:287](https://github.com/mbates/squareup/blob/main/src/core/services/invoices.service.ts#L287)
+Defined in: [core/services/invoices.service.ts:290](https://github.com/mbates/squareup/blob/main/src/core/services/invoices.service.ts#L290)
 
 Publish (send) an invoice
 
@@ -234,7 +234,7 @@ console.log(`Invoice sent: ${invoice.publicUrl}`);
 
 > **search**(`options?`): `Promise`\<\{ `cursor?`: `string`; `data`: `Invoice`[]; \}\>
 
-Defined in: [core/services/invoices.service.ts:430](https://github.com/mbates/squareup/blob/main/src/core/services/invoices.service.ts#L430)
+Defined in: [core/services/invoices.service.ts:436](https://github.com/mbates/squareup/blob/main/src/core/services/invoices.service.ts#L436)
 
 Search for invoices
 
@@ -280,7 +280,7 @@ const results = await square.invoices.search({
 
 > **update**(`invoiceId`, `version`, `options`): `Promise`\<`Invoice`\>
 
-Defined in: [core/services/invoices.service.ts:349](https://github.com/mbates/squareup/blob/main/src/core/services/invoices.service.ts#L349)
+Defined in: [core/services/invoices.service.ts:354](https://github.com/mbates/squareup/blob/main/src/core/services/invoices.service.ts#L354)
 
 Update an invoice
 

@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.1.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.2.0**](../../README.md)
 
 ***
 
@@ -165,7 +165,7 @@ const order = await square.orders.get('ORDER_123');
 
 > **pay**(`orderId`, `paymentIds`): `Promise`\<[`Order`](../interfaces/Order.md)\>
 
-Defined in: [core/services/orders.service.ts:210](https://github.com/mbates/squareup/blob/main/src/core/services/orders.service.ts#L210)
+Defined in: [core/services/orders.service.ts:212](https://github.com/mbates/squareup/blob/main/src/core/services/orders.service.ts#L212)
 
 Pay for an order
 
@@ -201,7 +201,7 @@ const order = await square.orders.pay('ORDER_123', ['PAYMENT_456']);
 
 > **search**(`options?`): `Promise`\<\{ `cursor?`: `string`; `data`: [`Order`](../interfaces/Order.md)[]; \}\>
 
-Defined in: [core/services/orders.service.ts:268](https://github.com/mbates/squareup/blob/main/src/core/services/orders.service.ts#L268)
+Defined in: [core/services/orders.service.ts:271](https://github.com/mbates/squareup/blob/main/src/core/services/orders.service.ts#L271)
 
 Search for orders
 
@@ -260,7 +260,7 @@ const { data } = await square.orders.search({
 
 > **searchRecent**(`options?`): `Promise`\<\{ `cursor?`: `string`; `data`: [`Order`](../interfaces/Order.md)[]; \}\>
 
-Defined in: [core/services/orders.service.ts:322](https://github.com/mbates/squareup/blob/main/src/core/services/orders.service.ts#L322)
+Defined in: [core/services/orders.service.ts:326](https://github.com/mbates/squareup/blob/main/src/core/services/orders.service.ts#L326)
 
 Search for recent orders with simplified filter options
 
@@ -309,7 +309,7 @@ const page2 = await square.orders.searchRecent({
 
 > **update**(`orderId`, `updates`, `locationId?`): `Promise`\<[`Order`](../interfaces/Order.md)\>
 
-Defined in: [core/services/orders.service.ts:161](https://github.com/mbates/squareup/blob/main/src/core/services/orders.service.ts#L161)
+Defined in: [core/services/orders.service.ts:162](https://github.com/mbates/squareup/blob/main/src/core/services/orders.service.ts#L162)
 
 Update an order
 
