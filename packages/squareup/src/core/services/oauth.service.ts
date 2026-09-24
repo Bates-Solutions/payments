@@ -1,6 +1,6 @@
 import type { SquareClient } from 'square';
-import { parseSquareError } from '../errors.js';
-import { throwIfErrors, type OAuthTokenStatus } from '../oauth.js';
+import { assertNoResponseErrors, parseSquareError } from '../errors.js';
+import type { OAuthTokenStatus } from '../oauth.js';
 
 /**
  * OAuth operations authenticated with the client's merchant access token.
@@ -40,7 +40,7 @@ export class OAuthService {
       throw parseSquareError(error);
     }
 
-    throwIfErrors(response);
+    assertNoResponseErrors(response);
 
     return {
       scopes: response.scopes ?? [],
