@@ -2,7 +2,7 @@
 
 The `inventory` service reads and changes stock counts for catalog item variations.
 
-> Requires `square@^45` (Square API version `2026-07-15` or later). See [Upgrading from 1.x](#upgrading-from-1x).
+> Requires `square@45` or later (Square API version `2026-07-15` or later). See [Upgrading from 1.x](#upgrading-from-1x).
 
 Methods that write inventory take an optional `locationId`. When it is omitted they fall back to the client's `locationId`, and throw a `SquareValidationError` if neither is set.
 
@@ -100,11 +100,11 @@ A change missing its payload (for example `type: 'ADJUSTMENT'` without `adjustme
 
 ## Upgrading from 1.x
 
-Version 2.0.0 requires `square@^45`. Square API version `2026-07-15` retired the `TRANSFER` change type and `InventoryAdjustment.location_id`, and `square@45` no longer accepts them. Upgrade both packages together:
+Version 2.0.0 requires `square@45` or later. Square API version `2026-07-15` retired the `TRANSFER` change type and `InventoryAdjustment.location_id`, and `square@45` no longer accepts them. Upgrade both packages together:
 
 ```bash
 npx jsr add @bates-solutions/squareup@^2
-npm install square@^45
+npm install square@^46   # or square@^45
 ```
 
 Code written against 1.x keeps working without changes:
