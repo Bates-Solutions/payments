@@ -1,3 +1,4 @@
+import { inspect } from 'node:util';
 import { afterEach, beforeEach, describe, it, expect, vi } from 'vitest';
 import { buildAuthorizeUrl, createSquareOAuthClient, SquareOAuthClient } from '../oauth.js';
 import { SquareApiError, SquareAuthError, SquareError, SquareValidationError } from '../errors.js';
@@ -95,7 +96,7 @@ describe('SquareOAuthClient', () => {
     const oauth = createSquareOAuthClient(config);
 
     expect(JSON.stringify(oauth)).not.toContain(SECRET);
-    expect(Object.values(oauth)).not.toContain(SECRET);
+    expect(inspect(oauth, { showHidden: true, depth: Infinity })).not.toContain(SECRET);
   });
 
   describe('obtainToken', () => {
@@ -129,6 +130,35 @@ describe('SquareOAuthClient', () => {
       await createSquareOAuthClient({ clientId: 'APP', clientSecret: SECRET }).obtainToken({ code: 'C' });
 
       expect(lastRequest().url).toBe('https://connect.squareupsandbox.com/oauth2/token');
+    });
+
+    it('defaults tokenType to bearer when Square omits it', async () => {
+      const { token_type: _omit, ...withoutType } = tokenBody;
+      respond(200, withoutType);
+
+      const tokens = await createSquareOAuthClient(config).obtainToken({ code: 'C' });
+
+      expect(tokens.tokenType).toBe('bearer');
+    });
+
+    it.each([
+      ['expires_at', { ...tokenBody, expires_at: 'not-a-date' }],
+      ['refresh_token_expires_at', { ...tokenBody, refresh_token_expires_at: 'garbage' }],
+    ])('throws on an unparseable %s instead of returning an Invalid Date', async (field, body) => {
+      respond(200, body);
+
+      await expect(createSquareOAuthClient(config).obtainToken({ code: 'C' })).rejects.toThrow(
+        `Square returned an invalid ${field}`
+      );
+    });
+
+    it('does not leak the client secret from a network failure', async () => {
+      fetchMock.mockRejectedValue(new TypeError('fetch failed'));
+
+      const error = await createSquareOAuthClient(config).obtainToken({ code: 'C' }).catch((e: unknown) => e);
+
+      expect(error).toBeInstanceOf(SquareError);
+      expect(inspect(error, { showHidden: true, depth: Infinity })).not.toContain(SECRET);
     });
 
     it('returns refreshTokenExpiresAt when Square sets it (PKCE)', async () => {
@@ -229,6 +259,16 @@ describe('SquareOAuthClient', () => {
     it('requires merchantId or accessToken', async () => {
       await expect(
         createSquareOAuthClient(config).revokeToken({} as { merchantId: string })
+      ).rejects.toThrow(SquareValidationError);
+      expect(fetchMock).not.toHaveBeenCalled();
+    });
+
+    it.each([
+      ['both merchantId and accessToken', { merchantId: 'M', accessToken: 'T' }],
+      ['revokeOnlyAccessToken with merchantId', { merchantId: 'M', revokeOnlyAccessToken: true }],
+    ])('rejects %s before calling Square', async (_label, options) => {
+      await expect(
+        createSquareOAuthClient(config).revokeToken(options as unknown as { merchantId: string })
       ).rejects.toThrow(SquareValidationError);
       expect(fetchMock).not.toHaveBeenCalled();
     });

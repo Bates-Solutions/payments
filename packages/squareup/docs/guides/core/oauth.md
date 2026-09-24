@@ -110,7 +110,8 @@ if (!scopes.includes('MERCHANT_PROFILE_READ')) {
 ## Errors and secrets
 
 - HTTP errors are mapped as elsewhere in the library: `SquareAuthError` for 401, otherwise `SquareApiError` with Square's `errors`. A 200 response that carries `errors` also throws `SquareApiError`.
-- Missing inputs (an empty `code`, `refreshToken`, `clientId`, or `state`, or no `scopes`) throw `SquareValidationError` before any request is made.
+- Invalid inputs throw `SquareValidationError` before any request is made: an empty `code`, `refreshToken`, `clientId` or `state`; no `scopes`; or a `revokeToken()` call with both or neither of `merchantId` and `accessToken`, or with `revokeOnlyAccessToken` alongside `merchantId`.
+- An unparseable timestamp from Square throws `SquareError`. You never get back an `Invalid Date`.
 - The client secret lives in an ES private field. It never appears in error messages, `JSON.stringify(oauth)`, or `console.log(oauth)`. Errors are built from Square's response only, never from the request.
 
 ## Not covered

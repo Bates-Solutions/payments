@@ -1,6 +1,6 @@
 import type { SquareClient } from 'square';
 import { assertNoResponseErrors, parseSquareError } from '../errors.js';
-import type { OAuthTokenStatus } from '../oauth.js';
+import { parseSquareDate, type OAuthTokenStatus } from '../oauth.js';
 
 /**
  * OAuth operations authenticated with the client's merchant access token.
@@ -44,7 +44,7 @@ export class OAuthService {
 
     return {
       scopes: response.scopes ?? [],
-      ...(response.expiresAt && { expiresAt: new Date(response.expiresAt) }),
+      ...(response.expiresAt && { expiresAt: parseSquareDate(response.expiresAt, 'expires_at') }),
       ...(response.clientId && { clientId: response.clientId }),
       ...(response.merchantId && { merchantId: response.merchantId }),
     };
