@@ -1,6 +1,17 @@
 import { describe, it, expect, vi } from 'vitest';
 import type { SquareClient } from 'square';
 import { LocationsService } from '../services/locations.service.js';
+import { SquareApiError } from '../errors.js';
+
+const scopeErrorBody = {
+  errors: [
+    {
+      category: 'AUTHENTICATION_ERROR',
+      code: 'INSUFFICIENT_SCOPES',
+      detail: 'The merchant has not given your application sufficient permissions.',
+    },
+  ],
+};
 
 function createMockClient(overrides: Record<string, unknown> = {}): SquareClient {
   return {
@@ -38,6 +49,20 @@ describe('LocationsService', () => {
       await expect(service.list()).resolves.toEqual([]);
     });
 
+    it('throws instead of returning [] when a 200 body carries errors (#133)', async () => {
+      const client = createMockClient({ list: vi.fn().mockResolvedValue(scopeErrorBody) });
+      const service = new LocationsService(client);
+
+      const error = await service.list().catch((e: unknown) => e);
+      expect(error).toBeInstanceOf(SquareApiError);
+      expect(error).toMatchObject({
+        code: 'INSUFFICIENT_SCOPES',
+        statusCode: 200,
+        message: scopeErrorBody.errors[0]!.detail,
+        errors: scopeErrorBody.errors,
+      });
+    });
+
     it('parses and rethrows API errors', async () => {
       const client = createMockClient({
         list: vi.fn().mockRejectedValue({
@@ -68,6 +93,15 @@ describe('LocationsService', () => {
       const client = createMockClient({ get: vi.fn().mockResolvedValue({}) });
       const service = new LocationsService(client);
       await expect(service.get('LOC_x')).rejects.toThrow('Location not found');
+    });
+
+    it('surfaces an errors body instead of "Location not found" (#133)', async () => {
+      const client = createMockClient({ get: vi.fn().mockResolvedValue(scopeErrorBody) });
+      const service = new LocationsService(client);
+
+      const error = await service.get('LOC_1').catch((e: unknown) => e);
+      expect(error).toBeInstanceOf(SquareApiError);
+      expect(error).toMatchObject({ code: 'INSUFFICIENT_SCOPES' });
     });
 
     it('parses and rethrows API errors', async () => {
