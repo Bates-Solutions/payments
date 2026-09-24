@@ -34,11 +34,11 @@ Stop wrestling with Square's low-level APIs. **squareup** gives you a simplified
 
 | Dependency | Version |
 | ---------- | ------- |
-| Square SDK | `>=43.2.1 <45` (pin `square@^44`) |
+| Square SDK | `^45` (`>=45.0.1 <46`) |
 | Node.js    | 22+     |
 | TypeScript | 5.0+    |
 
-> **`square@45` is not yet supported** — it makes breaking changes to the Inventory API. Pin `square@^44`. Deploying on AWS Lambda? See [Bundle Size & Memory](./docs/guides/deployment/lambda-bundle-size.md).
+> **Upgrading from 1.x?** 2.0.0 requires `square@^45`, which changed the Inventory API. Your wrapper code keeps working. See [Upgrading from 1.x](./docs/guides/core/inventory.md#upgrading-from-1x). Deploying on AWS Lambda? See [Bundle Size & Memory](./docs/guides/deployment/lambda-bundle-size.md).
 
 ## Installation
 
@@ -237,7 +237,7 @@ export const handler = createLambdaWebhookHandler({
 | `customers`      | Customer management                                            |
 | `customerGroups` | Customer groups + group membership (gates pricing rules)       |
 | `catalog`        | Product catalog ops, incl. pricing rules and wholesale pricing |
-| `inventory`      | Inventory tracking                                             |
+| `inventory`      | Stock counts, adjustments and transfers between locations      |
 | `subscriptions`  | Subscription management, incl. phases backed by order templates |
 | `invoices`       | Invoice operations                                             |
 | `loyalty`        | Loyalty program management                                     |
