@@ -95,17 +95,22 @@ describe('two-call methods cover both calls with one caller key', () => {
     expect(sentKeys()).toEqual(['KEY', 'KEY:redeem']);
   });
 
-  it.each<[string, () => void, (s: SquareClient) => Promise<unknown>]>([
-    ['invoices.create', invoiceFlow, (s) => createInvoice(s)],
-    ['loyalty.redeemReward', rewardFlow, (s) => s.loyalty.redeemReward('ACCT', 'TIER')],
-  ])('%s links both keys when no key is passed', async (_name, flow, call) => {
-    flow();
+  it('invoices.create derives the order key from a generated key when none is passed', async () => {
+    invoiceFlow();
 
-    await call(square());
+    await createInvoice(square());
 
-    const [first, second] = sentKeys() as [string, string];
-    expect(first).not.toBe(second);
-    expect([first, second].some((k) => k.endsWith(':order') || k.endsWith(':redeem'))).toBe(true);
+    const [orderKey, invoiceKey] = sentKeys() as [string, string];
+    expect(orderKey).toBe(`${invoiceKey}:order`);
+  });
+
+  it('loyalty.redeemReward derives the redeem key from a generated key when none is passed', async () => {
+    rewardFlow();
+
+    await square().loyalty.redeemReward('ACCT', 'TIER');
+
+    const [createKey, redeemKey] = sentKeys() as [string, string];
+    expect(redeemKey).toBe(`${createKey}:redeem`);
   });
 
   it('sends identical keys on a retry with the same caller key', async () => {
