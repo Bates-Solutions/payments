@@ -11,7 +11,7 @@ This guide covers how to create and manage orders using the Square API with `@ba
 ## Setup
 
 ```typescript
-import { createSquareClient } from '@bates-solutions/squareup';
+import { createIdempotencyKey, createSquareClient } from '@bates-solutions/squareup';
 
 const square = createSquareClient({
   accessToken: process.env.SQUARE_ACCESS_TOKEN!,
