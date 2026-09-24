@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v1.15.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -182,7 +182,7 @@ for non-subscription DRAFT orders that do want auto-applied pricing rules.
 
 > **build**(): `Promise`\<[`Order`](../interfaces/Order.md)\>
 
-Defined in: [core/builders/order.builder.ts:312](https://github.com/mbates/squareup/blob/main/src/core/builders/order.builder.ts#L312)
+Defined in: [core/builders/order.builder.ts:347](https://github.com/mbates/squareup/blob/main/src/core/builders/order.builder.ts#L347)
 
 Build and create the order
 
@@ -206,7 +206,7 @@ When API call fails
 
 > **preview**(): `object`
 
-Defined in: [core/builders/order.builder.ts:345](https://github.com/mbates/squareup/blob/main/src/core/builders/order.builder.ts#L345)
+Defined in: [core/builders/order.builder.ts:382](https://github.com/mbates/squareup/blob/main/src/core/builders/order.builder.ts#L382)
 
 Preview the order without creating it
 Returns the order configuration that would be sent
@@ -261,7 +261,7 @@ Returns the order configuration that would be sent
 
 > **reset**(): `this`
 
-Defined in: [core/builders/order.builder.ts:374](https://github.com/mbates/squareup/blob/main/src/core/builders/order.builder.ts#L374)
+Defined in: [core/builders/order.builder.ts:411](https://github.com/mbates/squareup/blob/main/src/core/builders/order.builder.ts#L411)
 
 Reset the builder to start fresh
 

@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v1.15.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -42,7 +42,7 @@ Defined in: [core/services/locations.service.ts:34](https://github.com/mbates/sq
 
 > **get**(`locationId`): `Promise`\<[`Location`](../interfaces/Location.md)\>
 
-Defined in: [core/services/locations.service.ts:69](https://github.com/mbates/squareup/blob/main/src/core/services/locations.service.ts#L69)
+Defined in: [core/services/locations.service.ts:76](https://github.com/mbates/squareup/blob/main/src/core/services/locations.service.ts#L76)
 
 Get a single location by ID.
 
@@ -60,6 +60,11 @@ Location ID
 
 The location
 
+#### Throws
+
+If Square returns an `errors` body (e.g. missing
+  `MERCHANT_PROFILE_READ` scope)
+
 #### Example
 
 ```typescript
@@ -73,7 +78,7 @@ console.log(location.currency); // 'CAD'
 
 > **list**(): `Promise`\<[`Location`](../interfaces/Location.md)[]\>
 
-Defined in: [core/services/locations.service.ts:48](https://github.com/mbates/squareup/blob/main/src/core/services/locations.service.ts#L48)
+Defined in: [core/services/locations.service.ts:52](https://github.com/mbates/squareup/blob/main/src/core/services/locations.service.ts#L52)
 
 List all locations for the merchant.
 
@@ -84,6 +89,13 @@ The Square Locations API is not paginated — every location is returned.
 `Promise`\<[`Location`](../interfaces/Location.md)[]\>
 
 Array of locations
+
+#### Throws
+
+If Square returns an `errors` body — e.g. the
+  access token lacks the `MERCHANT_PROFILE_READ` scope (`code` is
+  `INSUFFICIENT_SCOPES`). An empty array always means the merchant
+  genuinely has no locations.
 
 #### Example
 
