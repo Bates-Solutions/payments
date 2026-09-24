@@ -44,6 +44,7 @@ const cases: Case[] = [
   ['customers.delete', (s) => s.customers.delete('CUST')],
   ['customers.search', (s) => s.customers.search()],
   ['customers.list', (s) => s.customers.list()],
+  ['customers.search (query)', (s) => s.customers.search({ query: 'ada' })],
   // gift cards
   ['giftCards.get', (s) => s.giftCards.get('GC')],
   ['giftCards.list', (s) => s.giftCards.list()],
@@ -52,41 +53,69 @@ const cases: Case[] = [
   ['inventory.getCounts', (s) => s.inventory.getCounts('VAR')],
   ['inventory.batchGetCounts', (s) => s.inventory.batchGetCounts(['VAR'])],
   ['inventory.adjust', (s) => s.inventory.adjust({ catalogObjectId: 'VAR', quantity: 1 })],
+  ['inventory.setCount', (s) => s.inventory.setCount({ catalogObjectId: 'VAR', quantity: 5 })],
+  [
+    'inventory.transfer',
+    (s) => s.inventory.transfer({ catalogObjectId: 'VAR', fromLocationId: 'A', toLocationId: 'B', quantity: 1 }),
+  ],
+  [
+    'inventory.batchChange',
+    (s) =>
+      s.inventory.batchChange([
+        { type: 'ADJUSTMENT', adjustment: { catalogObjectId: 'VAR', toState: 'IN_STOCK', locationId: 'L', quantity: '1' } },
+      ]),
+  ],
   // invoices
   ['invoices.get', (s) => s.invoices.get('INV')],
   ['invoices.delete', (s) => s.invoices.delete('INV', 1)],
   ['invoices.search', (s) => s.invoices.search()],
+  [
+    'invoices.create',
+    (s) => s.invoices.create({ customerId: 'CUST', lineItems: [{ name: 'Item', quantity: 1, amount: 100 }] }),
+  ],
   // loyalty
   ['loyalty.getProgram', (s) => s.loyalty.getProgram()],
   ['loyalty.getAccount', (s) => s.loyalty.getAccount('ACCT')],
+  ['loyalty.searchAccounts', (s) => s.loyalty.searchAccounts()],
+  ['loyalty.calculatePoints', (s) => s.loyalty.calculatePoints('PROG', 'ORD')],
+  ['loyalty.adjustPoints', (s) => s.loyalty.adjustPoints('ACCT', 5)],
+  ['loyalty.redeemReward', (s) => s.loyalty.redeemReward('ACCT', 'TIER')],
   // orders
   ['orders.get', (s) => s.orders.get('ORD')],
   ['orders.search', (s) => s.orders.search()],
+  ['orders.pay', (s) => s.orders.pay('ORD', ['PAY'])],
   // payments
   ['payments.get', (s) => s.payments.get('PAY')],
   ['payments.cancel', (s) => s.payments.cancel('PAY')],
   ['payments.list', (s) => s.payments.list()],
+  ['payments.create', (s) => s.payments.create({ sourceId: 'cnon:card-nonce-ok', amount: 100 })],
+  ['payments.complete', (s) => s.payments.complete('PAY')],
   // subscriptions
   ['subscriptions.get', (s) => s.subscriptions.get('SUB')],
   ['subscriptions.cancel', (s) => s.subscriptions.cancel('SUB')],
   ['subscriptions.search', (s) => s.subscriptions.search()],
+  ['subscriptions.resume', (s) => s.subscriptions.resume('SUB')],
   // webhook subscriptions
   ['webhooks.subscriptions.get', (s) => s.webhooks.subscriptions.get('WH')],
   ['webhooks.subscriptions.delete', (s) => s.webhooks.subscriptions.delete('WH')],
   ['webhooks.subscriptions.list', (s) => s.webhooks.subscriptions.list()],
+  ['webhooks.subscriptions.test', (s) => s.webhooks.subscriptions.test('WH')],
+  ['webhooks.subscriptions.rotateSignatureKey', (s) => s.webhooks.subscriptions.rotateSignatureKey('WH')],
 ];
+
+function jsonResponse(body: unknown): Response {
+  return new Response(JSON.stringify(body), {
+    status: 200,
+    headers: { 'content-type': 'application/json' },
+  });
+}
 
 describe('200 responses carrying errors (#137)', () => {
   beforeEach(() => {
     vi.stubGlobal(
       'fetch',
       vi.fn().mockImplementation(() =>
-        Promise.resolve(
-          new Response(JSON.stringify(errorsBody), {
-            status: 200,
-            headers: { 'content-type': 'application/json' },
-          })
-        )
+        Promise.resolve(jsonResponse(errorsBody))
       )
     );
   });
@@ -105,5 +134,41 @@ describe('200 responses carrying errors (#137)', () => {
 
     expect(error).toBeInstanceOf(SquareApiError);
     expect(error).toMatchObject({ code: 'INSUFFICIENT_SCOPES', statusCode: 200 });
+  });
+
+  it.each<Case>([
+    [
+      'invoices.create',
+      (s) => s.invoices.create({ customerId: 'CUST', lineItems: [{ name: 'Item', quantity: 1, amount: 100 }] }),
+    ],
+    ['loyalty.redeemReward', (s) => s.loyalty.redeemReward('ACCT', 'TIER')],
+  ])('%s stops after the first call fails', async (_name, call) => {
+    const square = createSquareClient({ accessToken: 'test-token', locationId: 'LOC' });
+
+    await expect(call(square)).rejects.toBeInstanceOf(SquareApiError);
+    expect(fetch).toHaveBeenCalledTimes(1);
+  });
+
+  it.each<[string, Record<string, unknown>, (square: SquareClient) => Promise<unknown>]>([
+    ['payments.list', { payments: [{ id: 'P1' }], cursor: 'NEXT' }, (s) => s.payments.list({ limit: 10 })],
+    [
+      'checkout.paymentLinks.list',
+      { payment_links: [{ id: 'L1' }], cursor: 'NEXT' },
+      (s) => s.checkout.paymentLinks.list({ limit: 10 }),
+    ],
+    ['inventory.getCounts', { counts: [{ catalog_object_id: 'VAR' }], cursor: 'NEXT' }, (s) => s.inventory.getCounts('VAR')],
+    [
+      'inventory.batchGetCounts',
+      { counts: [{ catalog_object_id: 'VAR' }], cursor: 'NEXT' },
+      (s) => s.inventory.batchGetCounts(['VAR']),
+    ],
+  ])('%s throws when a later page carries errors', async (_name, firstPage, call) => {
+    vi.mocked(fetch)
+      .mockResolvedValueOnce(jsonResponse(firstPage))
+      .mockResolvedValueOnce(jsonResponse(errorsBody));
+    const square = createSquareClient({ accessToken: 'test-token', locationId: 'LOC' });
+
+    await expect(call(square)).rejects.toBeInstanceOf(SquareApiError);
+    expect(fetch).toHaveBeenCalledTimes(2);
   });
 });
