@@ -116,6 +116,8 @@ export {
   SquareAuthError,
   SquarePaymentError,
   SquareValidationError,
+  SquareNetworkError,
+  isRetryableSquareError,
 } from './errors.js';
 export type { SquareErrorCode } from './errors.js';
 
