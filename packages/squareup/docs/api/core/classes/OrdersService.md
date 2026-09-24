@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.2.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.3.0**](../../README.md)
 
 ***
 
@@ -163,9 +163,9 @@ const order = await square.orders.get('ORDER_123');
 
 ### pay()
 
-> **pay**(`orderId`, `paymentIds`): `Promise`\<[`Order`](../interfaces/Order.md)\>
+> **pay**(`orderId`, `paymentIds`, `options?`): `Promise`\<[`Order`](../interfaces/Order.md)\>
 
-Defined in: [core/services/orders.service.ts:212](https://github.com/mbates/squareup/blob/main/src/core/services/orders.service.ts#L212)
+Defined in: [core/services/orders.service.ts:215](https://github.com/mbates/squareup/blob/main/src/core/services/orders.service.ts#L215)
 
 Pay for an order
 
@@ -182,6 +182,14 @@ Order ID
 `string`[]
 
 Payment IDs to apply
+
+##### options?
+
+###### idempotencyKey?
+
+`string`
+
+Reuse the same key when retrying
 
 #### Returns
 
@@ -201,7 +209,7 @@ const order = await square.orders.pay('ORDER_123', ['PAYMENT_456']);
 
 > **search**(`options?`): `Promise`\<\{ `cursor?`: `string`; `data`: [`Order`](../interfaces/Order.md)[]; \}\>
 
-Defined in: [core/services/orders.service.ts:271](https://github.com/mbates/squareup/blob/main/src/core/services/orders.service.ts#L271)
+Defined in: [core/services/orders.service.ts:278](https://github.com/mbates/squareup/blob/main/src/core/services/orders.service.ts#L278)
 
 Search for orders
 
@@ -260,7 +268,7 @@ const { data } = await square.orders.search({
 
 > **searchRecent**(`options?`): `Promise`\<\{ `cursor?`: `string`; `data`: [`Order`](../interfaces/Order.md)[]; \}\>
 
-Defined in: [core/services/orders.service.ts:326](https://github.com/mbates/squareup/blob/main/src/core/services/orders.service.ts#L326)
+Defined in: [core/services/orders.service.ts:333](https://github.com/mbates/squareup/blob/main/src/core/services/orders.service.ts#L333)
 
 Search for recent orders with simplified filter options
 
@@ -309,7 +317,7 @@ const page2 = await square.orders.searchRecent({
 
 > **update**(`orderId`, `updates`, `locationId?`): `Promise`\<[`Order`](../interfaces/Order.md)\>
 
-Defined in: [core/services/orders.service.ts:162](https://github.com/mbates/squareup/blob/main/src/core/services/orders.service.ts#L162)
+Defined in: [core/services/orders.service.ts:163](https://github.com/mbates/squareup/blob/main/src/core/services/orders.service.ts#L163)
 
 Update an order
 
@@ -323,7 +331,12 @@ Order ID to update
 
 ##### updates
 
-Update fields
+Update fields. Pass `idempotencyKey` and reuse it when
+  retrying so Square deduplicates the request.
+
+###### idempotencyKey?
+
+`string`
 
 ###### referenceId?
 

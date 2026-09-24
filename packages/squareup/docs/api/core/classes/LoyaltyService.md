@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.2.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.3.0**](../../README.md)
 
 ***
 
@@ -160,7 +160,7 @@ await square.loyalty.adjustPoints('ACCT_123', -50, 'Points correction');
 
 > **calculatePoints**(`programId`, `orderId`): `Promise`\<`number`\>
 
-Defined in: [core/services/loyalty.service.ts:504](https://github.com/mbates/squareup/blob/main/src/core/services/loyalty.service.ts#L504)
+Defined in: [core/services/loyalty.service.ts:510](https://github.com/mbates/squareup/blob/main/src/core/services/loyalty.service.ts#L510)
 
 Calculate points that would be earned for an order
 
@@ -292,7 +292,7 @@ console.log(`Points name: ${program.terminology?.other}`);
 
 > **redeemReward**(`accountId`, `rewardTierId`, `orderId?`, `idempotencyKey?`): `Promise`\<\{ `id`: `string`; `status`: `string`; \}\>
 
-Defined in: [core/services/loyalty.service.ts:439](https://github.com/mbates/squareup/blob/main/src/core/services/loyalty.service.ts#L439)
+Defined in: [core/services/loyalty.service.ts:441](https://github.com/mbates/squareup/blob/main/src/core/services/loyalty.service.ts#L441)
 
 Redeem a reward
 
@@ -319,6 +319,9 @@ Optional order ID to apply reward to
 ##### idempotencyKey?
 
 `string`
+
+Covers both the create and redeem calls (the
+  redeem key is derived from it); reuse it when retrying
 
 #### Returns
 
