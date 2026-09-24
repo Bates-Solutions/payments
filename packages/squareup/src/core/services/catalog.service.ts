@@ -1,5 +1,5 @@
 import type { SquareClient, CatalogObject as SquareCatalogObject } from 'square';
-import { parseSquareError, SquareValidationError } from '../errors.js';
+import { assertNoResponseErrors, parseSquareError, SquareValidationError } from '../errors.js';
 import { createIdempotencyKey } from '../utils.js';
 import type { CurrencyCode } from '../types/index.js';
 
@@ -338,6 +338,7 @@ export class CatalogService {
           },
         },
       });
+      assertNoResponseErrors(response);
 
       if (!response.catalogObject) {
         throw new Error('Catalog item was not created');
@@ -378,6 +379,7 @@ export class CatalogService {
           },
         },
       });
+      assertNoResponseErrors(response);
 
       if (!response.catalogObject) {
         throw new Error('Category was not created');
@@ -436,6 +438,7 @@ export class CatalogService {
           },
         } as unknown as SquareCatalogObject,
       });
+      assertNoResponseErrors(response);
 
       if (!response.catalogObject) {
         throw new Error('Product set was not created');
@@ -500,6 +503,7 @@ export class CatalogService {
           },
         } as unknown as SquareCatalogObject,
       });
+      assertNoResponseErrors(response);
 
       if (!response.catalogObject) {
         throw new Error('Pricing rule was not created');
@@ -538,6 +542,7 @@ export class CatalogService {
           },
         } as unknown as SquareCatalogObject,
       });
+      assertNoResponseErrors(response);
 
       if (!response.catalogObject) {
         throw new Error('Time period was not created');
@@ -639,6 +644,7 @@ export class CatalogService {
         idempotencyKey: options.idempotencyKey ?? createIdempotencyKey(),
         batches: [{ objects: batchObjects }],
       });
+      assertNoResponseErrors(response);
 
       const responseObjects = (response.objects ?? []) as CatalogObject[];
       const productSet = responseObjects.find((o) => o.type === 'PRODUCT_SET');
@@ -696,6 +702,7 @@ export class CatalogService {
         idempotencyKey: idempotencyKey ?? createIdempotencyKey(),
         object: catalogObject as unknown as SquareCatalogObject,
       });
+      assertNoResponseErrors(response);
 
       if (!response.catalogObject) {
         throw new Error('Catalog object was not upserted');
@@ -724,6 +731,7 @@ export class CatalogService {
         objectId,
         includeRelatedObjects: true,
       });
+      assertNoResponseErrors(response);
 
       if (!response.object) {
         throw new Error('Catalog object not found');
@@ -747,7 +755,7 @@ export class CatalogService {
    */
   async delete(objectId: string): Promise<void> {
     try {
-      await this.client.catalog.object.delete({ objectId });
+      assertNoResponseErrors(await this.client.catalog.object.delete({ objectId }));
     } catch (error) {
       throw parseSquareError(error);
     }
@@ -789,6 +797,7 @@ export class CatalogService {
             }
           : undefined,
       });
+      assertNoResponseErrors(response);
 
       return {
         data: (response.objects ?? []) as CatalogObject[],
@@ -825,6 +834,7 @@ export class CatalogService {
           objectTypes: [objectType],
           cursor,
         });
+        assertNoResponseErrors(response);
 
         if (response.objects) {
           for (const obj of response.objects) {
@@ -865,6 +875,7 @@ export class CatalogService {
         objectIds,
         includeRelatedObjects: true,
       });
+      assertNoResponseErrors(response);
 
       return (response.objects ?? []) as CatalogObject[];
     } catch (error) {

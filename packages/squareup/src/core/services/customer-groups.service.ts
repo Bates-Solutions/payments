@@ -1,5 +1,5 @@
 import type { SquareClient } from 'square';
-import { parseSquareError, SquareValidationError } from '../errors.js';
+import { assertNoResponseErrors, parseSquareError, SquareValidationError } from '../errors.js';
 import { createIdempotencyKey } from '../utils.js';
 
 /**
@@ -63,6 +63,7 @@ export class CustomerGroupsService {
         idempotencyKey: options.idempotencyKey ?? createIdempotencyKey(),
         group: { name: options.name },
       });
+      assertNoResponseErrors(response);
 
       if (!response.group) {
         throw new Error('Customer group was not created');
@@ -80,6 +81,7 @@ export class CustomerGroupsService {
   async get(groupId: string): Promise<CustomerGroup> {
     try {
       const response = await this.client.customers.groups.get({ groupId });
+      assertNoResponseErrors(response);
 
       if (!response.group) {
         throw new Error('Customer group not found');
@@ -106,6 +108,7 @@ export class CustomerGroupsService {
         groupId,
         group: { name: options.name },
       });
+      assertNoResponseErrors(response);
 
       if (!response.group) {
         throw new Error('Customer group update failed');
@@ -123,7 +126,7 @@ export class CustomerGroupsService {
    */
   async delete(groupId: string): Promise<void> {
     try {
-      await this.client.customers.groups.delete({ groupId });
+      assertNoResponseErrors(await this.client.customers.groups.delete({ groupId }));
     } catch (error) {
       throw parseSquareError(error);
     }
@@ -140,6 +143,7 @@ export class CustomerGroupsService {
         cursor: options?.cursor,
         limit: options?.limit,
       });
+      assertNoResponseErrors(page.response);
 
       return {
         groups: page.response.groups ?? [],
@@ -155,7 +159,7 @@ export class CustomerGroupsService {
    */
   async addCustomer(groupId: string, customerId: string): Promise<void> {
     try {
-      await this.client.customers.groups.add({ groupId, customerId });
+      assertNoResponseErrors(await this.client.customers.groups.add({ groupId, customerId }));
     } catch (error) {
       throw parseSquareError(error);
     }
@@ -166,7 +170,7 @@ export class CustomerGroupsService {
    */
   async removeCustomer(groupId: string, customerId: string): Promise<void> {
     try {
-      await this.client.customers.groups.remove({ groupId, customerId });
+      assertNoResponseErrors(await this.client.customers.groups.remove({ groupId, customerId }));
     } catch (error) {
       throw parseSquareError(error);
     }

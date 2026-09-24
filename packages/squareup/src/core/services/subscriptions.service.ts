@@ -1,6 +1,6 @@
 import type { SquareClient } from 'square';
 import type { CurrencyCode } from '../types/index.js';
-import { parseSquareError, SquareValidationError } from '../errors.js';
+import { assertNoResponseErrors, parseSquareError, SquareValidationError } from '../errors.js';
 import { createIdempotencyKey } from '../utils.js';
 
 /**
@@ -216,6 +216,7 @@ export class SubscriptionsService {
           : undefined,
         taxPercentage: options.taxPercentage,
       });
+      assertNoResponseErrors(response);
 
       if (!response.subscription) {
         throw new Error('Subscription was not created');
@@ -241,6 +242,7 @@ export class SubscriptionsService {
   async get(subscriptionId: string): Promise<Subscription> {
     try {
       const response = await this.client.subscriptions.get({ subscriptionId });
+      assertNoResponseErrors(response);
 
       if (!response.subscription) {
         throw new Error('Subscription not found');
@@ -288,6 +290,7 @@ export class SubscriptionsService {
           taxPercentage: options.taxPercentage,
         },
       });
+      assertNoResponseErrors(response);
 
       if (!response.subscription) {
         throw new Error('Subscription update failed');
@@ -313,6 +316,7 @@ export class SubscriptionsService {
   async cancel(subscriptionId: string): Promise<Subscription> {
     try {
       const response = await this.client.subscriptions.cancel({ subscriptionId });
+      assertNoResponseErrors(response);
 
       if (!response.subscription) {
         throw new Error('Subscription cancellation failed');
@@ -353,6 +357,7 @@ export class SubscriptionsService {
           ? BigInt(options.pauseCycleDuration)
           : undefined,
       });
+      assertNoResponseErrors(response);
 
       if (!response.subscription) {
         throw new Error('Subscription pause failed');
@@ -382,6 +387,7 @@ export class SubscriptionsService {
         subscriptionId,
         resumeEffectiveDate,
       });
+      assertNoResponseErrors(response);
 
       if (!response.subscription) {
         throw new Error('Subscription resume failed');
@@ -437,6 +443,7 @@ export class SubscriptionsService {
               }
             : undefined,
       });
+      assertNoResponseErrors(response);
 
       return {
         data: (response.subscriptions ?? []) as Subscription[],

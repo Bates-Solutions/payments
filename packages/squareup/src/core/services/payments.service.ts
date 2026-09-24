@@ -1,6 +1,6 @@
 import type { SquareClient } from 'square';
 import type { CreatePaymentOptions, CurrencyCode } from '../types/index.js';
-import { parseSquareError, SquareValidationError } from '../errors.js';
+import { assertNoResponseErrors, parseSquareError, SquareValidationError } from '../errors.js';
 import { createIdempotencyKey } from '../utils.js';
 
 /**
@@ -104,6 +104,7 @@ export class PaymentsService {
         autocomplete: options.autocomplete ?? true,
         locationId,
       });
+      assertNoResponseErrors(response);
 
       if (!response.payment) {
         throw new Error('Payment was not created');
@@ -129,6 +130,7 @@ export class PaymentsService {
   async get(paymentId: string): Promise<Payment> {
     try {
       const response = await this.client.payments.get({ paymentId });
+      assertNoResponseErrors(response);
 
       if (!response.payment) {
         throw new Error('Payment not found');
@@ -154,6 +156,7 @@ export class PaymentsService {
   async cancel(paymentId: string): Promise<Payment> {
     try {
       const response = await this.client.payments.cancel({ paymentId });
+      assertNoResponseErrors(response);
 
       if (!response.payment) {
         throw new Error('Payment cancellation failed');
@@ -179,6 +182,7 @@ export class PaymentsService {
   async complete(paymentId: string): Promise<Payment> {
     try {
       const response = await this.client.payments.complete({ paymentId });
+      assertNoResponseErrors(response);
 
       if (!response.payment) {
         throw new Error('Payment completion failed');
@@ -214,6 +218,7 @@ export class PaymentsService {
       const page = await this.client.payments.list({
         locationId: options?.locationId ?? this.defaultLocationId,
       });
+      assertNoResponseErrors(page.response);
 
       for await (const payment of page) {
         payments.push(payment as Payment);
@@ -221,6 +226,9 @@ export class PaymentsService {
           break;
         }
       }
+      // Iteration replaces `page.response` with each fetched page; an errors
+      // page has no cursor, so it is the last one loaded.
+      assertNoResponseErrors(page.response);
 
       return payments;
     } catch (error) {

@@ -5,7 +5,7 @@ import type {
   SearchOrdersOptions,
   SearchRecentOrdersOptions,
 } from '../types/index.js';
-import { parseSquareError, SquareValidationError } from '../errors.js';
+import { assertNoResponseErrors, parseSquareError, SquareValidationError } from '../errors.js';
 import { createIdempotencyKey } from '../utils.js';
 import { OrderBuilder, type Order } from '../builders/order.builder.js';
 
@@ -140,6 +140,7 @@ export class OrdersService {
   async get(orderId: string): Promise<Order> {
     try {
       const response = await this.client.orders.get({ orderId });
+      assertNoResponseErrors(response);
 
       if (!response.order) {
         throw new Error('Order not found');
@@ -184,6 +185,7 @@ export class OrdersService {
         },
         idempotencyKey: createIdempotencyKey(),
       });
+      assertNoResponseErrors(response);
 
       if (!response.order) {
         throw new Error('Order update failed');
@@ -214,6 +216,7 @@ export class OrdersService {
         idempotencyKey: createIdempotencyKey(),
         paymentIds,
       });
+      assertNoResponseErrors(response);
 
       if (!response.order) {
         throw new Error('Order payment failed');
@@ -279,6 +282,7 @@ export class OrdersService {
         limit: options?.limit,
         query: options?.query,
       });
+      assertNoResponseErrors(response);
 
       return {
         data: (response.orders ?? []) as Order[],
