@@ -30,6 +30,16 @@
 export { createSquareClient, SquareClient } from './client.js';
 export type { SquareClientConfig } from './client.js';
 
+// OAuth (application-credential client + authorize URL)
+export { buildAuthorizeUrl, createSquareOAuthClient, SquareOAuthClient } from './oauth.js';
+export type {
+  BuildAuthorizeUrlOptions,
+  OAuthScope,
+  OAuthTokens,
+  OAuthTokenStatus,
+  SquareOAuthClientConfig,
+} from './oauth.js';
+
 // Services
 export { PaymentsService } from './services/payments.service.js';
 export { OrdersService } from './services/orders.service.js';
@@ -63,6 +73,7 @@ export {
   GiftCardActivitiesService,
 } from './services/gift-cards.service.js';
 export { LocationsService } from './services/locations.service.js';
+export { OAuthService } from './services/oauth.service.js';
 export type { Location } from './services/locations.service.js';
 export { WebhookSubscriptionsService } from './services/webhook-subscriptions.service.js';
 export type {
