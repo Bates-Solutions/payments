@@ -52,12 +52,12 @@ const updated = await square.invoices.update('INV_123', 0 /* version */, {
 });
 ```
 
-`acceptedPaymentMethods` is sent **only when you pass it**, so an unrelated update won't overwrite the invoice's existing methods. Updates generally apply to DRAFT invoices.
+Pass `idempotencyKey` in the options to make a retry safe. `acceptedPaymentMethods` is sent **only when you pass it**, so an unrelated update won't overwrite the invoice's existing methods. Updates generally apply to DRAFT invoices.
 
 ## Publish, cancel, delete
 
 ```typescript
-await square.invoices.publish('INV_123', 0);
+await square.invoices.publish('INV_123', 0, { idempotencyKey: 'inv-123-publish' }); // key optional; reuse it on retry
 await square.invoices.cancel('INV_123', 1);
 await square.invoices.delete('INV_123', 0); // DRAFT only
 ```
