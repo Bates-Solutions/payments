@@ -143,8 +143,9 @@ export function parseSquareError(error: unknown): SquareError {
   }
 
   if (error && typeof error === 'object') {
-    // SDK timeout: plain Error subclass with no status code. Matched by name
-    // so this module doesn't import the SDK.
+    // SDK timeout when fetch rejects with an AbortError (runtime-dependent):
+    // plain Error subclass with no status code. Matched by name so this
+    // module doesn't import the SDK.
     if (error instanceof Error && error.name === 'SquareTimeoutError') {
       return new SquareNetworkError(error.message, 'TIMEOUT', { cause: error });
     }
@@ -162,6 +163,12 @@ export function parseSquareError(error: unknown): SquareError {
 
       // The SDK's SquareError without a status code means no response arrived.
       if (error instanceof Error) {
+        // The SDK aborts with the string reason 'timeout'. Node's fetch rejects
+        // with that string rather than an AbortError, so the SDK reports it as
+        // an unknown error with `cause: 'timeout'`, not a SquareTimeoutError.
+        if (error.cause === 'timeout') {
+          return new SquareNetworkError('Request to Square timed out', 'TIMEOUT', { cause: error });
+        }
         return new SquareNetworkError(error.message, 'NETWORK_ERROR', { cause: error });
       }
     }
