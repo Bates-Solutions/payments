@@ -38,7 +38,7 @@ try {
 
 `isRetryableSquareError(error)` returns `true` when retrying the call could succeed:
 
-- `SquareNetworkError`: a network failure or timeout
+- `SquareNetworkError`: a network failure or timeout (`code` is `NETWORK_ERROR` or `TIMEOUT`)
 - HTTP `408` (request timeout) or `429` (rate limited)
 - HTTP `5xx` (Square server error)
 
@@ -59,6 +59,11 @@ for (let attempt = 1; ; attempt++) {
 }
 ```
 
-**Reuse the idempotency key when retrying a mutating call.** After a network failure or timeout you can't tell whether Square already processed the request. Mutating methods generate a new key on every call unless you pass `idempotencyKey`, so a retry without your own key can create a second payment, order or refund. Square deduplicates requests that share a key.
+**Reuse the idempotency key when retrying a mutating call.** After a network failure or timeout you can't tell whether Square already processed the request. Most mutating methods take an `idempotencyKey` option and generate a new key on every call if you don't pass one, so a retry without your own key can create a second payment, order or refund. Square deduplicates requests that share a key.
+
+Exceptions, which don't yet deduplicate a retry ([#149](https://github.com/mbates/squareup/issues/149)):
+
+- `invoices.create` and `loyalty.redeemReward` make two Square calls, and your key covers only one of them. A retry of `invoices.create` can create a second, orphaned order. A retry of `loyalty.redeemReward` can throw even though the first attempt redeemed the reward.
+- `orders.update`, `orders.pay`, `invoices.publish` and `invoices.update` don't take an `idempotencyKey` yet. All except `orders.pay` send a `version`, so a replay usually fails with a version conflict rather than applying twice.
 
 The Square SDK already retries 408, 429 and 5xx responses (twice, with backoff) before the wrapper sees them, so those errors have usually been retried already. It does not retry network failures or timeouts.

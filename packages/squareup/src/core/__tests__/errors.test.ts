@@ -254,7 +254,31 @@ describe('Error Classes', () => {
       expect(error.cause).toBe(sdkError);
     });
 
-    it('maps SquareTimeoutError to SquareNetworkError with code TIMEOUT', () => {
+    it('maps a real SDK timeout to SquareNetworkError with code TIMEOUT', async () => {
+      // Honour the abort signal the way Node's fetch does: reject with its reason.
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(
+          (_url: string, init: RequestInit) =>
+            new Promise((_resolve, reject) => {
+              init.signal?.addEventListener('abort', () => {
+                reject(init.signal?.reason);
+              });
+            })
+        )
+      );
+      const sdk = new SdkClient({ token: 'test-token', maxRetries: 0 });
+
+      const sdkError = await sdk.locations.list({ timeoutInSeconds: 0.05 }).catch((e: unknown) => e);
+      const error = parseSquareError(sdkError);
+
+      expect(error).toBeInstanceOf(SquareNetworkError);
+      expect(error).toMatchObject({ code: 'TIMEOUT', message: 'Request to Square timed out' });
+      expect(error.cause).toBe(sdkError);
+      expect(isRetryableSquareError(error)).toBe(true);
+    });
+
+    it('maps SquareTimeoutError (AbortError runtimes) to SquareNetworkError with code TIMEOUT', () => {
       const timeout = new SquareTimeoutError('Timeout exceeded when calling GET /v2/locations.');
 
       const error = parseSquareError(timeout);
