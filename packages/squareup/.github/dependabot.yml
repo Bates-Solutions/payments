@@ -7,6 +7,12 @@ updates:
       interval: "weekly"
       day: "monday"
     open-pull-requests-limit: 10
+    ignore:
+      # typescript-eslint pins an upper bound on typescript (currently <6.1.0),
+      # so a TS minor/major breaks `npm ci` until it catches up. Bump TS by
+      # hand alongside typescript-eslint; patches still come through.
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
     groups:
       dev-dependencies:
         patterns:
