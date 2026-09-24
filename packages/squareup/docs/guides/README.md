@@ -10,17 +10,27 @@ Backend API integration guides:
 - [Managing Orders](./core/orders.md) - Order builder and order lifecycle
 - [Managing Customers](./core/customers.md) - Customer CRUD and search
 - [Managing the Catalog](./core/catalog.md) - Items, categories, and variations
+- [Customer Groups](./core/customer-groups.md) - Customer groups for wholesale tiers and member pricing
 - [Checkout & Payment Links](./core/checkout.md) - Create hosted checkout pages
-- [Errors and Retries](./core/errors.md) - Error classes, network failures, and retrying safely
-- [OAuth](./core/oauth.md) - Connect sellers' Square accounts: authorize URL, tokens, refresh, revoke
+- [Subscriptions](./core/subscriptions.md) - Recurring billing (flat-rate and product-driven via order templates)
+- [Invoices](./core/invoices.md) - Create/update invoices, incl. accepted payment methods
+- [Gift Cards](./core/gift-cards.md) - Gift card lifecycle: issue, activate, load, redeem, link to customers
+- [Locations](./core/locations.md) - List/get merchant locations; derive currency, country, status
 - [Inventory](./core/inventory.md) - Stock counts, adjustments, transfers; upgrading from 1.x
+- [OAuth](./core/oauth.md) - Connect sellers' Square accounts: authorize URL, tokens, refresh, revoke
+- [Errors and Retries](./core/errors.md) - Error classes, network failures, and retrying safely
 
 ## Server
 
 Backend webhook handling:
 
 - [Webhook Handling](./server/webhooks.md) - Signature verification and event handling
-- [Framework Middleware](./server/middleware.md) - Express and Next.js integration
+- [Webhook Subscriptions](./server/webhook-subscriptions.md) - Manage subscriptions (create/list/update/delete/test/rotate key)
+- [Framework Middleware](./server/middleware.md) - Express, Next.js and Lambda integration
+
+## Deployment
+
+- [Bundle Size & Memory on AWS Lambda](./deployment/lambda-bundle-size.md) - `--external:square`, memory sizing, why RSS is upstream
 
 ## Quick Start
 

@@ -4,10 +4,11 @@ Complete API reference for `@bates-solutions/squareup`.
 
 > **Full Documentation**: For detailed API documentation with method signatures, parameters, and examples, see the [generated TypeDoc reference](./api/README.md). Usage guides for each service live in [`docs/guides/`](./guides/).
 
-The package ships two entry points:
+Entry points:
 
-- `@bates-solutions/squareup` — the core API client and services
-- `@bates-solutions/squareup/server` — webhook verification and handlers
+- `@bates-solutions/squareup`: the core API client, services, OAuth and errors
+- `@bates-solutions/squareup/server`: webhook verification, handlers and every framework adapter
+- `@bates-solutions/squareup/server/express`, `…/server/nextjs`, `…/server/lambda`: a single adapter each, so an app pulls in only the one it uses
 
 ## Core Module
 
@@ -30,6 +31,19 @@ The package ships two entry points:
 | `CheckoutService`            | Hosted checkout sessions                                    | [→](./api/core/classes/CheckoutService.md) |
 | `GiftCardsService`           | Gift card lifecycle (issue, activate, load, redeem)         | [→](./api/core/classes/GiftCardsService.md) |
 | `GiftCardActivitiesService`  | Gift card activity history                                  | [→](./api/core/classes/GiftCardActivitiesService.md) |
+| `LocationsService`           | List/get merchant locations (currency, country, status)     | [→](./api/core/classes/LocationsService.md) |
+| `WebhookSubscriptionsService` | Webhook subscription management (`webhooks.subscriptions`) | [→](./api/core/classes/WebhookSubscriptionsService.md) |
+| `OAuthService`               | Token status for the client's access token (`oauth`)       | [→](./api/core/classes/OAuthService.md) |
+
+### OAuth
+
+For connecting sellers' Square accounts. See the [OAuth guide](./guides/core/oauth.md).
+
+| Export                    | Description                                                   | Docs |
+| ------------------------- | ------------------------------------------------------------- | ---- |
+| `buildAuthorizeUrl`       | Build the seller authorization URL (no network call)          | [→](./api/core/functions/buildAuthorizeUrl.md) |
+| `createSquareOAuthClient` | Factory for the application-credential OAuth client           | [→](./api/core/functions/createSquareOAuthClient.md) |
+| `SquareOAuthClient`       | `obtainToken`, `refreshToken`, `revokeToken`                  | [→](./api/core/classes/SquareOAuthClient.md) |
 
 ## Server Module (`@bates-solutions/squareup/server`)
 
@@ -51,6 +65,8 @@ The package ships two entry points:
 Helpers `getPaymentId`, `getOrderId`, and `getCustomerId` extract the affected
 object's ID from a parsed webhook event.
 
+Each adapter is also available on its own subpath (`/server/express`, `/server/nextjs`, `/server/lambda`). See [Framework Middleware](./guides/server/middleware.md).
+
 ## Money Utilities
 
 ```typescript
@@ -65,15 +81,17 @@ Money amounts are handled as `bigint` cents throughout the library.
 
 ## Error Handling
 
-All service methods throw a subclass of `SquareError` on failure:
+All service methods throw a subclass of `SquareError` on failure. See [Errors and Retries](./guides/core/errors.md) for retrying safely.
 
 ```typescript
 import {
   SquareError,
   SquareApiError,
   SquareAuthError,
+  SquareNetworkError,
   SquarePaymentError,
   SquareValidationError,
+  isRetryableSquareError,
 } from '@bates-solutions/squareup';
 
 try {
@@ -85,8 +103,14 @@ try {
     console.log('Check your access token');
   } else if (error instanceof SquarePaymentError) {
     console.log('Payment declined or failed');
+  } else if (error instanceof SquareNetworkError) {
+    console.log('No response (NETWORK_ERROR or TIMEOUT):', error.code);
   } else if (error instanceof SquareApiError) {
-    console.log('Square API error:', error.message);
+    console.log('Square API error:', error.statusCode, error.errors);
+  }
+
+  if (isRetryableSquareError(error)) {
+    // retry with the same idempotencyKey
   }
 }
 ```
@@ -96,8 +120,11 @@ try {
 | `SquareValidationError`  | Input fails the wrapper's validation               |
 | `SquareAuthError`        | Authentication is rejected (bad/expired token)     |
 | `SquarePaymentError`     | A payment is declined or cannot be processed       |
-| `SquareApiError`         | Any other Square API error                         |
+| `SquareApiError`         | Any other Square API error, including a 200 response that carries `errors` |
+| `SquareNetworkError`     | No response arrived: connection failure (`NETWORK_ERROR`) or timeout (`TIMEOUT`) |
 | `SquareError`            | Base class for all of the above                    |
+
+`isRetryableSquareError(error)` returns `true` for network failures, timeouts, 408, 429 and 5xx. [→](./api/core/functions/isRetryableSquareError.md)
 
 ## Configuration
 
