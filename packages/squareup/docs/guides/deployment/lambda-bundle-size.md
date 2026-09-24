@@ -63,18 +63,16 @@ Lambda memory accordingly — a 128 MB function has little headroom left once th
 SDK loads. Bumping memory is the honest operational stopgap until the upstream
 serialization change lands.
 
-### 3. Pin `square@44`
+### 3. Match the `square` major version
 
-This wrapper supports `square` `>=43.2.1 <45`. **`square@45` is not yet
-supported** — it makes breaking changes to the Inventory API types
-(`InventoryAdjustment.locationId` → `toLocationId`; `InventoryChangeType` drops
-`TRANSFER`). Pin `square@^44` until wrapper support for 45 lands. Installing a
-`square@45` alongside this wrapper is an unsupported combination.
+This wrapper's 2.x line requires `square` `^45` (1.x supported `>=43.2.1 <45`).
+Keep the `square` version you bundle or ship in a layer on the same major as the
+wrapper expects. An older SDK in a layer sends the retired Inventory API shapes.
 
 ## Summary
 
 - The ~80 MB RSS is the `square` SDK eagerly loading its full serialization
   layer; it is **not** fixable in this wrapper or by tree-shaking / lazy-require.
 - `--external:square` + a layer trims the **artifact** (~6.5 MB), not RSS.
-- Right-size memory; pin `square@44`.
+- Right-size memory; keep `square` on the major the wrapper expects (`^45`).
 - The real RSS fix is an upstream Fern/Square change to scope serializer imports.
