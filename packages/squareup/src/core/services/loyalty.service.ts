@@ -1,6 +1,6 @@
 import type { SquareClient } from 'square';
 import { assertNoResponseErrors, parseSquareError, SquareValidationError } from '../errors.js';
-import { createIdempotencyKey } from '../utils.js';
+import { createIdempotencyKey, deriveIdempotencyKey } from '../utils.js';
 
 /**
  * Loyalty account from Square API
@@ -425,6 +425,8 @@ export class LoyaltyService {
    * @param accountId - Loyalty account ID
    * @param rewardTierId - Reward tier ID to redeem
    * @param orderId - Optional order ID to apply reward to
+   * @param idempotencyKey - Covers both the create and redeem calls (the
+   *   redeem key is derived from it); reuse it when retrying
    * @returns Created reward
    *
    * @example
@@ -450,6 +452,10 @@ export class LoyaltyService {
       );
     }
 
+    // One caller key covers both calls; the redeem step's key is derived from
+    // it so a retry re-uses the same reward and redemption.
+    const key = idempotencyKey ?? createIdempotencyKey();
+
     try {
       const response = await this.client.loyalty.rewards.create({
         reward: {
@@ -457,7 +463,7 @@ export class LoyaltyService {
           rewardTierId,
           orderId,
         },
-        idempotencyKey: idempotencyKey ?? createIdempotencyKey(),
+        idempotencyKey: key,
       });
       assertNoResponseErrors(response);
 
@@ -471,7 +477,7 @@ export class LoyaltyService {
       const redeemResponse = await this.client.loyalty.rewards.redeem({
         rewardId,
         locationId,
-        idempotencyKey: createIdempotencyKey(),
+        idempotencyKey: deriveIdempotencyKey(key, 'redeem'),
       });
       assertNoResponseErrors(redeemResponse);
 

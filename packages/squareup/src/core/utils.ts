@@ -1,4 +1,4 @@
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import type { CurrencyCode } from './types/index.js';
 
 /**
@@ -101,6 +101,23 @@ export function formatMoney(
  */
 export function createIdempotencyKey(): string {
   return randomUUID();
+}
+
+/** Shortest idempotency-key limit among the endpoints keys are derived for. */
+const MAX_DERIVED_KEY_LENGTH = 128;
+
+/**
+ * Derive a stable key for one step of a multi-call method from the caller's
+ * key, so a retry with the same key is deduplicated at every step. Falls back
+ * to a SHA-256 hex digest (64 chars) when the suffixed key would be too long.
+ *
+ * @internal
+ */
+export function deriveIdempotencyKey(key: string, step: string): string {
+  const derived = `${key}:${step}`;
+  return derived.length <= MAX_DERIVED_KEY_LENGTH
+    ? derived
+    : createHash('sha256').update(derived).digest('hex');
 }
 
 /**

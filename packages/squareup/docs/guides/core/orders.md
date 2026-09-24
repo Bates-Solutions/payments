@@ -300,6 +300,7 @@ const order = await square.orders.get('ORDER_123');
 const updated = await square.orders.update('ORDER_123', {
   version: order.version!, // Required for concurrency control
   referenceId: 'new-reference',
+  idempotencyKey: 'order-123-ref-update', // optional; reuse it on retry
 });
 ```
 
@@ -315,8 +316,9 @@ const payment = await square.payments.create({
   orderId: 'ORDER_123',
 });
 
-// Then, mark the order as paid
-const paidOrder = await square.orders.pay('ORDER_123', [payment.id!]);
+// Then, mark the order as paid. Pass an idempotencyKey and reuse it if you retry.
+const idempotencyKey = createIdempotencyKey();
+const paidOrder = await square.orders.pay('ORDER_123', [payment.id!], { idempotencyKey });
 console.log('Order state:', paidOrder.state); // 'COMPLETED'
 ```
 
