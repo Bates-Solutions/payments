@@ -298,6 +298,7 @@ describe('PaymentsService', () => {
       const mockPayments = [{ id: 'PAY_1' }, { id: 'PAY_2' }];
       const client = createMockClient({
         list: vi.fn().mockReturnValue({
+          response: {},
           [Symbol.asyncIterator]: async function* () {
             for (const payment of mockPayments) {
               yield payment;
@@ -319,6 +320,7 @@ describe('PaymentsService', () => {
       const mockPayments = [{ id: 'PAY_1' }, { id: 'PAY_2' }, { id: 'PAY_3' }];
       const client = createMockClient({
         list: vi.fn().mockReturnValue({
+          response: {},
           [Symbol.asyncIterator]: async function* () {
             for (const payment of mockPayments) {
               yield payment;
@@ -336,6 +338,7 @@ describe('PaymentsService', () => {
     it('should use custom locationId', async () => {
       const client = createMockClient({
         list: vi.fn().mockReturnValue({
+          response: {},
           [Symbol.asyncIterator]: async function* () {
             yield { id: 'PAY_1' };
           },

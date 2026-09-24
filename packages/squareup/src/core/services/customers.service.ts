@@ -1,5 +1,5 @@
 import type { SquareClient } from 'square';
-import { parseSquareError, SquareValidationError } from '../errors.js';
+import { assertNoResponseErrors, parseSquareError, SquareValidationError } from '../errors.js';
 import { createIdempotencyKey } from '../utils.js';
 
 /**
@@ -187,6 +187,7 @@ export class CustomersService {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
         address: options.address as any,
       });
+      assertNoResponseErrors(response);
 
       if (!response.customer) {
         throw new Error('Customer was not created');
@@ -212,6 +213,7 @@ export class CustomersService {
   async get(customerId: string): Promise<Customer> {
     try {
       const response = await this.client.customers.get({ customerId });
+      assertNoResponseErrors(response);
 
       if (!response.customer) {
         throw new Error('Customer not found');
@@ -252,6 +254,7 @@ export class CustomersService {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
         address: options.address as any,
       });
+      assertNoResponseErrors(response);
 
       if (!response.customer) {
         throw new Error('Customer update failed');
@@ -275,7 +278,7 @@ export class CustomersService {
    */
   async delete(customerId: string): Promise<void> {
     try {
-      await this.client.customers.delete({ customerId });
+      assertNoResponseErrors(await this.client.customers.delete({ customerId }));
     } catch (error) {
       throw parseSquareError(error);
     }
@@ -349,6 +352,7 @@ export class CustomersService {
               }
             : undefined,
       });
+      assertNoResponseErrors(response);
 
       return {
         data: (response.customers ?? []) as Customer[],
@@ -393,6 +397,7 @@ export class CustomersService {
         sortField: 'DEFAULT',
         sortOrder: 'DESC',
       });
+      assertNoResponseErrors(page.response);
 
       const customers = (page.response.customers ?? []) as Customer[];
       for (const customer of customers) {
@@ -444,6 +449,7 @@ export class CustomersService {
         // Default it so a valid value always accompanies sort_field.
         sortOrder: options?.sortOrder ?? 'DESC',
       });
+      assertNoResponseErrors(page.response);
 
       return {
         customers: (page.response.customers ?? []) as Customer[],

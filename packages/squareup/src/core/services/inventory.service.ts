@@ -1,5 +1,5 @@
 import type { Square, SquareClient } from 'square';
-import { parseSquareError, SquareValidationError } from '../errors.js';
+import { assertNoResponseErrors, parseSquareError, SquareValidationError } from '../errors.js';
 import { createIdempotencyKey } from '../utils.js';
 
 /**
@@ -166,6 +166,7 @@ export class InventoryService {
         catalogObjectId,
         locationIds: locationId,
       });
+      assertNoResponseErrors(page.response);
 
       for await (const count of page) {
         counts.push(count as InventoryCount);
@@ -206,6 +207,7 @@ export class InventoryService {
         catalogObjectIds,
         locationIds,
       });
+      assertNoResponseErrors(page.response);
 
       for await (const count of page) {
         counts.push(count as InventoryCount);
@@ -263,6 +265,7 @@ export class InventoryService {
           },
         ],
       });
+      assertNoResponseErrors(response);
 
       return (response.counts ?? []) as InventoryCount[];
     } catch (error) {
@@ -329,6 +332,7 @@ export class InventoryService {
           },
         ],
       });
+      assertNoResponseErrors(response);
 
       return (response.counts ?? []) as InventoryCount[];
     } catch (error) {
@@ -381,6 +385,7 @@ export class InventoryService {
           },
         ],
       });
+      assertNoResponseErrors(response);
 
       return (response.counts ?? []) as InventoryCount[];
     } catch (error) {
@@ -427,6 +432,7 @@ export class InventoryService {
         idempotencyKey: idempotencyKey ?? createIdempotencyKey(),
         changes: sdkChanges,
       });
+      assertNoResponseErrors(response);
 
       return (response.counts ?? []) as InventoryCount[];
     } catch (error) {
