@@ -72,24 +72,24 @@
     "node": ">=22"
   },
   "peerDependencies": {
-    "square": ">=45.0.1 <46"
+    "square": ">=45.0.1 <47"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/express": "^5.0.6",
-    "@types/node": "^26.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.62.0",
-    "@typescript-eslint/parser": "^8.62.0",
-    "@vitest/coverage-v8": "^4.1.2",
-    "eslint": "^10.1.0",
+    "@types/node": "^26.6.2",
+    "@typescript-eslint/eslint-plugin": "^8.70.0",
+    "@typescript-eslint/parser": "^8.70.0",
+    "@vitest/coverage-v8": "^5.0.1",
+    "eslint": "^10.11.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.1.0",
-    "prettier": "^3.8.1",
-    "square": "^45.1.0",
+    "prettier": "^3.9.8",
+    "square": "^46.0.0",
     "typedoc": "^0.28.18",
-    "typedoc-plugin-markdown": "^4.10.0",
+    "typedoc-plugin-markdown": "^4.13.1",
     "typescript": "^6.0.2",
-    "typescript-eslint": "^8.62.0",
-    "vitest": "^4.0.16"
+    "typescript-eslint": "^8.70.0",
+    "vitest": "^5.0.1"
   }
 }

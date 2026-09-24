@@ -35,11 +35,11 @@ Stop wrestling with Square's low-level APIs. **squareup** gives you a simplified
 
 | Dependency | Version |
 | ---------- | ------- |
-| Square SDK | `^45` (`>=45.0.1 <46`) |
+| Square SDK | `>=45.0.1 <47` (`square@45` or `square@46`) |
 | Node.js    | 22+     |
 | TypeScript | 5.0+    |
 
-> **Upgrading from 1.x?** 2.0.0 requires `square@^45`, which changed the Inventory API. Your wrapper code keeps working. See [Upgrading from 1.x](./docs/guides/core/inventory.md#upgrading-from-1x). Deploying on AWS Lambda? See [Bundle Size & Memory](./docs/guides/deployment/lambda-bundle-size.md).
+> **Upgrading from 1.x?** 2.x requires `square@45` or later, which changed the Inventory API. Your wrapper code keeps working. See [Upgrading from 1.x](./docs/guides/core/inventory.md#upgrading-from-1x). Deploying on AWS Lambda? See [Bundle Size & Memory](./docs/guides/deployment/lambda-bundle-size.md).
 
 ## Installation
 

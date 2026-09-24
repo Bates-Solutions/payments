@@ -14,22 +14,19 @@ updates:
       - dependency-name: "typescript"
         update-types: ["version-update:semver-major", "version-update:semver-minor"]
     groups:
-      dev-dependencies:
+      # `square` is the only peer dependency; its majors need a peer-range
+      # decision, so keep them out of the tooling group.
+      square:
         patterns:
-          - "@types/*"
-          - "eslint*"
-          - "typescript"
-          - "vitest"
-          - "prettier"
-      production-dependencies:
+          - "square"
+      # Everything else is dev tooling. One group keeps packages that must
+      # move in lockstep (vitest + @vitest/*, typescript-eslint + parser)
+      # in the same PR.
+      dev-dependencies:
         patterns:
           - "*"
         exclude-patterns:
-          - "@types/*"
-          - "eslint*"
-          - "typescript"
-          - "vitest"
-          - "prettier"
+          - "square"
     labels:
       - "dependencies"
     commit-message:
