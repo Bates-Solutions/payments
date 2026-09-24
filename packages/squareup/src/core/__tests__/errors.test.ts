@@ -164,6 +164,13 @@ describe('Error Classes', () => {
       expect(error.message).toBe('Unknown error occurred');
     });
 
+    it('should handle an SDK error with no body', () => {
+      const error = parseSquareError({ statusCode: 503 });
+
+      expect(error).toBeInstanceOf(SquareApiError);
+      expect(error).toMatchObject({ message: 'Square API error', code: 'UNKNOWN', statusCode: 503, errors: [] });
+    });
+
     it('should return an already-typed SquareError unchanged', () => {
       const original = new SquareApiError('Scope missing', 'INSUFFICIENT_SCOPES', 200, [
         { category: 'AUTHENTICATION_ERROR', code: 'INSUFFICIENT_SCOPES', detail: 'Scope missing' },
@@ -199,6 +206,24 @@ describe('Error Classes', () => {
         statusCode: 200,
         errors: [{ category: 'AUTHENTICATION_ERROR', code: 'INSUFFICIENT_SCOPES', detail: 'Scope missing' }],
       });
+    });
+
+    it('should keep a non-null field and fall back to a generic message without detail', () => {
+      let thrown: unknown;
+      try {
+        assertNoResponseErrors({
+          errors: [{ category: 'INVALID_REQUEST_ERROR', code: 'INVALID_VALUE', detail: null, field: 'location_id' }],
+        });
+      } catch (e) {
+        thrown = e;
+      }
+
+      expect(thrown).toMatchObject({
+        message: 'Square API error',
+        code: 'INVALID_VALUE',
+        errors: [{ category: 'INVALID_REQUEST_ERROR', code: 'INVALID_VALUE', field: 'location_id' }],
+      });
+      expect((thrown as SquareApiError).errors[0]).not.toHaveProperty('detail');
     });
 
     it('should classify PAYMENT_METHOD_ERROR as SquarePaymentError', () => {
