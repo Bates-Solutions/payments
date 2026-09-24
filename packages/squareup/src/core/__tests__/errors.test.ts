@@ -6,6 +6,7 @@ import {
   SquareValidationError,
   SquarePaymentError,
   parseSquareError,
+  assertNoResponseErrors,
 } from '../errors.js';
 
 describe('Error Classes', () => {
@@ -161,6 +162,49 @@ describe('Error Classes', () => {
 
       expect(error).toBeInstanceOf(SquareError);
       expect(error.message).toBe('Unknown error occurred');
+    });
+
+    it('should return an already-typed SquareError unchanged', () => {
+      const original = new SquareApiError('Scope missing', 'INSUFFICIENT_SCOPES', 200, [
+        { category: 'AUTHENTICATION_ERROR', code: 'INSUFFICIENT_SCOPES', detail: 'Scope missing' },
+      ]);
+
+      expect(parseSquareError(original)).toBe(original);
+    });
+  });
+
+  describe('assertNoResponseErrors', () => {
+    it('should not throw when errors is absent, null or empty', () => {
+      expect(() => assertNoResponseErrors({})).not.toThrow();
+      expect(() => assertNoResponseErrors({ errors: null })).not.toThrow();
+      expect(() => assertNoResponseErrors({ errors: [] })).not.toThrow();
+    });
+
+    it('should throw a SquareApiError carrying the errors array', () => {
+      const errors = [
+        { category: 'AUTHENTICATION_ERROR', code: 'INSUFFICIENT_SCOPES', detail: 'Scope missing', field: null },
+      ];
+
+      let thrown: unknown;
+      try {
+        assertNoResponseErrors({ errors });
+      } catch (e) {
+        thrown = e;
+      }
+
+      expect(thrown).toBeInstanceOf(SquareApiError);
+      expect(thrown).toMatchObject({
+        message: 'Scope missing',
+        code: 'INSUFFICIENT_SCOPES',
+        statusCode: 200,
+        errors: [{ category: 'AUTHENTICATION_ERROR', code: 'INSUFFICIENT_SCOPES', detail: 'Scope missing' }],
+      });
+    });
+
+    it('should classify PAYMENT_METHOD_ERROR as SquarePaymentError', () => {
+      expect(() =>
+        assertNoResponseErrors({ errors: [{ category: 'PAYMENT_METHOD_ERROR', code: 'CARD_DECLINED' }] })
+      ).toThrow(SquarePaymentError);
     });
   });
 });
