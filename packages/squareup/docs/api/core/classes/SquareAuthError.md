@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.1.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.2.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: SquareAuthError
 
-Defined in: [core/errors.ts:78](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L78)
+Defined in: [core/errors.ts:80](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L80)
 
 Authentication errors
 
@@ -20,7 +20,7 @@ Authentication errors
 
 > **new SquareAuthError**(`message`, `code?`): `SquareAuthError`
 
-Defined in: [core/errors.ts:79](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L79)
+Defined in: [core/errors.ts:81](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L81)
 
 #### Parameters
 
@@ -46,7 +46,7 @@ Defined in: [core/errors.ts:79](https://github.com/mbates/squareup/blob/main/src
 
 > `readonly` **code**: [`SquareErrorCode`](../type-aliases/SquareErrorCode.md)
 
-Defined in: [core/errors.ts:31](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L31)
+Defined in: [core/errors.ts:33](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L33)
 
 #### Inherited from
 
@@ -58,7 +58,7 @@ Defined in: [core/errors.ts:31](https://github.com/mbates/squareup/blob/main/src
 
 > `readonly` `optional` **details?**: `unknown`
 
-Defined in: [core/errors.ts:33](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L33)
+Defined in: [core/errors.ts:35](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L35)
 
 #### Inherited from
 
@@ -70,7 +70,7 @@ Defined in: [core/errors.ts:33](https://github.com/mbates/squareup/blob/main/src
 
 > `readonly` `optional` **statusCode?**: `number`
 
-Defined in: [core/errors.ts:32](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L32)
+Defined in: [core/errors.ts:34](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L34)
 
 #### Inherited from
 

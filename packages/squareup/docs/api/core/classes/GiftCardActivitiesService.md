@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.1.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.2.0**](../../README.md)
 
 ***
 
@@ -80,7 +80,7 @@ Always pass a stable key for retries to avoid double-applying activities
 
 > **list**(`options?`): `Promise`\<\{ `activities`: [`GiftCardActivity`](../interfaces/GiftCardActivity.md)[]; `cursor?`: `string`; \}\>
 
-Defined in: [core/services/gift-cards.service.ts:349](https://github.com/mbates/squareup/blob/main/src/core/services/gift-cards.service.ts#L349)
+Defined in: [core/services/gift-cards.service.ts:350](https://github.com/mbates/squareup/blob/main/src/core/services/gift-cards.service.ts#L350)
 
 List gift card activities, optionally filtered by card, type, location,
 or time range.

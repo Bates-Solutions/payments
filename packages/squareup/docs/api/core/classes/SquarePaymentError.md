@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.1.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.2.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: SquarePaymentError
 
-Defined in: [core/errors.ts:88](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L88)
+Defined in: [core/errors.ts:90](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L90)
 
 Payment processing errors
 
@@ -20,7 +20,7 @@ Payment processing errors
 
 > **new SquarePaymentError**(`message`, `code`, `paymentId?`): `SquarePaymentError`
 
-Defined in: [core/errors.ts:91](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L91)
+Defined in: [core/errors.ts:93](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L93)
 
 #### Parameters
 
@@ -50,7 +50,7 @@ Defined in: [core/errors.ts:91](https://github.com/mbates/squareup/blob/main/src
 
 > `readonly` **code**: [`SquareErrorCode`](../type-aliases/SquareErrorCode.md)
 
-Defined in: [core/errors.ts:31](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L31)
+Defined in: [core/errors.ts:33](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L33)
 
 #### Inherited from
 
@@ -62,7 +62,7 @@ Defined in: [core/errors.ts:31](https://github.com/mbates/squareup/blob/main/src
 
 > `readonly` `optional` **details?**: `unknown`
 
-Defined in: [core/errors.ts:33](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L33)
+Defined in: [core/errors.ts:35](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L35)
 
 #### Inherited from
 
@@ -74,7 +74,7 @@ Defined in: [core/errors.ts:33](https://github.com/mbates/squareup/blob/main/src
 
 > `readonly` `optional` **paymentId?**: `string`
 
-Defined in: [core/errors.ts:89](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L89)
+Defined in: [core/errors.ts:91](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L91)
 
 ***
 
@@ -82,7 +82,7 @@ Defined in: [core/errors.ts:89](https://github.com/mbates/squareup/blob/main/src
 
 > `readonly` `optional` **statusCode?**: `number`
 
-Defined in: [core/errors.ts:32](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L32)
+Defined in: [core/errors.ts:34](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L34)
 
 #### Inherited from
 

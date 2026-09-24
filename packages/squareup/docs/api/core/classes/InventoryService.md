@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.1.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.2.0**](../../README.md)
 
 ***
 
@@ -52,7 +52,7 @@ Defined in: [core/services/inventory.service.ts:144](https://github.com/mbates/s
 
 > **adjust**(`options`): `Promise`\<`InventoryCount`[]\>
 
-Defined in: [core/services/inventory.service.ts:296](https://github.com/mbates/squareup/blob/main/src/core/services/inventory.service.ts#L296)
+Defined in: [core/services/inventory.service.ts:305](https://github.com/mbates/squareup/blob/main/src/core/services/inventory.service.ts#L305)
 
 Adjust inventory (add or remove stock)
 
@@ -112,7 +112,7 @@ await square.inventory.adjust({
 
 > **batchChange**(`changes`, `idempotencyKey?`): `Promise`\<`InventoryCount`[]\>
 
-Defined in: [core/services/inventory.service.ts:415](https://github.com/mbates/squareup/blob/main/src/core/services/inventory.service.ts#L415)
+Defined in: [core/services/inventory.service.ts:426](https://github.com/mbates/squareup/blob/main/src/core/services/inventory.service.ts#L426)
 
 Batch apply multiple inventory changes
 
@@ -160,7 +160,7 @@ await square.inventory.batchChange([
 
 > **batchGetCounts**(`catalogObjectIds`, `locationIds?`): `Promise`\<`InventoryCount`[]\>
 
-Defined in: [core/services/inventory.service.ts:195](https://github.com/mbates/squareup/blob/main/src/core/services/inventory.service.ts#L195)
+Defined in: [core/services/inventory.service.ts:199](https://github.com/mbates/squareup/blob/main/src/core/services/inventory.service.ts#L199)
 
 Batch retrieve inventory counts for multiple objects
 
@@ -236,7 +236,7 @@ console.log(`In stock: ${counts[0].quantity}`);
 
 > **setCount**(`options`): `Promise`\<`InventoryCount`[]\>
 
-Defined in: [core/services/inventory.service.ts:235](https://github.com/mbates/squareup/blob/main/src/core/services/inventory.service.ts#L235)
+Defined in: [core/services/inventory.service.ts:243](https://github.com/mbates/squareup/blob/main/src/core/services/inventory.service.ts#L243)
 
 Set the inventory count for an item (physical count)
 
@@ -288,7 +288,7 @@ await square.inventory.setCount({
 
 > **transfer**(`options`): `Promise`\<`InventoryCount`[]\>
 
-Defined in: [core/services/inventory.service.ts:355](https://github.com/mbates/squareup/blob/main/src/core/services/inventory.service.ts#L355)
+Defined in: [core/services/inventory.service.ts:365](https://github.com/mbates/squareup/blob/main/src/core/services/inventory.service.ts#L365)
 
 Transfer inventory between locations
 
