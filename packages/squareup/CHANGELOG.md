@@ -1,3 +1,10 @@
+## [2.1.0](https://github.com/mbates/squareup/compare/v2.0.0...v2.1.0) (2026-09-24)
+
+
+### Features
+
+* **deps:** support `square@46`. The `square` peer range widens from `>=45.0.1 <46` to `>=45.0.1 <47`. Square API version `2026-09-16` only retires the Transactions API write operations (`Charge`, `CreateRefund`, `CaptureTransaction`, `VoidTransaction`), which the wrapper does not use, so `square@45` and `square@46` both work with no code changes ([#145](https://github.com/mbates/squareup/pull/145))
+
 ## [2.0.0](https://github.com/mbates/squareup/compare/v1.17.0...v2.0.0) (2026-09-24)
 
 
