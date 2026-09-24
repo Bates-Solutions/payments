@@ -1,5 +1,5 @@
 import type { SquareClient } from 'square';
-import { parseSquareError } from '../errors.js';
+import { assertNoResponseErrors, parseSquareError } from '../errors.js';
 
 /**
  * A Square location (a merchant's business location).
@@ -39,6 +39,10 @@ export class LocationsService {
    * The Square Locations API is not paginated — every location is returned.
    *
    * @returns Array of locations
+   * @throws {SquareApiError} If Square returns an `errors` body — e.g. the
+   *   access token lacks the `MERCHANT_PROFILE_READ` scope (`code` is
+   *   `INSUFFICIENT_SCOPES`). An empty array always means the merchant
+   *   genuinely has no locations.
    *
    * @example
    * ```typescript
@@ -48,6 +52,7 @@ export class LocationsService {
   async list(): Promise<Location[]> {
     try {
       const response = await this.client.locations.list();
+      assertNoResponseErrors(response);
       return response.locations ?? [];
     } catch (error) {
       throw parseSquareError(error);
@@ -59,6 +64,8 @@ export class LocationsService {
    *
    * @param locationId - Location ID
    * @returns The location
+   * @throws {SquareApiError} If Square returns an `errors` body (e.g. missing
+   *   `MERCHANT_PROFILE_READ` scope)
    *
    * @example
    * ```typescript
@@ -69,6 +76,7 @@ export class LocationsService {
   async get(locationId: string): Promise<Location> {
     try {
       const response = await this.client.locations.get({ locationId });
+      assertNoResponseErrors(response);
 
       if (!response.location) {
         throw new Error('Location not found');
