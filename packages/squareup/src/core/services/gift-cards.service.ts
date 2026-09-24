@@ -1,5 +1,5 @@
 import type { SquareClient } from 'square';
-import { parseSquareError, SquareValidationError } from '../errors.js';
+import { assertNoResponseErrors, parseSquareError, SquareValidationError } from '../errors.js';
 import { createIdempotencyKey } from '../utils.js';
 import type { CurrencyCode } from '../types/index.js';
 
@@ -331,6 +331,7 @@ export class GiftCardActivitiesService {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
         giftCardActivity: activityPayload as any,
       });
+      assertNoResponseErrors(response);
 
       if (!response.giftCardActivity) {
         throw new Error('Gift card activity was not created');
@@ -360,6 +361,7 @@ export class GiftCardActivitiesService {
         cursor: options?.cursor,
         sortOrder: options?.sortOrder,
       });
+      assertNoResponseErrors(page.response);
 
       return {
         activities: (page.response.giftCardActivities ?? []) as GiftCardActivity[],
@@ -428,6 +430,7 @@ export class GiftCardsService {
           ganSource: options.ganSource,
         },
       });
+      assertNoResponseErrors(response);
 
       if (!response.giftCard) {
         throw new Error('Gift card was not created');
@@ -445,6 +448,7 @@ export class GiftCardsService {
   async get(giftCardId: string): Promise<GiftCard> {
     try {
       const response = await this.client.giftCards.get({ id: giftCardId });
+      assertNoResponseErrors(response);
 
       if (!response.giftCard) {
         throw new Error('Gift card not found');
@@ -462,6 +466,7 @@ export class GiftCardsService {
   async getFromGan(gan: string): Promise<GiftCard> {
     try {
       const response = await this.client.giftCards.getFromGan({ gan });
+      assertNoResponseErrors(response);
 
       if (!response.giftCard) {
         throw new Error('Gift card not found');
@@ -480,6 +485,7 @@ export class GiftCardsService {
   async getFromNonce(nonce: string): Promise<GiftCard> {
     try {
       const response = await this.client.giftCards.getFromNonce({ nonce });
+      assertNoResponseErrors(response);
 
       if (!response.giftCard) {
         throw new Error('Gift card not found');
@@ -505,6 +511,7 @@ export class GiftCardsService {
         limit: options?.limit,
         cursor: options?.cursor,
       });
+      assertNoResponseErrors(page.response);
 
       return {
         giftCards: (page.response.giftCards ?? []) as GiftCard[],
@@ -542,6 +549,7 @@ export class GiftCardsService {
         giftCardId,
         customerId,
       });
+      assertNoResponseErrors(response);
 
       if (!response.giftCard) {
         throw new Error('Gift card link failed');
@@ -569,6 +577,7 @@ export class GiftCardsService {
         giftCardId,
         customerId,
       });
+      assertNoResponseErrors(response);
 
       if (!response.giftCard) {
         throw new Error('Gift card unlink failed');

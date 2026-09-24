@@ -1,5 +1,5 @@
 import type { Square, SquareClient } from 'square';
-import { parseSquareError, SquareValidationError } from '../errors.js';
+import { assertNoResponseErrors, parseSquareError, SquareValidationError } from '../errors.js';
 import { createIdempotencyKey } from '../utils.js';
 
 /**
@@ -114,6 +114,7 @@ export class WebhookSubscriptionsService {
           enabled: options.enabled ?? true,
         },
       });
+      assertNoResponseErrors(response);
 
       if (!response.subscription) {
         throw new Error('Webhook subscription was not created');
@@ -140,6 +141,7 @@ export class WebhookSubscriptionsService {
         sortOrder: options?.sortOrder,
         limit: options?.limit,
       });
+      assertNoResponseErrors(page.response);
 
       return {
         data: page.response.subscriptions ?? [],
@@ -156,6 +158,7 @@ export class WebhookSubscriptionsService {
   async get(subscriptionId: string): Promise<WebhookSubscription> {
     try {
       const response = await this.client.webhooks.subscriptions.get({ subscriptionId });
+      assertNoResponseErrors(response);
 
       if (!response.subscription) {
         throw new Error('Webhook subscription not found');
@@ -184,6 +187,7 @@ export class WebhookSubscriptionsService {
           enabled: options.enabled,
         },
       });
+      assertNoResponseErrors(response);
 
       if (!response.subscription) {
         throw new Error('Webhook subscription update failed');
@@ -200,7 +204,7 @@ export class WebhookSubscriptionsService {
    */
   async delete(subscriptionId: string): Promise<void> {
     try {
-      await this.client.webhooks.subscriptions.delete({ subscriptionId });
+      assertNoResponseErrors(await this.client.webhooks.subscriptions.delete({ subscriptionId }));
     } catch (error) {
       throw parseSquareError(error);
     }
@@ -221,6 +225,7 @@ export class WebhookSubscriptionsService {
         subscriptionId,
         eventType: options?.eventType,
       });
+      assertNoResponseErrors(response);
 
       // The result may come nested under `subscriptionTestResult` or as the
       // same fields at the response root; normalize both to one shape.
@@ -254,6 +259,7 @@ export class WebhookSubscriptionsService {
         subscriptionId,
         idempotencyKey: options?.idempotencyKey ?? createIdempotencyKey(),
       });
+      assertNoResponseErrors(response);
 
       return { signatureKey: response.signatureKey };
     } catch (error) {
