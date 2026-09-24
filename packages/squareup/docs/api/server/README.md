@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v1.15.0**](../README.md)
+[**@bates-solutions/squareup API Reference v2.0.0**](../README.md)
 
 ***
 
@@ -47,6 +47,8 @@ app.post('/webhook', createExpressWebhookHandler({
 ## Interfaces
 
 - [CustomerWebhookObject](interfaces/CustomerWebhookObject.md)
+- [ExpressRequestLike](interfaces/ExpressRequestLike.md)
+- [ExpressResponseLike](interfaces/ExpressResponseLike.md)
 - [ExpressWebhookOptions](interfaces/ExpressWebhookOptions.md)
 - [LambdaProxyEvent](interfaces/LambdaProxyEvent.md)
 - [LambdaProxyResult](interfaces/LambdaProxyResult.md)
@@ -68,6 +70,8 @@ app.post('/webhook', createExpressWebhookHandler({
 - [CatalogEventType](type-aliases/CatalogEventType.md)
 - [CustomerEventType](type-aliases/CustomerEventType.md)
 - [CustomerWebhookEvent](type-aliases/CustomerWebhookEvent.md)
+- [ExpressNextFunction](type-aliases/ExpressNextFunction.md)
+- [ExpressRequestHandler](type-aliases/ExpressRequestHandler.md)
 - [InventoryEventType](type-aliases/InventoryEventType.md)
 - [InvoiceEventType](type-aliases/InvoiceEventType.md)
 - [LaborEventType](type-aliases/LaborEventType.md)

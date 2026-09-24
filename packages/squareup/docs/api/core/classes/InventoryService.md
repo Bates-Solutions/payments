@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v1.15.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: InventoryService
 
-Defined in: [core/services/inventory.service.ts:83](https://github.com/mbates/squareup/blob/main/src/core/services/inventory.service.ts#L83)
+Defined in: [core/services/inventory.service.ts:143](https://github.com/mbates/squareup/blob/main/src/core/services/inventory.service.ts#L143)
 
 Inventory service for managing Square inventory
 
@@ -30,7 +30,7 @@ await square.inventory.adjust({
 
 > **new InventoryService**(`client`, `defaultLocationId?`): `InventoryService`
 
-Defined in: [core/services/inventory.service.ts:84](https://github.com/mbates/squareup/blob/main/src/core/services/inventory.service.ts#L84)
+Defined in: [core/services/inventory.service.ts:144](https://github.com/mbates/squareup/blob/main/src/core/services/inventory.service.ts#L144)
 
 #### Parameters
 
@@ -52,7 +52,7 @@ Defined in: [core/services/inventory.service.ts:84](https://github.com/mbates/sq
 
 > **adjust**(`options`): `Promise`\<`InventoryCount`[]\>
 
-Defined in: [core/services/inventory.service.ts:236](https://github.com/mbates/squareup/blob/main/src/core/services/inventory.service.ts#L236)
+Defined in: [core/services/inventory.service.ts:296](https://github.com/mbates/squareup/blob/main/src/core/services/inventory.service.ts#L296)
 
 Adjust inventory (add or remove stock)
 
@@ -112,7 +112,7 @@ await square.inventory.adjust({
 
 > **batchChange**(`changes`, `idempotencyKey?`): `Promise`\<`InventoryCount`[]\>
 
-Defined in: [core/services/inventory.service.ts:352](https://github.com/mbates/squareup/blob/main/src/core/services/inventory.service.ts#L352)
+Defined in: [core/services/inventory.service.ts:415](https://github.com/mbates/squareup/blob/main/src/core/services/inventory.service.ts#L415)
 
 Batch apply multiple inventory changes
 
@@ -146,7 +146,8 @@ await square.inventory.batchChange([
       catalogObjectId: 'ITEM_1',
       fromState: 'NONE',
       toState: 'IN_STOCK',
-      locationId: 'LXXX',
+      fromLocationId: 'LXXX',
+      toLocationId: 'LXXX',
       quantity: '10',
     },
   },
@@ -159,7 +160,7 @@ await square.inventory.batchChange([
 
 > **batchGetCounts**(`catalogObjectIds`, `locationIds?`): `Promise`\<`InventoryCount`[]\>
 
-Defined in: [core/services/inventory.service.ts:135](https://github.com/mbates/squareup/blob/main/src/core/services/inventory.service.ts#L135)
+Defined in: [core/services/inventory.service.ts:195](https://github.com/mbates/squareup/blob/main/src/core/services/inventory.service.ts#L195)
 
 Batch retrieve inventory counts for multiple objects
 
@@ -198,7 +199,7 @@ const counts = await square.inventory.batchGetCounts(
 
 > **getCounts**(`catalogObjectId`, `locationId?`): `Promise`\<`InventoryCount`[]\>
 
-Defined in: [core/services/inventory.service.ts:102](https://github.com/mbates/squareup/blob/main/src/core/services/inventory.service.ts#L102)
+Defined in: [core/services/inventory.service.ts:162](https://github.com/mbates/squareup/blob/main/src/core/services/inventory.service.ts#L162)
 
 Get inventory counts for a catalog object
 
@@ -235,7 +236,7 @@ console.log(`In stock: ${counts[0].quantity}`);
 
 > **setCount**(`options`): `Promise`\<`InventoryCount`[]\>
 
-Defined in: [core/services/inventory.service.ts:175](https://github.com/mbates/squareup/blob/main/src/core/services/inventory.service.ts#L175)
+Defined in: [core/services/inventory.service.ts:235](https://github.com/mbates/squareup/blob/main/src/core/services/inventory.service.ts#L235)
 
 Set the inventory count for an item (physical count)
 
@@ -287,7 +288,7 @@ await square.inventory.setCount({
 
 > **transfer**(`options`): `Promise`\<`InventoryCount`[]\>
 
-Defined in: [core/services/inventory.service.ts:294](https://github.com/mbates/squareup/blob/main/src/core/services/inventory.service.ts#L294)
+Defined in: [core/services/inventory.service.ts:355](https://github.com/mbates/squareup/blob/main/src/core/services/inventory.service.ts#L355)
 
 Transfer inventory between locations
 

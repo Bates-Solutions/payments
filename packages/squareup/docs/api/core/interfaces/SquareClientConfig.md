@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v1.15.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: SquareClientConfig
 
-Defined in: [core/client.ts:22](https://github.com/mbates/squareup/blob/main/src/core/client.ts#L22)
+Defined in: [core/client.ts:23](https://github.com/mbates/squareup/blob/main/src/core/client.ts#L23)
 
 Configuration options for the Square client
 
@@ -16,7 +16,7 @@ Configuration options for the Square client
 
 > **accessToken**: `string`
 
-Defined in: [core/client.ts:26](https://github.com/mbates/squareup/blob/main/src/core/client.ts#L26)
+Defined in: [core/client.ts:27](https://github.com/mbates/squareup/blob/main/src/core/client.ts#L27)
 
 Square API access token
 
@@ -26,7 +26,7 @@ Square API access token
 
 > `optional` **defaultCurrency?**: `string`
 
-Defined in: [core/client.ts:43](https://github.com/mbates/squareup/blob/main/src/core/client.ts#L43)
+Defined in: [core/client.ts:44](https://github.com/mbates/squareup/blob/main/src/core/client.ts#L44)
 
 Default currency code
 
@@ -42,7 +42,7 @@ Default currency code
 
 > `optional` **environment?**: [`SquareEnvironment`](../type-aliases/SquareEnvironment.md)
 
-Defined in: [core/client.ts:32](https://github.com/mbates/squareup/blob/main/src/core/client.ts#L32)
+Defined in: [core/client.ts:33](https://github.com/mbates/squareup/blob/main/src/core/client.ts#L33)
 
 Square environment (sandbox or production)
 
@@ -58,6 +58,6 @@ Square environment (sandbox or production)
 
 > `optional` **locationId?**: `string`
 
-Defined in: [core/client.ts:37](https://github.com/mbates/squareup/blob/main/src/core/client.ts#L37)
+Defined in: [core/client.ts:38](https://github.com/mbates/squareup/blob/main/src/core/client.ts#L38)
 
 Default location ID for operations that require it
