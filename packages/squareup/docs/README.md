@@ -21,6 +21,9 @@ Welcome to the documentation for `@bates-solutions/squareup`, a TypeScript wrapp
 - [Invoices](./guides/core/invoices.md) - Create/update invoices, incl. accepted payment methods
 - [Gift Cards](./guides/core/gift-cards.md) - Gift card lifecycle: issue, activate, load, redeem, link to customers
 - [Locations](./guides/core/locations.md) - List/get merchant locations; derive currency, country, status
+- [Inventory](./guides/core/inventory.md) - Stock counts, adjustments, transfers; upgrading from 1.x
+- [OAuth](./guides/core/oauth.md) - Connect sellers' Square accounts: authorize URL, tokens, refresh, revoke
+- [Errors and Retries](./guides/core/errors.md) - Error classes, network failures, and retrying safely
 
 ### Server
 
