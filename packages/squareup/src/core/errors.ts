@@ -108,36 +108,26 @@ export class SquareValidationError extends SquareError {
   }
 }
 
+type SquareErrorEntry = { category: string; code: string; detail?: string; field?: string };
+
 /**
  * Parse Square SDK errors into typed exceptions
  */
 export function parseSquareError(error: unknown): SquareError {
+  // Already typed (e.g. thrown by assertNoResponseErrors inside a try block).
+  // Must come before the SDK check: SquareError also carries `statusCode`.
+  if (error instanceof SquareError) {
+    return error;
+  }
+
   // Handle Square SDK errors
   if (error && typeof error === 'object' && 'statusCode' in error) {
     const sdkError = error as {
       statusCode: number;
-      body?: {
-        errors?: Array<{ category: string; code: string; detail?: string; field?: string }>;
-      };
+      body?: { errors?: SquareErrorEntry[] };
     };
 
-    const errors = sdkError.body?.errors ?? [];
-    const firstError = errors[0];
-    const message = firstError?.detail ?? 'Square API error';
-    const code = mapErrorCode(firstError?.code);
-
-    // Auth errors
-    if (sdkError.statusCode === 401) {
-      return new SquareAuthError(message, code);
-    }
-
-    // Payment errors
-    if (firstError?.category === 'PAYMENT_METHOD_ERROR') {
-      return new SquarePaymentError(message, code);
-    }
-
-    // General API errors
-    return new SquareApiError(message, code, sdkError.statusCode, errors);
+    return fromErrorEntries(sdkError.body?.errors ?? [], sdkError.statusCode);
   }
 
   // Handle standard errors
@@ -146,6 +136,46 @@ export function parseSquareError(error: unknown): SquareError {
   }
 
   return new SquareError('Unknown error occurred');
+}
+
+/**
+ * Throw if a successful (2xx) Square response carries an `errors` array.
+ *
+ * Some endpoints return *either* `errors` *or* the payload in the body, so a
+ * missing payload alone cannot distinguish "nothing there" from "request
+ * failed" (e.g. a token missing a required scope).
+ *
+ * @internal
+ */
+export function assertNoResponseErrors(response: {
+  errors?: ReadonlyArray<{ category: string; code: string; detail?: string | null; field?: string | null }> | null;
+}): void {
+  if (!response.errors?.length) return;
+
+  const entries: SquareErrorEntry[] = response.errors.map((e) => ({
+    category: e.category,
+    code: e.code,
+    ...(e.detail != null && { detail: e.detail }),
+    ...(e.field != null && { field: e.field }),
+  }));
+
+  throw fromErrorEntries(entries, 200);
+}
+
+function fromErrorEntries(errors: SquareErrorEntry[], statusCode: number): SquareError {
+  const firstError = errors[0];
+  const message = firstError?.detail ?? 'Square API error';
+  const code = mapErrorCode(firstError?.code);
+
+  if (statusCode === 401) {
+    return new SquareAuthError(message, code);
+  }
+
+  if (firstError?.category === 'PAYMENT_METHOD_ERROR') {
+    return new SquarePaymentError(message, code);
+  }
+
+  return new SquareApiError(message, code, statusCode, errors);
 }
 
 /**
