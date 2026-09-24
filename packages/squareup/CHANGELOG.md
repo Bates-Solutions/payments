@@ -1,3 +1,22 @@
+## [2.2.0](https://github.com/mbates/squareup/compare/v2.1.0...v2.2.0) (2026-09-24)
+
+
+### Features
+
+* **errors:** add `SquareNetworkError` for requests that got no response. Its `code` is `NETWORK_ERROR` for a connection failure or `TIMEOUT` for a timeout, `statusCode` is `undefined`, and `cause` holds the SDK error. Previously a network failure became `SquareApiError('Square API error')` and lost its message, and a timeout became a plain `SquareError` with code `UNKNOWN` ([#147](https://github.com/mbates/squareup/pull/147)), closes [#141](https://github.com/mbates/squareup/issues/141)
+* **errors:** add `isRetryableSquareError(error)`. It returns `true` for network failures, timeouts, 408, 429 and 5xx. The new [Errors and Retries](./docs/guides/core/errors.md) guide explains why a retry must reuse the same `idempotencyKey` ([#147](https://github.com/mbates/squareup/pull/147))
+
+
+### Bug Fixes
+
+* **services:** every service now throws `SquareApiError` when Square answers 200 with an `errors` body. Previously methods returned `[]`, `0`, `undefined` fields, or a misleading "not found" error. This matches the fix [#136](https://github.com/mbates/squareup/pull/136) made for `locations`. Paginated lists also check pages loaded during iteration ([#148](https://github.com/mbates/squareup/pull/148)), closes [#137](https://github.com/mbates/squareup/issues/137)
+
+
+### ⚠️ Type-level and `instanceof` notes (not runtime-breaking)
+
+* `SquareErrorCode` gains `'NETWORK_ERROR'` and `'TIMEOUT'`. An exhaustive `switch` on `error.code` that ends in a `never` check needs two more cases.
+* Network failures used to be `SquareApiError` and are now `SquareNetworkError`, so `instanceof SquareApiError` no longer matches them. `instanceof SquareError` still does.
+
 ## [2.1.0](https://github.com/mbates/squareup/compare/v2.0.0...v2.1.0) (2026-09-24)
 
 

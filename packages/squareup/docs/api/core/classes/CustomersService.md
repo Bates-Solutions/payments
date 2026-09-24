@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.1.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.2.0**](../../README.md)
 
 ***
 
@@ -85,7 +85,7 @@ const customer = await square.customers.create({
 
 > **delete**(`customerId`): `Promise`\<`void`\>
 
-Defined in: [core/services/customers.service.ts:276](https://github.com/mbates/squareup/blob/main/src/core/services/customers.service.ts#L276)
+Defined in: [core/services/customers.service.ts:279](https://github.com/mbates/squareup/blob/main/src/core/services/customers.service.ts#L279)
 
 Delete a customer
 
@@ -113,7 +113,7 @@ await square.customers.delete('CUST_123');
 
 > **get**(`customerId`): `Promise`\<[`Customer`](../interfaces/Customer.md)\>
 
-Defined in: [core/services/customers.service.ts:212](https://github.com/mbates/squareup/blob/main/src/core/services/customers.service.ts#L212)
+Defined in: [core/services/customers.service.ts:213](https://github.com/mbates/squareup/blob/main/src/core/services/customers.service.ts#L213)
 
 Get a customer by ID
 
@@ -143,7 +143,7 @@ const customer = await square.customers.get('CUST_123');
 
 > **list**(`options?`): `Promise`\<\{ `cursor?`: `string`; `customers`: [`Customer`](../interfaces/Customer.md)[]; \}\>
 
-Defined in: [core/services/customers.service.ts:432](https://github.com/mbates/squareup/blob/main/src/core/services/customers.service.ts#L432)
+Defined in: [core/services/customers.service.ts:437](https://github.com/mbates/squareup/blob/main/src/core/services/customers.service.ts#L437)
 
 List customers with cursor-based pagination
 
@@ -180,7 +180,7 @@ const recent = await square.customers.list({ sortField: 'CREATED_AT', sortOrder:
 
 > **search**(`options?`): `Promise`\<\{ `cursor?`: `string`; `data`: [`Customer`](../interfaces/Customer.md)[]; \}\>
 
-Defined in: [core/services/customers.service.ts:303](https://github.com/mbates/squareup/blob/main/src/core/services/customers.service.ts#L303)
+Defined in: [core/services/customers.service.ts:306](https://github.com/mbates/squareup/blob/main/src/core/services/customers.service.ts#L306)
 
 Search for customers
 
@@ -218,7 +218,7 @@ const results = await square.customers.search({
 
 > **update**(`customerId`, `options`): `Promise`\<[`Customer`](../interfaces/Customer.md)\>
 
-Defined in: [core/services/customers.service.ts:240](https://github.com/mbates/squareup/blob/main/src/core/services/customers.service.ts#L240)
+Defined in: [core/services/customers.service.ts:242](https://github.com/mbates/squareup/blob/main/src/core/services/customers.service.ts#L242)
 
 Update a customer
 

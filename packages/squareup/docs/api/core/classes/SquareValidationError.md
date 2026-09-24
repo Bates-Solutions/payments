@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.1.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.2.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: SquareValidationError
 
-Defined in: [core/errors.ts:101](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L101)
+Defined in: [core/errors.ts:103](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L103)
 
 Validation errors
 
@@ -20,7 +20,7 @@ Validation errors
 
 > **new SquareValidationError**(`message`, `field?`): `SquareValidationError`
 
-Defined in: [core/errors.ts:104](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L104)
+Defined in: [core/errors.ts:106](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L106)
 
 #### Parameters
 
@@ -46,7 +46,7 @@ Defined in: [core/errors.ts:104](https://github.com/mbates/squareup/blob/main/sr
 
 > `readonly` **code**: [`SquareErrorCode`](../type-aliases/SquareErrorCode.md)
 
-Defined in: [core/errors.ts:31](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L31)
+Defined in: [core/errors.ts:33](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L33)
 
 #### Inherited from
 
@@ -58,7 +58,7 @@ Defined in: [core/errors.ts:31](https://github.com/mbates/squareup/blob/main/src
 
 > `readonly` `optional` **details?**: `unknown`
 
-Defined in: [core/errors.ts:33](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L33)
+Defined in: [core/errors.ts:35](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L35)
 
 #### Inherited from
 
@@ -70,7 +70,7 @@ Defined in: [core/errors.ts:33](https://github.com/mbates/squareup/blob/main/src
 
 > `readonly` `optional` **field?**: `string`
 
-Defined in: [core/errors.ts:102](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L102)
+Defined in: [core/errors.ts:104](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L104)
 
 ***
 
@@ -78,7 +78,7 @@ Defined in: [core/errors.ts:102](https://github.com/mbates/squareup/blob/main/sr
 
 > `readonly` `optional` **statusCode?**: `number`
 
-Defined in: [core/errors.ts:32](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L32)
+Defined in: [core/errors.ts:34](https://github.com/mbates/squareup/blob/main/src/core/errors.ts#L34)
 
 #### Inherited from
 

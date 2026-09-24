@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.1.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.2.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: CheckoutService
 
-Defined in: [core/services/checkout.service.ts:388](https://github.com/mbates/squareup/blob/main/src/core/services/checkout.service.ts#L388)
+Defined in: [core/services/checkout.service.ts:395](https://github.com/mbates/squareup/blob/main/src/core/services/checkout.service.ts#L395)
 
 Checkout service for Square Checkout API
 
@@ -40,7 +40,7 @@ console.log('Checkout URL:', link.url);
 
 > **new CheckoutService**(`client`): `CheckoutService`
 
-Defined in: [core/services/checkout.service.ts:391](https://github.com/mbates/squareup/blob/main/src/core/services/checkout.service.ts#L391)
+Defined in: [core/services/checkout.service.ts:398](https://github.com/mbates/squareup/blob/main/src/core/services/checkout.service.ts#L398)
 
 #### Parameters
 
@@ -58,4 +58,4 @@ Defined in: [core/services/checkout.service.ts:391](https://github.com/mbates/sq
 
 > `readonly` **paymentLinks**: `PaymentLinksService`
 
-Defined in: [core/services/checkout.service.ts:389](https://github.com/mbates/squareup/blob/main/src/core/services/checkout.service.ts#L389)
+Defined in: [core/services/checkout.service.ts:396](https://github.com/mbates/squareup/blob/main/src/core/services/checkout.service.ts#L396)
