@@ -1,4 +1,5 @@
-import { describe, it, expect } from 'vitest';
+import { afterEach, describe, it, expect, vi } from 'vitest';
+import { SquareClient as SdkClient, SquareTimeoutError } from 'square';
 import {
   SquareError,
   SquareApiError,
@@ -7,6 +8,8 @@ import {
   SquarePaymentError,
   parseSquareError,
   assertNoResponseErrors,
+  SquareNetworkError,
+  isRetryableSquareError,
 } from '../errors.js';
 
 describe('Error Classes', () => {
@@ -230,6 +233,100 @@ describe('Error Classes', () => {
       expect(() =>
         assertNoResponseErrors({ errors: [{ category: 'PAYMENT_METHOD_ERROR', code: 'CARD_DECLINED' }] })
       ).toThrow(SquarePaymentError);
+    });
+  });
+
+  describe('network failures and timeouts', () => {
+    afterEach(() => {
+      vi.unstubAllGlobals();
+    });
+
+    it('maps a real SDK network failure to SquareNetworkError, keeping the message and cause', async () => {
+      vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new TypeError('fetch failed')));
+      const sdk = new SdkClient({ token: 'test-token', maxRetries: 0 });
+
+      const sdkError = await sdk.locations.list().catch((e: unknown) => e);
+      const error = parseSquareError(sdkError);
+
+      expect(error).toBeInstanceOf(SquareNetworkError);
+      expect(error).toMatchObject({ code: 'NETWORK_ERROR', statusCode: undefined });
+      expect(error.message).toContain('fetch failed');
+      expect(error.cause).toBe(sdkError);
+    });
+
+    it('maps a real SDK timeout to SquareNetworkError with code TIMEOUT', async () => {
+      // Honour the abort signal the way Node's fetch does: reject with its reason.
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(
+          (_url: string, init: RequestInit) =>
+            new Promise((_resolve, reject) => {
+              init.signal?.addEventListener('abort', () => {
+                reject(init.signal?.reason);
+              });
+            })
+        )
+      );
+      const sdk = new SdkClient({ token: 'test-token', maxRetries: 0 });
+
+      const sdkError = await sdk.locations.list({ timeoutInSeconds: 0.05 }).catch((e: unknown) => e);
+      const error = parseSquareError(sdkError);
+
+      expect(error).toBeInstanceOf(SquareNetworkError);
+      expect(error).toMatchObject({ code: 'TIMEOUT', message: 'Request to Square timed out' });
+      expect(error.cause).toBe(sdkError);
+      expect(isRetryableSquareError(error)).toBe(true);
+    });
+
+    it('maps SquareTimeoutError (AbortError runtimes) to SquareNetworkError with code TIMEOUT', () => {
+      const timeout = new SquareTimeoutError('Timeout exceeded when calling GET /v2/locations.');
+
+      const error = parseSquareError(timeout);
+
+      expect(error).toBeInstanceOf(SquareNetworkError);
+      expect(error).toMatchObject({ code: 'TIMEOUT', message: timeout.message });
+      expect(error.cause).toBe(timeout);
+    });
+
+    it('still maps an SDK error with a numeric status code as an HTTP error', () => {
+      const error = parseSquareError({ statusCode: 502, body: '<html>Bad Gateway</html>' });
+
+      expect(error).toBeInstanceOf(SquareApiError);
+      expect(error).toMatchObject({ statusCode: 502 });
+    });
+
+    it('treats a plain object with a non-numeric statusCode as unknown', () => {
+      const error = parseSquareError({ statusCode: undefined });
+
+      expect(error).not.toBeInstanceOf(SquareNetworkError);
+      expect(error.message).toBe('Unknown error occurred');
+    });
+  });
+
+  describe('isRetryableSquareError', () => {
+    it.each([
+      ['network failure', new SquareNetworkError('fetch failed', 'NETWORK_ERROR')],
+      ['timeout', new SquareNetworkError('timed out', 'TIMEOUT')],
+      ['408', new SquareApiError('request timeout', 'UNKNOWN', 408, [])],
+      ['429', new SquareApiError('slow down', 'RATE_LIMITED', 429, [])],
+      ['500', new SquareApiError('oops', 'INTERNAL_SERVER_ERROR', 500, [])],
+      ['503', new SquareApiError('down', 'SERVICE_UNAVAILABLE', 503, [])],
+    ])('is true for a %s', (_label, error) => {
+      expect(isRetryableSquareError(error)).toBe(true);
+    });
+
+    it.each([
+      ['400', new SquareApiError('bad', 'BAD_REQUEST', 400, [])],
+      ['404', new SquareApiError('missing', 'NOT_FOUND', 404, [])],
+      ['200 errors body', new SquareApiError('scope', 'INSUFFICIENT_SCOPES', 200, [])],
+      ['auth error', new SquareAuthError('no')],
+      ['payment decline', new SquarePaymentError('declined', 'CARD_DECLINED')],
+      ['validation error', new SquareValidationError('bad input')],
+      ['untyped SquareError', new SquareError('something')],
+      ['plain Error', new Error('boom')],
+      ['non-error', 'string'],
+    ])('is false for a %s', (_label, error) => {
+      expect(isRetryableSquareError(error)).toBe(false);
     });
   });
 });
