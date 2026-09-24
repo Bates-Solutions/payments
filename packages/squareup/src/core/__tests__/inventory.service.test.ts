@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import type { SquareClient } from 'square';
-import { InventoryService } from '../services/inventory.service.js';
+import { InventoryService, type InventoryChange } from '../services/inventory.service.js';
 import { SquareValidationError } from '../errors.js';
 
 // Create mock Square client
@@ -232,6 +232,8 @@ describe('InventoryService', () => {
               adjustment: expect.objectContaining({
                 fromState: 'NONE',
                 toState: 'IN_STOCK',
+                fromLocationId: defaultLocationId,
+                toLocationId: defaultLocationId,
                 quantity: '10',
               }),
             }),
@@ -258,6 +260,8 @@ describe('InventoryService', () => {
               adjustment: expect.objectContaining({
                 fromState: 'IN_STOCK',
                 toState: 'SOLD',
+                fromLocationId: defaultLocationId,
+                toLocationId: defaultLocationId,
                 quantity: '5',
               }),
             }),
@@ -308,9 +312,11 @@ describe('InventoryService', () => {
         expect.objectContaining({
           changes: [
             expect.objectContaining({
-              type: 'TRANSFER',
-              transfer: expect.objectContaining({
+              type: 'ADJUSTMENT',
+              adjustment: expect.objectContaining({
                 catalogObjectId: 'VAR_123',
+                fromState: 'IN_STOCK',
+                toState: 'IN_STOCK',
                 fromLocationId: 'LOC_A',
                 toLocationId: 'LOC_B',
                 quantity: '5',
@@ -376,6 +382,95 @@ describe('InventoryService', () => {
       ]);
 
       expect(result).toEqual(mockCounts);
+    });
+
+    describe('Square 2026-07-15 change mapping', () => {
+      async function sentChanges(changes: InventoryChange[]) {
+        const client = createMockClient({
+          batchCreateChanges: vi.fn().mockResolvedValue({ counts: [] }),
+        });
+        await new InventoryService(client).batchChange(changes);
+        return vi.mocked(client.inventory.batchCreateChanges).mock.calls[0]![0].changes;
+      }
+
+      it('expands deprecated adjustment.locationId into from/to and drops it', async () => {
+        const [change] = await sentChanges([
+          { type: 'ADJUSTMENT', adjustment: { catalogObjectId: 'V', toState: 'IN_STOCK', locationId: 'L', quantity: '1' } },
+        ]);
+
+        expect(change).toEqual({
+          type: 'ADJUSTMENT',
+          adjustment: { catalogObjectId: 'V', toState: 'IN_STOCK', fromLocationId: 'L', toLocationId: 'L', quantity: '1' },
+        });
+      });
+
+      it('passes explicit from/to locations through, preferring them over locationId', async () => {
+        const [change] = await sentChanges([
+          {
+            type: 'ADJUSTMENT',
+            adjustment: {
+              catalogObjectId: 'V',
+              fromState: 'IN_STOCK',
+              toState: 'IN_STOCK',
+              locationId: 'IGNORED',
+              fromLocationId: 'A',
+              toLocationId: 'B',
+              quantity: '2',
+            },
+          },
+        ]);
+
+        expect(change?.adjustment).toMatchObject({ fromLocationId: 'A', toLocationId: 'B' });
+        expect(change?.adjustment).not.toHaveProperty('locationId');
+      });
+
+      it('converts a deprecated TRANSFER into an ADJUSTMENT', async () => {
+        const [change] = await sentChanges([
+          {
+            type: 'TRANSFER',
+            transfer: { catalogObjectId: 'V', fromLocationId: 'A', toLocationId: 'B', state: 'IN_STOCK', quantity: '3' },
+          },
+        ]);
+
+        expect(change).toEqual({
+          type: 'ADJUSTMENT',
+          adjustment: {
+            catalogObjectId: 'V',
+            fromLocationId: 'A',
+            toLocationId: 'B',
+            fromState: 'IN_STOCK',
+            toState: 'IN_STOCK',
+            quantity: '3',
+          },
+        });
+      });
+
+      it('passes PHYSICAL_COUNT through unchanged', async () => {
+        const physicalCount = { catalogObjectId: 'V', state: 'IN_STOCK' as const, locationId: 'L', quantity: '9' };
+        const [change] = await sentChanges([{ type: 'PHYSICAL_COUNT', physicalCount }]);
+
+        expect(change).toEqual({ type: 'PHYSICAL_COUNT', physicalCount });
+      });
+
+      it.each<[string, InventoryChange]>([
+        ['PHYSICAL_COUNT without physicalCount', { type: 'PHYSICAL_COUNT' }],
+        ['ADJUSTMENT without adjustment', { type: 'ADJUSTMENT' }],
+        ['TRANSFER without transfer', { type: 'TRANSFER' }],
+        [
+          'ADJUSTMENT without any location',
+          { type: 'ADJUSTMENT', adjustment: { catalogObjectId: 'V', toState: 'IN_STOCK', quantity: '1' } },
+        ],
+        [
+          'ADJUSTMENT with only fromLocationId',
+          { type: 'ADJUSTMENT', adjustment: { catalogObjectId: 'V', toState: 'IN_STOCK', fromLocationId: 'A', quantity: '1' } },
+        ],
+      ])('rejects %s before calling Square', async (_label, change) => {
+        const client = createMockClient();
+        const service = new InventoryService(client);
+
+        await expect(service.batchChange([change])).rejects.toThrow(SquareValidationError);
+        expect(client.inventory.batchCreateChanges).not.toHaveBeenCalled();
+      });
     });
 
     it('should return empty array for empty input', async () => {
