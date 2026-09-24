@@ -11,6 +11,7 @@ Backend API integration guides:
 - [Managing Customers](./core/customers.md) - Customer CRUD and search
 - [Managing the Catalog](./core/catalog.md) - Items, categories, and variations
 - [Checkout & Payment Links](./core/checkout.md) - Create hosted checkout pages
+- [OAuth](./core/oauth.md) - Connect sellers' Square accounts: authorize URL, tokens, refresh, revoke
 - [Inventory](./core/inventory.md) - Stock counts, adjustments, transfers; upgrading from 1.x
 
 ## Server

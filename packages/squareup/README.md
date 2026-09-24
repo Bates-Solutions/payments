@@ -28,6 +28,7 @@ Stop wrestling with Square's low-level APIs. **squareup** gives you a simplified
 - **Type-Safe** - Full TypeScript support with strict types
 - **Fluent Builders** - Chainable order and payment construction
 - **Webhook Support** - Signature verification and middleware for Express/Next.js
+- **OAuth** - Authorize URL, code exchange, refresh, revoke and token status for multi-tenant apps ([guide](./docs/guides/core/oauth.md))
 - **Service Classes** - Payments, Orders, Customers, Customer Groups, Catalog (incl. pricing rules and subscription plan listing), Inventory, Subscriptions, Invoices, Loyalty, Gift Cards
 
 ## Requirements
@@ -244,6 +245,7 @@ export const handler = createLambdaWebhookHandler({
 | `checkout`       | Hosted checkout sessions                                       |
 | `giftCards`      | Gift card lifecycle (issue, activate, load, redeem, deactivate) + activities |
 | `locations`      | List/get merchant locations (derive currency, country, status) |
+| `oauth`          | Token status for the client's access token (`tokenStatus()`). Code exchange, refresh and revoke are on `createSquareOAuthClient` |
 | `webhooks`       | Webhook subscription management (`webhooks.subscriptions`: create/list/update/delete/test/rotate key) |
 
 ## Utilities
