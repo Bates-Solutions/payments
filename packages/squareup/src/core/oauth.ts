@@ -1,6 +1,6 @@
 import { SquareClient as SdkClient, SquareEnvironment as SdkEnvironment } from 'square';
 import type { SquareEnvironment } from './types/index.js';
-import { parseSquareError, SquareError, SquareValidationError } from './errors.js';
+import { assertNoResponseErrors, parseSquareError, SquareError, SquareValidationError } from './errors.js';
 
 /**
  * Square OAuth permission (scope) names.
@@ -295,7 +295,7 @@ export class SquareOAuthClient {
       throw parseSquareError(error);
     }
 
-    throwIfErrors(response);
+    assertNoResponseErrors(response);
     if (!response.success) {
       throw new SquareError('Square did not confirm the token revocation');
     }
@@ -318,7 +318,7 @@ export class SquareOAuthClient {
       throw parseSquareError(error);
     }
 
-    throwIfErrors(response);
+    assertNoResponseErrors(response);
 
     const { accessToken, tokenType, expiresAt, merchantId } = response;
     // The code flow keeps one refresh token; fall back if a refresh omits it.
@@ -354,30 +354,6 @@ export class SquareOAuthClient {
  */
 export function createSquareOAuthClient(config: SquareOAuthClientConfig): SquareOAuthClient {
   return new SquareOAuthClient(config);
-}
-
-/**
- * Throw a typed error when a 200 response carries `errors`. Called outside
- * the `try` so the error isn't passed back through `parseSquareError`.
- *
- * @internal
- */
-export function throwIfErrors(response: {
-  errors?: ReadonlyArray<{ category: string; code: string; detail?: string | null; field?: string | null }>;
-}): void {
-  if (!response.errors?.length) return;
-
-  throw parseSquareError({
-    statusCode: 200,
-    body: {
-      errors: response.errors.map((e) => ({
-        category: e.category,
-        code: e.code,
-        ...(e.detail != null && { detail: e.detail }),
-        ...(e.field != null && { field: e.field }),
-      })),
-    },
-  });
 }
 
 function requireNonEmpty(value: string | undefined, field: string): void {
