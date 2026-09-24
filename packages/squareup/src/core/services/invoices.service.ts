@@ -1,6 +1,6 @@
 import type { Square, SquareClient } from 'square';
 import { assertNoResponseErrors, parseSquareError, SquareValidationError } from '../errors.js';
-import { createIdempotencyKey } from '../utils.js';
+import { createIdempotencyKey, deriveIdempotencyKey } from '../utils.js';
 import type { CurrencyCode } from '../types/index.js';
 
 /**
@@ -186,6 +186,10 @@ export class InvoicesService {
       throw new SquareValidationError('At least one line item is required', 'lineItems');
     }
 
+    // One caller key covers both calls: the order step gets a key derived from
+    // it, so a retry with the same key reuses the order instead of orphaning one.
+    const idempotencyKey = options.idempotencyKey ?? createIdempotencyKey();
+
     try {
       // First create an order for the invoice
       const orderResponse = await this.client.orders.create({
@@ -202,7 +206,7 @@ export class InvoicesService {
             note: item.description,
           })),
         },
-        idempotencyKey: createIdempotencyKey(),
+        idempotencyKey: deriveIdempotencyKey(idempotencyKey, 'order'),
       });
       assertNoResponseErrors(orderResponse);
 
@@ -234,7 +238,7 @@ export class InvoicesService {
             },
           ],
         },
-        idempotencyKey: options.idempotencyKey ?? createIdempotencyKey(),
+        idempotencyKey,
       });
       assertNoResponseErrors(response);
 
@@ -279,6 +283,7 @@ export class InvoicesService {
    *
    * @param invoiceId - Invoice ID
    * @param version - Invoice version (for optimistic concurrency)
+   * @param options.idempotencyKey - Reuse the same key when retrying
    * @returns Published invoice
    *
    * @example
@@ -287,12 +292,16 @@ export class InvoicesService {
    * console.log(`Invoice sent: ${invoice.publicUrl}`);
    * ```
    */
-  async publish(invoiceId: string, version: number): Promise<Invoice> {
+  async publish(
+    invoiceId: string,
+    version: number,
+    options?: { idempotencyKey?: string }
+  ): Promise<Invoice> {
     try {
       const response = await this.client.invoices.publish({
         invoiceId,
         version,
-        idempotencyKey: createIdempotencyKey(),
+        idempotencyKey: options?.idempotencyKey ?? createIdempotencyKey(),
       });
       assertNoResponseErrors(response);
 
@@ -359,6 +368,8 @@ export class InvoicesService {
       description?: string;
       dueDate?: string;
       acceptedPaymentMethods?: AcceptedPaymentMethodsInput;
+      /** Reuse the same key when retrying */
+      idempotencyKey?: string;
     }
   ): Promise<Invoice> {
     try {
@@ -386,7 +397,7 @@ export class InvoicesService {
               ]
             : undefined,
         },
-        idempotencyKey: createIdempotencyKey(),
+        idempotencyKey: options.idempotencyKey ?? createIdempotencyKey(),
         fieldsToClear: fieldsToClear.length > 0 ? fieldsToClear : undefined,
       });
       assertNoResponseErrors(response);

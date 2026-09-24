@@ -156,7 +156,8 @@ export class OrdersService {
    * Update an order
    *
    * @param orderId - Order ID to update
-   * @param updates - Update fields
+   * @param updates - Update fields. Pass `idempotencyKey` and reuse it when
+   *   retrying so Square deduplicates the request.
    * @returns Updated order
    */
   async update(
@@ -164,6 +165,7 @@ export class OrdersService {
     updates: {
       version: number;
       referenceId?: string;
+      idempotencyKey?: string;
     },
     locationId?: string
   ): Promise<Order> {
@@ -183,7 +185,7 @@ export class OrdersService {
           version: updates.version,
           referenceId: updates.referenceId,
         },
-        idempotencyKey: createIdempotencyKey(),
+        idempotencyKey: updates.idempotencyKey ?? createIdempotencyKey(),
       });
       assertNoResponseErrors(response);
 
@@ -202,6 +204,7 @@ export class OrdersService {
    *
    * @param orderId - Order ID
    * @param paymentIds - Payment IDs to apply
+   * @param options.idempotencyKey - Reuse the same key when retrying
    * @returns Updated order
    *
    * @example
@@ -209,11 +212,15 @@ export class OrdersService {
    * const order = await square.orders.pay('ORDER_123', ['PAYMENT_456']);
    * ```
    */
-  async pay(orderId: string, paymentIds: string[]): Promise<Order> {
+  async pay(
+    orderId: string,
+    paymentIds: string[],
+    options?: { idempotencyKey?: string }
+  ): Promise<Order> {
     try {
       const response = await this.client.orders.pay({
         orderId,
-        idempotencyKey: createIdempotencyKey(),
+        idempotencyKey: options?.idempotencyKey ?? createIdempotencyKey(),
         paymentIds,
       });
       assertNoResponseErrors(response);
