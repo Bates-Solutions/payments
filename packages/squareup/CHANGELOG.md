@@ -1,3 +1,15 @@
+## [2.3.0](https://github.com/mbates/squareup/compare/v2.2.0...v2.3.0) (2026-09-24)
+
+
+### Features
+
+* **orders, invoices:** accept a caller `idempotencyKey` everywhere a Square call takes one. `orders.update` and `invoices.update` take it in their options. `orders.pay(orderId, paymentIds, { idempotencyKey })` and `invoices.publish(invoiceId, version, { idempotencyKey })` take a new optional trailing argument. Existing call signatures are unchanged ([#151](https://github.com/mbates/squareup/pull/151)), closes [#149](https://github.com/mbates/squareup/issues/149)
+
+
+### Bug Fixes
+
+* **invoices, loyalty:** one `idempotencyKey` now covers both Square calls in `invoices.create` and `loyalty.redeemReward`. The second call uses a key derived from yours (`<key>:order` / `<key>:redeem`, or a SHA-256 digest past 128 characters). A retry no longer creates a second, orphaned order for an invoice, or fails after the reward was already redeemed ([#151](https://github.com/mbates/squareup/pull/151))
+
 ## [2.2.0](https://github.com/mbates/squareup/compare/v2.1.0...v2.2.0) (2026-09-24)
 
 
