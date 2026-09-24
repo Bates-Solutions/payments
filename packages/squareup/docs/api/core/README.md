@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.1.0**](../README.md)
+[**@bates-solutions/squareup API Reference v2.2.0**](../README.md)
 
 ***
 
@@ -51,6 +51,7 @@ const payment = await square.payments.create({
 - [SquareAuthError](classes/SquareAuthError.md)
 - [SquareClient](classes/SquareClient.md)
 - [SquareError](classes/SquareError.md)
+- [SquareNetworkError](classes/SquareNetworkError.md)
 - [SquareOAuthClient](classes/SquareOAuthClient.md)
 - [SquarePaymentError](classes/SquarePaymentError.md)
 - [SquareValidationError](classes/SquareValidationError.md)
@@ -138,4 +139,5 @@ const payment = await square.payments.create({
 - [formatMoney](functions/formatMoney.md)
 - [fromCents](functions/fromCents.md)
 - [isCurrencyCode](functions/isCurrencyCode.md)
+- [isRetryableSquareError](functions/isRetryableSquareError.md)
 - [toCents](functions/toCents.md)
