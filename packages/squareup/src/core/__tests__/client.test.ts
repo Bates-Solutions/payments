@@ -75,6 +75,12 @@ describe('SquareClient', () => {
       expect(typeof client.webhooks.subscriptions.rotateSignatureKey).toBe('function');
     });
 
+    it('should expose OAuth token status', () => {
+      const client = createSquareClient({ accessToken: 'test-token' });
+
+      expect(typeof client.oauth.tokenStatus).toBe('function');
+    });
+
     it('should expose underlying SDK client', () => {
       const client = createSquareClient({
         accessToken: 'test-token',

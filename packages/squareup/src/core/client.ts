@@ -15,6 +15,7 @@ import { CheckoutService } from './services/checkout.service.js';
 import { GiftCardsService } from './services/gift-cards.service.js';
 import { LocationsService } from './services/locations.service.js';
 import { WebhookSubscriptionsService } from './services/webhook-subscriptions.service.js';
+import { OAuthService } from './services/oauth.service.js';
 
 /**
  * Configuration options for the Square client
@@ -79,6 +80,8 @@ export class SquareClient {
   public readonly checkout: CheckoutService;
   public readonly giftCards: GiftCardsService;
   public readonly locations: LocationsService;
+  /** OAuth token status for this client's access token (`oauth.tokenStatus()`) */
+  public readonly oauth: OAuthService;
   /** Webhook subscription management (`webhooks.subscriptions.*`) */
   public readonly webhooks: { subscriptions: WebhookSubscriptionsService };
 
@@ -123,6 +126,7 @@ export class SquareClient {
     this.checkout = new CheckoutService(this.client);
     this.giftCards = new GiftCardsService(this.client, locationId, defaultCurrency);
     this.locations = new LocationsService(this.client);
+    this.oauth = new OAuthService(this.client);
     this.webhooks = { subscriptions: new WebhookSubscriptionsService(this.client) };
   }
 
