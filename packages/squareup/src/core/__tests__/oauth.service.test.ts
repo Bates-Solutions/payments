@@ -33,6 +33,12 @@ describe('OAuthService', () => {
       await expect(new OAuthService(client).tokenStatus()).resolves.toEqual({ scopes: [] });
     });
 
+    it('throws on an unparseable expiresAt', async () => {
+      const client = createMockClient(vi.fn().mockResolvedValue({ scopes: [], expiresAt: 'soon' }));
+
+      await expect(new OAuthService(client).tokenStatus()).rejects.toThrow('Square returned an invalid expires_at');
+    });
+
     it('throws a typed error for a 200 body carrying errors', async () => {
       const client = createMockClient(
         vi.fn().mockResolvedValue({

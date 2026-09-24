@@ -279,17 +279,32 @@ export class SquareOAuthClient {
       | { merchantId: string; accessToken?: never; revokeOnlyAccessToken?: never }
       | { accessToken: string; merchantId?: never; revokeOnlyAccessToken?: boolean }
   ): Promise<void> {
-    if (!options.merchantId && !options.accessToken) {
+    // The union guards typed callers only; check the shape untyped input can take.
+    const { merchantId, accessToken, revokeOnlyAccessToken } = options as {
+      merchantId?: string;
+      accessToken?: string;
+      revokeOnlyAccessToken?: boolean;
+    };
+    if (!merchantId && !accessToken) {
       throw new SquareValidationError('Provide merchantId or accessToken', 'merchantId');
+    }
+    if (merchantId && accessToken) {
+      throw new SquareValidationError('Provide merchantId or accessToken, not both', 'merchantId');
+    }
+    if (merchantId && revokeOnlyAccessToken !== undefined) {
+      throw new SquareValidationError(
+        'revokeOnlyAccessToken requires accessToken',
+        'revokeOnlyAccessToken'
+      );
     }
 
     let response;
     try {
       response = await this.#client.oAuth.revokeToken({
         clientId: this.#clientId,
-        merchantId: options.merchantId,
-        accessToken: options.accessToken,
-        revokeOnlyAccessToken: options.revokeOnlyAccessToken,
+        merchantId,
+        accessToken,
+        revokeOnlyAccessToken,
       });
     } catch (error) {
       throw parseSquareError(error);
@@ -330,11 +345,11 @@ export class SquareOAuthClient {
     return {
       accessToken,
       tokenType: tokenType ?? 'bearer',
-      expiresAt: new Date(expiresAt),
+      expiresAt: parseSquareDate(expiresAt, 'expires_at'),
       merchantId,
       refreshToken,
       ...(response.refreshTokenExpiresAt && {
-        refreshTokenExpiresAt: new Date(response.refreshTokenExpiresAt),
+        refreshTokenExpiresAt: parseSquareDate(response.refreshTokenExpiresAt, 'refresh_token_expires_at'),
       }),
     };
   }
@@ -354,6 +369,20 @@ export class SquareOAuthClient {
  */
 export function createSquareOAuthClient(config: SquareOAuthClientConfig): SquareOAuthClient {
   return new SquareOAuthClient(config);
+}
+
+/**
+ * Parse a Square timestamp, throwing rather than returning an `Invalid Date`
+ * that would silently break expiry comparisons.
+ *
+ * @internal
+ */
+export function parseSquareDate(value: string, field: string): Date {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    throw new SquareError(`Square returned an invalid ${field}`);
+  }
+  return date;
 }
 
 function requireNonEmpty(value: string | undefined, field: string): void {
