@@ -1,5 +1,5 @@
 import type { Square, SquareClient } from 'square';
-import { parseSquareError, SquareValidationError } from '../errors.js';
+import { assertNoResponseErrors, parseSquareError, SquareValidationError } from '../errors.js';
 import { createIdempotencyKey } from '../utils.js';
 import type { CurrencyCode } from '../types/index.js';
 
@@ -204,6 +204,7 @@ export class InvoicesService {
         },
         idempotencyKey: createIdempotencyKey(),
       });
+      assertNoResponseErrors(orderResponse);
 
       if (!orderResponse.order?.id) {
         throw new Error('Failed to create order for invoice');
@@ -235,6 +236,7 @@ export class InvoicesService {
         },
         idempotencyKey: options.idempotencyKey ?? createIdempotencyKey(),
       });
+      assertNoResponseErrors(response);
 
       if (!response.invoice) {
         throw new Error('Invoice was not created');
@@ -260,6 +262,7 @@ export class InvoicesService {
   async get(invoiceId: string): Promise<Invoice> {
     try {
       const response = await this.client.invoices.get({ invoiceId });
+      assertNoResponseErrors(response);
 
       if (!response.invoice) {
         throw new Error('Invoice not found');
@@ -291,6 +294,7 @@ export class InvoicesService {
         version,
         idempotencyKey: createIdempotencyKey(),
       });
+      assertNoResponseErrors(response);
 
       if (!response.invoice) {
         throw new Error('Invoice publish failed');
@@ -320,6 +324,7 @@ export class InvoicesService {
         invoiceId,
         version,
       });
+      assertNoResponseErrors(response);
 
       if (!response.invoice) {
         throw new Error('Invoice cancellation failed');
@@ -384,6 +389,7 @@ export class InvoicesService {
         idempotencyKey: createIdempotencyKey(),
         fieldsToClear: fieldsToClear.length > 0 ? fieldsToClear : undefined,
       });
+      assertNoResponseErrors(response);
 
       if (!response.invoice) {
         throw new Error('Invoice update failed');
@@ -408,7 +414,7 @@ export class InvoicesService {
    */
   async delete(invoiceId: string, version: number): Promise<void> {
     try {
-      await this.client.invoices.delete({ invoiceId, version });
+      assertNoResponseErrors(await this.client.invoices.delete({ invoiceId, version }));
     } catch (error) {
       throw parseSquareError(error);
     }
@@ -451,6 +457,7 @@ export class InvoicesService {
         cursor: options?.cursor,
         limit: options?.limit,
       });
+      assertNoResponseErrors(response);
 
       return {
         data: (response.invoices ?? []) as Invoice[],

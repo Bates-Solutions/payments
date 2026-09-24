@@ -6,7 +6,7 @@ import type {
   QuickPay as SquareQuickPay,
   Order as SquareOrder,
 } from 'square';
-import { parseSquareError, SquareValidationError } from '../errors.js';
+import { assertNoResponseErrors, parseSquareError, SquareValidationError } from '../errors.js';
 import { createIdempotencyKey } from '../utils.js';
 
 /**
@@ -205,6 +205,7 @@ class PaymentLinksService {
         prePopulatedData: options.prePopulatedData as unknown as SquarePrePopulatedData,
         paymentNote: options.paymentNote,
       });
+      assertNoResponseErrors(response);
 
       if (!response.paymentLink) {
         throw new Error('Payment link was not created');
@@ -234,6 +235,7 @@ class PaymentLinksService {
 
     try {
       const response = await this.client.checkout.paymentLinks.get({ id });
+      assertNoResponseErrors(response);
 
       if (!response.paymentLink) {
         throw new Error('Payment link not found');
@@ -275,6 +277,7 @@ class PaymentLinksService {
         id,
         paymentLink: options.paymentLink as unknown as SquarePaymentLink,
       });
+      assertNoResponseErrors(response);
 
       if (!response.paymentLink) {
         throw new Error('Payment link update failed');
@@ -302,7 +305,7 @@ class PaymentLinksService {
     }
 
     try {
-      await this.client.checkout.paymentLinks.delete({ id });
+      assertNoResponseErrors(await this.client.checkout.paymentLinks.delete({ id }));
     } catch (error) {
       throw parseSquareError(error);
     }
@@ -341,6 +344,7 @@ class PaymentLinksService {
         cursor: options?.cursor,
         limit: options?.limit,
       });
+      assertNoResponseErrors(page.response);
 
       for await (const link of page) {
         links.push(link as PaymentLink);

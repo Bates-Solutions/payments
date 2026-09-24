@@ -23,6 +23,7 @@ describe('InventoryService', () => {
       const mockCounts = [{ catalogObjectId: 'VAR_123', quantity: '10' }];
       const client = createMockClient({
         get: vi.fn().mockReturnValue({
+          response: {},
           [Symbol.asyncIterator]: async function* () {
             for (const count of mockCounts) yield count;
           },
@@ -38,6 +39,7 @@ describe('InventoryService', () => {
     it('should filter by locationId', async () => {
       const client = createMockClient({
         get: vi.fn().mockReturnValue({
+          response: {},
           [Symbol.asyncIterator]: async function* () {},
         }),
       });
@@ -69,6 +71,7 @@ describe('InventoryService', () => {
       const mockCounts = [{ catalogObjectId: 'VAR_1', quantity: '5' }];
       const client = createMockClient({
         batchGetCounts: vi.fn().mockReturnValue({
+          response: {},
           [Symbol.asyncIterator]: async function* () {
             for (const count of mockCounts) yield count;
           },

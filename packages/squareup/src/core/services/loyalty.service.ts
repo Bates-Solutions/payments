@@ -1,5 +1,5 @@
 import type { SquareClient } from 'square';
-import { parseSquareError, SquareValidationError } from '../errors.js';
+import { assertNoResponseErrors, parseSquareError, SquareValidationError } from '../errors.js';
 import { createIdempotencyKey } from '../utils.js';
 
 /**
@@ -156,6 +156,7 @@ export class LoyaltyService {
     try {
       if (programId) {
         const response = await this.client.loyalty.programs.get({ programId });
+        assertNoResponseErrors(response);
         if (!response.program) {
           throw new Error('Loyalty program not found');
         }
@@ -164,6 +165,7 @@ export class LoyaltyService {
 
       // Get the main program
       const response = await this.client.loyalty.programs.get({ programId: 'main' });
+      assertNoResponseErrors(response);
       if (!response.program) {
         throw new Error('No loyalty program found');
       }
@@ -213,6 +215,7 @@ export class LoyaltyService {
         },
         idempotencyKey: options.idempotencyKey ?? createIdempotencyKey(),
       });
+      assertNoResponseErrors(response);
 
       if (!response.loyaltyAccount) {
         throw new Error('Loyalty account was not created');
@@ -239,6 +242,7 @@ export class LoyaltyService {
   async getAccount(accountId: string): Promise<LoyaltyAccount> {
     try {
       const response = await this.client.loyalty.accounts.get({ accountId });
+      assertNoResponseErrors(response);
 
       if (!response.loyaltyAccount) {
         throw new Error('Loyalty account not found');
@@ -298,6 +302,7 @@ export class LoyaltyService {
               }
             : undefined,
       });
+      assertNoResponseErrors(response);
 
       return {
         data: (response.loyaltyAccounts ?? []) as LoyaltyAccount[],
@@ -358,6 +363,7 @@ export class LoyaltyService {
         locationId,
         idempotencyKey: options.idempotencyKey ?? createIdempotencyKey(),
       });
+      assertNoResponseErrors(response);
 
       if (!response.event) {
         throw new Error('Points accumulation failed');
@@ -401,6 +407,7 @@ export class LoyaltyService {
         },
         idempotencyKey: idempotencyKey ?? createIdempotencyKey(),
       });
+      assertNoResponseErrors(response);
 
       if (!response.event) {
         throw new Error('Points adjustment failed');
@@ -452,6 +459,7 @@ export class LoyaltyService {
         },
         idempotencyKey: idempotencyKey ?? createIdempotencyKey(),
       });
+      assertNoResponseErrors(response);
 
       if (!response.reward?.id) {
         throw new Error('Reward creation failed');
@@ -465,6 +473,7 @@ export class LoyaltyService {
         locationId,
         idempotencyKey: createIdempotencyKey(),
       });
+      assertNoResponseErrors(redeemResponse);
 
       if (!redeemResponse.event) {
         throw new Error('Reward redemption failed');
@@ -498,6 +507,7 @@ export class LoyaltyService {
         programId,
         orderId,
       });
+      assertNoResponseErrors(response);
 
       return response.points ?? 0;
     } catch (error) {

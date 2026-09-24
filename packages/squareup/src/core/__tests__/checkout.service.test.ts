@@ -326,6 +326,7 @@ describe('CheckoutService', () => {
         const mockLinks = [{ id: 'LINK_1' }, { id: 'LINK_2' }];
         const client = createMockClient({
           list: vi.fn().mockReturnValue({
+            response: {},
             [Symbol.asyncIterator]: async function* () {
               for (const link of mockLinks) {
                 yield link;
@@ -348,6 +349,7 @@ describe('CheckoutService', () => {
         const mockLinks = [{ id: 'LINK_1' }, { id: 'LINK_2' }, { id: 'LINK_3' }];
         const client = createMockClient({
           list: vi.fn().mockReturnValue({
+            response: {},
             [Symbol.asyncIterator]: async function* () {
               for (const link of mockLinks) {
                 yield link;
@@ -365,6 +367,7 @@ describe('CheckoutService', () => {
       it('should pass cursor option', async () => {
         const client = createMockClient({
           list: vi.fn().mockReturnValue({
+            response: {},
             [Symbol.asyncIterator]: async function* () {
               yield { id: 'LINK_1' };
             },
@@ -383,6 +386,7 @@ describe('CheckoutService', () => {
       it('should return empty array when no links exist', async () => {
         const client = createMockClient({
           list: vi.fn().mockReturnValue({
+            response: {},
             [Symbol.asyncIterator]: async function* () {
               // Empty iterator
             },
