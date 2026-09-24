@@ -34,7 +34,8 @@ Always run `typecheck`, `lint`, and `test` before committing.
 - Package manager: `npm`
 - One service class per Square domain in `src/core/services/<name>.service.ts`
 - All SDK calls wrapped in `try/catch` → `parseSquareError(error)`
-- Mutating endpoints accept `idempotencyKey?` in options, default to `createIdempotencyKey()`
+- Every SDK response goes through `assertNoResponseErrors(...)` inside the `try`, before it is read. Square can answer 200 with an `errors` body instead of the payload. For pagers, check `page.response` on the first page, and again after any `for await` loop, because iteration replaces it with each fetched page.
+- Mutating endpoints accept `idempotencyKey?` in options, default to `createIdempotencyKey()`. Methods that make more than one Square call use the caller's key for one call and `deriveIdempotencyKey(key, '<step>')` for the others, so a retry is deduplicated at every step.
 - Input validation throws `SquareValidationError`
 - Money amounts: `bigint` cents, coerced with `BigInt(value)`
 - Tests use `vitest` with `vi.fn()` mocks of the Square SDK client — no real network calls
