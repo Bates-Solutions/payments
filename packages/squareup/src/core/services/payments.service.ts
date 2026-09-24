@@ -226,6 +226,9 @@ export class PaymentsService {
           break;
         }
       }
+      // Iteration replaces `page.response` with each fetched page; an errors
+      // page has no cursor, so it is the last one loaded.
+      assertNoResponseErrors(page.response);
 
       return payments;
     } catch (error) {
