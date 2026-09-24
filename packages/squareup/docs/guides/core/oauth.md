@@ -109,6 +109,7 @@ if (!scopes.includes('MERCHANT_PROFILE_READ')) {
 
 ## Errors and secrets
 
+- A network failure or timeout throws `SquareNetworkError`. For a scheduled refresh, `isRetryableSquareError(error)` separates "try again later" from "Square rejected this". See [Errors and Retries](./errors.md).
 - HTTP errors are mapped as elsewhere in the library: `SquareAuthError` for 401, otherwise `SquareApiError` with Square's `errors`. A 200 response that carries `errors` also throws `SquareApiError`.
 - Invalid inputs throw `SquareValidationError` before any request is made: an empty `code`, `refreshToken`, `clientId` or `state`; no `scopes`; or a `revokeToken()` call with both or neither of `merchantId` and `accessToken`, or with `revokeOnlyAccessToken` alongside `merchantId`.
 - An unparseable timestamp from Square throws `SquareError`. You never get back an `Invalid Date`.
