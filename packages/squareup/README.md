@@ -248,6 +248,10 @@ export const handler = createLambdaWebhookHandler({
 | `oauth`          | Token status for the client's access token (`tokenStatus()`). Code exchange, refresh and revoke are on `createSquareOAuthClient` |
 | `webhooks`       | Webhook subscription management (`webhooks.subscriptions`: create/list/update/delete/test/rotate key) |
 
+## Error Handling
+
+Every call throws a typed `SquareError` subclass: `SquareValidationError`, `SquareAuthError`, `SquarePaymentError`, `SquareApiError`, or `SquareNetworkError` when no response arrived (connection failure or timeout). `isRetryableSquareError(error)` tells you whether a retry could succeed. When retrying a mutating call, pass the same `idempotencyKey`. See [Errors and Retries](./docs/guides/core/errors.md).
+
 ## Utilities
 
 ```typescript

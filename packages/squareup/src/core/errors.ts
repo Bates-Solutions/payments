@@ -22,6 +22,8 @@ export type SquareErrorCode =
   | 'CARD_EXPIRED'
   | 'INVALID_CARD'
   | 'GENERIC_DECLINE'
+  | 'NETWORK_ERROR'
+  | 'TIMEOUT'
   | 'UNKNOWN';
 
 /**
@@ -108,6 +110,26 @@ export class SquareValidationError extends SquareError {
   }
 }
 
+/**
+ * The request never got an HTTP response: a connection failure (DNS, reset,
+ * `fetch failed`) or a client-side timeout. Square may or may not have
+ * processed the request. `statusCode` is always undefined.
+ *
+ * `cause` holds the SDK error. It never contains the request, so secrets
+ * such as an OAuth `client_secret` are not exposed.
+ */
+export class SquareNetworkError extends SquareError {
+  declare public readonly code: 'NETWORK_ERROR' | 'TIMEOUT';
+
+  constructor(message: string, code: 'NETWORK_ERROR' | 'TIMEOUT', options?: { cause?: unknown }) {
+    super(message, code);
+    this.name = 'SquareNetworkError';
+    if (options?.cause !== undefined) {
+      this.cause = options.cause;
+    }
+  }
+}
+
 type SquareErrorEntry = { category: string; code: string; detail?: string; field?: string };
 
 /**
@@ -120,14 +142,36 @@ export function parseSquareError(error: unknown): SquareError {
     return error;
   }
 
-  // Handle Square SDK errors
-  if (error && typeof error === 'object' && 'statusCode' in error) {
-    const sdkError = error as {
-      statusCode: number;
-      body?: { errors?: SquareErrorEntry[] };
-    };
+  if (error && typeof error === 'object') {
+    // SDK timeout when fetch rejects with an AbortError (runtime-dependent):
+    // plain Error subclass with no status code. Matched by name so this
+    // module doesn't import the SDK.
+    if (error instanceof Error && error.name === 'SquareTimeoutError') {
+      return new SquareNetworkError(error.message, 'TIMEOUT', { cause: error });
+    }
 
-    return fromErrorEntries(sdkError.body?.errors ?? [], sdkError.statusCode);
+    if ('statusCode' in error) {
+      const sdkError = error as {
+        statusCode?: unknown;
+        body?: { errors?: SquareErrorEntry[] };
+      };
+
+      // HTTP error response
+      if (typeof sdkError.statusCode === 'number') {
+        return fromErrorEntries(sdkError.body?.errors ?? [], sdkError.statusCode);
+      }
+
+      // The SDK's SquareError without a status code means no response arrived.
+      if (error instanceof Error) {
+        // The SDK aborts with the string reason 'timeout'. Node's fetch rejects
+        // with that string rather than an AbortError, so the SDK reports it as
+        // an unknown error with `cause: 'timeout'`, not a SquareTimeoutError.
+        if (error.cause === 'timeout') {
+          return new SquareNetworkError('Request to Square timed out', 'TIMEOUT', { cause: error });
+        }
+        return new SquareNetworkError(error.message, 'NETWORK_ERROR', { cause: error });
+      }
+    }
   }
 
   // Handle standard errors
@@ -136,6 +180,37 @@ export function parseSquareError(error: unknown): SquareError {
   }
 
   return new SquareError('Unknown error occurred');
+}
+
+/**
+ * Whether retrying the failed call could succeed: a network failure or
+ * timeout, a request timeout (408), rate limiting (429), or a Square server
+ * error (5xx). Validation,
+ * auth and other 4xx errors return `false`.
+ *
+ * For a mutating call, retry with the **same** `idempotencyKey`. Otherwise a
+ * request that reached Square before the failure can be applied twice.
+ *
+ * @example
+ * ```typescript
+ * const idempotencyKey = createIdempotencyKey();
+ * try {
+ *   await square.payments.create({ sourceId, amount, idempotencyKey });
+ * } catch (error) {
+ *   if (isRetryableSquareError(error)) {
+ *     await square.payments.create({ sourceId, amount, idempotencyKey }); // same key
+ *   } else {
+ *     throw error;
+ *   }
+ * }
+ * ```
+ */
+export function isRetryableSquareError(error: unknown): boolean {
+  if (error instanceof SquareNetworkError) return true;
+  if (!(error instanceof SquareError) || error instanceof SquareValidationError) return false;
+
+  const { statusCode } = error;
+  return statusCode === 408 || statusCode === 429 || (statusCode !== undefined && statusCode >= 500);
 }
 
 /**
