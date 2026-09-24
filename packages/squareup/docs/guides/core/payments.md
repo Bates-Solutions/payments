@@ -142,6 +142,8 @@ try {
 }
 ```
 
+See [Errors and Retries](./errors.md) for network failures, timeouts and safe retries.
+
 ### Common Error Codes
 
 | Code | Description |
