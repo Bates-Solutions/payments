@@ -20,7 +20,7 @@
 
 ---
 
-A thin, consistent wrapper over the official [`stripe`](https://www.npmjs.com/package/stripe) Node SDK. It gives you a small service-oriented client, a typed error hierarchy, money helpers, and framework-ready webhook handling — while staying out of the way when you need the raw SDK. Part of the same family as [`@bates-solutions/squareup`](https://www.npmjs.com/package/@bates-solutions/squareup), so if you know one, you know this.
+A thin, consistent wrapper over the official [`stripe`](https://www.npmjs.com/package/stripe) Node SDK. It gives you a small service-oriented client, a typed error hierarchy, money helpers, and framework-ready webhook handling — while staying out of the way when you need the raw SDK. Part of the same family as [`@bates-solutions/squareup`](https://jsr.io/@bates-solutions/squareup), so if you know one, you know this.
 
 ## Features
 
