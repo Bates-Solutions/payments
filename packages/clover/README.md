@@ -20,7 +20,7 @@
 
 ---
 
-Clover has no first-class Node SDK, so this library talks to Clover over a small typed **`fetch`-based client** — zero runtime dependencies. It gives you a service-oriented client, a typed error hierarchy, money helpers, and framework-ready webhook handling. Part of the same family as [`@bates-solutions/squareup`](https://www.npmjs.com/package/@bates-solutions/squareup) and [`@bates-solutions/stripe`](https://www.npmjs.com/package/@bates-solutions/stripe), so if you know one, you know this.
+Clover has no first-class Node SDK, so this library talks to Clover over a small typed **`fetch`-based client** — zero runtime dependencies. It gives you a service-oriented client, a typed error hierarchy, money helpers, and framework-ready webhook handling. Part of the same family as [`@bates-solutions/squareup`](https://jsr.io/@bates-solutions/squareup) and [`@bates-solutions/stripe`](https://jsr.io/@bates-solutions/stripe), so if you know one, you know this.
 
 It targets both Clover hosts transparently:
 
