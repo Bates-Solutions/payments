@@ -8,6 +8,6 @@
 
 > **SubscriptionStatus** = `Stripe.Subscription.Status`
 
-Defined in: [core/services/subscriptions.service.ts:14](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/subscriptions.service.ts#L14)
+Defined in: [core/services/subscriptions.service.ts:14](https://github.com/Bates-Solutions/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/subscriptions.service.ts#L14)
 
 Subscription status

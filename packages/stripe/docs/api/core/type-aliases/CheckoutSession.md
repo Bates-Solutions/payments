@@ -8,6 +8,6 @@
 
 > **CheckoutSession** = `Stripe.Checkout.Session`
 
-Defined in: [core/services/checkout.service.ts:9](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/checkout.service.ts#L9)
+Defined in: [core/services/checkout.service.ts:9](https://github.com/Bates-Solutions/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/checkout.service.ts#L9)
 
 A Stripe Checkout Session

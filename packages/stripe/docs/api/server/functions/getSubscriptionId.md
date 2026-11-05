@@ -8,7 +8,7 @@
 
 > **getSubscriptionId**(`event`): `string` \| `undefined`
 
-Defined in: [server/webhook.ts:345](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/server/webhook.ts#L345)
+Defined in: [server/webhook.ts:345](https://github.com/Bates-Solutions/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/server/webhook.ts#L345)
 
 Extract the Subscription ID from a webhook event, when present.
 

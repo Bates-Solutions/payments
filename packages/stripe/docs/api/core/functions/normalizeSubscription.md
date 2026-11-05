@@ -8,7 +8,7 @@
 
 > **normalizeSubscription**(`subscription`): [`NormalizedSubscription`](../interfaces/NormalizedSubscription.md)
 
-Defined in: [core/services/subscriptions.service.ts:54](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/subscriptions.service.ts#L54)
+Defined in: [core/services/subscriptions.service.ts:54](https://github.com/Bates-Solutions/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/services/subscriptions.service.ts#L54)
 
 Normalize a raw Stripe subscription into a version-stable shape.
 

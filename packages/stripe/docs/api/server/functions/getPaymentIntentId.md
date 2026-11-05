@@ -8,7 +8,7 @@
 
 > **getPaymentIntentId**(`event`): `string` \| `undefined`
 
-Defined in: [server/webhook.ts:289](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/server/webhook.ts#L289)
+Defined in: [server/webhook.ts:289](https://github.com/Bates-Solutions/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/server/webhook.ts#L289)
 
 Extract the PaymentIntent ID from a webhook event, when present.
 
