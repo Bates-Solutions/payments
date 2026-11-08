@@ -26,7 +26,7 @@ A thin, consistent wrapper over the official [`stripe`](https://www.npmjs.com/pa
 
 - **Simplified APIs** – Less boilerplate over payments, subscriptions, hosted checkout, and billing
 - **Type-Safe** – Full TypeScript support; wraps Stripe's own types
-- **Typed Errors** – `parseStripeError` normalizes Stripe errors into a small class hierarchy
+- **Typed Errors** – `parseStripeError` normalizes Stripe errors into a small class hierarchy with stable codes (see the [errors guide](./docs/guides/core/errors.md))
 - **Edge-ready webhooks** – WebCrypto signature verification that runs on Node, **Deno**, Bun, and Workers, plus Express / Next.js / Lambda adapters
 - **Version-stable subscriptions** – Normalized shape with `Date` period fields, absorbing Stripe's API churn
 - **Escape Hatch** – `client.sdk` exposes the underlying Stripe instance for anything not wrapped

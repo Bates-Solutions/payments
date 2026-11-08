@@ -6,6 +6,7 @@ Tutorials and examples for `@bates-solutions/stripe`.
 
 Backend API integration guides:
 
+- [Errors](./core/errors.md) - Error classes and the normalized code map
 - [Processing Payments](./core/payments.md) - Create, capture, and cancel payments
 - [Managing Customers](./core/customers.md) - Customer CRUD and search
 - [Refunds](./core/refunds.md) - Full and partial refunds

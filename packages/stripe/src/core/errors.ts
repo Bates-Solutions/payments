@@ -19,6 +19,7 @@ export type StripeErrorCode =
   | 'INCORRECT_NUMBER'
   | 'INSUFFICIENT_FUNDS'
   | 'PROCESSING_ERROR'
+  | 'AUTHENTICATION_REQUIRED'
   | 'UNKNOWN';
 
 /**
@@ -116,9 +117,14 @@ export class StripeValidationError extends StripeError {
 
 /**
  * Shape of a Stripe SDK error (duck-typed to avoid importing the SDK value).
+ *
+ * `stripe-node` errors set `type` to their class name (e.g. `StripeCardError`)
+ * and keep Stripe's own error type (e.g. `card_error`) in `rawType`. Plain
+ * objects in Stripe's API shape carry the API type in `type`.
  */
 interface StripeSdkError {
   type?: string;
+  rawType?: string;
   code?: string;
   statusCode?: number;
   message?: string;
@@ -129,29 +135,83 @@ interface StripeSdkError {
   payment_intent?: { id?: string };
 }
 
+/**
+ * `stripe-node` error class names, mapped to the Stripe error type they stand
+ * for. Used when an error has no known `rawType` (e.g. a connection error,
+ * which has no API response).
+ */
+const SDK_CLASS_TYPES: Record<string, string> = {
+  StripeCardError: 'card_error',
+  StripeInvalidRequestError: 'invalid_request_error',
+  StripeAPIError: 'api_error',
+  StripeAuthenticationError: 'authentication_error',
+  StripePermissionError: 'permission_error',
+  StripeRateLimitError: 'rate_limit_error',
+  RateLimitError: 'rate_limit_error',
+  StripeConnectionError: 'api_connection_error',
+  StripeIdempotencyError: 'idempotency_error',
+  // Connect OAuth errors (connect.stripe.com)
+  StripeOAuthError: 'oauth_error',
+  StripeInvalidGrantError: 'invalid_grant',
+  StripeInvalidClientError: 'invalid_client',
+  StripeOAuthInvalidRequestError: 'invalid_request',
+  StripeInvalidScopeError: 'invalid_scope',
+  StripeUnsupportedGrantTypeError: 'unsupported_grant_type',
+  StripeUnsupportedResponseTypeError: 'unsupported_response_type',
+};
+
 const STRIPE_ERROR_TYPES = new Set([
   'card_error',
   'invalid_request_error',
   'api_error',
   'idempotency_error',
   'authentication_error',
+  'permission_error',
   'rate_limit_error',
   'validation_error',
   'api_connection_error',
+  'oauth_error',
+  'invalid_grant',
+  'invalid_client',
+  'invalid_request',
+  'invalid_scope',
+  'unsupported_grant_type',
+  'unsupported_response_type',
 ]);
 
-function isStripeSdkError(error: unknown): error is StripeSdkError {
-  return (
-    !!error &&
-    typeof error === 'object' &&
-    'type' in error &&
-    typeof (error as { type?: unknown }).type === 'string' &&
-    STRIPE_ERROR_TYPES.has((error as { type: string }).type)
-  );
+/**
+ * Work out the Stripe error type of a thrown value, or `undefined` if it is
+ * not a Stripe error.
+ */
+function stripeErrorType(error: unknown): string | undefined {
+  if (!error || typeof error !== 'object') {
+    return undefined;
+  }
+  const { type, rawType } = error as { type?: unknown; rawType?: unknown };
+  // The SDK raises 403s as StripePermissionError but keeps the API type
+  // (`invalid_request_error`) in rawType; the class is the more specific.
+  if (type === 'StripePermissionError') {
+    return 'permission_error';
+  }
+  // Otherwise the API type wins: the SDK raises e.g. a 409 as a generic
+  // StripeAPIError whose rawType is `invalid_request_error`.
+  if (typeof rawType === 'string' && STRIPE_ERROR_TYPES.has(rawType)) {
+    return rawType;
+  }
+  if (typeof type === 'string' && Object.hasOwn(SDK_CLASS_TYPES, type)) {
+    return SDK_CLASS_TYPES[type];
+  }
+  if (typeof type === 'string' && STRIPE_ERROR_TYPES.has(type)) {
+    return type;
+  }
+  return undefined;
 }
 
 /**
  * Parse a Stripe SDK error (or any thrown value) into a typed exception.
+ *
+ * Understands both `stripe-node` error instances and plain objects in
+ * Stripe's API error shape. See the error guide for the full code map.
  */
 export function parseStripeError(error: unknown): StripeError {
   // Already a typed error from this library — pass it through unchanged.
@@ -159,51 +219,56 @@ export function parseStripeError(error: unknown): StripeError {
     return error;
   }
 
-  if (isStripeSdkError(error)) {
-    const statusCode = error.statusCode ?? 500;
-    const message = error.message ?? error.raw?.message ?? 'Stripe API error';
-    const declineCode = error.decline_code ?? error.raw?.decline_code;
+  const type = stripeErrorType(error);
+  if (type) {
+    const sdkError = error as StripeSdkError;
+    // stripe-node defaults missing strings to '', so skip empty values too.
+    const message = [sdkError.message, sdkError.raw?.message].find(Boolean) ?? 'Stripe API error';
+    const declineCode = [sdkError.decline_code, sdkError.raw?.decline_code].find(Boolean);
+    const apiError = (code: StripeErrorCode, fallbackStatus: number): StripeApiError =>
+      new StripeApiError(message, code, sdkError.statusCode ?? fallbackStatus, {
+        type,
+        param: sdkError.param,
+        requestId: sdkError.requestId,
+      });
 
-    switch (error.type) {
+    switch (type) {
       case 'authentication_error':
+      case 'invalid_client':
         return new StripeAuthError(message);
 
+      case 'permission_error':
+        return apiError('FORBIDDEN', 403);
+
       case 'card_error':
-        return new StripePaymentError(message, mapCardErrorCode(error.code), {
-          paymentIntentId: error.payment_intent?.id,
+        return new StripePaymentError(message, mapCardErrorCode(sdkError.code, declineCode), {
+          paymentIntentId: sdkError.payment_intent?.id,
           declineCode,
         });
 
       case 'rate_limit_error':
-        return new StripeApiError(message, 'RATE_LIMITED', statusCode, {
-          type: error.type,
-          param: error.param,
-          requestId: error.requestId,
-        });
+        return apiError('RATE_LIMITED', 429);
 
       case 'idempotency_error':
-        return new StripeApiError(message, 'IDEMPOTENCY_ERROR', statusCode, {
-          type: error.type,
-          param: error.param,
-          requestId: error.requestId,
-        });
+        return apiError('IDEMPOTENCY_ERROR', 400);
 
       case 'invalid_request_error':
       case 'validation_error':
-        return new StripeApiError(
-          message,
-          statusCode === 404 ? 'NOT_FOUND' : 'BAD_REQUEST',
-          statusCode,
-          { type: error.type, param: error.param, requestId: error.requestId }
+        return apiError(statusCodeToErrorCode(sdkError.statusCode), 400);
+
+      case 'api_connection_error':
+        // No HTTP response at all (network failure, timeout).
+        return apiError('SERVICE_UNAVAILABLE', 503);
+
+      case 'api_error':
+        return apiError(
+          sdkError.statusCode === 503 ? 'SERVICE_UNAVAILABLE' : 'INTERNAL_SERVER_ERROR',
+          500
         );
 
       default:
-        // api_error, api_connection_error, and anything unexpected
-        return new StripeApiError(message, 'INTERNAL_SERVER_ERROR', statusCode, {
-          type: error.type,
-          param: error.param,
-          requestId: error.requestId,
-        });
+        // Connect OAuth: invalid_grant, invalid_request, invalid_scope, …
+        return apiError('BAD_REQUEST', 400);
     }
   }
 
@@ -215,21 +280,45 @@ export function parseStripeError(error: unknown): StripeError {
 }
 
 /**
- * Map a Stripe card-error `code` to a normalized code.
+ * Map the HTTP status of an `invalid_request_error` to a normalized code.
  */
-function mapCardErrorCode(code?: string): StripeErrorCode {
-  if (!code) return 'CARD_DECLINED';
+function statusCodeToErrorCode(statusCode: number | undefined): StripeErrorCode {
+  switch (statusCode) {
+    case 403:
+      return 'FORBIDDEN';
+    case 404:
+      return 'NOT_FOUND';
+    case 409:
+      return 'CONFLICT';
+    default:
+      return 'BAD_REQUEST';
+  }
+}
 
-  const codeMap: Record<string, StripeErrorCode> = {
-    card_declined: 'CARD_DECLINED',
-    expired_card: 'EXPIRED_CARD',
-    incorrect_cvc: 'INCORRECT_CVC',
-    invalid_cvc: 'INCORRECT_CVC',
-    incorrect_number: 'INCORRECT_NUMBER',
-    invalid_number: 'INCORRECT_NUMBER',
-    insufficient_funds: 'INSUFFICIENT_FUNDS',
-    processing_error: 'PROCESSING_ERROR',
-  };
+const CARD_ERROR_CODES: Record<string, StripeErrorCode> = {
+  card_declined: 'CARD_DECLINED',
+  expired_card: 'EXPIRED_CARD',
+  incorrect_cvc: 'INCORRECT_CVC',
+  invalid_cvc: 'INCORRECT_CVC',
+  incorrect_number: 'INCORRECT_NUMBER',
+  invalid_number: 'INCORRECT_NUMBER',
+  insufficient_funds: 'INSUFFICIENT_FUNDS',
+  processing_error: 'PROCESSING_ERROR',
+  authentication_required: 'AUTHENTICATION_REQUIRED',
+};
 
-  return codeMap[code] ?? 'CARD_DECLINED';
+/**
+ * Map a Stripe card-error `code` (and, for a generic `card_declined`, its more
+ * specific `decline_code`) to a normalized code.
+ */
+function mapCardErrorCode(code?: string, declineCode?: string): StripeErrorCode {
+  // Own keys only, so a code like "constructor" can't hit Object.prototype.
+  const lookup = (key: string | undefined): StripeErrorCode | undefined =>
+    key !== undefined && Object.hasOwn(CARD_ERROR_CODES, key) ? CARD_ERROR_CODES[key] : undefined;
+
+  if (code === 'card_declined') {
+    const specific = lookup(declineCode);
+    if (specific) return specific;
+  }
+  return lookup(code) ?? 'CARD_DECLINED';
 }
