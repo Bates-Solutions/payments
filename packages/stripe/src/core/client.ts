@@ -9,6 +9,8 @@ import { SubscriptionsService } from './services/subscriptions.service.js';
 import { PricesService } from './services/prices.service.js';
 import { ProductsService } from './services/products.service.js';
 import { InvoicesService } from './services/invoices.service.js';
+import { OAuthService } from './services/oauth.service.js';
+import { StripeValidationError } from './errors.js';
 
 /**
  * Configuration options for the Stripe client
@@ -30,6 +32,19 @@ export interface StripeClientConfig {
    * @default 1
    */
   maxNetworkRetries?: number;
+
+  /**
+   * Act as this connected account (`acct_…`) on every call: the SDK sends it
+   * as the `Stripe-Account` header. Usually you don't set this yourself; use
+   * {@link StripeClient.forAccount} on your platform client instead.
+   */
+  stripeAccount?: string;
+
+  /**
+   * Your platform's Connect client ID (`ca_…`). Used as the default by
+   * `oauth.deauthorize`.
+   */
+  connectClientId?: string;
 }
 
 /**
@@ -52,7 +67,10 @@ export interface StripeClientConfig {
  */
 export class StripeClient {
   private readonly client: Stripe;
+  private readonly config: StripeClientConfig;
+  private readonly stripeConfig: Stripe.StripeConfig;
   private readonly environmentValue: StripeEnvironment;
+  private platformClient?: Stripe;
 
   public readonly payments: PaymentsService;
   public readonly customers: CustomersService;
@@ -63,6 +81,7 @@ export class StripeClient {
   public readonly prices: PricesService;
   public readonly products: ProductsService;
   public readonly invoices: InvoicesService;
+  public readonly oauth: OAuthService;
 
   constructor(config: StripeClientConfig) {
     if (!config.apiKey) {
@@ -81,7 +100,12 @@ export class StripeClient {
       stripeConfig.apiVersion = config.apiVersion as Stripe.StripeConfig['apiVersion'];
     }
 
-    this.client = new Stripe(config.apiKey, stripeConfig);
+    this.config = config;
+    this.stripeConfig = stripeConfig;
+    this.client = new Stripe(
+      config.apiKey,
+      config.stripeAccount ? { ...stripeConfig, stripeAccount: config.stripeAccount } : stripeConfig
+    );
 
     // Initialize services
     this.payments = new PaymentsService(this.client);
@@ -93,6 +117,50 @@ export class StripeClient {
     this.prices = new PricesService(this.client);
     this.products = new ProductsService(this.client);
     this.invoices = new InvoicesService(this.client);
+    this.oauth = new OAuthService(() => this.getPlatformClient(), config.connectClientId);
+  }
+
+  /**
+   * Return a client that acts as a connected account. Every call it makes
+   * sends `Stripe-Account: <accountId>`, so all services work unchanged on
+   * that account. The original client is not modified.
+   *
+   * @param accountId - Connected account ID (`acct_…`), e.g. the
+   *   `stripeUserId` from `oauth.exchangeCode`
+   * @throws {StripeValidationError} When `accountId` is not an `acct_…` ID
+   *
+   * @example
+   * ```typescript
+   * const retailer = stripe.forAccount('acct_123');
+   * const product = await retailer.products.create({ name: 'Sourdough loaf' });
+   * ```
+   */
+  forAccount(accountId: string): StripeClient {
+    // typeof guards JS callers who pass a non-string.
+    if (typeof accountId !== 'string' || !accountId.startsWith('acct_')) {
+      throw new StripeValidationError('accountId must be a connected account ID (acct_…)', 'accountId');
+    }
+    return new StripeClient({ ...this.config, stripeAccount: accountId });
+  }
+
+  /**
+   * The connected account this client acts as, or `undefined` for the
+   * platform account.
+   */
+  get accountId(): string | undefined {
+    return this.config.stripeAccount;
+  }
+
+  /**
+   * SDK client without a `Stripe-Account` header, for calls that must run as
+   * the platform (Connect OAuth). Same as `sdk` on a platform client.
+   */
+  private getPlatformClient(): Stripe {
+    if (!this.config.stripeAccount) {
+      return this.client;
+    }
+    this.platformClient ??= new Stripe(this.config.apiKey, this.stripeConfig);
+    return this.platformClient;
   }
 
   /**

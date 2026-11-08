@@ -54,6 +54,7 @@ export {
   getCustomerId,
   getSubscriptionId,
   getInvoiceId,
+  getAccountId,
   resolveId,
 } from './webhook.js';
 

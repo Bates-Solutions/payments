@@ -29,6 +29,7 @@ A thin, consistent wrapper over the official [`stripe`](https://www.npmjs.com/pa
 - **Typed Errors** – `parseStripeError` normalizes Stripe errors into a small class hierarchy
 - **Edge-ready webhooks** – WebCrypto signature verification that runs on Node, **Deno**, Bun, and Workers, plus Express / Next.js / Lambda adapters
 - **Version-stable subscriptions** – Normalized shape with `Date` period fields, absorbing Stripe's API churn
+- **Connected accounts** – Connect OAuth helpers and `client.forAccount(id)`, which runs every service as a connected account
 - **Escape Hatch** – `client.sdk` exposes the underlying Stripe instance for anything not wrapped
 
 ## Requirements
@@ -129,6 +130,22 @@ sub.currentPeriodEnd;   // Date
 const { data: prices } = await client.prices.list({ active: true, expandProduct: true });
 ```
 
+### Connected accounts (Connect)
+
+```typescript
+import { buildAuthorizeUrl } from '@bates-solutions/stripe';
+
+// 1. Send the user to Stripe to connect their account
+const url = buildAuthorizeUrl({ clientId: 'ca_123', state: csrfToken });
+
+// 2. In the redirect handler (after checking state)
+const { stripeUserId } = await client.oauth.exchangeCode(code);
+
+// 3. Act as the connected account: every call sends Stripe-Account
+const retailer = client.forAccount(stripeUserId);
+await retailer.products.list();
+```
+
 ### Webhook Handling (Express)
 
 ```typescript
@@ -209,7 +226,8 @@ Deno.serve(handler);
 ```
 
 Entity helpers extract common IDs from any event: `getPaymentIntentId`,
-`getChargeId`, `getCustomerId`, `getSubscriptionId`, and `resolveId` (collapses
+`getChargeId`, `getCustomerId`, `getSubscriptionId`, `getInvoiceId`, `getAccountId`
+(the connected account of a Connect event), and `resolveId` (collapses
 an id-string-or-expanded-object reference). `fromUnixTime(seconds)` converts
 Stripe's epoch-seconds timestamps to a `Date`.
 
@@ -226,6 +244,7 @@ Stripe's epoch-seconds timestamps to a `Date`.
 | `prices`        | List/retrieve prices (with product expansion)                   |
 | `products`      | List/retrieve products                                          |
 | `invoices`      | Invoices + invoice items (create, finalize, pay, void, send)    |
+| `oauth`         | Connect OAuth: exchange a code, deauthorize an account          |
 
 ## Utilities
 

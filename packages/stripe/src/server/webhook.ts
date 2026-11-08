@@ -354,6 +354,17 @@ export function getSubscriptionId(event: WebhookEvent): string | undefined {
 }
 
 /**
+ * Extract the connected account ID from a webhook event, when present.
+ *
+ * Events from a Connect webhook endpoint carry the connected account they
+ * happened on (`event.account`). Pass it to `stripe.forAccount(id)` to act on
+ * that account. Events on your own platform account return `undefined`.
+ */
+export function getAccountId(event: WebhookEvent): string | undefined {
+  return event.account ?? undefined;
+}
+
+/**
  * Extract the Invoice ID from a webhook event, when present.
  *
  * Works on `invoice.*` events (the object is the invoice) and on objects that
