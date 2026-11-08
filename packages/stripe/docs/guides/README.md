@@ -8,6 +8,7 @@ Backend API integration guides:
 
 - [Processing Payments](./core/payments.md) - Create, capture, and cancel payments
 - [Managing Customers](./core/customers.md) - Customer CRUD and search
+- [Payment Methods & SetupIntents](./core/payment-methods.md) - Save cards for later charges
 - [Refunds](./core/refunds.md) - Full and partial refunds
 - [Checkout](./core/checkout.md) - Hosted Checkout Sessions (subscription & one-time)
 - [Billing Portal](./core/billing-portal.md) - Customer self-service billing

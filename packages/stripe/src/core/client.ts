@@ -9,6 +9,8 @@ import { SubscriptionsService } from './services/subscriptions.service.js';
 import { PricesService } from './services/prices.service.js';
 import { ProductsService } from './services/products.service.js';
 import { InvoicesService } from './services/invoices.service.js';
+import { PaymentMethodsService } from './services/payment-methods.service.js';
+import { SetupIntentsService } from './services/setup-intents.service.js';
 
 /**
  * Configuration options for the Stripe client
@@ -63,6 +65,8 @@ export class StripeClient {
   public readonly prices: PricesService;
   public readonly products: ProductsService;
   public readonly invoices: InvoicesService;
+  public readonly paymentMethods: PaymentMethodsService;
+  public readonly setupIntents: SetupIntentsService;
 
   constructor(config: StripeClientConfig) {
     if (!config.apiKey) {
@@ -93,6 +97,8 @@ export class StripeClient {
     this.prices = new PricesService(this.client);
     this.products = new ProductsService(this.client);
     this.invoices = new InvoicesService(this.client);
+    this.paymentMethods = new PaymentMethodsService(this.client);
+    this.setupIntents = new SetupIntentsService(this.client);
   }
 
   /**

@@ -121,12 +121,24 @@ const portal = await client.billingPortal.create({
 
 // Read a subscription with period fields already as JS Dates
 const sub = await client.subscriptions.get('sub_123');
-sub.status;             // 'active'
-sub.priceId;            // 'price_123'
-sub.currentPeriodEnd;   // Date
+sub.status; // 'active'
+sub.priceId; // 'price_123'
+sub.currentPeriodEnd; // Date
 
 // Read your catalog from Stripe (products expanded)
 const { data: prices } = await client.prices.list({ active: true, expandProduct: true });
+```
+
+### Saving a card for later
+
+```typescript
+// Server: create a SetupIntent and hand its client secret to Stripe.js
+const intent = await client.setupIntents.create({ customerId: 'cus_123' });
+// ...the browser confirms it with stripe.confirmCardSetup(intent.client_secret)
+
+// Later: list the saved cards and make one the default
+const { data: cards } = await client.paymentMethods.list({ customerId: 'cus_123', type: 'card' });
+await client.paymentMethods.setDefault('cus_123', cards[0].id);
 ```
 
 ### Webhook Handling (Express)
@@ -215,26 +227,28 @@ Stripe's epoch-seconds timestamps to a `Date`.
 
 ## Available Services
 
-| Service         | Description                                                     |
-| --------------- | --------------------------------------------------------------- |
-| `payments`      | Create and manage payments (PaymentIntents)                     |
-| `customers`     | Customer management + search                                    |
-| `refunds`       | Create and list refunds                                         |
-| `checkout`      | Hosted Checkout Sessions (subscription & one-time)              |
-| `billingPortal` | Customer billing portal sessions                                |
-| `subscriptions` | Get, list, cancel subscriptions, normalized with `Date`s     |
-| `prices`        | List/retrieve prices (with product expansion)                   |
-| `products`      | List/retrieve products                                          |
-| `invoices`      | Invoices + invoice items (create, finalize, pay, void, send)    |
+| Service          | Description                                                  |
+| ---------------- | ------------------------------------------------------------ |
+| `payments`       | Create and manage payments (PaymentIntents)                  |
+| `customers`      | Customer management + search                                 |
+| `refunds`        | Create and list refunds                                      |
+| `checkout`       | Hosted Checkout Sessions (subscription & one-time)           |
+| `billingPortal`  | Customer billing portal sessions                             |
+| `subscriptions`  | Get, list, cancel subscriptions, normalized with `Date`s     |
+| `prices`         | List/retrieve prices (with product expansion)                |
+| `products`       | List/retrieve products                                       |
+| `invoices`       | Invoices + invoice items (create, finalize, pay, void, send) |
+| `paymentMethods` | Saved payment methods: list, attach, detach, set the default |
+| `setupIntents`   | Save a payment method for later (off-session) charges        |
 
 ## Utilities
 
 ```typescript
 import { toMinor, fromMinor, formatMoney } from '@bates-solutions/stripe';
 
-toMinor(10.99);            // 1099
-fromMinor(1099);           // 10.99
-formatMoney(1099, 'usd');  // "$10.99"
+toMinor(10.99); // 1099
+fromMinor(1099); // 10.99
+formatMoney(1099, 'usd'); // "$10.99"
 ```
 
 ## Documentation
@@ -247,11 +261,11 @@ formatMoney(1099, 'usd');  // "$10.99"
 
 This library is one of three sibling payment-API wrappers from Bates Solutions that deliberately share the same design — learn one and you know all three:
 
-| Library | Wraps | Install (JSR) | Source |
-| --- | --- | --- | --- |
-| **[`@bates-solutions/stripe`](https://jsr.io/@bates-solutions/stripe)** _(this package)_ | Stripe | `jsr:@bates-solutions/stripe` | [GitHub](https://github.com/mbates/stripe) |
-| [`@bates-solutions/squareup`](https://jsr.io/@bates-solutions/squareup) | Square | `jsr:@bates-solutions/squareup` | [GitHub](https://github.com/mbates/squareup) |
-| [`@bates-solutions/clover`](https://jsr.io/@bates-solutions/clover) | Clover | `jsr:@bates-solutions/clover` | [GitHub](https://github.com/mbates/clover) |
+| Library                                                                                  | Wraps  | Install (JSR)                   | Source                                       |
+| ---------------------------------------------------------------------------------------- | ------ | ------------------------------- | -------------------------------------------- |
+| **[`@bates-solutions/stripe`](https://jsr.io/@bates-solutions/stripe)** _(this package)_ | Stripe | `jsr:@bates-solutions/stripe`   | [GitHub](https://github.com/mbates/stripe)   |
+| [`@bates-solutions/squareup`](https://jsr.io/@bates-solutions/squareup)                  | Square | `jsr:@bates-solutions/squareup` | [GitHub](https://github.com/mbates/squareup) |
+| [`@bates-solutions/clover`](https://jsr.io/@bates-solutions/clover)                      | Clover | `jsr:@bates-solutions/clover`   | [GitHub](https://github.com/mbates/clover)   |
 
 ### How they're related
 
