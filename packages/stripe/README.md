@@ -129,6 +129,25 @@ sub.currentPeriodEnd;   // Date
 const { data: prices } = await client.prices.list({ active: true, expandProduct: true });
 ```
 
+### Managing the catalog
+
+```typescript
+const product = await client.products.create({
+  name: 'Sourdough loaf',
+  metadata: { sku: 'SD-001' }, // tag it with your own id
+});
+const price = await client.prices.create({
+  product: product.id,
+  unitAmount: 899,
+  currency: 'usd',
+});
+
+// Prices are immutable: replace creates a new one and deactivates the old one
+const { price: newPrice } = await client.prices.replace(price.id, { unitAmount: 949 });
+
+await client.products.archive(product.id);
+```
+
 ### Webhook Handling (Express)
 
 ```typescript
@@ -223,8 +242,8 @@ Stripe's epoch-seconds timestamps to a `Date`.
 | `checkout`      | Hosted Checkout Sessions (subscription & one-time)              |
 | `billingPortal` | Customer billing portal sessions                                |
 | `subscriptions` | Get, list, cancel subscriptions, normalized with `Date`s     |
-| `prices`        | List/retrieve prices (with product expansion)                   |
-| `products`      | List/retrieve products                                          |
+| `prices`        | List, retrieve, create, update, archive and replace prices      |
+| `products`      | List, retrieve, create, update and archive products             |
 | `invoices`      | Invoices + invoice items (create, finalize, pay, void, send)    |
 
 ## Utilities
