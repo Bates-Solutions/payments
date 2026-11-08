@@ -137,7 +137,22 @@ app.post(
 | ----------- | --------- | --------------------------------------------- |
 | `payments`  | Ecommerce | Create/get/capture charges                    |
 | `refunds`   | Ecommerce | Create and get refunds                        |
+| `orders`    | Platform  | List/get orders with line items, time filters |
 | `customers` | Platform  | Customer CRUD (`/v3/merchants/{mId}`)         |
+
+## Orders (Platform API)
+
+```typescript
+// Paid orders in October with their line items
+const { data: orders } = await clover.orders.list({
+  createdTimeFrom: new Date('2026-10-01T00:00:00Z'),
+  createdTimeTo: new Date('2026-11-01T00:00:00Z'),
+  expand: ['lineItems'],
+});
+const paid = orders.filter((o) => o.paymentState === 'PAID');
+```
+
+See the [orders guide](./docs/guides/core/orders.md).
 
 ## Utilities
 
