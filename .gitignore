@@ -40,7 +40,10 @@ temp/
 **/docs/plans/
 .issues/
 
-# AI assistants
+# AI assistants (kept out of this public repo; scripts/import-history.sh also
+# filters them out of imported history)
+CLAUDE.md
+CLAUDE.local.md
 .claude/
 .cursor/
 .cursorrules

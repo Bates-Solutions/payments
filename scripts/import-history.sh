@@ -17,7 +17,10 @@
 # What it does, per package:
 #   1. Clones https://github.com/$SOURCE_ORG/<name> fresh (never touches a local checkout).
 #   2. Rewrites it with git filter-repo so every file lives under packages/<name>/
-#      and every tag vX.Y.Z becomes <name>-vX.Y.Z.
+#      and every tag vX.Y.Z becomes <name>-vX.Y.Z. It also drops every CLAUDE.md,
+#      CLAUDE.local.md and .claude/ from the history: AI assistant files are kept out
+#      of this public repo. Change that filter and every imported commit id changes,
+#      so the next re-import refuses as "rewritten upstream".
 #   3. Merges the rewritten <ref> into the current branch with --allow-unrelated-histories
 #      (first run) or a normal merge (re-runs), and fetches the renamed tags locally.
 #
@@ -44,8 +47,8 @@
 #   it shows up as a delete plus an add, and needs a manual resolve.
 #
 # Any other conflict needs a person. The monorepo also edited some imported
-# files (each package's package.json and tsconfig.json, squareup's typedoc.json,
-# the CLAUDE.md files and the vitest.config.ts shims), so a source change to the
+# files (each package's package.json and tsconfig.json, squareup's typedoc.json
+# and the vitest.config.ts shims), so a source change to the
 # same lines conflicts. By default the script then aborts that merge
 # (`git merge --abort`), leaves the branch as it was before that package, and
 # exits non-zero. To resolve by hand, re-run for that package with
@@ -246,7 +249,8 @@ for p in "${PACKAGES[@]}"; do
   echo "==> $p: rewriting into packages/$p/ and renaming tags to $p-v*"
   git -C "$src" filter-repo --quiet --force \
     --to-subdirectory-filter "packages/$p" \
-    --tag-rename "":"$p-"
+    --tag-rename "":"$p-" \
+    --invert-paths --path-regex '(^|/)CLAUDE(\.local)?\.md$' --path-regex '(^|/)\.claude/'
 
   remote="import-$p"
   git remote remove "$remote" 2>/dev/null || true
