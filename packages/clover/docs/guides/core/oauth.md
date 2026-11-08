@@ -45,19 +45,31 @@ const storedState = req.session.oauthState;
 delete req.session.oauthState;
 
 if (!storedState) throw new Error('OAuth state missing: start the flow again');
-if (typeof req.query.state !== 'string' || req.query.state !== storedState) {
+// In Express, req.query values can be string | string[] | ParsedQs: require strings
+const { state, code, merchant_id: merchantId, error } = req.query;
+if (typeof state !== 'string' || state !== storedState) {
   throw new Error('OAuth state mismatch');
 }
 
-const tokens = await oauth.obtainToken({ code: req.query.code });
+// The merchant cancelled or Clover reported an error: no code to exchange
+if (error !== undefined || typeof code !== 'string' || !code) {
+  throw new Error('Clover authorization was not completed: connect again to retry');
+}
+if (typeof merchantId !== 'string' || !merchantId) {
+  throw new Error('Clover did not return a merchant_id');
+}
+
+const tokens = await oauth.obtainToken({ code });
 // { accessToken, expiresAt, refreshToken, refreshTokenExpiresAt }
 
 const clover = createCloverClient({
   apiToken: tokens.accessToken,
-  merchantId: req.query.merchant_id,
+  merchantId,
   environment: 'production',
 });
 ```
+
+Clover's OAuth docs do not say what the redirect carries when a merchant denies or cancels, so the example treats any `error` parameter, or a missing `code`, as "not completed" instead of calling `obtainToken` with nothing to exchange.
 
 The state check is what stops a cross-site request forgery: an attacker sending your user to the callback with the attacker's own `code`. Its order matters:
 
