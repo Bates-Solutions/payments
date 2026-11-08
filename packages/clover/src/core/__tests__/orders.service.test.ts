@@ -102,6 +102,72 @@ describe('OrdersService', () => {
       expect('lineItems' in data[3]!).toBe(false);
     });
 
+    it('unwraps every expanded collection, including nested line item ones', async () => {
+      const env = <T>(...elements: T[]) => ({ elements });
+      const fetchImpl = mockFetch({
+        elements: [
+          {
+            id: 'O1',
+            customers: env({ id: 'C1' }),
+            payments: env({ id: 'P1', amount: 599 }),
+            refunds: env({ id: 'R1' }),
+            credits: env({ id: 'CR1' }),
+            voids: env({ id: 'V1' }),
+            discounts: env({ id: 'D1' }),
+            employee: { id: 'E1' },
+            lineItems: env({
+              id: 'L1',
+              discounts: env({ id: 'LD1' }),
+              modifications: env({ id: 'M1' }),
+              item: { id: 'I1' },
+            }),
+          },
+        ],
+      });
+
+      const { data } = await makeService(fetchImpl).list({
+        expand: ['lineItems', 'payments', 'lineItems.discounts', 'lineItems.modifications'],
+      });
+
+      expect(data[0]).toEqual({
+        id: 'O1',
+        customers: [{ id: 'C1' }],
+        payments: [{ id: 'P1', amount: 599 }],
+        refunds: [{ id: 'R1' }],
+        credits: [{ id: 'CR1' }],
+        voids: [{ id: 'V1' }],
+        discounts: [{ id: 'D1' }],
+        employee: { id: 'E1' },
+        lineItems: [
+          { id: 'L1', discounts: [{ id: 'LD1' }], modifications: [{ id: 'M1' }], item: { id: 'I1' } },
+        ],
+      });
+    });
+
+    it('leaves plain arrays, empty envelopes and null as they are', async () => {
+      const fetchImpl = mockFetch({
+        elements: [{ id: 'O1', payments: [{ id: 'P1' }], refunds: {}, voids: null }],
+      });
+      const { data } = await makeService(fetchImpl).list();
+      expect(data[0]).toEqual({ id: 'O1', payments: [{ id: 'P1' }], refunds: [], voids: null });
+    });
+
+    it('encodes the merchant id in the path', async () => {
+      const fetchImpl = mockFetch({ elements: [] });
+      await makeService(fetchImpl, 'A/B').list();
+      expect(String(requestUrl(fetchImpl))).toBe('https://api.clover.com/v3/merchants/A%2FB/orders');
+    });
+
+    it('accepts the page size bounds', async () => {
+      const fetchImpl = mockFetch({ elements: [] });
+      const service = makeService(fetchImpl);
+      await service.list({ limit: 1, offset: 0 });
+      await service.list({ limit: 1000 });
+      expect(requestUrl(fetchImpl, 0).searchParams.get('limit')).toBe('1');
+      expect(requestUrl(fetchImpl, 0).searchParams.get('offset')).toBe('0');
+      expect(requestUrl(fetchImpl, 1).searchParams.get('limit')).toBe('1000');
+    });
+
     it('handles a missing elements array', async () => {
       const { data } = await makeService(mockFetch({})).list();
       expect(data).toEqual([]);
@@ -113,6 +179,12 @@ describe('OrdersService', () => {
       [{ createdTimeFrom: -1 }, 'createdTimeFrom must be a valid Date'],
       [{ createdTimeFrom: 10, createdTimeTo: 10 }, 'createdTimeFrom must be before createdTimeTo'],
       [{ createdTimeFrom: 20, createdTimeTo: 10 }, 'createdTimeFrom must be before createdTimeTo'],
+      [{ state: '' }, 'state cannot be empty'],
+      [{ limit: 0 }, 'limit must be an integer from 1 to 1000'],
+      [{ limit: 1001 }, 'limit must be an integer from 1 to 1000'],
+      [{ limit: 2.5 }, 'limit must be an integer from 1 to 1000'],
+      [{ offset: -1 }, 'offset must be a non-negative integer'],
+      [{ offset: 0.5 }, 'offset must be a non-negative integer'],
     ])('rejects %j without calling Clover', async (options, message) => {
       const fetchImpl = mockFetch({ elements: [] });
       const error = await makeService(fetchImpl)
@@ -135,6 +207,18 @@ describe('OrdersService', () => {
       const order = await makeService(fetchImpl).get('O/1', { expand: ['lineItems'] });
       expect(order.lineItems).toEqual([{ id: 'L1', unitQty: 2500 }]);
       expect(String(requestUrl(fetchImpl))).toBe(`${BASE}/O%2F1?expand=lineItems`);
+    });
+
+    it('unwraps payments on a single order, as in the guide example', async () => {
+      const fetchImpl = mockFetch({
+        id: 'O1',
+        payments: { elements: [{ id: 'P1' }] },
+        lineItems: { elements: [{ id: 'L1', modifications: { elements: [{ id: 'M1' }] } }] },
+      });
+      const order = await makeService(fetchImpl).get('O1', { expand: ['lineItems', 'payments'] });
+      expect(order.payments).toEqual([{ id: 'P1' }]);
+      expect(order.lineItems).toEqual([{ id: 'L1', modifications: [{ id: 'M1' }] }]);
+      expect(requestUrl(fetchImpl).searchParams.get('expand')).toBe('lineItems,payments');
     });
 
     it('sends no expand when none is given', async () => {

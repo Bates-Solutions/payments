@@ -24,15 +24,35 @@ for (const order of orders) {
 - `createdTimeFrom` / `createdTimeTo` take a `Date` or epoch milliseconds and become `createdTime>=…` / `createdTime<…` filters. An invalid time, or a start that is not before the end, throws `CloverValidationError`.
 - `state` filters on the order state (e.g. `locked`). `paymentState` is not a filterable field in Clover, so check it on the results as above.
 - `filter` adds raw Clover filters (AND), e.g. `['total>1000']`; see [Applying filters](https://docs.clover.com/docs/applying-filters).
-- Pagination is offset based, like `customers.list()`.
+- `state` must not be empty, and an empty one throws `CloverValidationError`.
 
-### The 90 day window
+### Paging
 
-Clover returns at most 90 days of orders per request when you filter on `createdTime`, `state` and several other fields. For longer periods, request consecutive windows of 90 days or less.
+Pagination is offset based, like `customers.list()`. Clover returns 100 orders per page by default and at most 1000; `limit` outside 1 to 1000 or a negative `offset` throws `CloverValidationError`. To read every order in a window, keep going while a page comes back full (the same loop `inventory.findItemsByCode()` runs for you):
+
+```typescript
+const limit = 1000;
+const all = [];
+for (let offset = 0; ; offset += limit) {
+  const { data } = await clover.orders.list({
+    createdTimeFrom: from,
+    createdTimeTo: to,
+    expand: ['lineItems'],
+    limit,
+    offset,
+  });
+  all.push(...data);
+  if (data.length < limit) break;
+}
+```
+
+### The 90 day restriction
+
+Clover's orders reference says results are "restricted to the last 90 days" when the filter includes any of `deletedTime`, `externalReferenceId`, `createdTime`, `total`, `payType`, `title`, `note`, `state`, `manualTransaction`, `cardTransaction.last4`, `testMode` or `touched`. Its [Applying filters](https://docs.clover.com/docs/applying-filters) page instead describes a maximum of 90 days per request. Which reading holds has not been verified against a sandbox, and the library does not enforce either; to be safe, keep each window at 90 days or less.
 
 ## Line items and quantities
 
-`expand: ['lineItems']` embeds the line items. Clover sends them in an `{ elements: [...] }` envelope; the library always gives you a plain `lineItems` array.
+`expand: ['lineItems']` embeds the line items. Clover sends expanded collections in an `{ elements: [...] }` envelope; the library always gives you plain arrays, for `lineItems`, `customers`, `payments`, `refunds`, `credits`, `voids` and `discounts` on the order and `discounts` / `modifications` on each line item.
 
 - `line.item.id` is the inventory item (see the [inventory guide](./inventory.md)); it is absent for custom items.
 - `line.price` is the unit price in cents.

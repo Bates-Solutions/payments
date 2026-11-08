@@ -38,6 +38,15 @@ export type OrderPaymentState =
   | 'PARTIALLY_REFUNDED';
 
 /**
+ * A related object embedded by `expand` (payment, refund, discount, ...).
+ * Typed loosely: only `id` is common to all of them.
+ */
+export interface CloverObject {
+  id?: string;
+  [field: string]: unknown;
+}
+
+/**
  * A line item on a Clover order.
  */
 export interface LineItem {
@@ -69,6 +78,10 @@ export interface LineItem {
   /** Created, in milliseconds since the epoch */
   createdTime?: number;
   orderClientCreatedTime?: number;
+  /** With `expand: ['lineItems.discounts']`. Always an array (envelope unwrapped). */
+  discounts?: CloverObject[];
+  /** With `expand: ['lineItems.modifications']`. Always an array (envelope unwrapped). */
+  modifications?: CloverObject[];
 }
 
 /**
@@ -89,12 +102,24 @@ export interface Order {
   note?: string;
   externalReferenceId?: string;
   employee?: { id: string };
-  customers?: { id: string }[];
-  /**
-   * Present when requested with `expand: ['lineItems']`. Always an array:
-   * Clover's `{ elements: [...] }` envelope is unwrapped.
+  /*
+   * Expanded collections below are present when requested with `expand` and
+   * are always arrays: Clover's `{ elements: [...] }` envelope is unwrapped.
    */
+  /** With `expand: ['customers']` */
+  customers?: CloverObject[];
+  /** With `expand: ['lineItems']` */
   lineItems?: LineItem[];
+  /** With `expand: ['payments']` */
+  payments?: CloverObject[];
+  /** With `expand: ['refunds']` */
+  refunds?: CloverObject[];
+  /** With `expand: ['credits']` */
+  credits?: CloverObject[];
+  /** With `expand: ['voids']` */
+  voids?: CloverObject[];
+  /** With `expand: ['discounts']` */
+  discounts?: CloverObject[];
   manualTransaction?: boolean;
   testMode?: boolean;
   /** Created on Clover's servers, in milliseconds since the epoch */
@@ -112,7 +137,7 @@ export interface ListOrdersOptions extends PaginationOptions {
   createdTimeFrom?: Date | number;
   /** Only orders created before this time (`Date` or epoch milliseconds) */
   createdTimeTo?: Date | number;
-  /** Only orders in this state, e.g. `locked` */
+  /** Only orders in this state, e.g. `locked`. Must not be empty. */
   state?: string;
   /**
    * Extra raw Clover filters, each `field<op>value`, e.g. `['total>1000']`.
@@ -140,17 +165,59 @@ interface CloverListResponse<T> {
   elements?: T[];
 }
 
-/** An order as Clover sends it: expanded collections arrive in an envelope. */
-type RawOrder = Omit<Order, 'lineItems'> & {
-  lineItems?: LineItem[] | CloverListResponse<LineItem>;
-};
+/** An order or line item as Clover sends it: collections may be in an envelope. */
+type RawObject = Record<string, unknown>;
 
-function normalizeOrder(raw: RawOrder): Order {
-  const { lineItems, ...rest } = raw;
-  if (lineItems === undefined) {
-    return rest;
+/** Order fields that `expand` fills with a collection. */
+const ORDER_COLLECTIONS = [
+  'lineItems',
+  'customers',
+  'payments',
+  'refunds',
+  'credits',
+  'voids',
+  'discounts',
+] as const;
+
+/** Line item fields that `expand` (`lineItems.*`) fills with a collection. */
+const LINE_ITEM_COLLECTIONS = ['discounts', 'modifications'] as const;
+
+/** Clover's maximum page size for v3 list endpoints (the default is 100). */
+const MAX_PAGE_SIZE = 1000;
+
+/** Replace `{ elements: [...] }` envelopes on the given fields with plain arrays. */
+function unwrapCollections(raw: RawObject, fields: readonly string[]): RawObject {
+  const out: RawObject = { ...raw };
+  for (const field of fields) {
+    const value = out[field];
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
+      out[field] = (value as CloverListResponse<unknown>).elements ?? [];
+    }
   }
-  return { ...rest, lineItems: Array.isArray(lineItems) ? lineItems : (lineItems.elements ?? []) };
+  return out;
+}
+
+function normalizeOrder(raw: RawObject): Order {
+  const order = unwrapCollections(raw, ORDER_COLLECTIONS) as Order;
+  if (order.lineItems) {
+    order.lineItems = order.lineItems.map(
+      (lineItem) => unwrapCollections(lineItem as RawObject, LINE_ITEM_COLLECTIONS) as LineItem
+    );
+  }
+  return order;
+}
+
+function validatePaging(options?: PaginationOptions): void {
+  const { limit, offset } = options ?? {};
+  if (limit !== undefined && (!Number.isInteger(limit) || limit < 1 || limit > MAX_PAGE_SIZE)) {
+    throw new CloverValidationError(
+      `limit must be an integer from 1 to ${String(MAX_PAGE_SIZE)}`,
+      'limit'
+    );
+  }
+  if (offset !== undefined && (!Number.isInteger(offset) || offset < 0)) {
+    throw new CloverValidationError('offset must be a non-negative integer', 'offset');
+  }
 }
 
 function toEpochMs(value: Date | number, field: string): number {
@@ -197,14 +264,20 @@ export class OrdersService {
 
   /**
    * List orders with offset-based pagination, optionally in a creation time
-   * window and with line items.
+   * window and with line items. Clover returns 100 orders per page by
+   * default and at most 1000; keep requesting with a larger `offset` while
+   * a page comes back full.
    *
-   * Clover returns at most 90 days of orders per request when filtering on
-   * `createdTime` or `state`, so page longer periods in windows of 90 days or
-   * less.
+   * Clover's reference says results are "restricted to the last 90 days"
+   * when the filter includes `createdTime`, `state`, `total`, `payType`,
+   * `title`, `note`, `externalReferenceId`, `deletedTime`,
+   * `manualTransaction`, `cardTransaction.last4`, `testMode` or `touched`.
+   * This library does not enforce or work around that (not verified against
+   * a sandbox).
    *
-   * @throws {CloverValidationError} When a time is invalid or
-   *   `createdTimeFrom` is not before `createdTimeTo`
+   * @throws {CloverValidationError} When a time is invalid,
+   *   `createdTimeFrom` is not before `createdTimeTo`, `state` is empty,
+   *   `limit` is outside 1 to 1000, or `offset` is negative
    *
    * @example
    * ```typescript
@@ -219,6 +292,10 @@ export class OrdersService {
    * ```
    */
   async list(options?: ListOrdersOptions): Promise<PaginatedResponse<Order>> {
+    validatePaging(options);
+    if (options?.state !== undefined && !options.state) {
+      throw new CloverValidationError('state cannot be empty', 'state');
+    }
     const filter: string[] = [];
     const from =
       options?.createdTimeFrom === undefined
@@ -236,11 +313,11 @@ export class OrdersService {
     }
     if (from !== undefined) filter.push(`createdTime>=${String(from)}`);
     if (to !== undefined) filter.push(`createdTime<${String(to)}`);
-    if (options?.state) filter.push(`state=${options.state}`);
+    if (options?.state !== undefined) filter.push(`state=${options.state}`);
     filter.push(...(options?.filter ?? []));
 
     try {
-      const response = await this.http.request<CloverListResponse<RawOrder>>(
+      const response = await this.http.request<CloverListResponse<RawObject>>(
         'platform',
         'GET',
         this.basePath(),
@@ -273,7 +350,7 @@ export class OrdersService {
     }
 
     try {
-      const order = await this.http.request<RawOrder>(
+      const order = await this.http.request<RawObject>(
         'platform',
         'GET',
         `${this.basePath()}/${encodeURIComponent(orderId)}`,
