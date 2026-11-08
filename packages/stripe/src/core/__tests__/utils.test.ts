@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { toMinor, fromMinor, formatMoney, createIdempotencyKey, fromUnixTime } from '../utils.js';
+import { StripeValidationError } from '../errors.js';
 
 describe('toMinor', () => {
   it('converts major units to cents', () => {
@@ -74,6 +75,13 @@ describe('zero-decimal currencies', () => {
       expect(fromMinor(500, currency)).toBe(500);
     });
 
+    it('rounds half away from zero, so negatives mirror positives', () => {
+      expect(toMinor(500.5, currency)).toBe(501);
+      expect(toMinor(-500.5, currency)).toBe(-501);
+      expect(toMinor(-500.4, currency)).toBe(-500);
+      expect(toMinor(-0.4, currency)).toBe(0);
+    });
+
     it('matches the uppercase code', () => {
       expect(toMinor(500, currency.toUpperCase())).toBe(500);
       expect(fromMinor(500, currency.toUpperCase())).toBe(500);
@@ -95,6 +103,13 @@ describe('three-decimal currencies', () => {
     it('fromMinor divides by 1000', () => {
       expect(fromMinor(5120, currency)).toBe(5.12);
       expect(fromMinor(5125, currency)).toBe(5.125);
+    });
+
+    it('rounds half away from zero, so negatives mirror positives', () => {
+      expect(toMinor(5.125, currency)).toBe(5130);
+      expect(toMinor(-5.125, currency)).toBe(-5130);
+      expect(toMinor(-5.124, currency)).toBe(-5120);
+      expect(toMinor(-0.004, currency)).toBe(0);
     });
 
     it('matches the uppercase code', () => {
@@ -120,6 +135,13 @@ describe('isk and ugx (two-decimal value, decimals always 00)', () => {
       expect(fromMinor(550, currency)).toBe(5.5);
     });
 
+    it('rounds half away from zero, so negatives mirror positives', () => {
+      expect(toMinor(5.5, currency)).toBe(600);
+      expect(toMinor(-5.5, currency)).toBe(-600);
+      expect(toMinor(-5.4, currency)).toBe(-500);
+      expect(toMinor(-0.4, currency)).toBe(0);
+    });
+
     it('matches the uppercase code', () => {
       expect(toMinor(5.4, currency.toUpperCase())).toBe(500);
       expect(fromMinor(500, currency.toUpperCase())).toBe(5);
@@ -135,6 +157,13 @@ describe('two-decimal currencies', () => {
 
     it('fromMinor divides by 100', () => {
       expect(fromMinor(1045, currency)).toBe(10.45);
+    });
+
+    it('rounds half away from zero, so negatives mirror positives', () => {
+      expect(toMinor(10.125, currency)).toBe(1013);
+      expect(toMinor(-10.125, currency)).toBe(-1013);
+      expect(toMinor(-10.45, currency)).toBe(-1045);
+      expect(toMinor(-0.004, currency)).toBe(0);
     });
 
     it('matches the uppercase code', () => {
@@ -160,6 +189,58 @@ describe('formatMoney currency decimals', () => {
 
   it('formats a zero-decimal currency given in uppercase', () => {
     expect(formatMoney(5000, 'KRW')).toContain('5,000');
+  });
+});
+
+describe('money helper validation', () => {
+  const expectValidationError = (fn: () => unknown, field: string, message: RegExp) => {
+    let caught: unknown;
+    try {
+      fn();
+    } catch (error) {
+      caught = error;
+    }
+    expect(caught).toBeInstanceOf(StripeValidationError);
+    expect((caught as StripeValidationError).field).toBe(field);
+    expect((caught as StripeValidationError).message).toMatch(message);
+  };
+
+  it('returns 0, not -0, for a negative amount that rounds to zero', () => {
+    expect(Object.is(toMinor(-0.004), 0)).toBe(true);
+    expect(Object.is(toMinor(-0.4, 'isk'), 0)).toBe(true);
+    expect(Object.is(toMinor(-0), 0)).toBe(true);
+  });
+
+  it('uses the default currency when currency is undefined', () => {
+    expect(toMinor(5, undefined)).toBe(500);
+  });
+
+  it.each([null, 5, {}])('rejects a non-string currency (%j)', (currency) => {
+    const bad = currency as unknown as string;
+    expectValidationError(() => toMinor(5, bad), 'currency', /non-empty string/);
+    expectValidationError(() => fromMinor(500, bad), 'currency', /non-empty string/);
+    expectValidationError(() => formatMoney(500, bad), 'currency', /non-empty string/);
+  });
+
+  it.each(['', '   '])('rejects an empty currency (%j)', (currency) => {
+    expectValidationError(() => toMinor(5, currency), 'currency', /non-empty string/);
+    expectValidationError(() => fromMinor(500, currency), 'currency', /non-empty string/);
+  });
+
+  it.each([NaN, Infinity, -Infinity])('rejects a non-finite amount (%s)', (amount) => {
+    expectValidationError(() => toMinor(amount), 'amount', /finite number/);
+    expectValidationError(() => toMinor(amount, 'isk'), 'amount', /finite number/);
+  });
+
+  it('rejects an amount whose minor value is beyond MAX_SAFE_INTEGER', () => {
+    expectValidationError(() => toMinor(1e17, 'isk'), 'amount', /too large/);
+    expectValidationError(() => toMinor(-1e17, 'isk'), 'amount', /too large/);
+    expectValidationError(() => toMinor(2 ** 53, 'jpy'), 'amount', /too large/);
+  });
+
+  it('accepts MAX_SAFE_INTEGER minor units exactly', () => {
+    expect(toMinor(Number.MAX_SAFE_INTEGER, 'jpy')).toBe(Number.MAX_SAFE_INTEGER);
+    expect(toMinor(-Number.MAX_SAFE_INTEGER, 'jpy')).toBe(-Number.MAX_SAFE_INTEGER);
   });
 });
 

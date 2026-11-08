@@ -1,3 +1,4 @@
+import { StripeValidationError } from './errors.js';
 import type { CurrencyCode } from './types/index.js';
 
 /**
@@ -69,8 +70,14 @@ interface CurrencyRule {
 /**
  * Get the minor-unit rule for a currency. Matching is case-insensitive;
  * unknown currencies are treated as two-decimal, Stripe's default.
+ *
+ * @throws {StripeValidationError} If `currency` is not a non-empty string
  */
 function getCurrencyRule(currency: string): CurrencyRule {
+  // Guard JS callers passing a nullable Stripe field (e.g. `session.currency`).
+  if (typeof currency !== 'string' || currency.trim() === '') {
+    throw new StripeValidationError('currency must be a non-empty string', 'currency');
+  }
   const code = currency.toLowerCase();
   if (ZERO_DECIMAL_CURRENCIES.has(code)) {
     return { multiplier: 1, step: 1 };
@@ -97,12 +104,19 @@ function getCurrencyRule(currency: string): CurrencyRule {
  * - `isk` and `ugx`: rounded to a whole unit, then × 100 (Stripe takes them as
  *   two-decimal values whose decimals are always `00`).
  *
+ * Rounding is half away from zero, so a negative amount (e.g. a credit)
+ * mirrors its positive: `toMinor(-5.5, 'isk')` is `-600`. A result of zero is
+ * always `0`, never `-0`.
+ *
  * `huf` and `twd` payouts must be multiples of 100; this helper does not
  * enforce that, since charges in those currencies may use two decimals.
  *
  * @param amount - Major-unit amount (e.g. 10.50 dollars)
  * @param currency - Currency code, any case (default: usd)
  * @returns Amount in the smallest currency unit (e.g. 1050 for $10.50)
+ * @throws {StripeValidationError} If `currency` is not a non-empty string, if
+ *   `amount` is not a finite number, or if the result is beyond
+ *   `Number.MAX_SAFE_INTEGER`
  *
  * @example
  * ```typescript
@@ -116,9 +130,23 @@ function getCurrencyRule(currency: string): CurrencyRule {
  * @see https://docs.stripe.com/currencies
  */
 export function toMinor(amount: number, currency: CurrencyCode = 'usd'): number {
+  if (!Number.isFinite(amount)) {
+    throw new StripeValidationError('amount must be a finite number', 'amount');
+  }
   const { multiplier, step } = getCurrencyRule(currency);
-  // Round to a whole number of steps (also absorbs floating point error).
-  return Math.round(amount * (multiplier / step)) * step;
+  // Round half away from zero to a whole number of steps (this also absorbs
+  // floating point error), so negatives mirror positives.
+  const units = Math.round(Math.abs(amount) * (multiplier / step)) * step;
+  if (!Number.isSafeInteger(units)) {
+    throw new StripeValidationError(
+      'amount is too large to represent exactly in minor units',
+      'amount'
+    );
+  }
+  if (units === 0) {
+    return 0;
+  }
+  return amount < 0 ? -units : units;
 }
 
 /**
@@ -131,6 +159,7 @@ export function toMinor(amount: number, currency: CurrencyCode = 'usd'): number 
  * @param minor - Amount in the smallest currency unit
  * @param currency - Currency code, any case (default: usd)
  * @returns Major-unit amount
+ * @throws {StripeValidationError} If `currency` is not a non-empty string
  *
  * @example
  * ```typescript
@@ -156,6 +185,7 @@ export function fromMinor(minor: number, currency: CurrencyCode = 'usd'): number
  * @param currency - Currency code, any case (default: usd)
  * @param locale - Locale for formatting (default: en-US)
  * @returns Formatted currency string
+ * @throws {StripeValidationError} If `currency` is not a non-empty string
  *
  * @example
  * ```typescript

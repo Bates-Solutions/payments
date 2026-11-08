@@ -252,6 +252,8 @@ toMinor(5, 'isk');         // 500  (sent as two-decimal, decimals always 00)
 
 `huf` and `twd` charges take two-decimal amounts, but Stripe payouts in those currencies must be multiples of 100; the helpers don't enforce that.
 
+`toMinor` rounds half away from zero, so a credit mirrors its charge (`toMinor(-5.5, 'isk')` is `-600`), and never returns `-0`. The helpers throw `StripeValidationError` for a missing or empty currency, and `toMinor` also throws for a `NaN` or infinite amount or a result beyond `Number.MAX_SAFE_INTEGER`.
+
 ## Documentation
 
 - [Getting started](./docs/getting-started/installation.md)
