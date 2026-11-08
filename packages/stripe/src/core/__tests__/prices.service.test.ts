@@ -228,7 +228,9 @@ describe('PricesService', () => {
 
       expect(result.price.id).toBe('price_new');
       expect(result.previous.active).toBe(false);
-      expect(client.prices.retrieve).toHaveBeenCalledWith('price_old', { expand: ['product'] });
+      expect(client.prices.retrieve).toHaveBeenCalledWith('price_old', {
+        expand: ['product', 'currency_options'],
+      });
       expect(client.prices.create).toHaveBeenCalledWith(
         {
           product: 'prod_1',
@@ -238,10 +240,14 @@ describe('PricesService', () => {
           nickname: 'Loaf',
           metadata: { sku: 'SD-001' },
           tax_behavior: 'exclusive',
-          lookup_key: 'loaf',
-          transfer_lookup_key: true,
         },
         { idempotencyKey: 'reprice-1:create' }
+      );
+      // The lookup key moves in its own step, onto the new price.
+      expect(client.prices.update).toHaveBeenCalledWith(
+        'price_new',
+        { lookup_key: 'loaf', transfer_lookup_key: true },
+        { idempotencyKey: 'reprice-1:lookup-key' }
       );
       expect(client.prices.update).toHaveBeenCalledWith(
         'price_old',
@@ -260,13 +266,13 @@ describe('PricesService', () => {
           order.push('create');
           return Promise.resolve({ id: 'price_new' });
         }),
-        update: vi.fn().mockImplementation(() => {
-          order.push('archive');
-          return Promise.resolve({ id: 'price_old' });
+        update: vi.fn().mockImplementation((id: string) => {
+          order.push(id === 'price_new' ? 'lookup-key' : 'archive');
+          return Promise.resolve({ id });
         }),
       });
       await new PricesService(client).replace('price_old', { unitAmount: 949 });
-      expect(order).toEqual(['create', 'archive']);
+      expect(order).toEqual(['create', 'lookup-key', 'archive']);
     });
 
     it('moves the default price to the new price first', async () => {
@@ -306,10 +312,10 @@ describe('PricesService', () => {
       );
       expect(order).toEqual(['default', 'archive']);
       const params = (client.prices.create as ReturnType<typeof vi.fn>).mock.calls[0][0];
-      expect(params.lookup_key).toBeUndefined();
-      expect(params.transfer_lookup_key).toBeUndefined();
       expect(params.nickname).toBeUndefined();
       expect(params.tax_behavior).toBeUndefined();
+      // No lookup key, so only the archive update runs.
+      expect(client.prices.update).toHaveBeenCalledTimes(1);
     });
 
     it('copies a recurring interval unless overridden', async () => {
@@ -366,20 +372,133 @@ describe('PricesService', () => {
       await new PricesService(client).replace('price_old', { unitAmount: 1 });
       const createKey = (client.prices.create as ReturnType<typeof vi.fn>).mock.calls[0][1]
         .idempotencyKey as string;
-      const archiveKey = (client.prices.update as ReturnType<typeof vi.fn>).mock.calls[0][2]
+      const archiveKey = (client.prices.update as ReturnType<typeof vi.fn>).mock.calls.at(-1)?.[2]
         .idempotencyKey as string;
       expect(createKey).toMatch(/^[0-9a-f-]{36}:create$/);
       expect(archiveKey).toBe(createKey.replace(':create', ':archive'));
     });
 
-    it('refuses tiered prices', async () => {
+    it.each([
+      ['tiered', { billing_scheme: 'tiered' }],
+      ['metered', { recurring: { interval: 'month', interval_count: 1, usage_type: 'metered' } }],
+      [
+        'metered',
+        {
+          recurring: { interval: 'month', interval_count: 1, usage_type: 'licensed', meter: 'mtr_1' },
+        },
+      ],
+      ['custom amount', { custom_unit_amount: { minimum: 100, maximum: null, preset: null } }],
+      ['transform_quantity', { transform_quantity: { divide_by: 6, round: 'up' } }],
+      [
+        'multi-currency',
+        { currency_options: { usd: { unit_amount: 899 }, cad: { unit_amount: 1199 } } },
+      ],
+    ])('refuses %s prices', async (kind, fields) => {
       const client = createMockClient({
-        retrieve: vi.fn().mockResolvedValue({ ...oldPrice, billing_scheme: 'tiered' }),
+        retrieve: vi.fn().mockResolvedValue({ ...oldPrice, ...fields }),
       });
       await expect(
         new PricesService(client).replace('price_old', { unitAmount: 1 })
-      ).rejects.toThrow(StripeValidationError);
+      ).rejects.toThrow(new StripeValidationError(`${kind} prices cannot be replaced`, 'priceId'));
       expect(client.prices.create).not.toHaveBeenCalled();
+    });
+
+    it('accepts a licensed recurring price whose currency_options hold only its own currency', async () => {
+      const client = createMockClient({
+        retrieve: vi.fn().mockResolvedValue({
+          ...oldPrice,
+          recurring: { interval: 'month', interval_count: 1, usage_type: 'licensed', meter: null },
+          custom_unit_amount: null,
+          transform_quantity: null,
+          currency_options: { usd: { unit_amount: 899 } },
+        }),
+        create: vi.fn().mockResolvedValue({ id: 'price_new' }),
+        update: vi.fn().mockResolvedValue({ id: 'price_old' }),
+      });
+      await new PricesService(client).replace('price_old', { unitAmount: 949 });
+      expect(client.prices.create).toHaveBeenCalledTimes(1);
+    });
+
+    it('retries safely with the same key after the lookup key already moved', async () => {
+      // Fake Stripe that keeps state and applies the idempotency rule: a
+      // reused key must come with identical params, or the call fails.
+      const prices: Record<string, Record<string, unknown>> = {
+        price_old: { ...oldPrice, product: { id: 'prod_1', default_price: 'price_old' } },
+      };
+      const seen = new Map<string, { params: string; result: unknown }>();
+      let created = 0;
+      let failArchiveOnce = true;
+      const idempotent = (
+        key: string,
+        params: unknown,
+        run: () => unknown
+      ): Promise<unknown> => {
+        const json = JSON.stringify(params);
+        const prior = seen.get(key);
+        if (prior) {
+          return prior.params === json
+            ? Promise.resolve(prior.result)
+            : Promise.reject({ type: 'idempotency_error', statusCode: 400 });
+        }
+        const result = run();
+        seen.set(key, { params: json, result });
+        return Promise.resolve(result);
+      };
+      const client = createMockClient(
+        {
+          retrieve: vi.fn().mockImplementation((id: string) => Promise.resolve({ ...prices[id] })),
+          create: vi.fn().mockImplementation((params: Record<string, unknown>, opts: { idempotencyKey: string }) =>
+            idempotent(opts.idempotencyKey, params, () => {
+              created += 1;
+              const id = `price_new_${String(created)}`;
+              prices[id] = { id, lookup_key: null, ...params };
+              return prices[id];
+            })
+          ),
+          update: vi.fn().mockImplementation(
+            (id: string, params: Record<string, unknown>, opts: { idempotencyKey: string }) => {
+              if (params.active === false && failArchiveOnce) {
+                failArchiveOnce = false;
+                return Promise.reject({ type: 'api_error', statusCode: 500 });
+              }
+              return idempotent(opts.idempotencyKey, [id, params], () => {
+                if (params.lookup_key) {
+                  for (const price of Object.values(prices)) {
+                    if (price.lookup_key === params.lookup_key) price.lookup_key = null;
+                  }
+                }
+                Object.assign(prices[id], params);
+                return prices[id];
+              });
+            }
+          ),
+        },
+        {
+          update: vi.fn().mockImplementation(
+            (id: string, params: Record<string, unknown>, opts: { idempotencyKey: string }) =>
+              idempotent(opts.idempotencyKey, [id, params], () => {
+                (prices.price_old.product as Record<string, unknown>).default_price =
+                  params.default_price;
+                return { id };
+              })
+          ),
+        }
+      );
+      const service = new PricesService(client);
+
+      await expect(
+        service.replace('price_old', { unitAmount: 949, idempotencyKey: 'r' })
+      ).rejects.toMatchObject({ statusCode: 500 });
+      // The first attempt moved the lookup key, so the old price no longer has one.
+      expect(prices.price_old.lookup_key).toBeNull();
+
+      const result = await service.replace('price_old', { unitAmount: 949, idempotencyKey: 'r' });
+
+      expect(created).toBe(1);
+      expect(result.price.id).toBe('price_new_1');
+      expect(result.previous.active).toBe(false);
+      expect(prices.price_new_1.lookup_key).toBe('loaf');
+      expect((prices.price_old.product as Record<string, unknown>).default_price).toBe('price_new_1');
     });
 
     it('refuses a price with no product', async () => {

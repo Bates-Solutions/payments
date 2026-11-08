@@ -116,11 +116,11 @@ const { price, previous } = await stripe.prices.replace('price_old', {
 // price.active === true, previous.active === false
 ```
 
-- The new price copies the old one's currency, interval, nickname, metadata and tax behavior unless you pass overrides (`currency`, `recurring`, `nickname`, `metadata`).
-- A lookup key moves to the new price.
+- Exactly these are copied from the old price unless you pass overrides (`currency`, `recurring`, `nickname`, `metadata`): currency, interval and interval count, nickname, metadata, tax behavior. Nothing else is copied.
+- A lookup key moves to the new price (in its own step, after the new price exists).
 - If the old price was the product's default price, the new price becomes the default before the old one is deactivated (Stripe won't deactivate a default price).
 - The new price is created before the old one is deactivated, so the product always has an active price.
 - Retry a failed `replace` with the same `idempotencyKey`. Each step uses a key derived from it, so a retry finishes the remaining steps without creating a second price.
-- Only per-unit prices can be replaced. A tiered price throws `StripeValidationError`.
+- Only plain per-unit prices in one currency can be replaced. These throw `StripeValidationError` instead of being silently simplified: tiered prices, metered prices (`usage_type: 'metered'` or a meter), customer-chooses-the-amount prices (`custom_unit_amount`), prices with `transform_quantity`, and prices with extra `currency_options`. Replace those with `prices.create` plus `prices.archive`.
 
 Existing subscriptions on the old price keep billing at the old amount. Move them to the new price separately if you need to.

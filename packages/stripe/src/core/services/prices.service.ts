@@ -132,6 +132,23 @@ function assertUnitAmount(unitAmount: unknown): void {
   }
 }
 
+/**
+ * Refuse prices that `replace` can't copy faithfully from a `unitAmount`.
+ */
+function assertReplaceable(old: Price): void {
+  const refuse = (kind: string): never => {
+    throw new StripeValidationError(`${kind} prices cannot be replaced`, 'priceId');
+  };
+  if (old.billing_scheme === 'tiered') refuse('tiered');
+  if (old.recurring?.usage_type === 'metered' || old.recurring?.meter) refuse('metered');
+  if (old.custom_unit_amount) refuse('custom amount');
+  if (old.transform_quantity) refuse('transform_quantity');
+  const extraCurrencies = Object.keys(old.currency_options ?? {}).filter(
+    (currency) => currency !== old.currency
+  );
+  if (extraCurrencies.length > 0) refuse('multi-currency');
+}
+
 function toRecurringParams(
   recurring: PriceRecurring | undefined
 ): Stripe.PriceCreateParams.Recurring | undefined {
@@ -291,21 +308,25 @@ export class PricesService {
    * Change a price by replacing it: create a new price on the same product,
    * then deactivate the old one.
    *
-   * The new price copies the old one's currency, interval, nickname, metadata,
-   * tax behavior and lookup key (the lookup key moves to the new price) unless
-   * you override them. If the old price was the product's default price, the
-   * new price becomes the default first, since Stripe won't deactivate a
-   * default price.
+   * Exactly these are copied from the old price unless you override them:
+   * `currency`, `recurring.interval` and `recurring.interval_count`,
+   * `nickname`, `metadata` and `tax_behavior`. Its `lookup_key` is moved to
+   * the new price. If the old price was the product's default price, the new
+   * price becomes the default first, since Stripe won't deactivate a default
+   * price. Nothing else is copied.
    *
-   * Only per-unit prices can be replaced; tiered prices have no single
-   * `unitAmount`.
+   * Only plain per-unit prices in one currency can be replaced. These are
+   * refused with `StripeValidationError` rather than silently simplified:
+   * tiered prices, metered prices (`usage_type: 'metered'` or a `meter`),
+   * customer-chooses-the-amount prices (`custom_unit_amount`), prices with
+   * `transform_quantity`, and prices with extra `currency_options`.
    *
    * Retry a failed call with the same `idempotencyKey`: each step uses a key
-   * derived from it, so a retry finishes the remaining steps without creating
-   * a second price.
+   * derived from it and sends the same parameters on every attempt, so a
+   * retry finishes the remaining steps without creating a second price.
    *
    * @throws {StripeValidationError} When `priceId` is missing, `unitAmount` is
-   * not a non-negative integer, or the old price is tiered
+   * not a non-negative integer, or the old price is one of the kinds above
    *
    * @example
    * ```typescript
@@ -324,10 +345,10 @@ export class PricesService {
     const baseKey = options.idempotencyKey ?? createIdempotencyKey();
 
     try {
-      const old = await this.client.prices.retrieve(priceId, { expand: ['product'] });
-      if (old.billing_scheme === 'tiered') {
-        throw new StripeValidationError('tiered prices cannot be replaced', 'priceId');
-      }
+      const old = await this.client.prices.retrieve(priceId, {
+        expand: ['product', 'currency_options'],
+      });
+      assertReplaceable(old);
 
       const productId = resolveId(old.product);
       if (!productId) {
@@ -349,11 +370,20 @@ export class PricesService {
           nickname: options.nickname ?? old.nickname ?? undefined,
           metadata: options.metadata ?? old.metadata,
           tax_behavior: old.tax_behavior ?? undefined,
-          lookup_key: old.lookup_key ?? undefined,
-          transfer_lookup_key: old.lookup_key ? true : undefined,
         },
+        // The lookup key is moved in its own step below, never here: after it
+        // moves, a retry re-reads the old price without it, and this create
+        // must send identical params to replay under the same key.
         { idempotencyKey: `${baseKey}:create` }
       );
+
+      if (old.lookup_key) {
+        await this.client.prices.update(
+          price.id,
+          { lookup_key: old.lookup_key, transfer_lookup_key: true },
+          { idempotencyKey: `${baseKey}:lookup-key` }
+        );
+      }
 
       const product = old.product;
       if (
