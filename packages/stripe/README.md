@@ -129,6 +129,23 @@ sub.currentPeriodEnd;   // Date
 const { data: prices } = await client.prices.list({ active: true, expandProduct: true });
 ```
 
+### Reading what was sold
+
+```typescript
+// Completed Checkout Sessions (including Payment Link sales) in a window
+const { data: sessions } = await client.checkout.list({
+  status: 'complete',
+  created: { gte: new Date('2026-03-01'), lt: new Date('2026-04-01') },
+});
+for (const session of sessions) {
+  const items = await client.checkout.listLineItems(session.id); // all pages
+}
+
+// Paid invoices and their lines
+const { data: invoices } = await client.invoices.list({ status: 'paid', created: { gte: since } });
+const lines = await client.invoices.listLines(invoices[0].id);
+```
+
 ### Webhook Handling (Express)
 
 ```typescript
@@ -220,21 +237,24 @@ Stripe's epoch-seconds timestamps to a `Date`.
 | `payments`      | Create and manage payments (PaymentIntents)                     |
 | `customers`     | Customer management + search                                    |
 | `refunds`       | Create and list refunds                                         |
-| `checkout`      | Hosted Checkout Sessions (subscription & one-time)              |
+| `checkout`      | Hosted Checkout Sessions (subscription & one-time), sold line items |
 | `billingPortal` | Customer billing portal sessions                                |
 | `subscriptions` | Get, list, cancel subscriptions, normalized with `Date`s     |
 | `prices`        | List/retrieve prices (with product expansion)                   |
 | `products`      | List/retrieve products                                          |
-| `invoices`      | Invoices + invoice items (create, finalize, pay, void, send)    |
+| `invoices`      | Invoices + invoice items (create, finalize, pay, void, send, read lines) |
+| `paymentLinks`  | Read Payment Links and their line items                         |
 
 ## Utilities
 
 ```typescript
-import { toMinor, fromMinor, formatMoney } from '@bates-solutions/stripe';
+import { toMinor, fromMinor, formatMoney, toUnixTime } from '@bates-solutions/stripe';
 
 toMinor(10.99);            // 1099
 fromMinor(1099);           // 10.99
 formatMoney(1099, 'usd');  // "$10.99"
+
+toUnixTime(new Date('2026-03-01T00:00:00Z')); // 1772323200 (Stripe's time format)
 ```
 
 ## Documentation

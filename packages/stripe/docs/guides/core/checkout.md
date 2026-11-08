@@ -45,6 +45,41 @@ await stripe.checkout.expire('cs_123');
 const { data } = await stripe.checkout.list({ customerId: 'cus_123' });
 ```
 
+## Reading what was sold
+
+Filter to completed sessions in a time window, then read each session's line items. `created` bounds accept a `Date` or Unix seconds (`gte`, `gt`, `lte`, `lt`).
+
+```typescript
+const { data: sessions, nextCursor } = await stripe.checkout.list({
+  status: 'complete',
+  created: { gte: new Date('2026-03-01'), lt: new Date('2026-04-01') },
+  limit: 100,
+});
+
+for (const session of sessions) {
+  const items = await stripe.checkout.listLineItems(session.id, { expandProduct: true });
+  for (const item of items) {
+    const product = item.price?.product as Stripe.Product;
+    console.log(product.metadata.sku, item.quantity, item.amount_total);
+  }
+}
+```
+
+`listLineItems` fetches every page for you and returns a plain array. `expandProduct` expands `price.product` so you can read your own product metadata.
+
+`list` options for sales:
+
+| Field             | Type                                | Description                                                       |
+| ----------------- | ----------------------------------- | ----------------------------------------------------------------- |
+| `status`          | `'open' \| 'complete' \| 'expired'` | `'complete'` for finished sales.                                  |
+| `created`         | `TimeRange`                         | Only sessions created in this window.                             |
+| `paymentLinkId`   | `string`                            | Only sessions created from this Payment Link.                     |
+| `expandLineItems` | `boolean`                           | Expand `line_items` inline. Only the first page of items is included; use `listLineItems` for all of them. |
+
+Sales through a [Payment Link](./payment-links.md) are Checkout Sessions too, so the same calls cover them (filter with `paymentLinkId`).
+
+In-person Terminal payments carry no line items; Checkout Sessions, Payment Links and invoices are the sources.
+
 ## Reacting to completion
 
 A completed session fires a `checkout.session.completed` webhook. See the [Webhooks guide](../server/webhooks.md) — pair it with `subscriptions.get` to read the resulting subscription.

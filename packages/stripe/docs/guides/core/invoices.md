@@ -70,6 +70,26 @@ await stripe.invoices.addItem({ customerId: 'cus_123', priceId: 'price_123', qua
 
 Omitting both `amount` and `priceId`, or passing `amount` without `currency`, throws a `StripeValidationError`. When `invoiceId` is omitted the item is pending and is drawn onto the customer's next invoice.
 
+## Read invoice lines
+
+`listLines` returns every line of an invoice (all pages):
+
+```typescript
+const { data: paid } = await stripe.invoices.list({
+  status: 'paid',
+  created: { gte: new Date('2026-03-01'), lt: new Date('2026-04-01') },
+});
+
+for (const invoice of paid) {
+  const lines = await stripe.invoices.listLines(invoice.id);
+  for (const line of lines) {
+    console.log(line.description, line.quantity, line.amount);
+  }
+}
+```
+
+`created` bounds accept a `Date` or Unix seconds (`gte`, `gt`, `lte`, `lt`).
+
 ## Retrieve and list
 
 ```typescript

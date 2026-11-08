@@ -1,4 +1,5 @@
-import type { CurrencyCode } from './types/index.js';
+import { StripeValidationError } from './errors.js';
+import type { CurrencyCode, TimeRange } from './types/index.js';
 
 /**
  * Money representation
@@ -125,6 +126,68 @@ export function fromUnixTime(seconds: number | null | undefined): Date | undefin
     return undefined;
   }
   return new Date(seconds * 1000);
+}
+
+/**
+ * Convert a JS `Date` to Unix seconds, the time format Stripe expects. A
+ * number is taken to be Unix seconds already and passed through.
+ *
+ * @throws {StripeValidationError} When the value is an invalid `Date` or not
+ *   a finite number
+ *
+ * @example
+ * ```typescript
+ * toUnixTime(new Date('2026-03-01T00:00:00Z')); // 1772323200
+ * ```
+ */
+export function toUnixTime(value: Date | number): number {
+  const seconds = value instanceof Date ? Math.floor(value.getTime() / 1000) : value;
+  if (typeof seconds !== 'number' || !Number.isFinite(seconds)) {
+    throw new StripeValidationError('expected a valid Date or Unix seconds', 'created');
+  }
+  return seconds;
+}
+
+/**
+ * Convert a {@link TimeRange} to Stripe's range query param.
+ *
+ * @internal
+ */
+export function toRangeParam(
+  range: TimeRange | undefined
+): { gt?: number; gte?: number; lt?: number; lte?: number } | undefined {
+  if (!range) {
+    return undefined;
+  }
+  const convert = (value: Date | number | undefined): number | undefined =>
+    value === undefined ? undefined : toUnixTime(value);
+  return {
+    gt: convert(range.gt),
+    gte: convert(range.gte),
+    lt: convert(range.lt),
+    lte: convert(range.lte),
+  };
+}
+
+/**
+ * Fetch every page of a cursor-paginated Stripe list and return all items.
+ *
+ * @internal
+ */
+export async function listAll<T extends { id?: string }>(
+  fetchPage: (startingAfter: string | undefined) => PromiseLike<{ data: T[]; has_more: boolean }>
+): Promise<T[]> {
+  const items: T[] = [];
+  let startingAfter: string | undefined;
+  for (;;) {
+    const page = await fetchPage(startingAfter);
+    items.push(...page.data);
+    const cursor = page.data.at(-1)?.id;
+    if (!page.has_more || !cursor) {
+      return items;
+    }
+    startingAfter = cursor;
+  }
 }
 
 /**
