@@ -8,6 +8,7 @@ Tutorials and examples for `@bates-solutions/clover`.
 - [Payments (Charges)](./core/payments.md) — create, get, capture
 - [Refunds](./core/refunds.md) — full and partial refunds
 - [Customers](./core/customers.md) — Platform customer CRUD
+- [Inventory](./core/inventory.md) — items, find by barcode/SKU, item stock
 
 ## Server
 

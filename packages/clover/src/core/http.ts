@@ -36,8 +36,11 @@ export interface CloverHttpConfig {
  * Options for a single request.
  */
 export interface RequestOptions {
-  /** Query-string parameters */
-  query?: Record<string, string | number | undefined>;
+  /**
+   * Query-string parameters. An array repeats the key once per value, which is
+   * how Clover takes several `filter` parameters.
+   */
+  query?: Record<string, string | number | string[] | undefined>;
   /** JSON request body */
   body?: unknown;
   /** Idempotency key, sent as the `idempotency-key` header */
@@ -81,7 +84,11 @@ export class CloverHttp {
     const url = new URL(this.baseUrl(host) + path);
     if (options.query) {
       for (const [key, value] of Object.entries(options.query)) {
-        if (value !== undefined) {
+        if (Array.isArray(value)) {
+          for (const item of value) {
+            url.searchParams.append(key, item);
+          }
+        } else if (value !== undefined) {
           url.searchParams.set(key, String(value));
         }
       }

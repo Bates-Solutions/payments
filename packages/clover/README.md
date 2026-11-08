@@ -153,6 +153,23 @@ app.post(
 );
 ```
 
+### Inventory (Platform API)
+
+```typescript
+// Find items by barcode or SKU, with their stock level
+const items = await clover.inventory.findItemsByCode({
+  codes: ['012345678905'],
+  skus: ['PICKLE-DILL-500'],
+  expand: ['itemStock'],
+});
+
+// Set the stock after a delivery (quantity replaces the current count)
+const { quantity = 0 } = await clover.inventory.getItemStock(items[0]!.id!);
+await clover.inventory.updateItemStock(items[0]!.id!, { quantity: quantity + 24 });
+```
+
+See the [inventory guide](./docs/guides/core/inventory.md).
+
 ## Available Services
 
 | Service     | API       | Description                                   |
@@ -160,6 +177,7 @@ app.post(
 | `payments`  | Ecommerce | Create/get/capture charges                    |
 | `refunds`   | Ecommerce | Create and get refunds                        |
 | `customers` | Platform  | Customer CRUD (`/v3/merchants/{mId}`)         |
+| `inventory` | Platform  | Items, find by barcode/SKU, item stock        |
 
 ## Utilities
 
