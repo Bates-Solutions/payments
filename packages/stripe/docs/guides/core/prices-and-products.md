@@ -113,10 +113,10 @@ const { price, previous } = await stripe.prices.replace('price_old', {
   unitAmount: 949,
   idempotencyKey: `reprice-${sku}-${version}`,
 });
-// price.active === true, previous.active === false
+// price.active === true (with the old lookup key), previous.active === false
 ```
 
-- Exactly these are copied from the old price unless you pass overrides (`currency`, `recurring`, `nickname`, `metadata`): currency, interval and interval count, nickname, metadata, tax behavior. Nothing else is copied.
+- Exactly these are copied from the old price unless you pass overrides (`currency`, `recurring`, `nickname`, `metadata`): currency, interval and interval count, nickname, metadata, tax behavior. A price-level trial (`recurring.trial_period_days`) is always carried over. Nothing else is copied.
 - A lookup key moves to the new price (in its own step, after the new price exists).
 - If the old price was the product's default price, the new price becomes the default before the old one is deactivated (Stripe won't deactivate a default price).
 - The new price is created before the old one is deactivated, so the product always has an active price.

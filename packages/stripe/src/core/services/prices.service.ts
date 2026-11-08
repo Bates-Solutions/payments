@@ -310,8 +310,10 @@ export class PricesService {
    *
    * Exactly these are copied from the old price unless you override them:
    * `currency`, `recurring.interval` and `recurring.interval_count`,
-   * `nickname`, `metadata` and `tax_behavior`. Its `lookup_key` is moved to
-   * the new price. If the old price was the product's default price, the new
+   * `nickname`, `metadata` and `tax_behavior`. `recurring.trial_period_days`
+   * is always carried over. Its `lookup_key` is moved to the new price. The
+   * returned `price` is the new price's current state (lookup key included),
+   * also on a retry. If the old price was the product's default price, the new
    * price becomes the default first, since Stripe won't deactivate a default
    * price. Nothing else is copied.
    *
@@ -355,13 +357,18 @@ export class PricesService {
         throw new StripeValidationError('price has no product', 'priceId');
       }
 
-      const recurring =
+      const interval =
         toRecurringParams(options.recurring) ??
         (old.recurring
           ? { interval: old.recurring.interval, interval_count: old.recurring.interval_count }
           : undefined);
+      // Carry a (legacy) price-level trial over; it never changes between
+      // attempts, so a retry still sends identical create params.
+      const trialDays = old.recurring?.trial_period_days ?? undefined;
+      const recurring =
+        interval && trialDays !== undefined ? { ...interval, trial_period_days: trialDays } : interval;
 
-      const price = await this.client.prices.create(
+      const created = await this.client.prices.create(
         {
           product: productId,
           unit_amount: options.unitAmount,
@@ -377,13 +384,16 @@ export class PricesService {
         { idempotencyKey: `${baseKey}:create` }
       );
 
-      if (old.lookup_key) {
-        await this.client.prices.update(
-          price.id,
-          { lookup_key: old.lookup_key, transfer_lookup_key: true },
-          { idempotencyKey: `${baseKey}:lookup-key` }
-        );
-      }
+      // Return the new price as it stands after the lookup-key step. On a
+      // retry the create response is a replay of the first attempt's (taken
+      // before the key moved), so without a key to move, re-read it.
+      const price = old.lookup_key
+        ? await this.client.prices.update(
+            created.id,
+            { lookup_key: old.lookup_key, transfer_lookup_key: true },
+            { idempotencyKey: `${baseKey}:lookup-key` }
+          )
+        : await this.client.prices.retrieve(created.id);
 
       const product = old.product;
       if (
@@ -393,7 +403,7 @@ export class PricesService {
       ) {
         await this.client.products.update(
           productId,
-          { default_price: price.id },
+          { default_price: created.id },
           { idempotencyKey: `${baseKey}:default-price` }
         );
       }

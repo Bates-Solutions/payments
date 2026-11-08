@@ -217,8 +217,12 @@ describe('PricesService', () => {
     it('creates a copy with the new amount, then deactivates the old price', async () => {
       const client = createMockClient({
         retrieve: vi.fn().mockResolvedValue(oldPrice),
-        create: vi.fn().mockResolvedValue({ id: 'price_new' }),
-        update: vi.fn().mockResolvedValue({ id: 'price_old', active: false }),
+        create: vi.fn().mockResolvedValue({ id: 'price_new', lookup_key: null }),
+        update: vi
+          .fn()
+          .mockImplementation((id: string, params: Record<string, unknown>) =>
+            Promise.resolve({ id, ...params })
+          ),
       });
 
       const result = await new PricesService(client).replace('price_old', {
@@ -227,6 +231,8 @@ describe('PricesService', () => {
       });
 
       expect(result.price.id).toBe('price_new');
+      // The lookup-key update's response, not the stale create response
+      expect(result.price.lookup_key).toBe('loaf');
       expect(result.previous.active).toBe(false);
       expect(client.prices.retrieve).toHaveBeenCalledWith('price_old', {
         expand: ['product', 'currency_options'],
@@ -316,6 +322,52 @@ describe('PricesService', () => {
       expect(params.tax_behavior).toBeUndefined();
       // No lookup key, so only the archive update runs.
       expect(client.prices.update).toHaveBeenCalledTimes(1);
+    });
+
+    it('re-reads the new price when there is no lookup key to move', async () => {
+      const retrieve = vi
+        .fn()
+        .mockResolvedValueOnce({ ...oldPrice, lookup_key: null })
+        .mockResolvedValueOnce({ id: 'price_new', lookup_key: 'moved-earlier' });
+      const client = createMockClient({
+        retrieve,
+        create: vi.fn().mockResolvedValue({ id: 'price_new', lookup_key: null }),
+        update: vi.fn().mockResolvedValue({ id: 'price_old', active: false }),
+      });
+
+      const result = await new PricesService(client).replace('price_old', { unitAmount: 1 });
+
+      expect(retrieve).toHaveBeenLastCalledWith('price_new');
+      expect(result.price.lookup_key).toBe('moved-earlier');
+      expect(client.prices.update).toHaveBeenCalledTimes(1);
+    });
+
+    it('carries a recurring trial over, also with an interval override', async () => {
+      const trialPrice = {
+        ...oldPrice,
+        recurring: { interval: 'month', interval_count: 1, trial_period_days: 14 },
+      };
+      const client = createMockClient({
+        retrieve: vi.fn().mockResolvedValue(trialPrice),
+        create: vi.fn().mockResolvedValue({ id: 'price_new' }),
+        update: vi.fn().mockResolvedValue({ id: 'price_old' }),
+      });
+      const service = new PricesService(client);
+
+      await service.replace('price_old', { unitAmount: 1 });
+      await service.replace('price_old', { unitAmount: 1, recurring: { interval: 'year' } });
+
+      const calls = (client.prices.create as ReturnType<typeof vi.fn>).mock.calls;
+      expect(calls[0][0].recurring).toEqual({
+        interval: 'month',
+        interval_count: 1,
+        trial_period_days: 14,
+      });
+      expect(calls[1][0].recurring).toEqual({
+        interval: 'year',
+        interval_count: undefined,
+        trial_period_days: 14,
+      });
     });
 
     it('copies a recurring interval unless overridden', async () => {
@@ -436,17 +488,20 @@ describe('PricesService', () => {
         const json = JSON.stringify(params);
         const prior = seen.get(key);
         if (prior) {
+          // Stripe replays the original response, as it was then.
           return prior.params === json
-            ? Promise.resolve(prior.result)
+            ? Promise.resolve(structuredClone(prior.result))
             : Promise.reject({ type: 'idempotency_error', statusCode: 400 });
         }
-        const result = run();
+        const result = structuredClone(run());
         seen.set(key, { params: json, result });
-        return Promise.resolve(result);
+        return Promise.resolve(structuredClone(result));
       };
       const client = createMockClient(
         {
-          retrieve: vi.fn().mockImplementation((id: string) => Promise.resolve({ ...prices[id] })),
+          retrieve: vi
+            .fn()
+            .mockImplementation((id: string) => Promise.resolve(structuredClone(prices[id]))),
           create: vi.fn().mockImplementation((params: Record<string, unknown>, opts: { idempotencyKey: string }) =>
             idempotent(opts.idempotencyKey, params, () => {
               created += 1;
@@ -496,6 +551,8 @@ describe('PricesService', () => {
 
       expect(created).toBe(1);
       expect(result.price.id).toBe('price_new_1');
+      // The replayed create response predates the move; the result must not.
+      expect(result.price.lookup_key).toBe('loaf');
       expect(result.previous.active).toBe(false);
       expect(prices.price_new_1.lookup_key).toBe('loaf');
       expect((prices.price_old.product as Record<string, unknown>).default_price).toBe('price_new_1');
