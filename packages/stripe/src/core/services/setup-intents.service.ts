@@ -33,7 +33,10 @@ export interface CreateSetupIntentOptions {
    * @default false
    */
   confirm?: boolean;
-  /** Where to send the customer after a redirect-based authentication (needed with `confirm`) */
+  /**
+   * Where to send the customer after a redirect-based authentication. Only
+   * used when confirming here, so it requires `confirm: true`.
+   */
   returnUrl?: string;
   /** Arbitrary description */
   description?: string;
@@ -80,9 +83,13 @@ export class SetupIntentsService {
   /**
    * Create a SetupIntent.
    *
-   * @throws {StripeValidationError} When `confirm` is set without `paymentMethod`
+   * @throws {StripeValidationError} When `confirm` is set without `paymentMethod`,
+   *   or `returnUrl` is set without `confirm`
    */
   async create(options?: CreateSetupIntentOptions): Promise<SetupIntent> {
+    if (options?.returnUrl && !options.confirm) {
+      throw new StripeValidationError('returnUrl requires confirm: true', 'returnUrl');
+    }
     if (options?.confirm && !options.paymentMethod) {
       throw new StripeValidationError(
         'paymentMethod is required when confirm is true',

@@ -70,6 +70,7 @@ export class PaymentsService {
           customer: options.customerId,
           payment_method: options.paymentMethod,
           confirm: options.confirm ?? false,
+          off_session: options.offSession,
           description: options.description,
           receipt_email: options.receiptEmail,
           metadata: options.metadata,

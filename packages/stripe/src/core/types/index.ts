@@ -61,6 +61,13 @@ export interface CreatePaymentOptions {
    * @default false
    */
   confirm?: boolean;
+  /**
+   * The customer is not present (charging a saved payment method). Use with
+   * `confirm: true`. If the bank asks for authentication, Stripe then fails
+   * the payment (`authentication_required`) instead of leaving it in
+   * `requires_action`.
+   */
+  offSession?: boolean;
   /** Arbitrary description shown in the Stripe dashboard */
   description?: string;
   /** Email address to send the receipt to */

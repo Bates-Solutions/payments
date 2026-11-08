@@ -78,17 +78,29 @@ describe('PaymentMethodsService', () => {
     const detach = vi.fn().mockResolvedValue({ id: 'pm_1', customer: null });
     const service = new PaymentMethodsService(stripeWith({ paymentMethods: { detach } }));
     await service.detach('pm_1', { idempotencyKey: 'd1' });
-    expect(detach).toHaveBeenCalledWith('pm_1', {}, { idempotencyKey: 'd1' });
+    await service.detach('pm_1');
+    expect(detach).toHaveBeenNthCalledWith(1, 'pm_1', {}, { idempotencyKey: 'd1' });
+    const generated = (detach.mock.calls[1] as unknown[])[2] as { idempotencyKey?: string };
+    expect(generated.idempotencyKey).toEqual(expect.any(String));
+    expect(generated.idempotencyKey).not.toBe('');
   });
 
   it('sets the customer default for invoices and subscriptions', async () => {
     const update = vi.fn().mockResolvedValue({ id: 'cus_1' });
     const service = new PaymentMethodsService(stripeWith({ customers: { update } }));
     await service.setDefault('cus_1', 'pm_1');
-    expect(update).toHaveBeenCalledWith(
+    await service.setDefault('cus_1', 'pm_1', { idempotencyKey: 's1' });
+    expect(update).toHaveBeenNthCalledWith(
+      1,
       'cus_1',
       { invoice_settings: { default_payment_method: 'pm_1' } },
       { idempotencyKey: expect.any(String) }
+    );
+    expect(update).toHaveBeenNthCalledWith(
+      2,
+      'cus_1',
+      { invoice_settings: { default_payment_method: 'pm_1' } },
+      { idempotencyKey: 's1' }
     );
   });
 
@@ -201,6 +213,18 @@ describe('SetupIntentsService', () => {
     );
   });
 
+  it('requires confirm for returnUrl', async () => {
+    const create = vi.fn();
+    const service = new SetupIntentsService(stripeWith({ setupIntents: { create } }));
+    await expect(service.create({ returnUrl: 'https://a/b' })).rejects.toMatchObject({
+      field: 'returnUrl',
+    });
+    await expect(
+      service.create({ returnUrl: 'https://a/b', confirm: false, paymentMethod: 'pm_1' })
+    ).rejects.toThrow(StripeValidationError);
+    expect(create).not.toHaveBeenCalled();
+  });
+
   it('requires a payment method to confirm on create', async () => {
     const create = vi.fn();
     const service = new SetupIntentsService(stripeWith({ setupIntents: { create } }));
@@ -225,6 +249,7 @@ describe('SetupIntentsService', () => {
       idempotencyKey: 'c1',
     });
     await service.cancel('seti_1', { reason: 'abandoned', idempotencyKey: 'x1' });
+    await service.cancel('seti_1');
 
     expect(retrieve).toHaveBeenCalledWith('seti_1');
     expect(confirm).toHaveBeenCalledWith(
@@ -237,19 +262,35 @@ describe('SetupIntentsService', () => {
       { cancellation_reason: 'abandoned' },
       { idempotencyKey: 'x1' }
     );
+    expect(cancel).toHaveBeenLastCalledWith(
+      'seti_1',
+      { cancellation_reason: undefined },
+      { idempotencyKey: expect.any(String) }
+    );
   });
 
   it('lists with a cursor', async () => {
     const list = vi.fn().mockResolvedValue({ data: [{ id: 'seti_1' }], has_more: true });
     const service = new SetupIntentsService(stripeWith({ setupIntents: { list } }));
-    const result = await service.list({ customerId: 'cus_1', paymentMethodId: 'pm_1', limit: 1 });
-    expect(result.nextCursor).toBe('seti_1');
+    const result = await service.list({
+      customerId: 'cus_1',
+      paymentMethodId: 'pm_1',
+      limit: 1,
+      startingAfter: 'seti_0',
+    });
+    expect(result).toEqual({ data: [{ id: 'seti_1' }], hasMore: true, nextCursor: 'seti_1' });
     expect(list).toHaveBeenCalledWith({
       customer: 'cus_1',
       payment_method: 'pm_1',
       limit: 1,
-      starting_after: undefined,
+      starting_after: 'seti_0',
     });
+  });
+
+  it('returns no cursor on the last page of SetupIntents', async () => {
+    const list = vi.fn().mockResolvedValue({ data: [{ id: 'seti_1' }], has_more: false });
+    const result = await new SetupIntentsService(stripeWith({ setupIntents: { list } })).list();
+    expect(result).toEqual({ data: [{ id: 'seti_1' }], hasMore: false, nextCursor: undefined });
   });
 
   it('validates ids before calling Stripe', async () => {

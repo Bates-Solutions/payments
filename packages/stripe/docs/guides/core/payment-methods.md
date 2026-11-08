@@ -23,7 +23,7 @@ return { clientSecret: intent.client_secret };
 | `paymentMethodTypes` | `string[]`                      | e.g. `['card']`. Omit to use the types enabled in your Dashboard. |
 | `paymentMethod`      | `string`                        | An existing payment method to set up.                             |
 | `confirm`            | `boolean`                       | Confirm now on the server. Requires `paymentMethod`.              |
-| `returnUrl`          | `string`                        | Where to return after a redirect-based authentication.            |
+| `returnUrl`          | `string`                        | Return after redirect authentication. Requires `confirm`.         |
 | `metadata`           | `Record<string, string>`        | Your own key/value data.                                          |
 
 Other SetupIntent calls:
@@ -67,7 +67,10 @@ await stripe.payments.create({
   customerId: 'cus_123',
   paymentMethod: 'pm_123',
   confirm: true,
+  offSession: true,
 });
 ```
 
-If the bank asks for authentication, this throws a `StripePaymentError`. Bring the customer back on-session to finish (for example, confirm a PaymentIntent with Stripe.js).
+`offSession: true` tells Stripe the customer isn't there. If the bank asks for authentication, Stripe fails the payment and this throws a `StripePaymentError` (Stripe's code is `authentication_required`). Bring the customer back on-session to finish, for example by confirming the PaymentIntent with Stripe.js.
+
+Without `offSession`, an authentication request doesn't throw: the call returns a PaymentIntent with `status: 'requires_action'`, which nobody is there to complete. Check `status` if you leave it out.
