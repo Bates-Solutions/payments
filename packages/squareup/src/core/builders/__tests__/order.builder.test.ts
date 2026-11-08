@@ -1,0 +1,619 @@
+import { describe, it, expect, vi } from 'vitest';
+import type { SquareClient } from 'square';
+import { OrderBuilder } from '../order.builder.js';
+import { SquareValidationError, SquareApiError } from '../../errors.js';
+
+function createMockClient(overrides: Record<string, unknown> = {}): SquareClient {
+  return {
+    orders: {
+      create: vi.fn(),
+      ...overrides,
+    },
+  } as unknown as SquareClient;
+}
+
+describe('OrderBuilder', () => {
+  const locationId = 'LOC_123';
+
+  describe('addItem', () => {
+    it('should add item with name and amount', () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId);
+
+      builder.addItem({ name: 'Coffee', amount: 350 });
+      const preview = builder.preview();
+
+      expect(preview.lineItems).toHaveLength(1);
+      expect(preview.lineItems[0]).toEqual({
+        quantity: '1',
+        name: 'Coffee',
+        basePriceMoney: { amount: BigInt(350), currency: 'USD' },
+      });
+    });
+
+    it('should add item with catalogObjectId', () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId);
+
+      builder.addItem({ catalogObjectId: 'CAT_123' });
+      const preview = builder.preview();
+
+      expect(preview.lineItems[0]).toEqual({
+        quantity: '1',
+        catalogObjectId: 'CAT_123',
+      });
+    });
+
+    it('should add item with custom quantity', () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId);
+
+      builder.addItem({ catalogObjectId: 'CAT_123', quantity: 3 });
+      const preview = builder.preview();
+
+      expect(preview.lineItems[0].quantity).toBe('3');
+    });
+
+    it('should add item with note', () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId);
+
+      builder.addItem({ name: 'Coffee', amount: 350, note: 'Extra hot' });
+      const preview = builder.preview();
+
+      expect(preview.lineItems[0].note).toBe('Extra hot');
+    });
+
+    it('should throw for item without catalogObjectId or name+amount', () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId);
+
+      expect(() => builder.addItem({ name: 'Coffee' })).toThrow(SquareValidationError);
+    });
+
+    it('should throw for item with only amount (no name)', () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId);
+
+      // @ts-expect-error Testing invalid input
+      expect(() => builder.addItem({ amount: 350 })).toThrow(SquareValidationError);
+    });
+
+    it('should be chainable', () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId);
+
+      const result = builder.addItem({ name: 'Coffee', amount: 350 });
+      expect(result).toBe(builder);
+    });
+  });
+
+  describe('addItems', () => {
+    it('should add multiple items', () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId);
+
+      builder.addItems([
+        { name: 'Coffee', amount: 350 },
+        { catalogObjectId: 'CAT_123' },
+      ]);
+      const preview = builder.preview();
+
+      expect(preview.lineItems).toHaveLength(2);
+    });
+
+    it('should be chainable', () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId);
+
+      const result = builder.addItems([{ name: 'Coffee', amount: 350 }]);
+      expect(result).toBe(builder);
+    });
+  });
+
+  describe('withCurrency', () => {
+    it('should set currency for subsequent items', () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId);
+
+      builder.withCurrency('EUR').addItem({ name: 'Coffee', amount: 350 });
+      const preview = builder.preview();
+
+      expect(preview.currency).toBe('EUR');
+      expect(preview.lineItems[0].basePriceMoney?.currency).toBe('EUR');
+    });
+
+    it('should be chainable', () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId);
+
+      const result = builder.withCurrency('GBP');
+      expect(result).toBe(builder);
+    });
+  });
+
+  describe('withTip', () => {
+    it('should set tip amount', () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId);
+
+      builder.withTip(500);
+      const preview = builder.preview();
+
+      expect(preview.tipAmount).toBe(BigInt(500));
+    });
+
+    it('should be chainable', () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId);
+
+      const result = builder.withTip(100);
+      expect(result).toBe(builder);
+    });
+  });
+
+  describe('withCustomer', () => {
+    it('should set customer ID', () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId);
+
+      builder.withCustomer('CUST_123');
+      const preview = builder.preview();
+
+      expect(preview.customerId).toBe('CUST_123');
+    });
+
+    it('should be chainable', () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId);
+
+      const result = builder.withCustomer('CUST_123');
+      expect(result).toBe(builder);
+    });
+  });
+
+  describe('withReference', () => {
+    it('should set reference ID', () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId);
+
+      builder.withReference('REF_123');
+      const preview = builder.preview();
+
+      expect(preview.referenceId).toBe('REF_123');
+    });
+
+    it('should be chainable', () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId);
+
+      const result = builder.withReference('REF_123');
+      expect(result).toBe(builder);
+    });
+  });
+
+  describe('withNote', () => {
+    it('should be chainable (note is no-op for API compatibility)', () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId);
+
+      const result = builder.withNote('Special instructions');
+      expect(result).toBe(builder);
+    });
+  });
+
+  describe('preview', () => {
+    it('should return order configuration without creating', () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId);
+
+      builder
+        .withCurrency('EUR')
+        .addItem({ name: 'Coffee', amount: 350 })
+        .withCustomer('CUST_123')
+        .withReference('REF_123')
+        .withTip(100);
+
+      const preview = builder.preview();
+
+      expect(preview).toEqual({
+        locationId: 'LOC_123',
+        lineItems: [
+          {
+            quantity: '1',
+            name: 'Coffee',
+            basePriceMoney: { amount: BigInt(350), currency: 'EUR' },
+          },
+        ],
+        discounts: [],
+        customerId: 'CUST_123',
+        referenceId: 'REF_123',
+        tipAmount: BigInt(100),
+        currency: 'EUR',
+      });
+
+      expect(client.orders.create).not.toHaveBeenCalled();
+    });
+
+    it('should return a copy of lineItems', () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId);
+
+      builder.addItem({ name: 'Coffee', amount: 350 });
+      const preview1 = builder.preview();
+      const preview2 = builder.preview();
+
+      expect(preview1.lineItems).not.toBe(preview2.lineItems);
+    });
+  });
+
+  describe('reset', () => {
+    it('should clear all builder state', () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId);
+
+      builder
+        .addItem({ name: 'Coffee', amount: 350 })
+        .withCustomer('CUST_123')
+        .withReference('REF_123')
+        .withTip(100)
+        .withState('DRAFT')
+        .withPricingOptions({ autoApplyDiscounts: true })
+        .withIdempotencyKey('key-1');
+
+      builder.reset();
+      const preview = builder.preview();
+
+      expect(preview.lineItems).toHaveLength(0);
+      expect(preview.customerId).toBeUndefined();
+      expect(preview.referenceId).toBeUndefined();
+      expect(preview.tipAmount).toBeUndefined();
+      expect(preview.state).toBeUndefined();
+      expect(preview.pricingOptions).toBeUndefined();
+      expect(preview.idempotencyKey).toBeUndefined();
+    });
+
+    it('preview should include state, pricingOptions, idempotencyKey when set', () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId);
+
+      builder
+        .addItem({ name: 'Coffee', amount: 350 })
+        .asTemplate()
+        .withIdempotencyKey('stable-1');
+
+      const preview = builder.preview();
+      expect(preview.state).toBe('DRAFT');
+      expect(preview.pricingOptions).toEqual({ autoApplyDiscounts: true });
+      expect(preview.idempotencyKey).toBe('stable-1');
+    });
+
+    it('should be chainable', () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId);
+
+      const result = builder.reset();
+      expect(result).toBe(builder);
+    });
+  });
+
+  describe('build', () => {
+    it('should create order via API', async () => {
+      const mockOrder = { id: 'ORDER_123', state: 'OPEN' };
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: mockOrder }),
+      });
+
+      const builder = new OrderBuilder(client, locationId);
+      const result = await builder.addItem({ name: 'Coffee', amount: 350 }).build();
+
+      expect(result).toEqual(mockOrder);
+      expect(client.orders.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          order: expect.objectContaining({
+            locationId,
+            lineItems: expect.any(Array),
+          }),
+          idempotencyKey: expect.any(String),
+        })
+      );
+    });
+
+    it('should pass customerId and referenceId', async () => {
+      const mockOrder = { id: 'ORDER_123' };
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: mockOrder }),
+      });
+
+      const builder = new OrderBuilder(client, locationId);
+      await builder
+        .addItem({ name: 'Coffee', amount: 350 })
+        .withCustomer('CUST_123')
+        .withReference('REF_123')
+        .build();
+
+      expect(client.orders.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          order: expect.objectContaining({
+            customerId: 'CUST_123',
+            referenceId: 'REF_123',
+          }),
+        })
+      );
+    });
+
+    it('should throw validation error for no line items', async () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId);
+
+      await expect(builder.build()).rejects.toThrow(SquareValidationError);
+      await expect(builder.build()).rejects.toThrow('Order must have at least one line item');
+    });
+
+    it('should throw if order not returned', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({}),
+      });
+
+      const builder = new OrderBuilder(client, locationId);
+      await expect(
+        builder.addItem({ name: 'Coffee', amount: 350 }).build()
+      ).rejects.toThrow('Order was not created');
+    });
+
+    it('should parse and rethrow API errors', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockRejectedValue({
+          statusCode: 400,
+          body: { errors: [{ category: 'INVALID_REQUEST_ERROR', code: 'BAD_REQUEST' }] },
+        }),
+      });
+
+      const builder = new OrderBuilder(client, locationId);
+      await expect(
+        builder.addItem({ name: 'Coffee', amount: 350 }).build()
+      ).rejects.toThrow(SquareApiError);
+    });
+  });
+
+  describe('method chaining', () => {
+    it('should support full fluent API chain', async () => {
+      const mockOrder = { id: 'ORDER_123' };
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: mockOrder }),
+      });
+
+      const builder = new OrderBuilder(client, locationId);
+      const result = await builder
+        .withCurrency('EUR')
+        .addItem({ name: 'Latte', amount: 450 })
+        .addItem({ catalogObjectId: 'ITEM_123', quantity: 2 })
+        .withTip(100)
+        .withCustomer('CUST_123')
+        .withReference('REF_123')
+        .withNote('Test order')
+        .build();
+
+      expect(result).toEqual(mockOrder);
+    });
+  });
+
+  describe('withState', () => {
+    it('should set order state on build', async () => {
+      const mockOrder = { id: 'ORDER_TEMPLATE' };
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: mockOrder }),
+      });
+
+      await new OrderBuilder(client, locationId)
+        .addItem({ name: 'Coffee', amount: 350 })
+        .withState('DRAFT')
+        .build();
+
+      expect(client.orders.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          order: expect.objectContaining({ state: 'DRAFT' }),
+        })
+      );
+    });
+  });
+
+  describe('withPricingOptions', () => {
+    it('should forward pricing options to build', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
+      });
+
+      await new OrderBuilder(client, locationId)
+        .addItem({ name: 'Coffee', amount: 350 })
+        .withPricingOptions({ autoApplyDiscounts: true, autoApplyTaxes: false })
+        .build();
+
+      expect(client.orders.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          order: expect.objectContaining({
+            pricingOptions: { autoApplyDiscounts: true, autoApplyTaxes: false },
+          }),
+        })
+      );
+    });
+  });
+
+  describe('asTemplate', () => {
+    it('should shortcut DRAFT + autoApplyDiscounts', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
+      });
+
+      await new OrderBuilder(client, locationId)
+        .addItem({ catalogObjectId: 'VAR_1', quantity: 2 })
+        .asTemplate()
+        .build();
+
+      expect(client.orders.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          order: expect.objectContaining({
+            state: 'DRAFT',
+            pricingOptions: { autoApplyDiscounts: true },
+          }),
+        })
+      );
+    });
+  });
+
+  describe('discounts', () => {
+    it('sends order-level discounts and per-line appliedDiscounts (issue #129)', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
+      });
+
+      await new OrderBuilder(client, locationId)
+        .addItem({
+          catalogObjectId: 'VAR_1',
+          quantity: 1,
+          appliedDiscounts: [{ discountUid: 'wholesale' }],
+        })
+        .addDiscount({ uid: 'wholesale', catalogObjectId: 'DISCOUNT_1', scope: 'LINE_ITEM' })
+        .build();
+
+      const arg = (client.orders.create as ReturnType<typeof vi.fn>).mock.calls[0][0] as {
+        order: {
+          discounts?: Array<{ uid?: string; catalogObjectId?: string; scope?: string }>;
+          lineItems: Array<{ appliedDiscounts?: Array<{ discountUid: string }> }>;
+        };
+      };
+      expect(arg.order.discounts).toEqual([
+        { uid: 'wholesale', catalogObjectId: 'DISCOUNT_1', scope: 'LINE_ITEM' },
+      ]);
+      expect(arg.order.lineItems[0].appliedDiscounts).toEqual([{ discountUid: 'wholesale' }]);
+    });
+
+    it('coerces an inline amount discount to bigint', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
+      });
+
+      await new OrderBuilder(client, locationId)
+        .addItem({ name: 'X', amount: 1000 })
+        .addDiscounts([
+          { name: '$2 off', type: 'FIXED_AMOUNT', amountMoney: { amount: 200, currency: 'USD' }, scope: 'ORDER' },
+        ])
+        .build();
+
+      const arg = (client.orders.create as ReturnType<typeof vi.fn>).mock.calls[0][0] as {
+        order: { discounts?: Array<{ amountMoney?: { amount: bigint; currency: string } }> };
+      };
+      expect(arg.order.discounts?.[0].amountMoney).toEqual({ amount: BigInt(200), currency: 'USD' });
+    });
+
+    it('omits discounts entirely when none are added', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
+      });
+
+      await new OrderBuilder(client, locationId).addItem({ name: 'X', amount: 100 }).build();
+
+      const arg = (client.orders.create as ReturnType<typeof vi.fn>).mock.calls[0][0] as {
+        order: { discounts?: unknown };
+      };
+      expect(arg.order.discounts).toBeUndefined();
+    });
+
+    it('throws when a line references a discount uid not in the order', async () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId).addItem({
+        name: 'X',
+        amount: 100,
+        appliedDiscounts: [{ discountUid: 'missing' }],
+      });
+
+      await expect(builder.build()).rejects.toThrow(SquareValidationError);
+      expect(client.orders.create).not.toHaveBeenCalled();
+    });
+
+    it('throws when a LINE_ITEM discount is referenced by no line item', async () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId)
+        .addItem({ name: 'X', amount: 100 })
+        .addDiscount({ uid: 'orphan', catalogObjectId: 'DISCOUNT_1', scope: 'LINE_ITEM' });
+
+      await expect(builder.build()).rejects.toThrow(/apply to nothing/i);
+      expect(client.orders.create).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('withIdempotencyKey', () => {
+    it('should use the supplied key instead of generating one', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
+      });
+
+      await new OrderBuilder(client, locationId)
+        .addItem({ name: 'Coffee', amount: 350 })
+        .withIdempotencyKey('custom-key-1')
+        .build();
+
+      expect(client.orders.create).toHaveBeenCalledWith(
+        expect.objectContaining({ idempotencyKey: 'custom-key-1' })
+      );
+    });
+  });
+
+  describe('per-item basePriceMoney', () => {
+    it('should use explicit basePriceMoney over builder currency', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
+      });
+
+      await new OrderBuilder(client, locationId)
+        .withCurrency('USD')
+        .addItem({
+          name: 'Wholesale Pickles',
+          basePriceMoney: { amount: 750, currency: 'EUR' },
+        })
+        .build();
+
+      const call = (client.orders.create as ReturnType<typeof vi.fn>).mock.calls[0][0];
+      expect(call.order.lineItems[0].basePriceMoney).toEqual({
+        amount: BigInt(750),
+        currency: 'EUR',
+      });
+    });
+
+    it('should accept bigint amount', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
+      });
+
+      await new OrderBuilder(client, locationId)
+        .addItem({
+          name: 'Wholesale',
+          basePriceMoney: { amount: BigInt(999), currency: 'USD' },
+        })
+        .build();
+
+      const call = (client.orders.create as ReturnType<typeof vi.fn>).mock.calls[0][0];
+      expect(call.order.lineItems[0].basePriceMoney.amount).toBe(BigInt(999));
+    });
+
+    it('should override amount+currency derived from amount when both supplied', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
+      });
+
+      await new OrderBuilder(client, locationId)
+        .addItem({
+          name: 'Coffee',
+          amount: 350,
+          basePriceMoney: { amount: 700, currency: 'EUR' },
+        })
+        .build();
+
+      const call = (client.orders.create as ReturnType<typeof vi.fn>).mock.calls[0][0];
+      expect(call.order.lineItems[0].basePriceMoney).toEqual({
+        amount: BigInt(700),
+        currency: 'EUR',
+      });
+    });
+  });
+});

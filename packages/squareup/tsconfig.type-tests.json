@@ -1,0 +1,11 @@
+{
+  // Type-checks the compile-only regression guards under **/__type-tests__/**
+  // (which the main tsconfig excludes so they never emit into dist). Wired into
+  // `npm run typecheck`; noEmit — nothing here is built or published.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
+}
