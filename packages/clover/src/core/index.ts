@@ -5,7 +5,8 @@
  * The package's main entrypoint. Exports `createCloverClient` / `CloverClient`
  * (one service per Clover domain — `payments`, `refunds`, `customers`), the
  * normalized error hierarchy (`CloverError` + `parseCloverError`), and money /
- * idempotency utilities. It ships no vendor SDK — it talks to Clover over a
+ * idempotency utilities, plus the v2 OAuth helpers (`buildAuthorizeUrl`,
+ * `createCloverOAuthClient`) for connecting a merchant. It ships no vendor SDK — it talks to Clover over a
  * small fetch-based REST client that targets both Clover hosts. Webhook helpers
  * live in the `@bates-solutions/clover/server` entrypoint.
  *
@@ -23,6 +24,10 @@
 // Core exports
 export { createCloverClient, CloverClient } from './client.js';
 export type { CloverClientConfig } from './client.js';
+
+// OAuth (app-credential client + authorize URL)
+export { buildAuthorizeUrl, createCloverOAuthClient, CloverOAuthClient } from './oauth.js';
+export type { BuildAuthorizeUrlOptions, CloverOAuthClientConfig, OAuthTokens } from './oauth.js';
 
 // HTTP client (advanced use)
 export { CloverHttp } from './http.js';

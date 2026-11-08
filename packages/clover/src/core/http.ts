@@ -4,9 +4,10 @@ import { cloverErrorFromResponse } from './errors.js';
 /**
  * Base hosts per Clover API and environment.
  *
+ * @internal Shared with the OAuth client, which calls the platform host.
  * @see https://docs.clover.com/dev/docs/ecommerce-api-tutorials
  */
-const HOSTS: Record<CloverHost, Record<CloverEnvironment, string>> = {
+export const HOSTS: Record<CloverHost, Record<CloverEnvironment, string>> = {
   ecommerce: {
     sandbox: 'https://scl-sandbox.dev.clover.com',
     production: 'https://scl.clover.com',

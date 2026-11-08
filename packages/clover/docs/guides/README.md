@@ -4,6 +4,7 @@ Tutorials and examples for `@bates-solutions/clover`.
 
 ## Core
 
+- [OAuth](./core/oauth.md) — authorize URL, obtain and refresh expiring tokens
 - [Payments (Charges)](./core/payments.md) — create, get, capture
 - [Refunds](./core/refunds.md) — full and partial refunds
 - [Customers](./core/customers.md) — Platform customer CRUD
