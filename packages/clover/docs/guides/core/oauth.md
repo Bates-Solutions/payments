@@ -14,7 +14,8 @@ Hosts are the North America ones: `sandbox.dev.clover.com` / `www.clover.com` fo
 ```typescript
 import { buildAuthorizeUrl } from '@bates-solutions/clover';
 
-const state = crypto.randomUUID(); // store it in the session
+const state = crypto.randomUUID();
+session.cloverOAuthState = state; // checked in the callback
 const url = buildAuthorizeUrl({
   clientId: process.env.CLOVER_APP_ID!,
   environment: 'production',
@@ -39,7 +40,10 @@ const oauth = createCloverOAuthClient({
   environment: 'production',
 });
 
-if (req.query.state !== session.state) throw new Error('state mismatch');
+// A missing stored state must fail too: comparing two missing values would pass.
+const expectedState = session.cloverOAuthState;
+delete session.cloverOAuthState; // one use only
+if (!expectedState || req.query.state !== expectedState) throw new Error('state mismatch');
 
 const tokens = await oauth.obtainToken({ code: req.query.code });
 // { accessToken, expiresAt, refreshToken, refreshTokenExpiresAt }
@@ -74,5 +78,5 @@ Failures use the normal error hierarchy: a rejected code or refresh token is a `
 ## Not covered yet
 
 - The low-trust PKCE flow (`code_challenge` / `code_verifier`, no client secret)
-- Europe (`eu.clover.com`) and Latin America (`la.clover.com`) hosts
+- Europe (`www.eu.clover.com` / `api.eu.clover.com`) and Latin America (`www.la.clover.com` / `api.la.clover.com`) hosts
 - Migrating legacy non-expiring tokens (`/oauth/token/migrate_v2`)
