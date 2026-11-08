@@ -3,6 +3,7 @@ import { CloverHttp } from './http.js';
 import { PaymentsService } from './services/payments.service.js';
 import { RefundsService } from './services/refunds.service.js';
 import { CustomersService } from './services/customers.service.js';
+import { InventoryService } from './services/inventory.service.js';
 
 /**
  * Configuration options for the Clover client.
@@ -12,7 +13,7 @@ export interface CloverClientConfig {
   apiToken: string;
   /**
    * Merchant id. Required for platform (`/v3/merchants/{mId}`) operations such
-   * as `customers`; not needed for Ecommerce charges/refunds.
+   * as `customers` and `inventory`; not needed for Ecommerce charges/refunds.
    */
   merchantId?: string;
   /**
@@ -48,6 +49,7 @@ export class CloverClient {
   public readonly payments: PaymentsService;
   public readonly refunds: RefundsService;
   public readonly customers: CustomersService;
+  public readonly inventory: InventoryService;
 
   constructor(config: CloverClientConfig) {
     if (!config.apiToken) {
@@ -65,6 +67,7 @@ export class CloverClient {
     this.payments = new PaymentsService(this.http);
     this.refunds = new RefundsService(this.http);
     this.customers = new CustomersService(this.http);
+    this.inventory = new InventoryService(this.http);
   }
 
   /**

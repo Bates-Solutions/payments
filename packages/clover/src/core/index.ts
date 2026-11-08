@@ -3,7 +3,7 @@
  * Platform APIs.
  *
  * The package's main entrypoint. Exports `createCloverClient` / `CloverClient`
- * (one service per Clover domain — `payments`, `refunds`, `customers`), the
+ * (one service per Clover domain — `payments`, `refunds`, `customers`, `inventory`), the
  * normalized error hierarchy (`CloverError` + `parseCloverError`), and money /
  * idempotency utilities. It ships no vendor SDK — it talks to Clover over a
  * small fetch-based REST client that targets both Clover hosts. Webhook helpers
@@ -39,6 +39,20 @@ export type {
   CreateCustomerOptions,
   UpdateCustomerOptions,
 } from './services/customers.service.js';
+export { InventoryService } from './services/inventory.service.js';
+export type {
+  Item,
+  ItemStock,
+  ItemExpand,
+  ItemFields,
+  ItemPriceType,
+  ListItemsOptions,
+  GetItemOptions,
+  CreateItemOptions,
+  UpdateItemOptions,
+  FindItemsByCodeOptions,
+  UpdateItemStockOptions,
+} from './services/inventory.service.js';
 
 // Errors
 export {
