@@ -35,7 +35,7 @@ A thin, consistent wrapper over the official [`stripe`](https://www.npmjs.com/pa
 
 | Dependency | Version |
 | ---------- | ------- |
-| Stripe SDK | 18–23 (not 22.0.0 to 22.3.0) |
+| Stripe SDK | 18–23   |
 | Node.js    | 22+     |
 | TypeScript | 5.0+    |
 
