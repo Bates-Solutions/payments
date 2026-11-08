@@ -15,7 +15,7 @@ Hosts are the North America ones: `sandbox.dev.clover.com` / `www.clover.com` fo
 import { buildAuthorizeUrl } from '@bates-solutions/clover';
 
 const state = crypto.randomUUID();
-session.cloverOAuthState = state; // checked in the callback
+req.session.oauthState = state; // store it server side, e.g. in the session, with the tenant ID
 const url = buildAuthorizeUrl({
   clientId: process.env.CLOVER_APP_ID!,
   environment: 'production',
@@ -40,10 +40,14 @@ const oauth = createCloverOAuthClient({
   environment: 'production',
 });
 
-// A missing stored state must fail too: comparing two missing values would pass.
-const expectedState = session.cloverOAuthState;
-delete session.cloverOAuthState; // one use only
-if (!expectedState || req.query.state !== expectedState) throw new Error('state mismatch');
+// Take the stored state and delete it, so each value works only once
+const storedState = req.session.oauthState;
+delete req.session.oauthState;
+
+if (!storedState) throw new Error('OAuth state missing: start the flow again');
+if (typeof req.query.state !== 'string' || req.query.state !== storedState) {
+  throw new Error('OAuth state mismatch');
+}
 
 const tokens = await oauth.obtainToken({ code: req.query.code });
 // { accessToken, expiresAt, refreshToken, refreshTokenExpiresAt }
@@ -54,6 +58,12 @@ const clover = createCloverClient({
   environment: 'production',
 });
 ```
+
+The state check is what stops a cross-site request forgery: an attacker sending your user to the callback with the attacker's own `code`. Its order matters:
+
+- **Require a stored state.** A plain `req.query.state !== storedState` passes when both are `undefined`: a callback with no `state`, in a session that never started the flow. Reject when nothing is stored.
+- **Use it once.** Delete the stored value before comparing, whether or not the check passes, so a captured callback URL can't be replayed.
+- **Then compare.** The query value must be a string equal to the stored one.
 
 ## 3. Refresh before the access token expires
 

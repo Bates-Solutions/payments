@@ -51,7 +51,7 @@ export interface BuildAuthorizeUrlOptions {
  * const url = buildAuthorizeUrl({
  *   clientId: process.env.CLOVER_APP_ID!,
  *   environment: 'production',
- *   state: csrfToken,
+ *   state: csrfToken, // random per attempt; store it server side to check in the callback
  *   redirectUri: 'https://example.com/clover/callback',
  * });
  * // redirect the merchant to `url`
