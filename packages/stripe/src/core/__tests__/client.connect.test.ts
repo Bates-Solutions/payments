@@ -2,8 +2,11 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // Record every SDK instance the wrapper constructs, so the tests can check
 // which config (and so which Stripe-Account header) each call goes out with.
-const instances: { apiKey: string; config: Record<string, unknown>; oauth: Record<string, unknown> }[] =
-  [];
+const instances: {
+  apiKey: string;
+  config: Record<string, unknown>;
+  oauth: Record<string, unknown>;
+}[] = [];
 
 vi.mock('stripe', () => {
   class FakeStripe {
@@ -39,6 +42,18 @@ describe('StripeClient connected accounts', () => {
     expect(instances[0].config).toMatchObject({ stripeAccount: 'acct_1', maxNetworkRetries: 1 });
   });
 
+  it('rejects a configured stripeAccount that is not a connected account id', () => {
+    for (const stripeAccount of ['', 'cus_1', 42 as unknown as string]) {
+      expect(() => createStripeClient({ apiKey: 'sk_test_1', stripeAccount })).toThrow(
+        StripeValidationError
+      );
+    }
+    expect(() => createStripeClient({ apiKey: 'sk_test_1', stripeAccount: '' })).toThrow(
+      expect.objectContaining({ field: 'stripeAccount' })
+    );
+    expect(instances).toHaveLength(0);
+  });
+
   it('forAccount returns a scoped client and leaves the original alone', () => {
     const platform = createStripeClient({
       apiKey: 'sk_live_1',
@@ -69,6 +84,9 @@ describe('StripeClient connected accounts', () => {
     expect(() => client.forAccount('')).toThrow(StripeValidationError);
     expect(() => client.forAccount('cus_1')).toThrow(StripeValidationError);
     expect(() => client.forAccount(undefined as unknown as string)).toThrow(StripeValidationError);
+    expect(() => client.forAccount('cus_1')).toThrow(
+      expect.objectContaining({ field: 'accountId' })
+    );
   });
 
   it('runs OAuth as the platform on the platform client', async () => {

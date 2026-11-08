@@ -136,9 +136,12 @@ const { data: prices } = await client.prices.list({ active: true, expandProduct:
 import { buildAuthorizeUrl } from '@bates-solutions/stripe';
 
 // 1. Send the user to Stripe to connect their account
-const url = buildAuthorizeUrl({ clientId: 'ca_123', state: csrfToken });
+const state = crypto.randomUUID(); // store it server side for the callback
+const url = buildAuthorizeUrl({ clientId: 'ca_123', state });
 
-// 2. In the redirect handler (after checking state)
+// 2. In the redirect handler: require the stored state, delete it (one use),
+//    compare it with the query value, handle `error`, require a string `code`
+//    (full example in docs/guides/core/connect.md)
 const { stripeUserId } = await client.oauth.exchangeCode(code);
 
 // 3. Act as the connected account: every call sends Stripe-Account

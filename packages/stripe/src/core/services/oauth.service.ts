@@ -14,9 +14,12 @@ export interface BuildAuthorizeUrlOptions {
   /** Your platform's Connect client ID (`ca_…`, Dashboard → Connect settings) */
   clientId: string;
   /**
-   * Unguessable CSRF token, returned unchanged on the redirect. Verify it in
-   * your callback before calling {@link OAuthService.exchangeCode}. You can
-   * also use it to carry which tenant started the flow.
+   * Unguessable CSRF token, random per attempt (e.g. `crypto.randomUUID()`),
+   * returned unchanged on the redirect. Store it server side, then in the
+   * callback, before calling {@link OAuthService.exchangeCode}: require a
+   * stored value, delete it so it works only once, and require the query
+   * `state` to be a string equal to it. A bare `query.state !== stored`
+   * check passes when both are `undefined`.
    */
   state: string;
   /** @default 'read_write' */
@@ -77,7 +80,7 @@ function requireNonEmpty(value: string | undefined, field: string): void {
  * ```typescript
  * const url = buildAuthorizeUrl({
  *   clientId: process.env.STRIPE_CONNECT_CLIENT_ID!,
- *   state: csrfToken,
+ *   state: csrfToken, // random per attempt; store it server side to check in the callback
  *   redirectUri: 'https://app.example.com/stripe/callback',
  * });
  * // redirect the user to `url`
@@ -110,13 +113,16 @@ export function buildAuthorizeUrl(options: BuildAuthorizeUrlOptions): string {
  *
  * @example
  * ```typescript
- * // OAuth redirect handler, after checking `state`
+ * // OAuth redirect handler. First check `state`: require a stored value,
+ * // delete it (one use), then compare it with the query value. Then handle a
+ * // deny (`error=access_denied`, no `code`) and require `code` to be a
+ * // string. See docs/guides/core/connect.md.
  * const { stripeUserId } = await stripe.oauth.exchangeCode(code);
  * await db.saveRetailer({ stripeAccountId: stripeUserId });
  *
  * // Later, act as the connected account
  * const retailer = stripe.forAccount(stripeUserId);
- * await retailer.products.create({ name: 'Sourdough loaf' });
+ * const { data: products } = await retailer.products.list({ active: true });
  * ```
  */
 export class OAuthService {

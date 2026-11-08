@@ -13,6 +13,15 @@ import { OAuthService } from './services/oauth.service.js';
 import { StripeValidationError } from './errors.js';
 
 /**
+ * Throw unless `accountId` looks like a connected account ID (`acct_…`).
+ */
+function assertAccountId(accountId: unknown, field: string): void {
+  if (typeof accountId !== 'string' || !accountId.startsWith('acct_')) {
+    throw new StripeValidationError(`${field} must be a connected account ID (acct_…)`, field);
+  }
+}
+
+/**
  * Configuration options for the Stripe client
  */
 export interface StripeClientConfig {
@@ -35,7 +44,8 @@ export interface StripeClientConfig {
 
   /**
    * Act as this connected account (`acct_…`) on every call: the SDK sends it
-   * as the `Stripe-Account` header. Usually you don't set this yourself; use
+   * as the `Stripe-Account` header. Anything that isn't an `acct_…` ID throws
+   * `StripeValidationError`. Usually you don't set this yourself; use
    * {@link StripeClient.forAccount} on your platform client instead.
    */
   stripeAccount?: string;
@@ -100,6 +110,10 @@ export class StripeClient {
       stripeConfig.apiVersion = config.apiVersion as Stripe.StripeConfig['apiVersion'];
     }
 
+    if (config.stripeAccount !== undefined) {
+      assertAccountId(config.stripeAccount, 'stripeAccount');
+    }
+
     this.config = config;
     this.stripeConfig = stripeConfig;
     this.client = new Stripe(
@@ -132,14 +146,11 @@ export class StripeClient {
    * @example
    * ```typescript
    * const retailer = stripe.forAccount('acct_123');
-   * const product = await retailer.products.create({ name: 'Sourdough loaf' });
+   * const { data: products } = await retailer.products.list({ active: true });
    * ```
    */
   forAccount(accountId: string): StripeClient {
-    // typeof guards JS callers who pass a non-string.
-    if (typeof accountId !== 'string' || !accountId.startsWith('acct_')) {
-      throw new StripeValidationError('accountId must be a connected account ID (acct_…)', 'accountId');
-    }
+    assertAccountId(accountId, 'accountId');
     return new StripeClient({ ...this.config, stripeAccount: accountId });
   }
 

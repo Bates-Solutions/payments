@@ -3,7 +3,7 @@
 Stripe [Connect](https://docs.stripe.com/connect) lets your platform act on other businesses' Stripe accounts. The typical flow for a Standard account:
 
 1. Send the user to Stripe with `buildAuthorizeUrl`.
-2. In your redirect handler, check `state`, then call `stripe.oauth.exchangeCode(code)` to get the connected account's ID.
+2. In your redirect handler, check `state` (stored, single use, then compared), handle a declined request, then call `stripe.oauth.exchangeCode(code)` to get the connected account's ID.
 3. Store that ID and act on the account with `stripe.forAccount(id)`.
 
 Stripe is deprecating the access and refresh tokens Connect OAuth used to return, so this library never returns them. Everything runs off the account ID and the `Stripe-Account` header ([Making API calls for connected accounts](https://docs.stripe.com/connect/authentication)).
@@ -15,9 +15,12 @@ Stripe is deprecating the access and refresh tokens Connect OAuth used to return
 ```typescript
 import { buildAuthorizeUrl } from '@bates-solutions/stripe';
 
+const state = crypto.randomUUID();
+req.session.stripeOAuthState = state; // store it server side, e.g. in the session
+
 const url = buildAuthorizeUrl({
   clientId: process.env.STRIPE_CONNECT_CLIENT_ID!, // ca_… from Dashboard → Connect settings
-  state: csrfToken, // unguessable; check it in the callback
+  state,
   redirectUri: 'https://app.example.com/stripe/callback',
 });
 // redirect the user to `url`
@@ -35,15 +38,37 @@ const url = buildAuthorizeUrl({
 
 ## 2. Exchange the code
 
+Stripe redirects to your callback with `code` and `state`. If the user declines, it still sends the same `state`, but with `error=access_denied` and `error_description` instead of a `code`.
+
 ```typescript
 // GET /stripe/callback?code=ac_…&state=…
-if (req.query.state !== session.csrfToken) throw new Error('bad state');
+
+// Take the stored state and delete it, so each value works only once
+const storedState = req.session.stripeOAuthState;
+delete req.session.stripeOAuthState;
+
+if (!storedState) throw new Error('OAuth state missing: start the flow again');
+if (typeof req.query.state !== 'string' || req.query.state !== storedState) {
+  throw new Error('OAuth state mismatch');
+}
+
+// The user declined (or Stripe reported another error): no code to exchange
+if (typeof req.query.error === 'string') {
+  return res.redirect('/settings/stripe?connect=denied');
+}
+
+// Express types query values as string | string[] | ParsedQs: accept a single string only
+if (typeof req.query.code !== 'string') throw new Error('OAuth code missing');
 
 const { stripeUserId, scope, livemode } = await stripe.oauth.exchangeCode(req.query.code);
 await db.saveRetailer({ stripeAccountId: stripeUserId });
 ```
 
-The redirect can also carry `error` and `error_description` instead of a code when the user declines; handle those before calling `exchangeCode`.
+The state check is what stops cross-site request forgery: an attacker sending your user to the callback with the attacker's own `code`, connecting the attacker's account to your user. Its order matters:
+
+- **Require a stored state.** A plain `req.query.state !== storedState` passes when both are `undefined`: a callback with no `state`, in a session that never started the flow. Reject when nothing is stored.
+- **Use it once.** Delete the stored value before comparing, whether or not the check passes, so a captured callback URL can't be replayed.
+- **Then compare.** The query value must be a string equal to the stored one.
 
 ## 3. Act as the connected account
 
@@ -52,14 +77,14 @@ The redirect can also carry `error` and `error_description` instead of a code wh
 ```typescript
 const retailer = stripe.forAccount(retailerRow.stripeAccountId);
 
-const product = await retailer.products.create({ name: 'Sourdough loaf' });
+const { data: products } = await retailer.products.list({ active: true });
 const { data: sessions } = await retailer.checkout.list({ limit: 20 });
 
 retailer.accountId; // 'acct_…'
 stripe.accountId;   // undefined (the platform)
 ```
 
-You can also pass `stripeAccount` to `createStripeClient` directly, but `forAccount` on one platform client is usually neater.
+You can also pass `stripeAccount` to `createStripeClient` directly, but `forAccount` on one platform client is usually neater. Both reject anything that isn't an `acct_…` ID with `StripeValidationError`.
 
 ## Disconnect an account
 
