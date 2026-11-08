@@ -15,6 +15,7 @@ TypeScript wrapper for the Clover Ecommerce and Platform APIs with edge-ready we
 - [OAuth](./guides/core/oauth.md)
 - [Payments (Charges)](./guides/core/payments.md)
 - [Refunds](./guides/core/refunds.md)
+- [Orders](./guides/core/orders.md)
 - [Customers](./guides/core/customers.md)
 - [Inventory](./guides/core/inventory.md)
 

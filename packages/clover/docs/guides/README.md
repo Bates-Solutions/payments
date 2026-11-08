@@ -7,6 +7,7 @@ Tutorials and examples for `@bates-solutions/clover`.
 - [OAuth](./core/oauth.md) — authorize URL, obtain and refresh expiring tokens
 - [Payments (Charges)](./core/payments.md) — create, get, capture
 - [Refunds](./core/refunds.md) — full and partial refunds
+- [Orders](./core/orders.md) — list/get orders with line items and time filters
 - [Customers](./core/customers.md) — Platform customer CRUD
 - [Inventory](./core/inventory.md) — items, find by barcode/SKU, item stock
 

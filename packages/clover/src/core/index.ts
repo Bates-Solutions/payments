@@ -38,6 +38,15 @@ export { PaymentsService } from './services/payments.service.js';
 export type { Charge, CaptureChargeOptions } from './services/payments.service.js';
 export { RefundsService } from './services/refunds.service.js';
 export type { Refund, CreateRefundOptions } from './services/refunds.service.js';
+export { OrdersService } from './services/orders.service.js';
+export type {
+  Order,
+  LineItem,
+  OrderExpand,
+  OrderPaymentState,
+  ListOrdersOptions,
+  GetOrderOptions,
+} from './services/orders.service.js';
 export { CustomersService } from './services/customers.service.js';
 export type {
   Customer,
