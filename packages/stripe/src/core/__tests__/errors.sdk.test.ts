@@ -103,7 +103,8 @@ describe('parseStripeError with real stripe-node errors', () => {
     expect(err).toBeInstanceOf(StripeApiError);
     expect(err.code).toBe('FORBIDDEN');
     expect(err.statusCode).toBe(403);
-    expect(err).toMatchObject({ type: 'permission_error' });
+    // `type` is what Stripe sent; the classification is in `code`.
+    expect(err).toMatchObject({ type: 'invalid_request_error' });
   });
 
   it('maps a plain 403 invalid_request_error to FORBIDDEN', () => {
@@ -146,6 +147,26 @@ describe('parseStripeError with real stripe-node errors', () => {
     expect(err).toBeInstanceOf(StripeApiError);
     expect(err.code).toBe('RATE_LIMITED');
     expect(err.statusCode).toBe(429);
+    expect(err).toMatchObject({ type: 'invalid_request_error' });
+  });
+
+  it('keeps the OAuth error Stripe sent in type', () => {
+    const err = parseStripeError(
+      sdkErrors.generateOAuthError({ type: 'access_denied', statusCode: 400 })
+    );
+    expect(err.code).toBe('BAD_REQUEST');
+    expect(err).toMatchObject({ type: 'access_denied' });
+  });
+
+  it('keeps a plain object type, and falls back to the classification without one', () => {
+    expect(parseStripeError({ type: 'permission_error' })).toMatchObject({
+      type: 'permission_error',
+    });
+    const bare = parseStripeError(new sdkErrors.StripeRateLimitError({}));
+    expect(bare.code).toBe('RATE_LIMITED');
+    expect(bare).toMatchObject({ type: 'rate_limit_error' });
+    const generic = parseStripeError(new sdkErrors.StripeAPIError({ statusCode: 500 }));
+    expect(generic).toMatchObject({ code: 'INTERNAL_SERVER_ERROR', type: 'api_error' });
   });
 
   it('maps a 400 with code rate_limit to RATE_LIMITED', () => {

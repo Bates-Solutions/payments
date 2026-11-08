@@ -51,7 +51,10 @@ export class StripeError extends Error {
  * API-level errors from Stripe
  */
 export class StripeApiError extends StripeError {
-  /** Raw Stripe error `type` (e.g. `invalid_request_error`) */
+  /**
+   * The error type Stripe sent (e.g. `invalid_request_error`, or an OAuth
+   * error such as `invalid_grant`). Use `code` for the classification.
+   */
   public readonly type?: string;
   /** Request parameter the error relates to, if any */
   public readonly param?: string;
@@ -231,6 +234,27 @@ function stripeErrorType(error: unknown): string | undefined {
 }
 
 /**
+ * The error type Stripe actually sent: the SDK's `rawType`, or `type` on a
+ * plain object. Falls back to the classification when neither is there
+ * (e.g. an SDK error built without a raw type).
+ */
+function sentErrorType(error: object, classified: string): string {
+  const { type, rawType } = error as { type?: unknown; rawType?: unknown };
+  if (typeof rawType === 'string' && rawType) {
+    return rawType;
+  }
+  if (
+    typeof type === 'string' &&
+    type &&
+    !Object.hasOwn(SPECIFIC_SDK_CLASSES, type) &&
+    !Object.hasOwn(GENERIC_SDK_CLASSES, type)
+  ) {
+    return type;
+  }
+  return classified;
+}
+
+/**
  * Parse a Stripe SDK error (or any thrown value) into a typed exception.
  *
  * Understands both `stripe-node` error instances and plain objects in
@@ -245,12 +269,13 @@ export function parseStripeError(error: unknown): StripeError {
   const type = stripeErrorType(error);
   if (type) {
     const sdkError = error as StripeSdkError;
+    const sentType = sentErrorType(sdkError, type);
     // stripe-node defaults missing strings to '', so skip empty values too.
     const message = [sdkError.message, sdkError.raw?.message].find(Boolean) ?? 'Stripe API error';
     const declineCode = [sdkError.decline_code, sdkError.raw?.decline_code].find(Boolean);
     const apiError = (code: StripeErrorCode, fallbackStatus: number): StripeApiError =>
       new StripeApiError(message, code, sdkError.statusCode ?? fallbackStatus, {
-        type,
+        type: sentType,
         param: sdkError.param,
         requestId: sdkError.requestId,
       });
