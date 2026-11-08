@@ -136,14 +136,13 @@ interface StripeSdkError {
 }
 
 /**
- * `stripe-node` error class names, mapped to the Stripe error type they stand
- * for. Used when an error has no known `rawType` (e.g. a connection error,
- * which has no API response).
+ * `stripe-node` error classes that pin down what went wrong, mapped to the
+ * error type they stand for. The SDK picks these from the HTTP status (401,
+ * 402, 403, 429, ...), which is more reliable than the API's `type`: Stripe
+ * sends `invalid_request_error` for a bad API key (401) and for rate limits.
  */
-const SDK_CLASS_TYPES: Record<string, string> = {
+const SPECIFIC_SDK_CLASSES: Record<string, string> = {
   StripeCardError: 'card_error',
-  StripeInvalidRequestError: 'invalid_request_error',
-  StripeAPIError: 'api_error',
   StripeAuthenticationError: 'authentication_error',
   StripePermissionError: 'permission_error',
   StripeRateLimitError: 'rate_limit_error',
@@ -158,6 +157,16 @@ const SDK_CLASS_TYPES: Record<string, string> = {
   StripeInvalidScopeError: 'invalid_scope',
   StripeUnsupportedGrantTypeError: 'unsupported_grant_type',
   StripeUnsupportedResponseTypeError: 'unsupported_response_type',
+};
+
+/**
+ * Generic `stripe-node` classes. For these the API `type` (in `rawType`) and
+ * the HTTP status decide, e.g. a 409 arrives as a `StripeAPIError` whose
+ * `rawType` is `invalid_request_error`.
+ */
+const GENERIC_SDK_CLASSES: Record<string, string> = {
+  StripeAPIError: 'api_error',
+  StripeInvalidRequestError: 'invalid_request_error',
 };
 
 const STRIPE_ERROR_TYPES = new Set([
@@ -187,24 +196,38 @@ function stripeErrorType(error: unknown): string | undefined {
   if (!error || typeof error !== 'object') {
     return undefined;
   }
-  const { type, rawType } = error as { type?: unknown; rawType?: unknown };
-  // The SDK raises 403s as StripePermissionError but keeps the API type
-  // (`invalid_request_error`) in rawType; the class is the more specific.
-  if (type === 'StripePermissionError') {
-    return 'permission_error';
+  const { type, rawType, statusCode, code } = error as {
+    type?: unknown;
+    rawType?: unknown;
+    statusCode?: unknown;
+    code?: unknown;
+  };
+
+  // 1. A specific SDK class says exactly what happened.
+  if (typeof type === 'string' && Object.hasOwn(SPECIFIC_SDK_CLASSES, type)) {
+    return SPECIFIC_SDK_CLASSES[type];
   }
-  // Otherwise the API type wins: the SDK raises e.g. a 409 as a generic
-  // StripeAPIError whose rawType is `invalid_request_error`.
+
+  // 2. Otherwise (generic class or plain object): the API type...
+  let apiType: string | undefined;
   if (typeof rawType === 'string' && STRIPE_ERROR_TYPES.has(rawType)) {
-    return rawType;
+    apiType = rawType;
+  } else if (typeof type === 'string' && STRIPE_ERROR_TYPES.has(type)) {
+    apiType = type;
+  } else if (typeof type === 'string' && Object.hasOwn(GENERIC_SDK_CLASSES, type)) {
+    apiType = GENERIC_SDK_CLASSES[type];
   }
-  if (typeof type === 'string' && Object.hasOwn(SDK_CLASS_TYPES, type)) {
-    return SDK_CLASS_TYPES[type];
+  if (apiType !== 'invalid_request_error' && apiType !== 'api_error') {
+    return apiType;
   }
-  if (typeof type === 'string' && STRIPE_ERROR_TYPES.has(type)) {
-    return type;
+
+  // 3. ...refined by the status, the way the SDK picks its classes.
+  if (statusCode === 429 || (statusCode === 400 && code === 'rate_limit')) {
+    return 'rate_limit_error';
   }
-  return undefined;
+  if (statusCode === 401) return 'authentication_error';
+  if (statusCode === 403) return 'permission_error';
+  return apiType;
 }
 
 /**
@@ -241,7 +264,7 @@ export function parseStripeError(error: unknown): StripeError {
         return apiError('FORBIDDEN', 403);
 
       case 'card_error':
-        return new StripePaymentError(message, mapCardErrorCode(sdkError.code, declineCode), {
+        return new StripePaymentError(message, mapCardErrorCode(sdkError.code), {
           paymentIntentId: sdkError.payment_intent?.id,
           declineCode,
         });
@@ -284,8 +307,6 @@ export function parseStripeError(error: unknown): StripeError {
  */
 function statusCodeToErrorCode(statusCode: number | undefined): StripeErrorCode {
   switch (statusCode) {
-    case 403:
-      return 'FORBIDDEN';
     case 404:
       return 'NOT_FOUND';
     case 409:
@@ -308,17 +329,14 @@ const CARD_ERROR_CODES: Record<string, StripeErrorCode> = {
 };
 
 /**
- * Map a Stripe card-error `code` (and, for a generic `card_declined`, its more
- * specific `decline_code`) to a normalized code.
+ * Map a Stripe card-error `code` to a normalized code. A `card_declined`
+ * stays `CARD_DECLINED` whatever its `decline_code` (e.g.
+ * `insufficient_funds`), which is on `StripePaymentError.declineCode`.
  */
-function mapCardErrorCode(code?: string, declineCode?: string): StripeErrorCode {
+function mapCardErrorCode(code?: string): StripeErrorCode {
   // Own keys only, so a code like "constructor" can't hit Object.prototype.
-  const lookup = (key: string | undefined): StripeErrorCode | undefined =>
-    key !== undefined && Object.hasOwn(CARD_ERROR_CODES, key) ? CARD_ERROR_CODES[key] : undefined;
-
-  if (code === 'card_declined') {
-    const specific = lookup(declineCode);
-    if (specific) return specific;
+  if (code !== undefined && Object.hasOwn(CARD_ERROR_CODES, code)) {
+    return CARD_ERROR_CODES[code] ?? 'CARD_DECLINED';
   }
-  return lookup(code) ?? 'CARD_DECLINED';
+  return 'CARD_DECLINED';
 }

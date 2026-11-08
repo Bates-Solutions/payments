@@ -18,7 +18,7 @@ import { StripeError, StripePaymentError } from '@bates-solutions/stripe';
 try {
   await stripe.payments.create({ amount: 1000, paymentMethod: 'pm_card_visa', confirm: true });
 } catch (error) {
-  if (error instanceof StripePaymentError && error.code === 'INSUFFICIENT_FUNDS') {
+  if (error instanceof StripePaymentError && error.declineCode === 'insufficient_funds') {
     return showMessage('Your card has insufficient funds.');
   }
   if (error instanceof StripeError && error.code === 'RATE_LIMITED') {
@@ -30,28 +30,29 @@ try {
 
 ## Code map
 
-`parseStripeError` understands both `stripe-node` error instances and plain objects in Stripe's API error shape.
+`parseStripeError` understands both `stripe-node` error instances and plain objects in Stripe's API error shape. Stripe's API `type` is not enough on its own: it is `invalid_request_error` for a bad API key and for rate limits too. So, like the SDK, the mapping goes by HTTP status first (the SDK's specific error classes encode it), then by type.
 
 | Stripe error                                  | Class                | `code`                                         |
 | --------------------------------------------- | -------------------- | ---------------------------------------------- |
-| `card_error`                                  | `StripePaymentError` | see card codes below                           |
-| `authentication_error`                        | `StripeAuthError`    | `UNAUTHORIZED`                                 |
-| permission error (HTTP 403)                   | `StripeApiError`     | `FORBIDDEN`                                    |
+| HTTP 402, `card_error`                        | `StripePaymentError` | see card codes below                           |
+| HTTP 401 (bad or missing API key)             | `StripeAuthError`    | `UNAUTHORIZED`                                 |
+| HTTP 403 (permission)                         | `StripeApiError`     | `FORBIDDEN`                                    |
+| HTTP 429, or 400 with `code: rate_limit`      | `StripeApiError`     | `RATE_LIMITED`                                 |
+| `idempotency_error`                           | `StripeApiError`     | `IDEMPOTENCY_ERROR`                            |
 | `invalid_request_error` 404                   | `StripeApiError`     | `NOT_FOUND`                                    |
 | `invalid_request_error` 409                   | `StripeApiError`     | `CONFLICT`                                     |
 | `invalid_request_error` (other)               | `StripeApiError`     | `BAD_REQUEST`                                  |
-| `rate_limit_error`                            | `StripeApiError`     | `RATE_LIMITED`                                 |
-| `idempotency_error`                           | `StripeApiError`     | `IDEMPOTENCY_ERROR`                            |
 | connection error (no response)                | `StripeApiError`     | `SERVICE_UNAVAILABLE` (status 503)             |
 | `api_error` 503                               | `StripeApiError`     | `SERVICE_UNAVAILABLE`                          |
 | `api_error` (other)                           | `StripeApiError`     | `INTERNAL_SERVER_ERROR`                        |
 | Connect OAuth `invalid_client`                | `StripeAuthError`    | `UNAUTHORIZED`                                 |
 | Connect OAuth `invalid_grant`, `invalid_request`, `invalid_scope`, … | `StripeApiError` | `BAD_REQUEST` (`type` holds the OAuth error) |
 
-Card codes (`StripePaymentError.code`), from the error `code`, or from `decline_code` when the code is the generic `card_declined`:
+Card codes (`StripePaymentError.code`), from the card error's `code`:
 
-| Stripe code / decline code            | `code`                    |
+| Stripe code                           | `code`                    |
 | ------------------------------------- | ------------------------- |
+| `card_declined`                       | `CARD_DECLINED`           |
 | `insufficient_funds`                  | `INSUFFICIENT_FUNDS`      |
 | `expired_card`                        | `EXPIRED_CARD`            |
 | `incorrect_cvc`, `invalid_cvc`        | `INCORRECT_CVC`           |
@@ -60,4 +61,4 @@ Card codes (`StripePaymentError.code`), from the error `code`, or from `decline_
 | `authentication_required`             | `AUTHENTICATION_REQUIRED` |
 | anything else                         | `CARD_DECLINED`           |
 
-The raw decline code is always on `error.declineCode` for finer handling.
+A decline is always `CARD_DECLINED`, whatever its reason; the reason (`insufficient_funds`, `lost_card`, `generic_decline`, ...) is on `error.declineCode`.

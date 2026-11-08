@@ -35,7 +35,8 @@ describe('parseStripeError with real stripe-node errors', () => {
       })
     );
     expect(err).toBeInstanceOf(StripePaymentError);
-    expect(err.code).toBe('INSUFFICIENT_FUNDS');
+    // A decline stays CARD_DECLINED; the specific reason is on declineCode.
+    expect(err.code).toBe('CARD_DECLINED');
     expect(err.statusCode).toBe(402);
     expect(err.message).toBe('Your card has insufficient funds.');
     expect((err as StripePaymentError).declineCode).toBe('insufficient_funds');
@@ -108,7 +109,13 @@ describe('parseStripeError with real stripe-node errors', () => {
   it('maps a plain 403 invalid_request_error to FORBIDDEN', () => {
     const err = parseStripeError({ type: 'invalid_request_error', statusCode: 403 });
     expect(err.code).toBe('FORBIDDEN');
-    expect(err).toMatchObject({ type: 'invalid_request_error' });
+    expect(err.statusCode).toBe(403);
+  });
+
+  it('falls back to status 403 for a permission error without one', () => {
+    const err = parseStripeError({ type: 'permission_error' });
+    expect(err.code).toBe('FORBIDDEN');
+    expect(err.statusCode).toBe(403);
   });
 
   it('maps a 403 invalid_request_error built by the SDK to FORBIDDEN', () => {
@@ -117,18 +124,71 @@ describe('parseStripeError with real stripe-node errors', () => {
     );
   });
 
-  it('maps an authentication error', () => {
+  // Stripe sends `invalid_request_error` as the type for a bad key and for
+  // rate limits; only the status (and `code: rate_limit`) tells them apart.
+  it('maps a 401 (bad API key) to StripeAuthError', () => {
     const err = parseStripeError(
-      fromApi({ type: 'authentication_error', statusCode: 401, message: 'bad key' })
+      fromApi({
+        type: 'invalid_request_error',
+        statusCode: 401,
+        message: 'Invalid API Key provided',
+      })
     );
     expect(err).toBeInstanceOf(StripeAuthError);
-    expect(err.message).toBe('bad key');
+    expect(err.code).toBe('UNAUTHORIZED');
+    expect(err.message).toBe('Invalid API Key provided');
   });
 
-  it('maps rate limit and idempotency errors', () => {
-    const rate = parseStripeError(fromApi({ type: 'rate_limit_error', statusCode: 429 }));
+  it('maps a 429 to RATE_LIMITED', () => {
+    const err = parseStripeError(
+      fromApi({ type: 'invalid_request_error', code: 'rate_limit', statusCode: 429 })
+    );
+    expect(err).toBeInstanceOf(StripeApiError);
+    expect(err.code).toBe('RATE_LIMITED');
+    expect(err.statusCode).toBe(429);
+  });
+
+  it('maps a 400 with code rate_limit to RATE_LIMITED', () => {
+    const err = parseStripeError(
+      fromApi({ type: 'invalid_request_error', code: 'rate_limit', statusCode: 400 })
+    );
+    expect(err.code).toBe('RATE_LIMITED');
+    expect(err.statusCode).toBe(400);
+  });
+
+  it('trusts a specific SDK class over its rawType', () => {
+    const errors = (Stripe as unknown as { errors: Record<string, new (raw: object) => Error> })
+      .errors;
+    // No status to refine by: only the class says what this is.
+    const auth = parseStripeError(
+      new errors.StripeAuthenticationError({ type: 'invalid_request_error' })
+    );
+    expect(auth).toBeInstanceOf(StripeAuthError);
+    const rate = parseStripeError(
+      new errors.StripeRateLimitError({ type: 'invalid_request_error' })
+    );
     expect(rate.code).toBe('RATE_LIMITED');
-    expect(rate.statusCode).toBe(429);
+  });
+
+  it('maps plain 401 and 429 objects by status', () => {
+    expect(parseStripeError({ type: 'invalid_request_error', statusCode: 401 })).toBeInstanceOf(
+      StripeAuthError
+    );
+    expect(parseStripeError({ type: 'api_error', statusCode: 429 }).code).toBe('RATE_LIMITED');
+    expect(
+      parseStripeError({ type: 'invalid_request_error', statusCode: 400, code: 'rate_limit' }).code
+    ).toBe('RATE_LIMITED');
+    // A plain 400 without the rate_limit code stays a bad request
+    expect(
+      parseStripeError({
+        type: 'invalid_request_error',
+        statusCode: 400,
+        code: 'parameter_missing',
+      }).code
+    ).toBe('BAD_REQUEST');
+  });
+
+  it('maps an idempotency error', () => {
     const idem = parseStripeError(fromApi({ type: 'idempotency_error', statusCode: 400 }));
     expect(idem.code).toBe('IDEMPOTENCY_ERROR');
   });
@@ -187,13 +247,14 @@ describe('parseStripeError edge cases', () => {
     expect(parseStripeError({ type: 'card_error', code: 'authentication_required' }).code).toBe(
       'AUTHENTICATION_REQUIRED'
     );
+    // A decline whose reason is authentication_required is still a decline
     expect(
       parseStripeError({
         type: 'card_error',
         code: 'card_declined',
         decline_code: 'authentication_required',
       }).code
-    ).toBe('AUTHENTICATION_REQUIRED');
+    ).toBe('CARD_DECLINED');
   });
 
   it('does not treat Object.prototype keys as known codes or classes', () => {
