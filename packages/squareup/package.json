@@ -1,0 +1,95 @@
+{
+  "name": "@bates-solutions/squareup",
+  "version": "2.4.0",
+  "description": "TypeScript wrapper for Square API with webhook support for Node.js backends",
+  "type": "module",
+  "main": "./dist/core/index.js",
+  "types": "./dist/core/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/core/index.d.ts",
+      "import": "./dist/core/index.js"
+    },
+    "./server": {
+      "types": "./dist/server/index.d.ts",
+      "import": "./dist/server/index.js"
+    },
+    "./server/express": {
+      "types": "./dist/server/middleware/express.d.ts",
+      "import": "./dist/server/middleware/express.js"
+    },
+    "./server/nextjs": {
+      "types": "./dist/server/middleware/nextjs.d.ts",
+      "import": "./dist/server/middleware/nextjs.js"
+    },
+    "./server/lambda": {
+      "types": "./dist/server/middleware/lambda.d.ts",
+      "import": "./dist/server/middleware/lambda.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.type-tests.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "docs": "typedoc"
+  },
+  "keywords": [
+    "square",
+    "square-api",
+    "payments",
+    "payment-processing",
+    "typescript",
+    "nodejs",
+    "backend",
+    "webhooks",
+    "ecommerce",
+    "point-of-sale",
+    "pos",
+    "sdk",
+    "api"
+  ],
+  "author": "Bates Solutions",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bates-Solutions/squareup.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Bates-Solutions/squareup/issues"
+  },
+  "homepage": "https://github.com/Bates-Solutions/squareup#readme",
+  "engines": {
+    "node": ">=22"
+  },
+  "peerDependencies": {
+    "square": ">=45.0.1 <47"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.2",
+    "@typescript-eslint/eslint-plugin": "^8.70.0",
+    "@typescript-eslint/parser": "^8.70.0",
+    "@vitest/coverage-v8": "^5.0.1",
+    "eslint": "^10.11.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.1.0",
+    "prettier": "^3.9.8",
+    "square": "^46.0.0",
+    "typedoc": "^0.28.18",
+    "typedoc-plugin-markdown": "^4.13.1",
+    "typescript": "^6.0.2",
+    "typescript-eslint": "^8.70.0",
+    "vitest": "^5.0.1"
+  }
+}
