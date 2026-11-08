@@ -1,0 +1,52 @@
+# Patterns apply in every package as well as the root (a pattern with an inner
+# slash is anchored to this directory, hence the **/ prefixes).
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# Test coverage
+coverage/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Temporary files
+tmp/
+temp/
+
+# Internal planning docs
+**/docs/plans/
+.issues/
+
+# AI assistants: kept out of this public repo. scripts/import-history.sh filters
+# the same set out of imported history; keep the two lists in sync.
+CLAUDE.md
+CLAUDE.local.md
+.claude/
+.cursor/
+.cursorrules
+.aider*
+.continue/
+**/.github/copilot-instructions.md

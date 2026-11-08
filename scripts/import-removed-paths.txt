@@ -1,0 +1,44 @@
+# Paths that exist in the source repos (after the filter-repo rewrite into
+# packages/<name>/) but were deliberately removed in this monorepo, because
+# root-level files replace them.
+#
+# scripts/import-history.sh reads this file on every merge. For these paths only it:
+#   - resolves a modify/delete conflict (the source changed a file we deleted)
+#     by keeping the deletion;
+#   - removes any file the source newly added under them (for example a new
+#     workflow under .github/), so the merge never brings them back.
+# Any other conflict aborts the merge.
+#
+# One path per line, relative to the repo root. A trailing / means the whole
+# directory. Blank lines and lines starting with # are ignored. When you delete
+# another imported file or directory from a package, add it here in the same PR.
+
+# Replaced by root CI (S3) and the root .github/ (dependabot, templates).
+packages/squareup/.github/
+packages/stripe/.github/
+packages/clover/.github/
+
+# Replaced by the root package-lock.json (npm workspaces).
+packages/squareup/package-lock.json
+packages/stripe/package-lock.json
+packages/clover/package-lock.json
+
+# Coverage upload moves to root CI with per-package flags (S3).
+packages/squareup/codecov.yml
+packages/stripe/codecov.yml
+packages/clover/codecov.yml
+
+# Replaced by the root eslint.config.js.
+packages/squareup/eslint.config.js
+packages/stripe/eslint.config.js
+packages/clover/eslint.config.js
+
+# Replaced by the root .prettierrc.
+packages/squareup/.prettierrc
+packages/stripe/.prettierrc
+packages/clover/.prettierrc
+
+# Replaced by the root .gitignore.
+packages/squareup/.gitignore
+packages/stripe/.gitignore
+packages/clover/.gitignore
