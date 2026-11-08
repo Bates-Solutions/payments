@@ -17,10 +17,13 @@
 # What it does, per package:
 #   1. Clones https://github.com/$SOURCE_ORG/<name> fresh (never touches a local checkout).
 #   2. Rewrites it with git filter-repo so every file lives under packages/<name>/
-#      and every tag vX.Y.Z becomes <name>-vX.Y.Z. It also drops every CLAUDE.md,
-#      CLAUDE.local.md and .claude/ from the history: AI assistant files are kept out
-#      of this public repo. Change that filter and every imported commit id changes,
-#      so the next re-import refuses as "rewritten upstream".
+#      and every tag vX.Y.Z becomes <name>-vX.Y.Z. It also drops AI assistant
+#      files (CLAUDE.md, CLAUDE.local.md, .claude/, .cursor/, .cursorrules, .aider*,
+#      .continue/, .github/copilot-instructions.md, the same set .gitignore lists)
+#      from the history, because this repo is public. Ids are deterministic, so adding
+#      a pattern changes nothing unless it matches a path already imported. If it does,
+#      the commits from that one onward get new ids and the next re-import refuses as
+#      "rewritten upstream": rewrite this repo with the same filter first.
 #   3. Merges the rewritten <ref> into the current branch with --allow-unrelated-histories
 #      (first run) or a normal merge (re-runs), and fetches the renamed tags locally.
 #
@@ -250,7 +253,11 @@ for p in "${PACKAGES[@]}"; do
   git -C "$src" filter-repo --quiet --force \
     --to-subdirectory-filter "packages/$p" \
     --tag-rename "":"$p-" \
-    --invert-paths --path-regex '(^|/)CLAUDE(\.local)?\.md$' --path-regex '(^|/)\.claude/'
+    --invert-paths \
+    --path-regex '(^|/)CLAUDE(\.local)?\.md$' --path-regex '(^|/)\.claude/' \
+    --path-regex '(^|/)\.cursor/' --path-regex '(^|/)\.cursorrules$' \
+    --path-regex '(^|/)\.aider[^/]*(/|$)' --path-regex '(^|/)\.continue/' \
+    --path-regex '(^|/)\.github/copilot-instructions\.md$'
 
   remote="import-$p"
   git remote remove "$remote" 2>/dev/null || true
