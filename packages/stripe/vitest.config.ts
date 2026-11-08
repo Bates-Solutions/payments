@@ -1,15 +1,2 @@
-import { defineConfig } from 'vitest/config';
-
-export default defineConfig({
-  test: {
-    globals: true,
-    environment: 'node',
-    include: ['src/**/*.{test,spec}.ts'],
-    coverage: {
-      provider: 'v8',
-      reporter: ['text', 'lcov', 'html'],
-      include: ['src/**/*.ts'],
-      exclude: ['src/**/*.{test,spec}.ts', 'src/**/index.ts', 'src/**/types.ts'],
-    },
-  },
-});
+// Shared settings live in the repo root's vitest.shared.ts.
+export { default } from '../../vitest.shared';
