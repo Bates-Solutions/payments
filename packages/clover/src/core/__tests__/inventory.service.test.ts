@@ -243,6 +243,15 @@ describe('InventoryService', () => {
       expect(body).toEqual({ quantity: 24 });
     });
 
+    it('encodes the item id on the item_stocks path', async () => {
+      const fetchImpl = mockFetch({ quantity: 1 });
+      const service = makeService(fetchImpl);
+      await service.getItemStock('A/B');
+      await service.updateItemStock('A/B', { quantity: 1 });
+      expect(String(call(fetchImpl, 0).url)).toBe(`${BASE}/item_stocks/A%2FB`);
+      expect(String(call(fetchImpl, 1).url)).toBe(`${BASE}/item_stocks/A%2FB`);
+    });
+
     it('falls back to the sent stock when Clover returns no body', async () => {
       const fetchImpl = mockFetch(undefined);
       const stock = await makeService(fetchImpl).updateItemStock('I1', { quantity: 0 });
