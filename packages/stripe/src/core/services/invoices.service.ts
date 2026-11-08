@@ -201,7 +201,7 @@ export class InvoicesService {
         customer: options?.customerId,
         subscription: options?.subscriptionId,
         status: options?.status,
-        created: toRangeParam(options?.created),
+        created: toRangeParam(options?.created, 'created'),
         limit: options?.limit,
         starting_after: options?.startingAfter,
       });

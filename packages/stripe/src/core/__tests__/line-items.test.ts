@@ -36,22 +36,51 @@ describe('toUnixTime / toRangeParam', () => {
     expect(() => toUnixTime('1' as unknown as number)).toThrow(StripeValidationError);
   });
 
+  it('rejects fractional seconds', () => {
+    expect(() => toUnixTime(1772323200.5)).toThrow(StripeValidationError);
+  });
+
+  it('rejects values that look like milliseconds, but accepts the boundary', () => {
+    expect(() => toUnixTime(1772323200000)).toThrow(/looks like milliseconds/);
+    expect(() => toUnixTime(1e11 + 1)).toThrow(/looks like milliseconds/);
+    expect(toUnixTime(1e11)).toBe(1e11);
+  });
+
+  it('reports the given field name', () => {
+    expect(() => toUnixTime(1.5, 'created.gte')).toThrow(
+      expect.objectContaining({
+        field: 'created.gte',
+        message: expect.stringContaining('created.gte'),
+      })
+    );
+    expect(() => toUnixTime(Number.NaN)).toThrow(expect.objectContaining({ field: 'value' }));
+    expect(() => toRangeParam({ lt: 1772323200000 }, 'created')).toThrow(
+      expect.objectContaining({ field: 'created.lt' })
+    );
+    expect(() => toRangeParam({ gt: 0.5 }, 'created')).toThrow(
+      expect.objectContaining({ field: 'created.gt' })
+    );
+  });
+
   it('maps every bound of a range', () => {
     expect(
-      toRangeParam({
-        gte: new Date('2026-03-01T00:00:00Z'),
-        gt: 1,
-        lte: 2,
-        lt: new Date('2026-04-01T00:00:00Z'),
-      })
+      toRangeParam(
+        {
+          gte: new Date('2026-03-01T00:00:00Z'),
+          gt: 1,
+          lte: 2,
+          lt: new Date('2026-04-01T00:00:00Z'),
+        },
+        'created'
+      )
     ).toEqual({ gte: 1772323200, gt: 1, lte: 2, lt: 1775001600 });
-    expect(toRangeParam({ gte: 5 })).toEqual({
+    expect(toRangeParam({ gte: 5 }, 'created')).toEqual({
       gte: 5,
       gt: undefined,
       lte: undefined,
       lt: undefined,
     });
-    expect(toRangeParam(undefined)).toBeUndefined();
+    expect(toRangeParam(undefined, 'created')).toBeUndefined();
   });
 });
 
@@ -90,9 +119,13 @@ describe('CheckoutService line items', () => {
       starting_after: undefined,
       expand: undefined,
     });
-    expect(listLineItems).toHaveBeenNthCalledWith(2, 'cs_1', expect.objectContaining({
-      starting_after: 'li_99',
-    }));
+    expect(listLineItems).toHaveBeenNthCalledWith(
+      2,
+      'cs_1',
+      expect.objectContaining({
+        starting_after: 'li_99',
+      })
+    );
   });
 
   it('listLineItems can expand the product', async () => {
@@ -106,7 +139,9 @@ describe('CheckoutService line items', () => {
   });
 
   it('listLineItems validates and normalizes errors', async () => {
-    const listLineItems = vi.fn().mockRejectedValue({ type: 'invalid_request_error', statusCode: 404 });
+    const listLineItems = vi
+      .fn()
+      .mockRejectedValue({ type: 'invalid_request_error', statusCode: 404 });
     const service = new CheckoutService(stripeWith({ checkout: { sessions: { listLineItems } } }));
     await expect(service.listLineItems('')).rejects.toMatchObject({ field: 'sessionId' });
     expect(listLineItems).not.toHaveBeenCalled();
@@ -153,7 +188,10 @@ describe('InvoicesService lines', () => {
 
     expect(result).toHaveLength(101);
     expect(listLineItems).toHaveBeenCalledTimes(2);
-    expect(listLineItems).toHaveBeenNthCalledWith(1, 'in_1', { limit: 100, starting_after: undefined });
+    expect(listLineItems).toHaveBeenNthCalledWith(1, 'in_1', {
+      limit: 100,
+      starting_after: undefined,
+    });
   });
 
   it('listLines validates and normalizes errors', async () => {
@@ -179,7 +217,7 @@ describe('InvoicesService lines', () => {
     const list = vi.fn();
     const service = new InvoicesService(stripeWith({ invoices: { list } }));
     await expect(service.list({ created: { gte: new Date('x') } })).rejects.toThrow(
-      StripeValidationError
+      expect.objectContaining({ field: 'created.gte' })
     );
     expect(list).not.toHaveBeenCalled();
   });

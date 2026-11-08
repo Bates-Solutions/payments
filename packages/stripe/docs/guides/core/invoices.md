@@ -74,21 +74,33 @@ Omitting both `amount` and `priceId`, or passing `amount` without `currency`, th
 
 `listLines` returns every line of an invoice (all pages):
 
-```typescript
-const { data: paid } = await stripe.invoices.list({
-  status: 'paid',
-  created: { gte: new Date('2026-03-01'), lt: new Date('2026-04-01') },
-});
+`invoices.list` returns one page, so follow `nextCursor` to cover the whole window:
 
-for (const invoice of paid) {
-  const lines = await stripe.invoices.listLines(invoice.id);
-  for (const line of lines) {
-    console.log(line.description, line.quantity, line.amount);
+```typescript
+let cursor: string | undefined;
+do {
+  const page = await stripe.invoices.list({
+    status: 'paid',
+    created: { gte: new Date('2026-03-01'), lt: new Date('2026-04-01') },
+    limit: 100,
+    startingAfter: cursor,
+  });
+
+  for (const invoice of page.data) {
+    const lines = await stripe.invoices.listLines(invoice.id);
+    for (const line of lines) {
+      const productId = line.pricing?.price_details?.product; // a plain 'prod_…' ID
+      console.log(productId, line.description, line.quantity, line.amount);
+    }
   }
-}
+
+  cursor = page.nextCursor;
+} while (cursor);
 ```
 
-`created` bounds accept a `Date` or Unix seconds (`gte`, `gt`, `lte`, `lt`).
+`created` bounds accept a `Date` or whole Unix seconds (`gte`, `gt`, `lte`, `lt`).
+
+An invoice line's product is at `line.pricing.price_details.product` (for lines billed from a Price). It is a plain product ID and can't be expanded on this endpoint; fetch it with `stripe.products.get(productId)` if you need its name or metadata, ideally once per distinct ID.
 
 ## Retrieve and list
 

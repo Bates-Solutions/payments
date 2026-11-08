@@ -223,7 +223,7 @@ export class CheckoutService {
         subscription: options?.subscriptionId,
         payment_link: options?.paymentLinkId,
         status: options?.status,
-        created: toRangeParam(options?.created),
+        created: toRangeParam(options?.created, 'created'),
         expand: options?.expandLineItems ? ['data.line_items'] : undefined,
         starting_after: options?.startingAfter,
       });

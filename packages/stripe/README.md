@@ -132,18 +132,32 @@ const { data: prices } = await client.prices.list({ active: true, expandProduct:
 ### Reading what was sold
 
 ```typescript
-// Completed Checkout Sessions (including Payment Link sales) in a window
-const { data: sessions } = await client.checkout.list({
-  status: 'complete',
-  created: { gte: new Date('2026-03-01'), lt: new Date('2026-04-01') },
-});
-for (const session of sessions) {
-  const items = await client.checkout.listLineItems(session.id); // all pages
-}
+// Completed Checkout Sessions (including Payment Link sales) in a window.
+// list returns one page, so follow nextCursor to cover the whole window.
+const march = { gte: new Date('2026-03-01'), lt: new Date('2026-04-01') };
+let cursor: string | undefined;
+do {
+  const page = await client.checkout.list({
+    status: 'complete',
+    created: march,
+    limit: 100,
+    startingAfter: cursor,
+  });
+  for (const session of page.data) {
+    const items = await client.checkout.listLineItems(session.id); // all of its pages
+  }
+  cursor = page.nextCursor;
+} while (cursor);
 
-// Paid invoices and their lines
-const { data: invoices } = await client.invoices.list({ status: 'paid', created: { gte: since } });
-const lines = await client.invoices.listLines(invoices[0].id);
+// Paid invoices and their lines, the same way
+cursor = undefined;
+do {
+  const page = await client.invoices.list({ status: 'paid', created: march, limit: 100, startingAfter: cursor });
+  for (const invoice of page.data) {
+    const lines = await client.invoices.listLines(invoice.id);
+  }
+  cursor = page.nextCursor;
+} while (cursor);
 ```
 
 ### Webhook Handling (Express)
