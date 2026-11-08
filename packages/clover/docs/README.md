@@ -31,6 +31,6 @@ Generated from source with TypeDoc:
 
 ## Additional Resources
 
-- [GitHub Repository](https://github.com/mbates/clover)
+- [GitHub Repository](https://github.com/Bates-Solutions/clover)
 - [Clover Developer Documentation](https://docs.clover.com/dev/docs)
 - [Changelog](../CHANGELOG.md)
