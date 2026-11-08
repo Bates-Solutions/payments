@@ -31,7 +31,11 @@
 #   commit that changes one of them would otherwise stop the merge with a
 #   modify/delete conflict. For the listed paths only, the script keeps the
 #   deletion: it resolves those modify/delete conflicts with `git rm`, and also
-#   removes any file the source newly added under a listed directory. The merge
+#   removes any file the merge newly adds under a listed directory (files the
+#   monorepo itself keeps there are left alone). If such an added file has the
+#   same content as a file the merge deletes elsewhere (a source move such as
+#   `git mv CONTRIBUTING.md .github/`), it is treated as a conflict instead, so
+#   the moved file is not silently lost. The merge
 #   commit message stays "chore: re-import <name> history".
 #   Merges run with rename detection off (-X no-renames). The root lockfile,
 #   .gitignore and .prettierrc look like renames of the deleted package files, and
@@ -174,16 +178,34 @@ $(cat "$log")"
   fi
 
   # Files the source added under a removed directory merge cleanly; drop them too.
-  local e added=()
+  # Only files this merge adds (relative to HEAD) are dropped: a file the monorepo
+  # itself keeps under a listed path is left alone. Unmerged paths show as U, not A.
+  # A source move of a kept file into a removed path (git mv CONTRIBUTING.md
+  # .github/) shows as a delete plus an add under -X no-renames; dropping the add
+  # would silently lose the file, so a dropped add whose blob matches a file this
+  # merge deletes elsewhere is sent to a person instead.
+  local e b added=() moved=()
+  local -A deleted=()
+  while IFS= read -r -d '' f; do
+    is_removed_path "$f" || deleted["$(git rev-parse "HEAD:$f")"]="$f"
+  done < <(git diff --cached --no-renames --name-only --diff-filter=D -z HEAD)
   for e in ${REMOVED_PATHS[@]+"${REMOVED_PATHS[@]}"}; do
     while IFS= read -r -d '' f; do
-      # An unmerged path here is one we still have (it is in $other); leave it.
-      if [ -z "$(git ls-files -u -- ":(literal)$f")" ]; then added+=("$f"); fi
-    done < <(git ls-files -z --cached -- ":(literal)$e" | sort -zu)
+      b="$(git rev-parse ":$f")"
+      if [ -n "${deleted[$b]:-}" ]; then
+        moved+=("${deleted[$b]} -> $f")
+        other+=("${deleted[$b]}" "$f")
+      else
+        added+=("$f")
+      fi
+    done < <(git diff --cached --no-renames --name-only --diff-filter=A -z HEAD -- ":(literal)$e" | sort -zu)
   done
   if [ ${#added[@]} -gt 0 ]; then
     git rm --quiet --force -- "${added[@]}"
   fi
+  for f in ${moved[@]+"${moved[@]}"}; do
+    echo "    source moved a kept file into a removed path, needs a person: $f" >&2
+  done
 
   for f in ${kept[@]+"${kept[@]}"} ${added[@]+"${added[@]}"}; do
     echo "    kept removed: $f"
