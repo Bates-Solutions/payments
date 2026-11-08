@@ -37,6 +37,132 @@ describe('formatMoney', () => {
   });
 });
 
+// Stripe's currency rules: https://docs.stripe.com/currencies
+const ZERO_DECIMAL = [
+  'bif',
+  'clp',
+  'djf',
+  'gnf',
+  'jpy',
+  'kmf',
+  'krw',
+  'mga',
+  'pyg',
+  'rwf',
+  'vnd',
+  'vuv',
+  'xaf',
+  'xof',
+  'xpf',
+];
+const THREE_DECIMAL = ['bhd', 'jod', 'kwd', 'omr', 'tnd'];
+const WHOLE_UNIT_TWO_DECIMAL = ['isk', 'ugx'];
+const TWO_DECIMAL = ['usd', 'eur', 'gbp', 'cad', 'aud', 'huf', 'twd'];
+
+describe('zero-decimal currencies', () => {
+  describe.each(ZERO_DECIMAL)('%s', (currency) => {
+    it('toMinor does not multiply', () => {
+      expect(toMinor(500, currency)).toBe(500);
+    });
+
+    it('toMinor rounds to a whole unit', () => {
+      expect(toMinor(500.4, currency)).toBe(500);
+      expect(toMinor(500.6, currency)).toBe(501);
+    });
+
+    it('fromMinor does not divide', () => {
+      expect(fromMinor(500, currency)).toBe(500);
+    });
+
+    it('matches the uppercase code', () => {
+      expect(toMinor(500, currency.toUpperCase())).toBe(500);
+      expect(fromMinor(500, currency.toUpperCase())).toBe(500);
+    });
+  });
+});
+
+describe('three-decimal currencies', () => {
+  describe.each(THREE_DECIMAL)('%s', (currency) => {
+    it('toMinor multiplies by 1000', () => {
+      expect(toMinor(5.12, currency)).toBe(5120);
+    });
+
+    it('toMinor rounds to the nearest 10', () => {
+      expect(toMinor(5.124, currency)).toBe(5120);
+      expect(toMinor(5.126, currency)).toBe(5130);
+    });
+
+    it('fromMinor divides by 1000', () => {
+      expect(fromMinor(5120, currency)).toBe(5.12);
+      expect(fromMinor(5125, currency)).toBe(5.125);
+    });
+
+    it('matches the uppercase code', () => {
+      expect(toMinor(5.12, currency.toUpperCase())).toBe(5120);
+      expect(fromMinor(5120, currency.toUpperCase())).toBe(5.12);
+    });
+  });
+});
+
+describe('isk and ugx (two-decimal value, decimals always 00)', () => {
+  describe.each(WHOLE_UNIT_TWO_DECIMAL)('%s', (currency) => {
+    it('toMinor multiplies whole units by 100', () => {
+      expect(toMinor(5, currency)).toBe(500);
+    });
+
+    it('toMinor rounds to a whole unit first', () => {
+      expect(toMinor(5.4, currency)).toBe(500);
+      expect(toMinor(5.6, currency)).toBe(600);
+    });
+
+    it('fromMinor divides by 100', () => {
+      expect(fromMinor(500, currency)).toBe(5);
+      expect(fromMinor(550, currency)).toBe(5.5);
+    });
+
+    it('matches the uppercase code', () => {
+      expect(toMinor(5.4, currency.toUpperCase())).toBe(500);
+      expect(fromMinor(500, currency.toUpperCase())).toBe(5);
+    });
+  });
+});
+
+describe('two-decimal currencies', () => {
+  describe.each(TWO_DECIMAL)('%s', (currency) => {
+    it('toMinor multiplies by 100 and keeps cents', () => {
+      expect(toMinor(10.45, currency)).toBe(1045);
+    });
+
+    it('fromMinor divides by 100', () => {
+      expect(fromMinor(1045, currency)).toBe(10.45);
+    });
+
+    it('matches the uppercase code', () => {
+      expect(toMinor(10.45, currency.toUpperCase())).toBe(1045);
+      expect(fromMinor(1045, currency.toUpperCase())).toBe(10.45);
+    });
+  });
+
+  it('treats an unknown code as two-decimal', () => {
+    expect(toMinor(10.45, 'zzz')).toBe(1045);
+    expect(fromMinor(1045, 'zzz')).toBe(10.45);
+  });
+});
+
+describe('formatMoney currency decimals', () => {
+  it('formats a three-decimal currency with three decimals', () => {
+    expect(formatMoney(5120, 'kwd')).toContain('5.120');
+  });
+
+  it('formats isk from a two-decimal amount as whole units', () => {
+    expect(formatMoney(500, 'isk')).toMatch(/(^|\D)5$/);
+  });
+
+  it('formats a zero-decimal currency given in uppercase', () => {
+    expect(formatMoney(5000, 'KRW')).toContain('5,000');
+  });
+});
+
 describe('createIdempotencyKey', () => {
   it('returns a unique UUID each call', () => {
     const a = createIdempotencyKey();

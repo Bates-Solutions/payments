@@ -235,7 +235,22 @@ import { toMinor, fromMinor, formatMoney } from '@bates-solutions/stripe';
 toMinor(10.99);            // 1099
 fromMinor(1099);           // 10.99
 formatMoney(1099, 'usd');  // "$10.99"
+
+toMinor(5000, 'KRW');      // 5000 (zero-decimal; codes are case-insensitive)
+toMinor(5.124, 'kwd');     // 5120 (three-decimal, rounded to a multiple of 10)
+toMinor(5, 'isk');         // 500  (sent as two-decimal, decimals always 00)
 ```
+
+`toMinor` and `fromMinor` follow [Stripe's currency rules](https://docs.stripe.com/currencies):
+
+| Currencies | Stripe `amount` | Example |
+| ---------- | --------------- | ------- |
+| Two-decimal (default, e.g. `usd`, `eur`, `huf`, `twd`) | major × 100 | 10.99 USD → `1099` |
+| Zero-decimal: `bif clp djf gnf jpy kmf krw mga pyg rwf vnd vuv xaf xof xpf` | major × 1 | 500 JPY → `500` |
+| Three-decimal: `bhd jod kwd omr tnd` | major × 1000, rounded to a multiple of 10 | 5.124 KWD → `5120` |
+| `isk`, `ugx` | whole units × 100 (decimals always `00`) | 5 ISK → `500` |
+
+`huf` and `twd` charges take two-decimal amounts, but Stripe payouts in those currencies must be multiples of 100; the helpers don't enforce that.
 
 ## Documentation
 
