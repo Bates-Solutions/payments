@@ -31,6 +31,7 @@ It targets both Clover hosts transparently:
 
 - **Zero dependencies** – A tiny `fetch` client; no vendor SDK
 - **Type-Safe** – Full TypeScript types for inputs and results
+- **OAuth** – Authorize URL plus code exchange and refresh for Clover's expiring v2 tokens
 - **Typed Errors** – `parseCloverError` normalizes HTTP failures into a small class hierarchy
 - **Edge-ready webhooks** – WebCrypto signature verification that runs on Node, **Deno**, Bun, and Workers, plus Express and Lambda adapters, and the Clover URL-verification handshake handled for you
 
@@ -89,6 +90,27 @@ const customer = await clover.customers.create({
 });
 ```
 
+### OAuth (connect a merchant)
+
+Apps that act for a merchant get an expiring token pair through Clover's v2 OAuth code flow. See the [OAuth guide](./docs/guides/core/oauth.md).
+
+```typescript
+import { buildAuthorizeUrl, createCloverOAuthClient } from '@bates-solutions/clover';
+
+// 1. Send the merchant to Clover
+const url = buildAuthorizeUrl({ clientId: process.env.CLOVER_APP_ID!, state: csrfToken });
+
+// 2. In the redirect handler (after checking `state`), exchange the code
+const oauth = createCloverOAuthClient({
+  clientId: process.env.CLOVER_APP_ID!,
+  clientSecret: process.env.CLOVER_APP_SECRET!,
+});
+const { accessToken, expiresAt, refreshToken } = await oauth.obtainToken({ code });
+
+// 3. Before `expiresAt`, refresh (refresh tokens are single use: store the new one)
+const refreshed = await oauth.refreshToken({ refreshToken });
+```
+
 ### Webhook Handling (Edge / Deno / Workers)
 
 Signature verification uses WebCrypto, so `createWebhookHandler` runs on any Fetch-API runtime. The initial Clover URL-verification handshake is answered automatically.
@@ -131,6 +153,23 @@ app.post(
 );
 ```
 
+### Inventory (Platform API)
+
+```typescript
+// Find items by barcode or SKU, with their stock level
+const items = await clover.inventory.findItemsByCode({
+  codes: ['012345678905'],
+  skus: ['PICKLE-DILL-500'],
+  expand: ['itemStock'],
+});
+
+// Set the stock after a delivery (quantity replaces the current count)
+const { quantity = 0 } = await clover.inventory.getItemStock(items[0]!.id!);
+await clover.inventory.updateItemStock(items[0]!.id!, { quantity: quantity + 24 });
+```
+
+See the [inventory guide](./docs/guides/core/inventory.md).
+
 ## Available Services
 
 | Service     | API       | Description                                   |
@@ -139,6 +178,7 @@ app.post(
 | `refunds`   | Ecommerce | Create and get refunds                        |
 | `orders`    | Platform  | List/get orders with line items, time filters |
 | `customers` | Platform  | Customer CRUD (`/v3/merchants/{mId}`)         |
+| `inventory` | Platform  | Items, find by barcode/SKU, item stock        |
 
 ## Orders (Platform API)
 
@@ -176,9 +216,9 @@ This library is one of three sibling payment-API wrappers from Bates Solutions t
 
 | Library | Wraps | Install (JSR) | Source |
 | --- | --- | --- | --- |
-| [`@bates-solutions/stripe`](https://jsr.io/@bates-solutions/stripe) | Stripe | `jsr:@bates-solutions/stripe` | [GitHub](https://github.com/mbates/stripe) |
-| [`@bates-solutions/squareup`](https://jsr.io/@bates-solutions/squareup) | Square | `jsr:@bates-solutions/squareup` | [GitHub](https://github.com/mbates/squareup) |
-| **[`@bates-solutions/clover`](https://jsr.io/@bates-solutions/clover)** _(this package)_ | Clover | `jsr:@bates-solutions/clover` | [GitHub](https://github.com/mbates/clover) |
+| [`@bates-solutions/stripe`](https://jsr.io/@bates-solutions/stripe) | Stripe | `jsr:@bates-solutions/stripe` | [GitHub](https://github.com/Bates-Solutions/stripe) |
+| [`@bates-solutions/squareup`](https://jsr.io/@bates-solutions/squareup) | Square | `jsr:@bates-solutions/squareup` | [GitHub](https://github.com/Bates-Solutions/squareup) |
+| **[`@bates-solutions/clover`](https://jsr.io/@bates-solutions/clover)** _(this package)_ | Clover | `jsr:@bates-solutions/clover` | [GitHub](https://github.com/Bates-Solutions/clover) |
 
 ### How they're related
 

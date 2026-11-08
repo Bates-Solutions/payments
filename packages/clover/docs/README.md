@@ -12,10 +12,12 @@ TypeScript wrapper for the Clover Ecommerce and Platform APIs with edge-ready we
 
 ### Core (Backend)
 
+- [OAuth](./guides/core/oauth.md)
 - [Payments (Charges)](./guides/core/payments.md)
 - [Refunds](./guides/core/refunds.md)
 - [Orders](./guides/core/orders.md)
 - [Customers](./guides/core/customers.md)
+- [Inventory](./guides/core/inventory.md)
 
 ### Server
 
@@ -31,6 +33,6 @@ Generated from source with TypeDoc:
 
 ## Additional Resources
 
-- [GitHub Repository](https://github.com/mbates/clover)
+- [GitHub Repository](https://github.com/Bates-Solutions/clover)
 - [Clover Developer Documentation](https://docs.clover.com/dev/docs)
 - [Changelog](../CHANGELOG.md)
