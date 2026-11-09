@@ -92,6 +92,12 @@ jobs:
       - name: Test with coverage
         run: npm run test:coverage -w "packages/$PACKAGE"
 
+      # Before the Codecov upload, which leaves its CLI in the checkout: the dry run
+      # refuses a dirty tree.
+      - name: JSR publish dry run
+        working-directory: packages/${{ matrix.package }}
+        run: npx --yes jsr@0.14.3 publish --dry-run
+
       # lcov paths are relative to the package; make them repo-relative so Codecov
       # can tell packages/*/src/core/client.ts apart.
       - name: Prefix coverage paths
@@ -106,10 +112,6 @@ jobs:
           name: ${{ matrix.package }}
           disable_search: true
           fail_ci_if_error: false
-
-      - name: JSR publish dry run
-        working-directory: packages/${{ matrix.package }}
-        run: npx --yes jsr@0.14.3 publish --dry-run
 
   ci-ok:
     name: ci-ok
