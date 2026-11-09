@@ -5,6 +5,8 @@
 //   node scripts/release-plan.mjs --paths <json>   the paths release-please released,
 //                                                  e.g. ["packages/clover"]
 //   node scripts/release-plan.mjs --all            every package (manual recovery run)
+//   add --require-tags                             fail unless each listed package's
+//                                                  <pkg>-v<version> tag is at HEAD
 //
 // Each entry is { "package": "<dir under packages/>", "name": "<jsr name>",
 // "version": "<jsr.json version>" }. A package whose version is already on JSR is
@@ -13,9 +15,12 @@
 // alphabetical order.
 //
 // It fails when a package's jsr.json and package.json versions differ, when a path
-// is not a package, or when JSR answers with anything but 200 or 404: publishing
-// on a guess is worse than a failed run that can be retried. Diagnostics go to
-// stderr; stdout carries only the JSON.
+// is not a package, when JSR answers with anything but 200 or 404, or (with
+// --require-tags) when a package to publish has no tag at HEAD: JSR versions are
+// immutable, so a version must be published from the commit release-please tagged
+// it at, and publishing on a guess is worse than a failed run that can be retried.
+// Diagnostics go to stderr; stdout carries only the JSON.
+import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -70,8 +75,47 @@ export async function isOnJsr(name, version, fetchFn = fetch) {
   return Object.hasOwn(meta.versions ?? {}, version);
 }
 
-/** The releases still to publish, in publish order. */
-export async function releasePlan(root, packages, fetchFn = fetch) {
+/** The release tag release-please gives a package version. */
+export function releaseTag(release) {
+  return `${release.package}-v${release.version}`;
+}
+
+/** Runs git in `root` and returns its trimmed stdout, or null when git fails. */
+function git(root, args) {
+  try {
+    return execFileSync('git', args, {
+      cwd: root,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'pipe'],
+    }).trim();
+  } catch {
+    return null;
+  }
+}
+
+/** Throws unless `release`'s tag exists and points at HEAD. `gitFn` is injectable. */
+export function assertTaggedAtHead(root, release, gitFn = git) {
+  const tag = releaseTag(release);
+  const head = gitFn(root, ['rev-parse', 'HEAD']);
+  const tagged = gitFn(root, ['rev-parse', '--verify', '--quiet', `refs/tags/${tag}^{commit}`]);
+  if (!tagged) throw new Error(`${tag} does not exist: release-please has not released it`);
+  if (tagged !== head) {
+    throw new Error(
+      `${tag} is at ${tagged}, not HEAD ${head}: run the release workflow from the tag ` +
+        `(gh workflow run release.yml --ref ${tag})`
+    );
+  }
+}
+
+/**
+ * The releases still to publish, in publish order. With `requireTags`, each one
+ * must be tagged at HEAD.
+ */
+export async function releasePlan(
+  root,
+  packages,
+  { fetchFn = fetch, requireTags = false, gitFn = git } = {}
+) {
   const plan = [];
   for (const pkg of publishOrder([...new Set(packages)])) {
     const release = readRelease(root, pkg);
@@ -79,6 +123,7 @@ export async function releasePlan(root, packages, fetchFn = fetch) {
       console.error(`${release.name}@${release.version} is already on JSR: skipping.`);
       continue;
     }
+    if (requireTags) assertTaggedAtHead(root, release, gitFn);
     console.error(`${release.name}@${release.version} will be published.`);
     plan.push(release);
   }
@@ -92,7 +137,7 @@ async function main(argv) {
   if (argv.includes('--all')) packages = discoverPackages(root);
   else if (pathsIndex !== -1) packages = packagesFromPaths(argv[pathsIndex + 1]);
   else throw new Error('Pass --paths <json> or --all');
-  return releasePlan(root, packages);
+  return releasePlan(root, packages, { requireTags: argv.includes('--require-tags') });
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {

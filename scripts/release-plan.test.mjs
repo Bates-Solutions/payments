@@ -141,7 +141,7 @@ describe('releasePlan', () => {
       '@bates-solutions/clover': ['1.1.0'],
       '@bates-solutions/stripe': ['1.0.3'],
     });
-    const plan = await releasePlan(root, ['stripe', 'clover', 'payments-core'], fetchFn);
+    const plan = await releasePlan(root, ['stripe', 'clover', 'payments-core'], { fetchFn });
     assert.deepEqual(
       plan.map((r) => `${r.package}@${r.version}`),
       ['payments-core@0.1.0', 'clover@1.1.1']
@@ -151,8 +151,85 @@ describe('releasePlan', () => {
   it('checks each package once', async () => {
     const root = tempRepo({ clover: '1.1.1' });
     const { fetchFn, calls } = jsrStub({});
-    await releasePlan(root, ['clover', 'clover'], fetchFn);
+    await releasePlan(root, ['clover', 'clover'], { fetchFn });
     assert.equal(calls.length, 1);
+  });
+});
+
+/** Runs git in `root` with a fixed identity and no user config. */
+function runGit(root, args) {
+  return execFileSync('git', args, {
+    cwd: root,
+    encoding: 'utf8',
+    env: {
+      ...process.env,
+      GIT_CONFIG_GLOBAL: '/dev/null',
+      GIT_CONFIG_NOSYSTEM: '1',
+      GIT_AUTHOR_NAME: 't',
+      GIT_AUTHOR_EMAIL: 't@example.com',
+      GIT_COMMITTER_NAME: 't',
+      GIT_COMMITTER_EMAIL: 't@example.com',
+    },
+  }).trim();
+}
+
+/** tempRepo(versions) as a git repo with one commit. */
+function gitRepo(versions) {
+  const root = tempRepo(versions);
+  runGit(root, ['init', '-q']);
+  runGit(root, ['add', '.']);
+  runGit(root, ['commit', '-q', '-m', 'release']);
+  return root;
+}
+
+describe('releasePlan with requireTags', () => {
+  const unpublished = () => jsrStub({}).fetchFn;
+
+  it('passes when the tag is at HEAD', async () => {
+    const root = gitRepo({ clover: '1.1.1' });
+    runGit(root, ['tag', 'clover-v1.1.1']);
+    const plan = await releasePlan(root, ['clover'], { fetchFn: unpublished(), requireTags: true });
+    assert.deepEqual(
+      plan.map((r) => r.package),
+      ['clover']
+    );
+  });
+
+  it('accepts an annotated tag', async () => {
+    const root = gitRepo({ clover: '1.1.1' });
+    runGit(root, ['tag', '-a', '-m', 'v', 'clover-v1.1.1']);
+    const plan = await releasePlan(root, ['clover'], { fetchFn: unpublished(), requireTags: true });
+    assert.equal(plan.length, 1);
+  });
+
+  it('fails when the tag is missing', async () => {
+    const root = gitRepo({ clover: '1.1.1' });
+    await assert.rejects(
+      releasePlan(root, ['clover'], { fetchFn: unpublished(), requireTags: true }),
+      /clover-v1\.1\.1 does not exist/
+    );
+  });
+
+  it('fails when the tag is at another commit', async () => {
+    const root = gitRepo({ clover: '1.1.1' });
+    runGit(root, ['tag', 'clover-v1.1.1']);
+    runGit(root, ['commit', '-q', '--allow-empty', '-m', 'later']);
+    await assert.rejects(
+      releasePlan(root, ['clover'], { fetchFn: unpublished(), requireTags: true }),
+      /clover-v1\.1\.1 is at [0-9a-f]+, not HEAD [0-9a-f]+: run the release workflow from the tag/
+    );
+  });
+
+  it('does not need a tag for a version already on JSR', async () => {
+    const root = gitRepo({ clover: '1.1.0' });
+    const { fetchFn } = jsrStub({ '@bates-solutions/clover': ['1.1.0'] });
+    assert.deepEqual(await releasePlan(root, ['clover'], { fetchFn, requireTags: true }), []);
+  });
+
+  it('ignores tags without requireTags', async () => {
+    const root = tempRepo({ clover: '1.1.1' });
+    const plan = await releasePlan(root, ['clover'], { fetchFn: unpublished() });
+    assert.equal(plan.length, 1);
   });
 });
 

@@ -30,7 +30,7 @@ Releases are automated with [release-please](https://github.com/googleapis/relea
 
 Never bump versions, create tags or run `jsr publish` by hand.
 
-The release workflow stays off until the move from the old repos is finished, because those repos still publish these packages.
+The release workflow stays off until the move from the old repos is finished: those repos still release these packages until then.
 
 ## License
 
