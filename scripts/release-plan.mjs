@@ -24,6 +24,7 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { parseArgs } from 'node:util';
 
 import { discoverPackages } from './affected-packages.mjs';
 
@@ -130,14 +131,32 @@ export async function releasePlan(
   return plan;
 }
 
+/**
+ * Parses the command line. Strict, so a misspelt flag fails the run instead of
+ * silently dropping a check such as --require-tags.
+ */
+export function parseCli(argv) {
+  const { values } = parseArgs({
+    args: argv,
+    strict: true,
+    allowPositionals: false,
+    options: {
+      paths: { type: 'string' },
+      all: { type: 'boolean', default: false },
+      'require-tags': { type: 'boolean', default: false },
+    },
+  });
+  if (values.all === (values.paths !== undefined)) {
+    throw new Error('Pass exactly one of --paths <json> or --all');
+  }
+  return { all: values.all, paths: values.paths, requireTags: values['require-tags'] };
+}
+
 async function main(argv) {
   const root = process.cwd();
-  const pathsIndex = argv.indexOf('--paths');
-  let packages;
-  if (argv.includes('--all')) packages = discoverPackages(root);
-  else if (pathsIndex !== -1) packages = packagesFromPaths(argv[pathsIndex + 1]);
-  else throw new Error('Pass --paths <json> or --all');
-  return releasePlan(root, packages, { requireTags: argv.includes('--require-tags') });
+  const options = parseCli(argv);
+  const packages = options.all ? discoverPackages(root) : packagesFromPaths(options.paths);
+  return releasePlan(root, packages, { requireTags: options.requireTags });
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {

@@ -10,6 +10,7 @@ import { fileURLToPath } from 'node:url';
 import {
   isOnJsr,
   packagesFromPaths,
+  parseCli,
   publishOrder,
   readRelease,
   releasePlan,
@@ -233,11 +234,47 @@ describe('releasePlan with requireTags', () => {
   });
 });
 
+describe('parseCli', () => {
+  it('reads --paths and --require-tags', () => {
+    assert.deepEqual(parseCli(['--paths', '["packages/clover"]', '--require-tags']), {
+      all: false,
+      paths: '["packages/clover"]',
+      requireTags: true,
+    });
+  });
+
+  it('reads --all, with tags off by default', () => {
+    assert.deepEqual(parseCli(['--all']), { all: true, paths: undefined, requireTags: false });
+  });
+
+  it('rejects unknown flags and stray arguments', () => {
+    assert.throws(() => parseCli(['--all', '--require-tag']), /require-tag/);
+    assert.throws(() => parseCli(['--all', 'clover']), /clover/);
+  });
+
+  it('wants exactly one of --paths and --all', () => {
+    assert.throws(() => parseCli([]), /exactly one of/);
+    assert.throws(() => parseCli(['--all', '--paths', '[]']), /exactly one of/);
+  });
+});
+
 describe('CLI', () => {
   it('prints [] for an empty release without touching the network', () => {
     const root = tempRepo({ clover: '1.1.0' });
     const out = execFileSync('node', [SCRIPT, '--paths', '[]'], { cwd: root, encoding: 'utf8' });
     assert.equal(out, '[]\n');
+  });
+
+  it('exits non-zero on a misspelt flag instead of ignoring it', () => {
+    const root = tempRepo({});
+    assert.throws(
+      () =>
+        execFileSync('node', [SCRIPT, '--paths', '[]', '--require-tag'], {
+          cwd: root,
+          stdio: 'pipe',
+        }),
+      (error) => error.status === 1 && /--require-tag/.test(String(error.stderr))
+    );
   });
 
   it('exits non-zero without --paths or --all', () => {

@@ -51,13 +51,17 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # Tags and GitHub releases for a merged release PR. Kept apart from the release
+  # PR update below: a failure there must not stop the publish of releases that
+  # were already tagged (the merged PR is relabelled `autorelease: tagged`, so no
+  # later push would pick them up again).
   release-please:
     name: release-please
     if: vars.RELEASES_ENABLED == 'true' && github.event_name == 'push'
     runs-on: ubuntu-latest
     permissions:
       contents: write # tags and GitHub releases
-      pull-requests: write # the release PR
+      pull-requests: write # relabels the merged release PR
     outputs:
       paths: ${{ steps.release.outputs.paths_released }}
     steps:
@@ -67,6 +71,25 @@ jobs:
           token: ${{ secrets.RELEASE_PLEASE_TOKEN || github.token }}
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
+          skip-github-pull-request: true
+
+  # Opens or updates the release PR. After the tagging job, because release-please
+  # won't build a new release PR while a merged one is still untagged.
+  release-pr:
+    name: release PR
+    needs: release-please
+    if: vars.RELEASES_ENABLED == 'true' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # the release PR branch
+      pull-requests: write # the release PR
+    steps:
+      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+        with:
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN || github.token }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+          skip-github-release: true
 
   # The install with lifecycle scripts and the checks (eslint, tsc, vitest) run
   # here, without id-token: write.
@@ -74,7 +97,7 @@ jobs:
     name: Verify releases
     needs: release-please
     if: >-
-      always() && vars.RELEASES_ENABLED == 'true' &&
+      !cancelled() && vars.RELEASES_ENABLED == 'true' &&
       ((github.event_name == 'push' && needs.release-please.result == 'success' &&
         needs.release-please.outputs.paths != '' && needs.release-please.outputs.paths != '[]') ||
        (github.event_name == 'workflow_dispatch' &&
@@ -137,7 +160,11 @@ jobs:
   publish:
     name: Publish to JSR
     needs: verify
-    if: always() && needs.verify.result == 'success' && needs.verify.outputs.plan != '[]'
+    # !cancelled(), not always(): a run cancelled after verify must not publish.
+    # (The bare success() default would skip this job on manual runs, where
+    # release-please, a needs-of-needs, is skipped.)
+    if: >-
+      !cancelled() && needs.verify.result == 'success' && needs.verify.outputs.plan != '[]'
     runs-on: ubuntu-latest
     environment: jsr
     permissions:
