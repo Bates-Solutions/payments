@@ -1,6 +1,6 @@
 {
   "name": "@bates-solutions/clover",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "TypeScript wrapper for the Clover Ecommerce & Platform APIs with webhook support for Node.js and edge runtimes",
   "type": "module",
   "main": "./dist/core/index.js",
@@ -50,12 +50,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mbates/clover.git"
+    "url": "git+https://github.com/Bates-Solutions/clover.git"
   },
   "bugs": {
-    "url": "https://github.com/mbates/clover/issues"
+    "url": "https://github.com/Bates-Solutions/clover/issues"
   },
-  "homepage": "https://github.com/mbates/clover#readme",
+  "homepage": "https://github.com/Bates-Solutions/clover#readme",
   "engines": {
     "node": ">=22"
   }

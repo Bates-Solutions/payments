@@ -2,7 +2,9 @@ import { describe, it, expect } from 'vitest';
 import { createCloverClient, CloverClient } from '../client.js';
 import { PaymentsService } from '../services/payments.service.js';
 import { RefundsService } from '../services/refunds.service.js';
+import { OrdersService } from '../services/orders.service.js';
 import { CustomersService } from '../services/customers.service.js';
+import { InventoryService } from '../services/inventory.service.js';
 
 describe('CloverClient', () => {
   it('creates a client and wires up services', () => {
@@ -10,7 +12,9 @@ describe('CloverClient', () => {
     expect(client).toBeInstanceOf(CloverClient);
     expect(client.payments).toBeInstanceOf(PaymentsService);
     expect(client.refunds).toBeInstanceOf(RefundsService);
+    expect(client.orders).toBeInstanceOf(OrdersService);
     expect(client.customers).toBeInstanceOf(CustomersService);
+    expect(client.inventory).toBeInstanceOf(InventoryService);
   });
 
   it('defaults to the sandbox environment', () => {
