@@ -1,0 +1,116 @@
+# Releases with release-please (manifest mode, release-please-config.json), then
+# publishes each released package to JSR over GitHub OIDC (no tokens), with
+# provenance. Runs on GitHub-hosted runners only.
+#
+# Flow: conventional commits land on main. release-please keeps one release PR open
+# that bumps each changed package's package.json, jsr.json and CHANGELOG.md.
+# Merging it (with a merge commit) tags each package `<pkg>-v<version>`, creates
+# its GitHub release, and the publish job pushes those versions to JSR,
+# payments-core first. The "already on JSR?" guard (scripts/release-plan.mjs) skips
+# any version JSR already has, so a rerun never republishes.
+#
+# Off until cutover: every job is skipped unless the repository variable
+# RELEASES_ENABLED is 'true'. Until then the packages still release from their old
+# repos, and a publish from here would race them on JSR. Before turning it on:
+#   - relink each JSR package to Bates-Solutions/payments (jsr.io, package
+#     Settings, "GitHub repository"); OIDC publishing fails until then;
+#   - add a RELEASE_PLEASE_TOKEN secret (a GitHub App token or fine-grained PAT
+#     with contents and pull-requests write). A release PR opened with the default
+#     GITHUB_TOKEN gets no CI run, so ci-ok never reports and the PR can't merge.
+#
+# Recovery: if a publish fails after the tag was created, fix the cause and run
+# this workflow by hand (workflow_dispatch). The publish job then checks every
+# package and publishes any version on main that JSR does not have yet.
+name: Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions: {}
+
+# One release at a time, never cancelled: a cancelled run could leave a tag
+# without its JSR publish.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release-please:
+    name: release-please
+    if: vars.RELEASES_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # tags and GitHub releases
+      pull-requests: write # the release PR
+    outputs:
+      paths: ${{ steps.release.outputs.paths_released }}
+    steps:
+      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+        id: release
+        with:
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN || github.token }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  publish:
+    name: Publish to JSR
+    needs: release-please
+    if: >-
+      needs.release-please.result == 'success' &&
+      (github.event_name == 'workflow_dispatch' ||
+       (needs.release-please.outputs.paths != '' && needs.release-please.outputs.paths != '[]'))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # OIDC auth to JSR, and provenance
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Work out what to publish
+        id: plan
+        env:
+          EVENT: ${{ github.event_name }}
+          PATHS: ${{ needs.release-please.outputs.paths }}
+        run: |
+          if [ "$EVENT" = workflow_dispatch ]; then
+            plan="$(node scripts/release-plan.mjs --all)"
+          else
+            plan="$(node scripts/release-plan.mjs --paths "$PATHS")"
+          fi
+          echo "Publish plan: $plan"
+          echo "plan=$plan" >> "$GITHUB_OUTPUT"
+
+      - name: Install dependencies
+        if: steps.plan.outputs.plan != '[]'
+        run: npm ci
+
+      # In plan order (payments-core first), so a provider is never published
+      # before the core version it imports. Checked again here because the release
+      # PR's merge commit is what gets published.
+      - name: Check and publish
+        if: steps.plan.outputs.plan != '[]'
+        env:
+          PLAN: ${{ steps.plan.outputs.plan }}
+        run: |
+          for pkg in $(echo "$PLAN" | jq -r '.[].package'); do
+            name="$(jq -r .name "packages/$pkg/jsr.json")"
+            version="$(jq -r .version "packages/$pkg/jsr.json")"
+            echo "::group::$name@$version"
+            npm run lint -w "packages/$pkg"
+            npm run typecheck -w "packages/$pkg"
+            npm run build -w "packages/$pkg"
+            npm test -w "packages/$pkg"
+            (cd "packages/$pkg" && npx --yes jsr@0.14.3 publish)
+            echo "::endgroup::"
+            echo "::notice::Published $name@$version to JSR."
+          done
