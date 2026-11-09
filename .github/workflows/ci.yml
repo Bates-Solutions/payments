@@ -1,0 +1,128 @@
+# Lint, typecheck, build, test with coverage and a JSR dry run, for each package a
+# change affects (see scripts/affected-packages.mjs). Runs on GitHub-hosted runners
+# only: this repo is public, and fork PRs must never reach our own machines.
+#
+# `ci-ok` is the one check to require on main: it passes when every leg passed, or
+# when no package was affected.
+name: CI
+
+on:
+  pull_request: # any base branch, so stacked PRs get CI too
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  changes:
+    name: Affected packages
+    runs-on: ubuntu-latest
+    outputs:
+      packages: ${{ steps.affected.outputs.packages }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+
+      - name: Test the CI scripts
+        run: npm run test:scripts
+
+      - name: Compute affected packages
+        id: affected
+        env:
+          EVENT: ${{ github.event_name }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          PUSH_BEFORE: ${{ github.event.before }}
+        run: |
+          case "$EVENT" in
+            pull_request) args=(--base "$PR_BASE") ;;
+            push) args=(--base "$PUSH_BEFORE") ;;
+            *) args=(--all) ;;
+          esac
+          packages="$(node scripts/affected-packages.mjs "${args[@]}")"
+          echo "Affected packages: $packages"
+          echo "packages=$packages" >> "$GITHUB_OUTPUT"
+
+  test:
+    name: ${{ matrix.package }}
+    needs: changes
+    if: needs.changes.outputs.packages != '[]'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJSON(needs.changes.outputs.packages) }}
+    env:
+      PACKAGE: ${{ matrix.package }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint -w "packages/$PACKAGE"
+
+      - name: Type check
+        run: npm run typecheck -w "packages/$PACKAGE"
+
+      - name: Build
+        run: npm run build -w "packages/$PACKAGE"
+
+      - name: Test with coverage
+        run: npm run test:coverage -w "packages/$PACKAGE"
+
+      # lcov paths are relative to the package; make them repo-relative so Codecov
+      # can tell packages/*/src/core/client.ts apart.
+      - name: Prefix coverage paths
+        run: sed -i "s|^SF:|SF:packages/$PACKAGE/|" "packages/$PACKAGE/coverage/lcov.info"
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/${{ matrix.package }}/coverage/lcov.info
+          flags: ${{ matrix.package }}
+          name: ${{ matrix.package }}
+          disable_search: true
+          fail_ci_if_error: false
+
+      - name: JSR publish dry run
+        working-directory: packages/${{ matrix.package }}
+        run: npx --yes jsr@0.14.3 publish --dry-run
+
+  ci-ok:
+    name: ci-ok
+    needs: [changes, test]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check results
+        env:
+          RESULTS: ${{ toJSON(needs.*.result) }}
+        run: |
+          echo "Job results: $RESULTS"
+          if echo "$RESULTS" | grep -qE '"(failure|cancelled)"'; then
+            echo "::error::A required CI job failed or was cancelled."
+            exit 1
+          fi
