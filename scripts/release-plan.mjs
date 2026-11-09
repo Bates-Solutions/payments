@@ -152,15 +152,15 @@ export function parseCli(argv) {
   return { all: values.all, paths: values.paths, requireTags: values['require-tags'] };
 }
 
-async function main(argv) {
-  const root = process.cwd();
+/** The CLI, minus process I/O. `root` and `fetchFn` are injectable for tests. */
+export async function run(argv, { root = process.cwd(), fetchFn = fetch } = {}) {
   const options = parseCli(argv);
   const packages = options.all ? discoverPackages(root) : packagesFromPaths(options.paths);
-  return releasePlan(root, packages, { requireTags: options.requireTags });
+  return releasePlan(root, packages, { fetchFn, requireTags: options.requireTags });
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
-  main(process.argv.slice(2)).then(
+  run(process.argv.slice(2)).then(
     (plan) => process.stdout.write(`${JSON.stringify(plan)}\n`),
     (error) => {
       console.error(error.message);

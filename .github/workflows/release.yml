@@ -120,17 +120,15 @@ jobs:
           node-version: 22
           cache: npm
 
+      # Every package, not only paths_released (which is just the trigger): if a
+      # multi-package release PR's tagging failed partway and "re-run failed
+      # jobs" finished it, paths_released lists only the packages tagged on the
+      # rerun, and the ones tagged first would never be published. Each version
+      # still missing from JSR must be tagged at HEAD, or the run fails.
       - name: Work out what to publish
         id: plan
-        env:
-          EVENT: ${{ github.event_name }}
-          PATHS: ${{ needs.release-please.outputs.paths }}
         run: |
-          if [ "$EVENT" = workflow_dispatch ]; then
-            plan="$(node scripts/release-plan.mjs --all --require-tags)"
-          else
-            plan="$(node scripts/release-plan.mjs --paths "$PATHS" --require-tags)"
-          fi
+          plan="$(node scripts/release-plan.mjs --all --require-tags)"
           echo "Publish plan: $plan"
           echo "plan=$plan" >> "$GITHUB_OUTPUT"
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"

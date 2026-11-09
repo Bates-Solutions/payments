@@ -12,6 +12,7 @@ import {
   packagesFromPaths,
   parseCli,
   publishOrder,
+  run,
   readRelease,
   releasePlan,
 } from './release-plan.mjs';
@@ -225,6 +226,29 @@ describe('releasePlan with requireTags', () => {
     const root = gitRepo({ clover: '1.1.0' });
     const { fetchFn } = jsrStub({ '@bates-solutions/clover': ['1.1.0'] });
     assert.deepEqual(await releasePlan(root, ['clover'], { fetchFn, requireTags: true }), []);
+  });
+
+  it('is wired to the --require-tags flag', async () => {
+    const root = gitRepo({ clover: '1.1.1' });
+    const fetchFn = unpublished();
+    await assert.rejects(
+      run(['--paths', '["packages/clover"]', '--require-tags'], { root, fetchFn }),
+      /clover-v1\.1\.1 does not exist/
+    );
+    const plan = await run(['--paths', '["packages/clover"]'], { root, fetchFn });
+    assert.equal(plan.length, 1);
+  });
+
+  it('with --all, picks up every version tagged at HEAD and missing from JSR', async () => {
+    const root = gitRepo({ clover: '1.1.1', stripe: '1.0.4', squareup: '2.5.0' });
+    runGit(root, ['tag', 'clover-v1.1.1']);
+    runGit(root, ['tag', 'stripe-v1.0.4']);
+    const { fetchFn } = jsrStub({ '@bates-solutions/squareup': ['2.5.0'] });
+    const plan = await run(['--all', '--require-tags'], { root, fetchFn });
+    assert.deepEqual(
+      plan.map((r) => r.package),
+      ['clover', 'stripe']
+    );
   });
 
   it('ignores tags without requireTags', async () => {
