@@ -1,0 +1,15 @@
+# CI uploads one report per affected package, flagged with the package name
+# (.github/workflows/ci.yml). Carryforward keeps the last coverage of packages a
+# commit did not touch, since CI does not test them.
+coverage:
+  status:
+    project:
+      default:
+        target: 90%
+    patch:
+      default:
+        target: 90%
+
+flag_management:
+  default_rules:
+    carryforward: true

@@ -20,8 +20,9 @@
     "build": "npm run build --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
     "test:coverage": "npm run test:coverage --workspaces --if-present",
+    "test:scripts": "node --test scripts/*.test.mjs",
     "docs": "npm run docs --workspaces --if-present",
-    "check": "npm run lint && npm run typecheck && npm run build && npm run test"
+    "check": "npm run lint && npm run typecheck && npm run build && npm run test && npm run test:scripts"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

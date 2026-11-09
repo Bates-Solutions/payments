@@ -1,0 +1,49 @@
+# .github/dependabot.yml
+# The root package-lock.json covers every workspace, so one npm entry at / is enough.
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 10
+    ignore:
+      # typescript-eslint pins an upper bound on typescript (currently <6.1.0),
+      # so a TS minor/major breaks `npm ci` until it catches up. Bump TS by
+      # hand alongside typescript-eslint; patches still come through.
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
+    groups:
+      # `square` (squareup) and `stripe` (stripe) are the SDKs the packages are
+      # developed against and peer on; their majors need a peer-range decision,
+      # so keep each in its own group, out of the tooling group.
+      square:
+        patterns:
+          - "square"
+      stripe:
+        patterns:
+          - "stripe"
+      # Everything else is dev tooling. One group keeps packages that must
+      # move in lockstep (vitest + @vitest/*, typescript-eslint + parser)
+      # in the same PR.
+      dev-dependencies:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "square"
+          - "stripe"
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "chore(deps):"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "chore(ci):"
