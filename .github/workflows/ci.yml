@@ -7,7 +7,12 @@
 name: CI
 
 on:
-  pull_request: # any base branch, so stacked PRs get CI too
+  # Any base branch, so stacked PRs get CI too. `edited` reruns CI when a stacked
+  # PR is retargeted (to main, once its base merges). Every edit reruns, on
+  # purpose: skipping title or body edits would post a new passing ci-ok on the
+  # same SHA and could hide an earlier failure.
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
   push:
     branches: [main]
   workflow_dispatch:
@@ -15,8 +20,11 @@ on:
 permissions:
   contents: read
 
+# A PR's runs share a group and a new push cancels the old run. Push runs get a
+# group per commit and are never cancelled: each checks only its own delta from
+# `before`, so a dropped run would leave that delta untested on main.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.event_name == 'push' && github.sha || github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:

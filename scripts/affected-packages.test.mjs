@@ -121,6 +121,8 @@ describe('CLI', () => {
     git(root, 'config', 'user.name', 'CI');
     git(root, 'config', 'commit.gpgsign', 'false');
     writeFileSync(join(root, 'README.md'), '# repo\n');
+    writeFileSync(join(root, 'tsconfig.base.json'), '{}\n');
+    writeFileSync(join(root, 'packages', 'clover', 'src', 'shared.ts'), 'export const a = 1;\n');
     git(root, 'add', '.');
     git(root, 'commit', '-q', '-m', 'base');
     return { root, base: git(root, 'rev-parse', 'HEAD') };
@@ -147,6 +149,34 @@ describe('CLI', () => {
     const { root, base } = committedRepo();
     commit(root, 'README.md');
     assert.deepEqual(run(root, '--base', base), []);
+  });
+
+  it('counts a move between packages as both packages', () => {
+    const { root, base } = committedRepo();
+    mkdirSync(join(root, 'packages', 'stripe', 'src'), { recursive: true });
+    git(root, 'mv', 'packages/clover/src/shared.ts', 'packages/stripe/src/moved.ts');
+    git(root, 'commit', '-q', '-m', 'move');
+    assert.deepEqual(run(root, '--base', base), ['clover', 'stripe']);
+  });
+
+  it('counts a root file moved into a package as affecting every package', () => {
+    const { root, base } = committedRepo();
+    git(root, 'mv', 'tsconfig.base.json', 'packages/clover/tsconfig.base.json');
+    git(root, 'commit', '-q', '-m', 'move');
+    assert.deepEqual(run(root, '--base', base), PACKAGES);
+  });
+
+  it('checks the remaining packages when a package is deleted', () => {
+    const { root, base } = committedRepo();
+    git(root, 'rm', '-q', '-r', 'packages/stripe');
+    git(root, 'commit', '-q', '-m', 'delete stripe');
+    assert.deepEqual(run(root, '--base', base), ['clover', 'squareup']);
+  });
+
+  it('maps a non-ASCII path to its package', () => {
+    const { root, base } = committedRepo();
+    commit(root, 'packages/clover/src/caf\u00e9 r\u00e9sum\u00e9.ts');
+    assert.deepEqual(run(root, '--base', base), ['clover']);
   });
 
   it('falls back to every package without a usable base', () => {

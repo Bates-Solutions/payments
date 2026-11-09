@@ -10,9 +10,12 @@
 //   anything else (root config, lockfile, .github/, scripts/, a path under
 //   packages/ that is not a package)      affects every package
 //
-// The package list is discovered from packages/*/package.json. Without a usable
-// base (none given, all zeros, or not in the local history) every package is
-// affected. Diagnostics go to stderr; stdout carries only the JSON.
+// The package list is discovered from packages/*/package.json at HEAD, so a
+// deleted package is no longer a package and a change under it affects every
+// remaining one. A move counts as a delete plus an add (rename detection is off),
+// so both the source and the destination are affected. Without a usable base
+// (none given, all zeros, or not in the local history) or when git fails, every
+// package is affected. Diagnostics go to stderr; stdout carries only the JSON.
 import { execFileSync } from 'node:child_process';
 import { existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
@@ -54,12 +57,15 @@ export function affectedPackages(changedFiles, packages) {
 function changedFilesSince(base, cwd) {
   if (!base || /^0+$/.test(base)) return null;
   try {
-    const out = execFileSync('git', ['diff', '--name-only', `${base}...HEAD`], {
-      cwd,
-      encoding: 'utf8',
-      stdio: ['ignore', 'pipe', 'pipe'],
-    });
-    return out.split('\n').filter(Boolean);
+    // --no-renames: a rename would otherwise list only its destination, hiding the
+    // package (or root file) it came from. -z: NUL-separated and unquoted, so
+    // paths with non-ASCII characters or newlines come through as they are.
+    const out = execFileSync(
+      'git',
+      ['diff', '--name-only', '--no-renames', '-z', `${base}...HEAD`],
+      { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }
+    );
+    return out.split('\0').filter(Boolean);
   } catch (error) {
     console.error(`git diff against ${base} failed: ${error.message.trim()}`);
     return null;
