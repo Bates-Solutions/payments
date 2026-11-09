@@ -23,3 +23,4 @@ GitHub Actions (`.github/workflows/ci.yml`) runs on every pull request, whatever
 ## License
 
 MIT
+
