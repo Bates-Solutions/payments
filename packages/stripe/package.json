@@ -48,12 +48,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mbates/stripe.git"
+    "url": "git+https://github.com/Bates-Solutions/stripe.git"
   },
   "bugs": {
-    "url": "https://github.com/mbates/stripe/issues"
+    "url": "https://github.com/Bates-Solutions/stripe/issues"
   },
-  "homepage": "https://github.com/mbates/stripe#readme",
+  "homepage": "https://github.com/Bates-Solutions/stripe#readme",
   "engines": {
     "node": ">=22"
   },
