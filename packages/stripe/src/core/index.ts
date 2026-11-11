@@ -64,9 +64,22 @@ export type {
   CancelSubscriptionOptions,
 } from './services/subscriptions.service.js';
 export { PricesService } from './services/prices.service.js';
-export type { Price, ListPricesOptions } from './services/prices.service.js';
+export type {
+  Price,
+  ListPricesOptions,
+  PriceRecurring,
+  CreatePriceOptions,
+  UpdatePriceOptions,
+  ReplacePriceOptions,
+  ReplacePriceResult,
+} from './services/prices.service.js';
 export { ProductsService } from './services/products.service.js';
-export type { Product, ListProductsOptions } from './services/products.service.js';
+export type {
+  Product,
+  ListProductsOptions,
+  CreateProductOptions,
+  UpdateProductOptions,
+} from './services/products.service.js';
 export { InvoicesService } from './services/invoices.service.js';
 export type {
   Invoice,
