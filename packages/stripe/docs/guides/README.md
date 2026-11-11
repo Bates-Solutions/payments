@@ -9,6 +9,7 @@ Backend API integration guides:
 - [Errors](./core/errors.md) - Error classes and the normalized code map
 - [Processing Payments](./core/payments.md) - Create, capture, and cancel payments
 - [Managing Customers](./core/customers.md) - Customer CRUD and search
+- [Payment Methods & SetupIntents](./core/payment-methods.md) - Save cards for later charges
 - [Refunds](./core/refunds.md) - Full and partial refunds
 - [Checkout](./core/checkout.md) - Hosted Checkout Sessions (subscription & one-time)
 - [Payment Links](./core/payment-links.md) - Read Payment Links and their line items

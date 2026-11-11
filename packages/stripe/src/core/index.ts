@@ -3,8 +3,9 @@
  *
  * The package's main entrypoint. Exports `createStripeClient` / `StripeClient`
  * (one service per Stripe domain — `customers`, `checkout`, `billingPortal`,
- * `subscriptions`, `prices`, `products`, `invoices`, `paymentLinks`, `payments`,
- * `refunds`, `oauth`; `forAccount(id)` scopes a client to a Connect account), the
+ * `subscriptions`, `prices`, `products`, `invoices`, `paymentLinks`, `paymentMethods`,
+ * `setupIntents`, `payments`, `refunds`, `oauth`; `forAccount(id)` scopes a client
+ * to a Connect account), the
  * normalized error hierarchy (`StripeError` + `parseStripeError`), and money /
  * idempotency utilities (`toMinor`, `fromMinor`, `formatMoney`,
  * `createIdempotencyKey`). Webhook helpers live in the
@@ -102,6 +103,15 @@ export type {
   ConnectedAccountGrant,
   DeauthorizeOptions,
 } from './services/oauth.service.js';
+
+export { PaymentMethodsService } from './services/payment-methods.service.js';
+export type { PaymentMethod, ListPaymentMethodsOptions } from './services/payment-methods.service.js';
+export { SetupIntentsService } from './services/setup-intents.service.js';
+export type {
+  SetupIntent,
+  CreateSetupIntentOptions,
+  ListSetupIntentsOptions,
+} from './services/setup-intents.service.js';
 
 // Errors
 export {

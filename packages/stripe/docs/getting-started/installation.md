@@ -20,7 +20,7 @@ pnpm add @bates-solutions/stripe stripe
 
 ## Peer Dependencies
 
-The [`stripe`](https://www.npmjs.com/package/stripe) SDK is a required peer dependency that provides the underlying API client. This package supports `stripe` v18 through v23 (peer range `>=18 <24`). Stripe 17 lacks types this package relies on (`InvoiceItemCreateParams.pricing`, `SubscriptionItem.current_period_*`).
+The [`stripe`](https://www.npmjs.com/package/stripe) SDK is a required peer dependency that provides the underlying API client. This package supports `stripe` v22.4 through v23 (peer range `>=22.4 <24`). Earlier SDKs lack `allowed_payment_method_types` on SetupIntents, which replaced `payment_method_types` in v23.
 
 ## TypeScript
 
