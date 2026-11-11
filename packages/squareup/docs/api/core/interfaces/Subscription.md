@@ -6,7 +6,7 @@
 
 # Interface: Subscription
 
-Defined in: [core/services/subscriptions.service.ts:32](https://github.com/Bates-Solutions/squareup/blob/main/src/core/services/subscriptions.service.ts#L32)
+Defined in: [core/services/subscriptions.service.ts:32](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L32)
 
 Subscription from Square API
 
@@ -16,7 +16,7 @@ Subscription from Square API
 
 > `optional` **canceledDate?**: `string`
 
-Defined in: [core/services/subscriptions.service.ts:38](https://github.com/Bates-Solutions/squareup/blob/main/src/core/services/subscriptions.service.ts#L38)
+Defined in: [core/services/subscriptions.service.ts:38](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L38)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [core/services/subscriptions.service.ts:38](https://github.com/Bates
 
 > `optional` **cardId?**: `string`
 
-Defined in: [core/services/subscriptions.service.ts:49](https://github.com/Bates-Solutions/squareup/blob/main/src/core/services/subscriptions.service.ts#L49)
+Defined in: [core/services/subscriptions.service.ts:49](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L49)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [core/services/subscriptions.service.ts:49](https://github.com/Bates
 
 > `optional` **chargedThroughDate?**: `string`
 
-Defined in: [core/services/subscriptions.service.ts:39](https://github.com/Bates-Solutions/squareup/blob/main/src/core/services/subscriptions.service.ts#L39)
+Defined in: [core/services/subscriptions.service.ts:39](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L39)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [core/services/subscriptions.service.ts:39](https://github.com/Bates
 
 > `optional` **createdAt?**: `string`
 
-Defined in: [core/services/subscriptions.service.ts:48](https://github.com/Bates-Solutions/squareup/blob/main/src/core/services/subscriptions.service.ts#L48)
+Defined in: [core/services/subscriptions.service.ts:48](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L48)
 
 ***
 
@@ -48,7 +48,7 @@ Defined in: [core/services/subscriptions.service.ts:48](https://github.com/Bates
 
 > `optional` **customerId?**: `string`
 
-Defined in: [core/services/subscriptions.service.ts:36](https://github.com/Bates-Solutions/squareup/blob/main/src/core/services/subscriptions.service.ts#L36)
+Defined in: [core/services/subscriptions.service.ts:36](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L36)
 
 ***
 
@@ -56,7 +56,7 @@ Defined in: [core/services/subscriptions.service.ts:36](https://github.com/Bates
 
 > `optional` **id?**: `string`
 
-Defined in: [core/services/subscriptions.service.ts:33](https://github.com/Bates-Solutions/squareup/blob/main/src/core/services/subscriptions.service.ts#L33)
+Defined in: [core/services/subscriptions.service.ts:33](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L33)
 
 ***
 
@@ -64,7 +64,7 @@ Defined in: [core/services/subscriptions.service.ts:33](https://github.com/Bates
 
 > `optional` **invoiceIds?**: `string`[]
 
-Defined in: [core/services/subscriptions.service.ts:42](https://github.com/Bates-Solutions/squareup/blob/main/src/core/services/subscriptions.service.ts#L42)
+Defined in: [core/services/subscriptions.service.ts:42](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L42)
 
 ***
 
@@ -72,7 +72,7 @@ Defined in: [core/services/subscriptions.service.ts:42](https://github.com/Bates
 
 > `optional` **locationId?**: `string`
 
-Defined in: [core/services/subscriptions.service.ts:34](https://github.com/Bates-Solutions/squareup/blob/main/src/core/services/subscriptions.service.ts#L34)
+Defined in: [core/services/subscriptions.service.ts:34](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L34)
 
 ***
 
@@ -80,7 +80,7 @@ Defined in: [core/services/subscriptions.service.ts:34](https://github.com/Bates
 
 > `optional` **planVariationId?**: `string`
 
-Defined in: [core/services/subscriptions.service.ts:35](https://github.com/Bates-Solutions/squareup/blob/main/src/core/services/subscriptions.service.ts#L35)
+Defined in: [core/services/subscriptions.service.ts:35](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L35)
 
 ***
 
@@ -88,7 +88,7 @@ Defined in: [core/services/subscriptions.service.ts:35](https://github.com/Bates
 
 > `optional` **priceOverrideMoney?**: `object`
 
-Defined in: [core/services/subscriptions.service.ts:43](https://github.com/Bates-Solutions/squareup/blob/main/src/core/services/subscriptions.service.ts#L43)
+Defined in: [core/services/subscriptions.service.ts:43](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L43)
 
 #### amount?
 
@@ -104,7 +104,7 @@ Defined in: [core/services/subscriptions.service.ts:43](https://github.com/Bates
 
 > `optional` **source?**: `object`
 
-Defined in: [core/services/subscriptions.service.ts:51](https://github.com/Bates-Solutions/squareup/blob/main/src/core/services/subscriptions.service.ts#L51)
+Defined in: [core/services/subscriptions.service.ts:51](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L51)
 
 #### name?
 
@@ -116,7 +116,7 @@ Defined in: [core/services/subscriptions.service.ts:51](https://github.com/Bates
 
 > `optional` **startDate?**: `string`
 
-Defined in: [core/services/subscriptions.service.ts:37](https://github.com/Bates-Solutions/squareup/blob/main/src/core/services/subscriptions.service.ts#L37)
+Defined in: [core/services/subscriptions.service.ts:37](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L37)
 
 ***
 
@@ -124,7 +124,7 @@ Defined in: [core/services/subscriptions.service.ts:37](https://github.com/Bates
 
 > `optional` **status?**: [`SubscriptionStatus`](../type-aliases/SubscriptionStatus.md)
 
-Defined in: [core/services/subscriptions.service.ts:40](https://github.com/Bates-Solutions/squareup/blob/main/src/core/services/subscriptions.service.ts#L40)
+Defined in: [core/services/subscriptions.service.ts:40](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L40)
 
 ***
 
@@ -132,7 +132,7 @@ Defined in: [core/services/subscriptions.service.ts:40](https://github.com/Bates
 
 > `optional` **taxPercentage?**: `string`
 
-Defined in: [core/services/subscriptions.service.ts:41](https://github.com/Bates-Solutions/squareup/blob/main/src/core/services/subscriptions.service.ts#L41)
+Defined in: [core/services/subscriptions.service.ts:41](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L41)
 
 ***
 
@@ -140,7 +140,7 @@ Defined in: [core/services/subscriptions.service.ts:41](https://github.com/Bates
 
 > `optional` **timezone?**: `string`
 
-Defined in: [core/services/subscriptions.service.ts:50](https://github.com/Bates-Solutions/squareup/blob/main/src/core/services/subscriptions.service.ts#L50)
+Defined in: [core/services/subscriptions.service.ts:50](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L50)
 
 ***
 
@@ -148,4 +148,4 @@ Defined in: [core/services/subscriptions.service.ts:50](https://github.com/Bates
 
 > `optional` **version?**: `bigint`
 
-Defined in: [core/services/subscriptions.service.ts:47](https://github.com/Bates-Solutions/squareup/blob/main/src/core/services/subscriptions.service.ts#L47)
+Defined in: [core/services/subscriptions.service.ts:47](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L47)

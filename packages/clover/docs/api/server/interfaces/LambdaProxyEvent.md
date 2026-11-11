@@ -1,4 +1,4 @@
-[**@bates-solutions/clover API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/clover API Reference v1.1.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: LambdaProxyEvent
 
-Defined in: server/middleware/lambda.ts:13
+Defined in: [server/middleware/lambda.ts:13](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/middleware/lambda.ts#L13)
 
 Minimal API Gateway proxy event shape (avoids an aws-lambda dependency).
 
@@ -16,7 +16,7 @@ Minimal API Gateway proxy event shape (avoids an aws-lambda dependency).
 
 > **body**: `string` \| `null`
 
-Defined in: server/middleware/lambda.ts:16
+Defined in: [server/middleware/lambda.ts:16](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/middleware/lambda.ts#L16)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: server/middleware/lambda.ts:16
 
 > `optional` **headers?**: `Record`\<`string`, `string` \| `undefined`\> \| `null`
 
-Defined in: server/middleware/lambda.ts:15
+Defined in: [server/middleware/lambda.ts:15](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/middleware/lambda.ts#L15)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: server/middleware/lambda.ts:15
 
 > **httpMethod**: `string`
 
-Defined in: server/middleware/lambda.ts:14
+Defined in: [server/middleware/lambda.ts:14](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/middleware/lambda.ts#L14)
 
 ***
 
@@ -40,4 +40,4 @@ Defined in: server/middleware/lambda.ts:14
 
 > `optional` **isBase64Encoded?**: `boolean`
 
-Defined in: server/middleware/lambda.ts:17
+Defined in: [server/middleware/lambda.ts:17](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/middleware/lambda.ts#L17)

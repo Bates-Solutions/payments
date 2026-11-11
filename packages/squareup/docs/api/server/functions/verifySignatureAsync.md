@@ -8,7 +8,7 @@
 
 > **verifySignatureAsync**(`rawBody`, `signature`, `signatureKey`, `notificationUrl?`): `Promise`\<[`WebhookVerificationResult`](../interfaces/WebhookVerificationResult.md)\>
 
-Defined in: [server/webcrypto.ts:78](https://github.com/Bates-Solutions/squareup/blob/main/src/server/webcrypto.ts#L78)
+Defined in: [server/webcrypto.ts:78](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/webcrypto.ts#L78)
 
 Verify a Square webhook signature with WebCrypto (edge-safe, async).
 

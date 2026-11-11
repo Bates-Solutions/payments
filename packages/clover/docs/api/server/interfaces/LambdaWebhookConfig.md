@@ -1,4 +1,4 @@
-[**@bates-solutions/clover API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/clover API Reference v1.1.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: LambdaWebhookConfig
 
-Defined in: server/middleware/lambda.ts:49
+Defined in: [server/middleware/lambda.ts:49](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/middleware/lambda.ts#L49)
 
 Configuration for the Lambda webhook handler.
 
@@ -20,7 +20,7 @@ Configuration for the Lambda webhook handler.
 
 > `optional` **corsHeaders?**: `Record`\<`string`, `string`\>
 
-Defined in: server/middleware/lambda.ts:50
+Defined in: [server/middleware/lambda.ts:50](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/middleware/lambda.ts#L50)
 
 ***
 
@@ -28,7 +28,7 @@ Defined in: server/middleware/lambda.ts:50
 
 > **handlers**: [`WebhookHandlers`](../type-aliases/WebhookHandlers.md)
 
-Defined in: server/types.ts:43
+Defined in: [server/types.ts:43](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/types.ts#L43)
 
 Event handlers by type
 
@@ -42,7 +42,7 @@ Event handlers by type
 
 > `optional` **logger?**: `false` \| [`WebhookLogger`](WebhookLogger.md)
 
-Defined in: server/middleware/lambda.ts:51
+Defined in: [server/middleware/lambda.ts:51](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/middleware/lambda.ts#L51)
 
 ***
 
@@ -50,7 +50,7 @@ Defined in: server/middleware/lambda.ts:51
 
 > **signingSecret**: `string`
 
-Defined in: server/types.ts:41
+Defined in: [server/types.ts:41](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/types.ts#L41)
 
 Clover webhook signing secret
 
@@ -64,7 +64,7 @@ Clover webhook signing secret
 
 > `optional` **throwOnInvalidSignature?**: `boolean`
 
-Defined in: server/types.ts:56
+Defined in: [server/types.ts:56](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/types.ts#L56)
 
 Whether a signature verification failure throws (vs returning an error
 result) in [createWebhookProcessor](../functions/createWebhookProcessor.md). Either way an invalid signature
@@ -86,7 +86,7 @@ true
 
 > `optional` **tolerance?**: `number`
 
-Defined in: server/types.ts:33
+Defined in: [server/types.ts:33](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/types.ts#L33)
 
 Maximum allowed difference (seconds) between the signature timestamp and
 now. Set to `0` to disable the timestamp check.
@@ -107,7 +107,7 @@ now. Set to `0` to disable the timestamp check.
 
 > `optional` **verificationCode?**: `string`
 
-Defined in: server/types.ts:49
+Defined in: [server/types.ts:49](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/types.ts#L49)
 
 The verification code Clover expects echoed during the initial webhook
 URL handshake. When set, the framework handlers answer the handshake

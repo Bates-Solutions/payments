@@ -6,7 +6,7 @@
 
 # Interface: UpdateOrderFulfillmentInput
 
-Defined in: [core/types/index.ts:193](https://github.com/Bates-Solutions/squareup/blob/main/src/core/types/index.ts#L193)
+Defined in: [core/types/index.ts:193](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L193)
 
 One fulfillment to change in `orders.update()`, matched on its `uid`.
 
@@ -19,7 +19,7 @@ Moving a `SHIPMENT` fulfillment to `COMPLETED` marks it shipped; Square stamps
 
 > `optional` **shipmentDetails?**: `object`
 
-Defined in: [core/types/index.ts:198](https://github.com/Bates-Solutions/squareup/blob/main/src/core/types/index.ts#L198)
+Defined in: [core/types/index.ts:198](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L198)
 
 Writable shipment fields; only the ones you set are sent.
 
@@ -55,7 +55,7 @@ RFC 3339 timestamp.
 
 > `optional` **state?**: `FulfillmentState`
 
-Defined in: [core/types/index.ts:196](https://github.com/Bates-Solutions/squareup/blob/main/src/core/types/index.ts#L196)
+Defined in: [core/types/index.ts:196](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L196)
 
 ***
 
@@ -63,6 +63,6 @@ Defined in: [core/types/index.ts:196](https://github.com/Bates-Solutions/squareu
 
 > **uid**: `string`
 
-Defined in: [core/types/index.ts:195](https://github.com/Bates-Solutions/squareup/blob/main/src/core/types/index.ts#L195)
+Defined in: [core/types/index.ts:195](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L195)
 
 The `uid` of a fulfillment already on the order.

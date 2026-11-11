@@ -1,4 +1,4 @@
-[**@bates-solutions/clover API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/clover API Reference v1.1.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: RefundsService
 
-Defined in: core/services/refunds.service.ts:45
+Defined in: [core/services/refunds.service.ts:45](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/refunds.service.ts#L45)
 
 Refunds service wrapping Clover's Ecommerce
 [refunds](https://docs.clover.com/dev/docs/ecommerce-refunding-payments) (`/v1/refunds`).
@@ -28,7 +28,7 @@ const refund = await clover.refunds.create({ chargeId: 'CHG_123' });
 
 > **new RefundsService**(`http`): `RefundsService`
 
-Defined in: core/services/refunds.service.ts:46
+Defined in: [core/services/refunds.service.ts:46](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/refunds.service.ts#L46)
 
 #### Parameters
 
@@ -46,7 +46,7 @@ Defined in: core/services/refunds.service.ts:46
 
 > **create**(`options`): `Promise`\<[`Refund`](../interfaces/Refund.md)\>
 
-Defined in: core/services/refunds.service.ts:53
+Defined in: [core/services/refunds.service.ts:53](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/refunds.service.ts#L53)
 
 Create a refund for a charge.
 
@@ -70,7 +70,7 @@ When `chargeId` is missing or `amount` is non-positive
 
 > **get**(`refundId`): `Promise`\<[`Refund`](../interfaces/Refund.md)\>
 
-Defined in: core/services/refunds.service.ts:78
+Defined in: [core/services/refunds.service.ts:78](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/refunds.service.ts#L78)
 
 Retrieve a refund by ID.
 

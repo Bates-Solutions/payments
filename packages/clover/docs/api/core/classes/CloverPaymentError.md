@@ -1,4 +1,4 @@
-[**@bates-solutions/clover API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/clover API Reference v1.1.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: CloverPaymentError
 
-Defined in: core/errors.ts:78
+Defined in: [core/errors.ts:90](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L90)
 
 Payment processing errors (card declines, etc.)
 
@@ -20,7 +20,7 @@ Payment processing errors (card declines, etc.)
 
 > **new CloverPaymentError**(`message`, `code?`, `options?`): `CloverPaymentError`
 
-Defined in: core/errors.ts:82
+Defined in: [core/errors.ts:98](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L98)
 
 #### Parameters
 
@@ -38,7 +38,15 @@ Defined in: core/errors.ts:82
 
 `string`
 
+###### cloverCode?
+
+`string`
+
 ###### declineCode?
+
+`string`
+
+###### requestId?
 
 `string`
 
@@ -56,7 +64,17 @@ Defined in: core/errors.ts:82
 
 > `readonly` `optional` **chargeId?**: `string`
 
-Defined in: core/errors.ts:79
+Defined in: [core/errors.ts:91](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L91)
+
+***
+
+### cloverCode?
+
+> `readonly` `optional` **cloverCode?**: `string`
+
+Defined in: [core/errors.ts:94](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L94)
+
+Clover's own error code, when present
 
 ***
 
@@ -64,7 +82,7 @@ Defined in: core/errors.ts:79
 
 > `readonly` **code**: [`CloverErrorCode`](../type-aliases/CloverErrorCode.md)
 
-Defined in: core/errors.ts:23
+Defined in: [core/errors.ts:23](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L23)
 
 #### Inherited from
 
@@ -76,7 +94,7 @@ Defined in: core/errors.ts:23
 
 > `readonly` `optional` **declineCode?**: `string`
 
-Defined in: core/errors.ts:80
+Defined in: [core/errors.ts:92](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L92)
 
 ***
 
@@ -84,7 +102,7 @@ Defined in: core/errors.ts:80
 
 > `readonly` `optional` **details?**: `unknown`
 
-Defined in: core/errors.ts:25
+Defined in: [core/errors.ts:25](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L25)
 
 #### Inherited from
 
@@ -92,11 +110,21 @@ Defined in: core/errors.ts:25
 
 ***
 
+### requestId?
+
+> `readonly` `optional` **requestId?**: `string`
+
+Defined in: [core/errors.ts:96](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L96)
+
+Request id for tracing with Clover support
+
+***
+
 ### statusCode?
 
 > `readonly` `optional` **statusCode?**: `number`
 
-Defined in: core/errors.ts:24
+Defined in: [core/errors.ts:24](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L24)
 
 #### Inherited from
 

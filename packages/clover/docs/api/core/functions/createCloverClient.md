@@ -1,4 +1,4 @@
-[**@bates-solutions/clover API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/clover API Reference v1.1.0**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **createCloverClient**(`config`): [`CloverClient`](../classes/CloverClient.md)
 
-Defined in: core/client.ts:91
+Defined in: [core/client.ts:97](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/client.ts#L97)
 
 Create a new Clover client instance.
 

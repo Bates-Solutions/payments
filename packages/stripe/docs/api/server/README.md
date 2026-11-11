@@ -1,10 +1,32 @@
-[**@bates-solutions/stripe API Reference v0.0.0**](../README.md)
+[**@bates-solutions/stripe API Reference v1.0.3**](../README.md)
 
 ***
 
 [@bates-solutions/stripe API Reference](../README.md) / server
 
 # server
+
+`@bates-solutions/stripe/server` — webhook helpers for the Stripe wrapper.
+
+Server utilities for handling Stripe webhooks: signature verification plus a
+typed handler-map dispatch, with adapters for Express, Next.js, AWS Lambda,
+and a framework-neutral Web/edge handler.
+
+## Example
+
+```typescript
+// Next.js App Router
+import { createNextWebhookHandler } from '@bates-solutions/stripe/server';
+
+export const POST = createNextWebhookHandler({
+  signingSecret: process.env.STRIPE_WEBHOOK_SECRET!,
+  handlers: {
+    'payment_intent.succeeded': async (event) => {
+      console.log('Paid:', event.data.object.id);
+    },
+  },
+});
+```
 
 ## Interfaces
 
@@ -51,6 +73,7 @@
 - [createWebhookProcessor](functions/createWebhookProcessor.md)
 - [getChargeId](functions/getChargeId.md)
 - [getCustomerId](functions/getCustomerId.md)
+- [getInvoiceId](functions/getInvoiceId.md)
 - [getPaymentIntentId](functions/getPaymentIntentId.md)
 - [getSubscriptionId](functions/getSubscriptionId.md)
 - [parseAndVerifyWebhook](functions/parseAndVerifyWebhook.md)

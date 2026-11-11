@@ -6,7 +6,7 @@
 
 # Interface: FindVariationsByCodeOptions
 
-Defined in: [core/services/catalog.service.ts:255](https://github.com/Bates-Solutions/squareup/blob/main/src/core/services/catalog.service.ts#L255)
+Defined in: [core/services/catalog.service.ts:255](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/catalog.service.ts#L255)
 
 Codes to look up with `catalog.findVariationsByCode()`. Matching is exact and
 case insensitive; give either list, or both.
@@ -17,7 +17,7 @@ case insensitive; give either list, or both.
 
 > `optional` **skus?**: `string`[]
 
-Defined in: [core/services/catalog.service.ts:257](https://github.com/Bates-Solutions/squareup/blob/main/src/core/services/catalog.service.ts#L257)
+Defined in: [core/services/catalog.service.ts:257](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/catalog.service.ts#L257)
 
 ***
 
@@ -25,4 +25,4 @@ Defined in: [core/services/catalog.service.ts:257](https://github.com/Bates-Solu
 
 > `optional` **upcs?**: `string`[]
 
-Defined in: [core/services/catalog.service.ts:256](https://github.com/Bates-Solutions/squareup/blob/main/src/core/services/catalog.service.ts#L256)
+Defined in: [core/services/catalog.service.ts:256](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/catalog.service.ts#L256)

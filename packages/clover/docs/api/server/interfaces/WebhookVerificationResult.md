@@ -1,4 +1,4 @@
-[**@bates-solutions/clover API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/clover API Reference v1.1.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: WebhookVerificationResult
 
-Defined in: server/types.ts:62
+Defined in: [server/types.ts:62](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/types.ts#L62)
 
 Result of webhook signature verification.
 
@@ -16,7 +16,7 @@ Result of webhook signature verification.
 
 > `optional` **error?**: `string`
 
-Defined in: server/types.ts:64
+Defined in: [server/types.ts:64](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/types.ts#L64)
 
 ***
 
@@ -24,4 +24,4 @@ Defined in: server/types.ts:64
 
 > **valid**: `boolean`
 
-Defined in: server/types.ts:63
+Defined in: [server/types.ts:63](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/types.ts#L63)

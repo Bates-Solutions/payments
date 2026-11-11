@@ -1,4 +1,4 @@
-[**@bates-solutions/clover API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/clover API Reference v1.1.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: Charge
 
-Defined in: core/services/payments.service.ts:9
+Defined in: [core/services/payments.service.ts:9](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/payments.service.ts#L9)
 
 A Clover Ecommerce charge (a payment).
 
@@ -16,7 +16,7 @@ A Clover Ecommerce charge (a payment).
 
 > `optional` **amount?**: `number`
 
-Defined in: core/services/payments.service.ts:11
+Defined in: [core/services/payments.service.ts:11](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/payments.service.ts#L11)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: core/services/payments.service.ts:11
 
 > `optional` **captured?**: `boolean`
 
-Defined in: core/services/payments.service.ts:16
+Defined in: [core/services/payments.service.ts:16](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/payments.service.ts#L16)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: core/services/payments.service.ts:16
 
 > `optional` **created?**: `number`
 
-Defined in: core/services/payments.service.ts:22
+Defined in: [core/services/payments.service.ts:22](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/payments.service.ts#L22)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: core/services/payments.service.ts:22
 
 > `optional` **currency?**: `string`
 
-Defined in: core/services/payments.service.ts:12
+Defined in: [core/services/payments.service.ts:12](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/payments.service.ts#L12)
 
 ***
 
@@ -48,7 +48,7 @@ Defined in: core/services/payments.service.ts:12
 
 > `optional` **description?**: `string`
 
-Defined in: core/services/payments.service.ts:23
+Defined in: [core/services/payments.service.ts:23](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/payments.service.ts#L23)
 
 ***
 
@@ -56,7 +56,7 @@ Defined in: core/services/payments.service.ts:23
 
 > `optional` **id?**: `string`
 
-Defined in: core/services/payments.service.ts:10
+Defined in: [core/services/payments.service.ts:10](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/payments.service.ts#L10)
 
 ***
 
@@ -64,7 +64,7 @@ Defined in: core/services/payments.service.ts:10
 
 > `optional` **paid?**: `boolean`
 
-Defined in: core/services/payments.service.ts:15
+Defined in: [core/services/payments.service.ts:15](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/payments.service.ts#L15)
 
 ***
 
@@ -72,7 +72,7 @@ Defined in: core/services/payments.service.ts:15
 
 > `optional` **source?**: `object`
 
-Defined in: core/services/payments.service.ts:17
+Defined in: [core/services/payments.service.ts:17](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/payments.service.ts#L17)
 
 #### brand?
 
@@ -92,6 +92,6 @@ Defined in: core/services/payments.service.ts:17
 
 > `optional` **status?**: `string`
 
-Defined in: core/services/payments.service.ts:14
+Defined in: [core/services/payments.service.ts:14](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/payments.service.ts#L14)
 
 Charge status (e.g. `paid`, `succeeded`)

@@ -1,4 +1,4 @@
-[**@bates-solutions/clover API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/clover API Reference v1.1.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: CustomersService
 
-Defined in: core/services/customers.service.ts:75
+Defined in: [core/services/customers.service.ts:78](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L78)
 
 Customers service wrapping Clover's Platform
 [customers](https://docs.clover.com/dev/reference/customerscreatecustomer)
@@ -30,7 +30,7 @@ const customer = await clover.customers.create({
 
 > **new CustomersService**(`http`): `CustomersService`
 
-Defined in: core/services/customers.service.ts:76
+Defined in: [core/services/customers.service.ts:79](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L79)
 
 #### Parameters
 
@@ -48,7 +48,7 @@ Defined in: core/services/customers.service.ts:76
 
 > **create**(`options`): `Promise`\<[`Customer`](../interfaces/Customer.md)\>
 
-Defined in: core/services/customers.service.ts:94
+Defined in: [core/services/customers.service.ts:97](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L97)
 
 Create a customer.
 
@@ -70,15 +70,21 @@ When no identifying field is provided
 
 ### delete()
 
-> **delete**(`customerId`): `Promise`\<`void`\>
+> **delete**(`customerId`, `options?`): `Promise`\<`void`\>
 
-Defined in: core/services/customers.service.ts:144
+Defined in: [core/services/customers.service.ts:151](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L151)
 
 Delete a customer.
 
 #### Parameters
 
 ##### customerId
+
+`string`
+
+##### options?
+
+###### idempotencyKey?
 
 `string`
 
@@ -92,7 +98,7 @@ Delete a customer.
 
 > **get**(`customerId`): `Promise`\<[`Customer`](../interfaces/Customer.md)\>
 
-Defined in: core/services/customers.service.ts:113
+Defined in: [core/services/customers.service.ts:117](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L117)
 
 Retrieve a customer by ID.
 
@@ -112,7 +118,7 @@ Retrieve a customer by ID.
 
 > **list**(`options?`): `Promise`\<[`PaginatedResponse`](../interfaces/PaginatedResponse.md)\<[`Customer`](../interfaces/Customer.md)\>\>
 
-Defined in: core/services/customers.service.ts:159
+Defined in: [core/services/customers.service.ts:167](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L167)
 
 List customers with offset-based pagination.
 
@@ -132,7 +138,7 @@ List customers with offset-based pagination.
 
 > **update**(`customerId`, `options`): `Promise`\<[`Customer`](../interfaces/Customer.md)\>
 
-Defined in: core/services/customers.service.ts:128
+Defined in: [core/services/customers.service.ts:132](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L132)
 
 Update a customer.
 

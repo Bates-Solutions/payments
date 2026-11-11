@@ -1,4 +1,4 @@
-[**@bates-solutions/clover API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/clover API Reference v1.1.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: CloverApiError
 
-Defined in: core/errors.ts:46
+Defined in: [core/errors.ts:46](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L46)
 
 API-level errors returned by Clover
 
@@ -20,7 +20,7 @@ API-level errors returned by Clover
 
 > **new CloverApiError**(`message`, `code`, `statusCode`, `options?`): `CloverApiError`
 
-Defined in: core/errors.ts:52
+Defined in: [core/errors.ts:52](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L52)
 
 #### Parameters
 
@@ -64,7 +64,7 @@ Defined in: core/errors.ts:52
 
 > `readonly` `optional` **cloverCode?**: `string`
 
-Defined in: core/errors.ts:48
+Defined in: [core/errors.ts:48](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L48)
 
 Raw Clover error code, when present
 
@@ -74,7 +74,7 @@ Raw Clover error code, when present
 
 > `readonly` **code**: [`CloverErrorCode`](../type-aliases/CloverErrorCode.md)
 
-Defined in: core/errors.ts:23
+Defined in: [core/errors.ts:23](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L23)
 
 #### Inherited from
 
@@ -86,7 +86,7 @@ Defined in: core/errors.ts:23
 
 > `readonly` `optional` **details?**: `unknown`
 
-Defined in: core/errors.ts:25
+Defined in: [core/errors.ts:25](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L25)
 
 #### Inherited from
 
@@ -98,7 +98,7 @@ Defined in: core/errors.ts:25
 
 > `readonly` `optional` **requestId?**: `string`
 
-Defined in: core/errors.ts:50
+Defined in: [core/errors.ts:50](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L50)
 
 Clover request id for support/debugging
 
@@ -108,7 +108,7 @@ Clover request id for support/debugging
 
 > `readonly` `optional` **statusCode?**: `number`
 
-Defined in: core/errors.ts:24
+Defined in: [core/errors.ts:24](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L24)
 
 #### Inherited from
 

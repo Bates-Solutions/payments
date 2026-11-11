@@ -1,4 +1,4 @@
-[**@bates-solutions/clover API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/clover API Reference v1.1.0**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **createWebhookProcessor**(`config`): (`rawBody`, `signature`) => `Promise`\<\{ `error?`: `string`; `event?`: [`WebhookEvent`](../interfaces/WebhookEvent.md); `success`: `boolean`; \}\>
 
-Defined in: server/webhook.ts:206
+Defined in: [server/webhook.ts:206](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/webhook.ts#L206)
 
 Create a webhook handler that verifies and processes raw webhook requests.
 

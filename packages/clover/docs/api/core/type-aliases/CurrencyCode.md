@@ -1,4 +1,4 @@
-[**@bates-solutions/clover API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/clover API Reference v1.1.0**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **CurrencyCode** = `"usd"` \| `"cad"` \| `"gbp"` \| `"eur"` \| `"aud"`
 
-Defined in: core/types/index.ts:12
+Defined in: [core/types/index.ts:12](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/types/index.ts#L12)
 
 Currency codes commonly used with Clover's Ecommerce API.
 

@@ -1,4 +1,4 @@
-[**@bates-solutions/clover API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/clover API Reference v1.1.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: RequestOptions
 
-Defined in: core/http.ts:37
+Defined in: [core/http.ts:38](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/http.ts#L38)
 
 Options for a single request.
 
@@ -16,7 +16,7 @@ Options for a single request.
 
 > `optional` **body?**: `unknown`
 
-Defined in: core/http.ts:41
+Defined in: [core/http.ts:45](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/http.ts#L45)
 
 JSON request body
 
@@ -26,7 +26,7 @@ JSON request body
 
 > `optional` **idempotencyKey?**: `string`
 
-Defined in: core/http.ts:43
+Defined in: [core/http.ts:47](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/http.ts#L47)
 
 Idempotency key, sent as the `idempotency-key` header
 
@@ -34,8 +34,9 @@ Idempotency key, sent as the `idempotency-key` header
 
 ### query?
 
-> `optional` **query?**: `Record`\<`string`, `string` \| `number` \| `undefined`\>
+> `optional` **query?**: `Record`\<`string`, `string` \| `number` \| `string`[] \| `undefined`\>
 
-Defined in: core/http.ts:39
+Defined in: [core/http.ts:43](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/http.ts#L43)
 
-Query-string parameters
+Query-string parameters. An array repeats the key once per value, which is
+how Clover takes several `filter` parameters.

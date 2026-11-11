@@ -6,7 +6,7 @@
 
 # Interface: RedeemActivityDetails
 
-Defined in: [core/services/gift-cards.service.ts:133](https://github.com/Bates-Solutions/squareup/blob/main/src/core/services/gift-cards.service.ts#L133)
+Defined in: [core/services/gift-cards.service.ts:133](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L133)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [core/services/gift-cards.service.ts:133](https://github.com/Bates-S
 
 > **amountMoney**: `object`
 
-Defined in: [core/services/gift-cards.service.ts:134](https://github.com/Bates-Solutions/squareup/blob/main/src/core/services/gift-cards.service.ts#L134)
+Defined in: [core/services/gift-cards.service.ts:134](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L134)
 
 #### amount?
 
@@ -30,7 +30,7 @@ Defined in: [core/services/gift-cards.service.ts:134](https://github.com/Bates-S
 
 > `optional` **paymentId?**: `string`
 
-Defined in: [core/services/gift-cards.service.ts:135](https://github.com/Bates-Solutions/squareup/blob/main/src/core/services/gift-cards.service.ts#L135)
+Defined in: [core/services/gift-cards.service.ts:135](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L135)
 
 ***
 
@@ -38,7 +38,7 @@ Defined in: [core/services/gift-cards.service.ts:135](https://github.com/Bates-S
 
 > `optional` **referenceId?**: `string`
 
-Defined in: [core/services/gift-cards.service.ts:136](https://github.com/Bates-Solutions/squareup/blob/main/src/core/services/gift-cards.service.ts#L136)
+Defined in: [core/services/gift-cards.service.ts:136](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L136)
 
 ***
 
@@ -46,4 +46,4 @@ Defined in: [core/services/gift-cards.service.ts:136](https://github.com/Bates-S
 
 > `optional` **status?**: `"COMPLETED"` \| `"CANCELED"` \| `"PENDING"`
 
-Defined in: [core/services/gift-cards.service.ts:137](https://github.com/Bates-Solutions/squareup/blob/main/src/core/services/gift-cards.service.ts#L137)
+Defined in: [core/services/gift-cards.service.ts:137](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L137)
