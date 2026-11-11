@@ -1,4 +1,5 @@
-import type { CurrencyCode } from './types/index.js';
+import { StripeValidationError } from './errors.js';
+import type { CurrencyCode, TimeRange } from './types/index.js';
 
 /**
  * Money representation
@@ -128,6 +129,81 @@ export function fromUnixTime(seconds: number | null | undefined): Date | undefin
 }
 
 /**
+ * Convert a JS `Date` to Unix seconds, the time format Stripe expects. A
+ * number is taken to be Unix seconds already and passed through.
+ *
+ * @param value - A `Date`, or whole Unix seconds
+ * @param field - Field name reported on a validation error
+ * @throws {StripeValidationError} When the value is an invalid `Date`, not a
+ *   whole number, or looks like milliseconds (above 1e11, i.e. after the year
+ *   5000)
+ *
+ * @example
+ * ```typescript
+ * toUnixTime(new Date('2026-03-01T00:00:00Z')); // 1772323200
+ * ```
+ */
+export function toUnixTime(value: Date | number, field = 'value'): number {
+  const seconds = value instanceof Date ? Math.floor(value.getTime() / 1000) : value;
+  if (typeof seconds !== 'number' || !Number.isInteger(seconds)) {
+    throw new StripeValidationError(`${field} must be a valid Date or whole Unix seconds`, field);
+  }
+  if (seconds > MAX_UNIX_SECONDS) {
+    throw new StripeValidationError(
+      `${field} looks like milliseconds; pass Unix seconds or a Date`,
+      field
+    );
+  }
+  return seconds;
+}
+
+/** Above this, a "seconds" value is almost certainly milliseconds (year 5138). */
+const MAX_UNIX_SECONDS = 1e11;
+
+/**
+ * Convert a {@link TimeRange} to Stripe's range query param.
+ *
+ * @internal
+ */
+export function toRangeParam(
+  range: TimeRange | undefined,
+  field: string
+): { gt?: number; gte?: number; lt?: number; lte?: number } | undefined {
+  if (!range) {
+    return undefined;
+  }
+  const convert = (value: Date | number | undefined, bound: string): number | undefined =>
+    value === undefined ? undefined : toUnixTime(value, `${field}.${bound}`);
+  return {
+    gt: convert(range.gt, 'gt'),
+    gte: convert(range.gte, 'gte'),
+    lt: convert(range.lt, 'lt'),
+    lte: convert(range.lte, 'lte'),
+  };
+}
+
+/**
+ * Fetch every page of a cursor-paginated Stripe list and return all items.
+ *
+ * @internal
+ */
+export async function listAll<T extends { id?: string }>(
+  fetchPage: (startingAfter: string | undefined) => PromiseLike<{ data: T[]; has_more: boolean }>
+): Promise<T[]> {
+  const items: T[] = [];
+  let startingAfter: string | undefined;
+  for (;;) {
+    const page = await fetchPage(startingAfter);
+    items.push(...page.data);
+    const cursor = page.data.at(-1)?.id;
+    if (!page.has_more || !cursor) {
+      return items;
+    }
+    startingAfter = cursor;
+  }
+}
+
+/**
  * Resolve a Stripe reference that may be either an ID string or an expanded
  * object, to its ID.
  *
@@ -142,9 +218,7 @@ export function fromUnixTime(seconds: number | null | undefined): Date | undefin
  * resolveId(null);             // undefined
  * ```
  */
-export function resolveId(
-  value: string | { id?: string } | null | undefined
-): string | undefined {
+export function resolveId(value: string | { id?: string } | null | undefined): string | undefined {
   if (typeof value === 'string') {
     return value;
   }

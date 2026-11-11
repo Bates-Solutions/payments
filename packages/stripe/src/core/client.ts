@@ -9,6 +9,7 @@ import { SubscriptionsService } from './services/subscriptions.service.js';
 import { PricesService } from './services/prices.service.js';
 import { ProductsService } from './services/products.service.js';
 import { InvoicesService } from './services/invoices.service.js';
+import { PaymentLinksService } from './services/payment-links.service.js';
 import { OAuthService } from './services/oauth.service.js';
 import { StripeValidationError } from './errors.js';
 
@@ -98,6 +99,7 @@ export class StripeClient {
   public readonly prices: PricesService;
   public readonly products: ProductsService;
   public readonly invoices: InvoicesService;
+  public readonly paymentLinks: PaymentLinksService;
   public readonly oauth: OAuthService;
 
   constructor(config: StripeClientConfig) {
@@ -138,6 +140,7 @@ export class StripeClient {
     this.prices = new PricesService(this.client);
     this.products = new ProductsService(this.client);
     this.invoices = new InvoicesService(this.client);
+    this.paymentLinks = new PaymentLinksService(this.client);
     this.oauth = new OAuthService(() => this.getPlatformClient(), config.connectClientId);
   }
 

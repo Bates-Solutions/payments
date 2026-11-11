@@ -10,6 +10,7 @@ Backend API integration guides:
 - [Managing Customers](./core/customers.md) - Customer CRUD and search
 - [Refunds](./core/refunds.md) - Full and partial refunds
 - [Checkout](./core/checkout.md) - Hosted Checkout Sessions (subscription & one-time)
+- [Payment Links](./core/payment-links.md) - Read Payment Links and their line items
 - [Billing Portal](./core/billing-portal.md) - Customer self-service billing
 - [Subscriptions](./core/subscriptions.md) - Recurring billing, version-stable shape
 - [Connected Accounts](./core/connect.md) - Connect OAuth and acting as a connected account
