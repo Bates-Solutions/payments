@@ -161,7 +161,7 @@ describe('SetupIntentsService', () => {
       {
         customer: 'cus_1',
         usage: 'off_session',
-        payment_method_types: undefined,
+        allowed_payment_method_types: undefined,
         automatic_payment_methods: { enabled: true },
         payment_method: undefined,
         confirm: undefined,
@@ -190,7 +190,7 @@ describe('SetupIntentsService', () => {
     expect(create).toHaveBeenCalledWith(
       expect.objectContaining({
         usage: 'on_session',
-        payment_method_types: ['card'],
+        allowed_payment_method_types: ['card'],
         automatic_payment_methods: undefined,
         payment_method: 'pm_1',
         confirm: true,

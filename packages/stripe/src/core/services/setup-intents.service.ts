@@ -22,7 +22,8 @@ export interface CreateSetupIntentOptions {
    */
   usage?: 'off_session' | 'on_session';
   /**
-   * Payment method types to accept, e.g. `['card']`. When omitted, Stripe
+   * Payment method types to accept, e.g. `['card']`. Sent as
+   * `allowed_payment_method_types`. When omitted, Stripe
    * uses the types enabled in your Dashboard (automatic payment methods).
    */
   paymentMethodTypes?: string[];
@@ -102,7 +103,7 @@ export class SetupIntentsService {
         {
           customer: options?.customerId,
           usage: options?.usage ?? 'off_session',
-          payment_method_types: options?.paymentMethodTypes,
+          allowed_payment_method_types: options?.paymentMethodTypes,
           automatic_payment_methods: options?.paymentMethodTypes ? undefined : { enabled: true },
           payment_method: options?.paymentMethod,
           confirm: options?.confirm,
