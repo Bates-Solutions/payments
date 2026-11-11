@@ -29,13 +29,14 @@ A thin, consistent wrapper over the official [`stripe`](https://www.npmjs.com/pa
 - **Typed Errors** – `parseStripeError` normalizes Stripe errors into a small class hierarchy
 - **Edge-ready webhooks** – WebCrypto signature verification that runs on Node, **Deno**, Bun, and Workers, plus Express / Next.js / Lambda adapters
 - **Version-stable subscriptions** – Normalized shape with `Date` period fields, absorbing Stripe's API churn
+- **Connected accounts** – Connect OAuth helpers and `client.forAccount(id)`, which runs every service as a connected account
 - **Escape Hatch** – `client.sdk` exposes the underlying Stripe instance for anything not wrapped
 
 ## Requirements
 
 | Dependency | Version |
 | ---------- | ------- |
-| Stripe SDK | 17–18   |
+| Stripe SDK | 18–23   |
 | Node.js    | 22+     |
 | TypeScript | 5.0+    |
 
@@ -127,6 +128,80 @@ sub.currentPeriodEnd; // Date
 
 // Read your catalog from Stripe (products expanded)
 const { data: prices } = await client.prices.list({ active: true, expandProduct: true });
+```
+
+### Managing the catalog
+
+```typescript
+const product = await client.products.create({
+  name: 'Sourdough loaf',
+  metadata: { sku: 'SD-001' }, // tag it with your own id
+});
+const price = await client.prices.create({
+  product: product.id,
+  unitAmount: 899,
+  currency: 'usd',
+});
+
+// Prices are immutable: replace creates a new one and deactivates the old one
+const { price: newPrice } = await client.prices.replace(price.id, { unitAmount: 949 });
+
+await client.products.archive(product.id);
+```
+
+### Connected accounts (Connect)
+
+```typescript
+import { buildAuthorizeUrl } from '@bates-solutions/stripe';
+
+// 1. Send the user to Stripe to connect their account
+const state = crypto.randomUUID(); // store it server side for the callback
+const url = buildAuthorizeUrl({ clientId: 'ca_123', state });
+
+// 2. In the redirect handler: require the stored state, delete it (one use),
+//    compare it with the query value, handle `error`, require a string `code`
+//    (full example in docs/guides/core/connect.md)
+const { stripeUserId } = await client.oauth.exchangeCode(code);
+
+// 3. Act as the connected account: every call sends Stripe-Account
+const retailer = client.forAccount(stripeUserId);
+await retailer.products.list();
+```
+
+### Reading what was sold
+
+```typescript
+// Completed Checkout Sessions (including Payment Link sales) in a window.
+// list returns one page, so follow nextCursor to cover the whole window.
+const march = { gte: new Date('2026-03-01'), lt: new Date('2026-04-01') };
+let cursor: string | undefined;
+do {
+  const page = await client.checkout.list({
+    status: 'complete',
+    created: march,
+    limit: 100,
+    startingAfter: cursor,
+  });
+  for (const session of page.data) {
+    const items = await client.checkout.listLineItems(session.id); // all of its pages
+  }
+  cursor = page.nextCursor;
+} while (cursor);
+
+// Paid invoices and their lines, the same way
+cursor = undefined;
+do {
+  const page = await client.invoices.list({
+    status: 'paid',
+    created: march,
+    limit: 100,
+    startingAfter: cursor,
+  });
+  for (const invoice of page.data) {
+    const lines = await client.invoices.listLines(invoice.id);
+  }
+  cursor = page.nextCursor;
+} while (cursor);
 ```
 
 ### Saving a card for later
@@ -221,34 +296,39 @@ Deno.serve(handler);
 ```
 
 Entity helpers extract common IDs from any event: `getPaymentIntentId`,
-`getChargeId`, `getCustomerId`, `getSubscriptionId`, and `resolveId` (collapses
+`getChargeId`, `getCustomerId`, `getSubscriptionId`, `getInvoiceId`, `getAccountId`
+(the connected account of a Connect event), and `resolveId` (collapses
 an id-string-or-expanded-object reference). `fromUnixTime(seconds)` converts
 Stripe's epoch-seconds timestamps to a `Date`.
 
 ## Available Services
 
-| Service          | Description                                                  |
-| ---------------- | ------------------------------------------------------------ |
-| `payments`       | Create and manage payments (PaymentIntents)                  |
-| `customers`      | Customer management + search                                 |
-| `refunds`        | Create and list refunds                                      |
-| `checkout`       | Hosted Checkout Sessions (subscription & one-time)           |
-| `billingPortal`  | Customer billing portal sessions                             |
-| `subscriptions`  | Get, list, cancel subscriptions, normalized with `Date`s     |
-| `prices`         | List/retrieve prices (with product expansion)                |
-| `products`       | List/retrieve products                                       |
-| `invoices`       | Invoices + invoice items (create, finalize, pay, void, send) |
-| `paymentMethods` | Saved payment methods: list, attach, detach, set the default |
-| `setupIntents`   | Save a payment method for later (off-session) charges        |
+| Service          | Description                                                              |
+| ---------------- | ------------------------------------------------------------------------ |
+| `payments`       | Create and manage payments (PaymentIntents)                              |
+| `customers`      | Customer management + search                                             |
+| `refunds`        | Create and list refunds                                                  |
+| `checkout`       | Hosted Checkout Sessions (subscription & one-time), sold line items      |
+| `billingPortal`  | Customer billing portal sessions                                         |
+| `subscriptions`  | Get, list, cancel subscriptions, normalized with `Date`s                 |
+| `prices`         | List, retrieve, create, update, archive and replace prices               |
+| `products`       | List, retrieve, create, update and archive products                      |
+| `invoices`       | Invoices + invoice items (create, finalize, pay, void, send, read lines) |
+| `paymentLinks`   | Read Payment Links and their line items                                  |
+| `oauth`          | Connect OAuth: exchange a code, deauthorize an account                   |
+| `paymentMethods` | Saved payment methods: list, attach, detach, set the default             |
+| `setupIntents`   | Save a payment method for later (off-session) charges                    |
 
 ## Utilities
 
 ```typescript
-import { toMinor, fromMinor, formatMoney } from '@bates-solutions/stripe';
+import { toMinor, fromMinor, formatMoney, toUnixTime } from '@bates-solutions/stripe';
 
 toMinor(10.99); // 1099
 fromMinor(1099); // 10.99
 formatMoney(1099, 'usd'); // "$10.99"
+
+toUnixTime(new Date('2026-03-01T00:00:00Z')); // 1772323200 (Stripe's time format)
 ```
 
 ## Documentation
@@ -261,11 +341,11 @@ formatMoney(1099, 'usd'); // "$10.99"
 
 This library is one of three sibling payment-API wrappers from Bates Solutions that deliberately share the same design — learn one and you know all three:
 
-| Library                                                                                  | Wraps  | Install (JSR)                   | Source                                       |
-| ---------------------------------------------------------------------------------------- | ------ | ------------------------------- | -------------------------------------------- |
-| **[`@bates-solutions/stripe`](https://jsr.io/@bates-solutions/stripe)** _(this package)_ | Stripe | `jsr:@bates-solutions/stripe`   | [GitHub](https://github.com/mbates/stripe)   |
-| [`@bates-solutions/squareup`](https://jsr.io/@bates-solutions/squareup)                  | Square | `jsr:@bates-solutions/squareup` | [GitHub](https://github.com/mbates/squareup) |
-| [`@bates-solutions/clover`](https://jsr.io/@bates-solutions/clover)                      | Clover | `jsr:@bates-solutions/clover`   | [GitHub](https://github.com/mbates/clover)   |
+| Library                                                                                  | Wraps  | Install (JSR)                   | Source                                                |
+| ---------------------------------------------------------------------------------------- | ------ | ------------------------------- | ----------------------------------------------------- |
+| **[`@bates-solutions/stripe`](https://jsr.io/@bates-solutions/stripe)** _(this package)_ | Stripe | `jsr:@bates-solutions/stripe`   | [GitHub](https://github.com/Bates-Solutions/stripe)   |
+| [`@bates-solutions/squareup`](https://jsr.io/@bates-solutions/squareup)                  | Square | `jsr:@bates-solutions/squareup` | [GitHub](https://github.com/Bates-Solutions/squareup) |
+| [`@bates-solutions/clover`](https://jsr.io/@bates-solutions/clover)                      | Clover | `jsr:@bates-solutions/clover`   | [GitHub](https://github.com/Bates-Solutions/clover)   |
 
 ### How they're related
 

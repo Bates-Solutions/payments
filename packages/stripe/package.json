@@ -48,34 +48,34 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mbates/stripe.git"
+    "url": "git+https://github.com/Bates-Solutions/stripe.git"
   },
   "bugs": {
-    "url": "https://github.com/mbates/stripe/issues"
+    "url": "https://github.com/Bates-Solutions/stripe/issues"
   },
-  "homepage": "https://github.com/mbates/stripe#readme",
+  "homepage": "https://github.com/Bates-Solutions/stripe#readme",
   "engines": {
     "node": ">=22"
   },
   "peerDependencies": {
-    "stripe": ">=17 <19"
+    "stripe": ">=18 <24"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/express": "^5.0.6",
-    "@types/node": "^26.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.62.0",
-    "@typescript-eslint/parser": "^8.62.0",
-    "@vitest/coverage-v8": "^4.1.2",
-    "eslint": "^10.1.0",
+    "@types/node": "^26.6.6",
+    "@typescript-eslint/eslint-plugin": "^8.72.1",
+    "@typescript-eslint/parser": "^8.72.1",
+    "@vitest/coverage-v8": "^5.1.0",
+    "eslint": "^10.14.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.1.0",
-    "prettier": "^3.9.6",
-    "stripe": "^22.3.2",
+    "eslint-plugin-prettier": "^5.5.7",
+    "prettier": "^3.9.10",
+    "stripe": "^23.1.0",
     "typedoc": "^0.28.18",
-    "typedoc-plugin-markdown": "^4.10.0",
+    "typedoc-plugin-markdown": "^4.14.1",
     "typescript": "^6.0.2",
-    "typescript-eslint": "^8.62.0",
-    "vitest": "^4.0.16"
+    "typescript-eslint": "^8.72.1",
+    "vitest": "^5.1.0"
   }
 }

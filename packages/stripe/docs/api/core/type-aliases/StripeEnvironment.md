@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **StripeEnvironment** = `"test"` \| `"live"`
 
-Defined in: [core/types/index.ts:7](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/types/index.ts#L7)
+Defined in: [core/types/index.ts:7](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/types/index.ts#L7)
 
 Stripe environment, derived from the API key prefix.
 

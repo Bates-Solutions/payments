@@ -1,7 +1,7 @@
 import type Stripe from 'stripe';
-import type { PaginatedResponse } from '../types/index.js';
+import type { PaginatedResponse, TimeRange } from '../types/index.js';
 import { parseStripeError, StripeValidationError } from '../errors.js';
-import { createIdempotencyKey } from '../utils.js';
+import { createIdempotencyKey, listAll, toRangeParam } from '../utils.js';
 
 /**
  * A Stripe Invoice
@@ -13,6 +13,12 @@ export type Invoice = Stripe.Invoice;
  * attached to a specific draft invoice).
  */
 export type InvoiceItem = Stripe.InvoiceItem;
+
+/**
+ * A line on an invoice (what was billed: amount, quantity, and the price or
+ * subscription item it came from).
+ */
+export type InvoiceLineItem = Stripe.InvoiceLineItem;
 
 /**
  * Options for creating an invoice.
@@ -79,7 +85,10 @@ export interface AddInvoiceItemOptions {
 export interface ListInvoicesOptions {
   customerId?: string;
   subscriptionId?: string;
+  /** Only invoices in this status. Use `'paid'` for completed sales. */
   status?: Stripe.InvoiceListParams.Status;
+  /** Only invoices created in this time range */
+  created?: TimeRange;
   limit?: number;
   startingAfter?: string;
 }
@@ -192,6 +201,7 @@ export class InvoicesService {
         customer: options?.customerId,
         subscription: options?.subscriptionId,
         status: options?.status,
+        created: toRangeParam(options?.created, 'created'),
         limit: options?.limit,
         starting_after: options?.startingAfter,
       });
@@ -201,6 +211,35 @@ export class InvoicesService {
         hasMore: page.has_more,
         nextCursor: page.has_more ? page.data.at(-1)?.id : undefined,
       };
+    } catch (error) {
+      throw parseStripeError(error);
+    }
+  }
+
+  /**
+   * List all lines of an invoice (every page, fetched for you).
+   *
+   * @throws {StripeValidationError} When `invoiceId` is missing
+   *
+   * @example
+   * ```typescript
+   * const { data: paid } = await stripe.invoices.list({ status: 'paid', created: { gte: since } });
+   * for (const invoice of paid) {
+   *   const lines = await stripe.invoices.listLines(invoice.id);
+   * }
+   * ```
+   */
+  async listLines(invoiceId: string): Promise<InvoiceLineItem[]> {
+    if (!invoiceId) {
+      throw new StripeValidationError('invoiceId is required', 'invoiceId');
+    }
+    try {
+      return await listAll((startingAfter) =>
+        this.client.invoices.listLineItems(invoiceId, {
+          limit: 100,
+          starting_after: startingAfter,
+        })
+      );
     } catch (error) {
       throw parseStripeError(error);
     }

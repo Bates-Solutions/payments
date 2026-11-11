@@ -11,9 +11,11 @@ Backend API integration guides:
 - [Payment Methods & SetupIntents](./core/payment-methods.md) - Save cards for later charges
 - [Refunds](./core/refunds.md) - Full and partial refunds
 - [Checkout](./core/checkout.md) - Hosted Checkout Sessions (subscription & one-time)
+- [Payment Links](./core/payment-links.md) - Read Payment Links and their line items
 - [Billing Portal](./core/billing-portal.md) - Customer self-service billing
 - [Subscriptions](./core/subscriptions.md) - Recurring billing, version-stable shape
-- [Prices & Products](./core/prices-and-products.md) - Reading the plan catalog from Stripe
+- [Connected Accounts](./core/connect.md) - Connect OAuth and acting as a connected account
+- [Prices & Products](./core/prices-and-products.md) - Reading and managing the catalog
 
 ## Server
 

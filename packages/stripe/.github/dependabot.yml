@@ -8,13 +8,22 @@ updates:
       day: "monday"
     open-pull-requests-limit: 10
     groups:
+      # Packages that peer-depend on each other must move in the same group,
+      # or each group's PR fails `npm ci` with ERESOLVE (as #19 and #25 did:
+      # @vitest/coverage-v8 5 landed without vitest 5). typedoc is here
+      # because it peer-depends on typescript too.
       dev-dependencies:
         patterns:
           - "@types/*"
           - "eslint*"
           - "typescript"
+          - "typescript-eslint"
+          - "@typescript-eslint/*"
           - "vitest"
+          - "@vitest/*"
           - "prettier"
+          - "@eslint/*"
+          - "typedoc*"
       production-dependencies:
         patterns:
           - "*"
@@ -22,8 +31,13 @@ updates:
           - "@types/*"
           - "eslint*"
           - "typescript"
+          - "typescript-eslint"
+          - "@typescript-eslint/*"
           - "vitest"
+          - "@vitest/*"
           - "prettier"
+          - "@eslint/*"
+          - "typedoc*"
     labels:
       - "dependencies"
     commit-message:
