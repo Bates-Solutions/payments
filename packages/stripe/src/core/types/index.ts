@@ -7,12 +7,18 @@
 export type StripeEnvironment = 'test' | 'live';
 
 /**
- * Currency codes commonly used with Stripe.
+ * A Stripe currency code.
  *
- * Stripe currency codes are lowercase ISO 4217 (e.g. `usd`). This is a
- * representative subset; Stripe supports many more.
+ * Stripe currency codes are lowercase ISO 4217 (e.g. `usd`). The listed codes
+ * are a representative subset offered for autocomplete; any other ISO code
+ * Stripe supports (e.g. `krw`, `kwd`, `isk`) is accepted too. The money
+ * helpers (`toMinor`, `fromMinor`, `formatMoney`) match codes
+ * case-insensitively.
+ *
+ * @see https://docs.stripe.com/currencies
  */
-export type CurrencyCode = 'usd' | 'cad' | 'gbp' | 'eur' | 'aud' | 'jpy';
+export type CurrencyCode =
+  'usd' | 'cad' | 'gbp' | 'eur' | 'aud' | 'jpy' | (string & Record<never, never>);
 
 /**
  * Common cursor pagination options

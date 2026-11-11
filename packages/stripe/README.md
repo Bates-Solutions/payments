@@ -328,8 +328,25 @@ toMinor(10.99); // 1099
 fromMinor(1099); // 10.99
 formatMoney(1099, 'usd'); // "$10.99"
 
+toMinor(5000, 'KRW'); // 5000 (zero-decimal; codes are case-insensitive)
+toMinor(5.124, 'kwd'); // 5120 (three-decimal, rounded to a multiple of 10)
+toMinor(5, 'isk'); // 500  (sent as two-decimal, decimals always 00)
+
 toUnixTime(new Date('2026-03-01T00:00:00Z')); // 1772323200 (Stripe's time format)
 ```
+
+`toMinor` and `fromMinor` follow [Stripe's currency rules](https://docs.stripe.com/currencies):
+
+| Currencies                                                                  | Stripe `amount`                           | Example            |
+| --------------------------------------------------------------------------- | ----------------------------------------- | ------------------ |
+| Two-decimal (default, e.g. `usd`, `eur`, `huf`, `twd`)                      | major × 100                               | 10.99 USD → `1099` |
+| Zero-decimal: `bif clp djf gnf jpy kmf krw mga pyg rwf vnd vuv xaf xof xpf` | major × 1                                 | 500 JPY → `500`    |
+| Three-decimal: `bhd jod kwd omr tnd`                                        | major × 1000, rounded to a multiple of 10 | 5.124 KWD → `5120` |
+| `isk`, `ugx`                                                                | whole units × 100 (decimals always `00`)  | 5 ISK → `500`      |
+
+`huf` and `twd` charges take two-decimal amounts, but Stripe payouts in those currencies must be multiples of 100; the helpers don't enforce that.
+
+`toMinor` rounds half away from zero, so a credit mirrors its charge (`toMinor(-5.5, 'isk')` is `-600`), and never returns `-0`. The helpers throw `StripeValidationError` for a missing or empty currency, and `toMinor` also throws for a `NaN` or infinite amount or a result beyond `Number.MAX_SAFE_INTEGER`.
 
 ## Documentation
 
