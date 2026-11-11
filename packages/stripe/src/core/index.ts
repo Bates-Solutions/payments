@@ -4,7 +4,7 @@
  * The package's main entrypoint. Exports `createStripeClient` / `StripeClient`
  * (one service per Stripe domain — `customers`, `checkout`, `billingPortal`,
  * `subscriptions`, `prices`, `products`, `invoices`, `paymentLinks`, `payments`,
- * `refunds`), the
+ * `refunds`, `oauth`; `forAccount(id)` scopes a client to a Connect account), the
  * normalized error hierarchy (`StripeError` + `parseStripeError`), and money /
  * idempotency utilities (`toMinor`, `fromMinor`, `formatMoney`,
  * `createIdempotencyKey`). Webhook helpers live in the
@@ -67,9 +67,22 @@ export type {
   CancelSubscriptionOptions,
 } from './services/subscriptions.service.js';
 export { PricesService } from './services/prices.service.js';
-export type { Price, ListPricesOptions } from './services/prices.service.js';
+export type {
+  Price,
+  ListPricesOptions,
+  PriceRecurring,
+  CreatePriceOptions,
+  UpdatePriceOptions,
+  ReplacePriceOptions,
+  ReplacePriceResult,
+} from './services/prices.service.js';
 export { ProductsService } from './services/products.service.js';
-export type { Product, ListProductsOptions } from './services/products.service.js';
+export type {
+  Product,
+  ListProductsOptions,
+  CreateProductOptions,
+  UpdateProductOptions,
+} from './services/products.service.js';
 export { InvoicesService } from './services/invoices.service.js';
 export type {
   Invoice,
@@ -81,6 +94,14 @@ export type {
 } from './services/invoices.service.js';
 export { PaymentLinksService } from './services/payment-links.service.js';
 export type { PaymentLink } from './services/payment-links.service.js';
+
+export { OAuthService, buildAuthorizeUrl } from './services/oauth.service.js';
+export type {
+  ConnectOAuthScope,
+  BuildAuthorizeUrlOptions,
+  ConnectedAccountGrant,
+  DeauthorizeOptions,
+} from './services/oauth.service.js';
 
 // Errors
 export {

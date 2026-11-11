@@ -44,7 +44,9 @@ export interface CreateCheckoutSessionOptions {
    * Checkout mode.
    * @default 'subscription'
    */
-  mode?: Stripe.Checkout.SessionCreateParams.Mode;
+  // `Session['mode']` rather than `SessionCreateParams.Mode`, which stripe
+  // 22.0.0 to 22.1.x do not export.
+  mode?: Stripe.Checkout.Session['mode'];
   /** Line items (price + quantity) */
   lineItems: CheckoutLineItem[];
   /** URL to redirect to on success */
