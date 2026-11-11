@@ -61,6 +61,6 @@
     "stripe": ">=17 <19"
   },
   "devDependencies": {
-    "stripe": "^22.3.2"
+    "stripe": "^23.1.0"
   }
 }
