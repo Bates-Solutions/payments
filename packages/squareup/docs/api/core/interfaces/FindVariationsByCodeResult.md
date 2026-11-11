@@ -6,7 +6,7 @@
 
 # Interface: FindVariationsByCodeResult
 
-Defined in: [core/services/catalog.service.ts:263](https://github.com/Bates-Solutions/squareup/blob/main/src/core/services/catalog.service.ts#L263)
+Defined in: [core/services/catalog.service.ts:263](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/catalog.service.ts#L263)
 
 Result of `catalog.findVariationsByCode()`.
 
@@ -16,7 +16,7 @@ Result of `catalog.findVariationsByCode()`.
 
 > **items**: `CatalogObject`[]
 
-Defined in: [core/services/catalog.service.ts:267](https://github.com/Bates-Solutions/squareup/blob/main/src/core/services/catalog.service.ts#L267)
+Defined in: [core/services/catalog.service.ts:267](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/catalog.service.ts#L267)
 
 Their parent `ITEM` objects, each once.
 
@@ -26,6 +26,6 @@ Their parent `ITEM` objects, each once.
 
 > **variations**: `CatalogObject`[]
 
-Defined in: [core/services/catalog.service.ts:265](https://github.com/Bates-Solutions/squareup/blob/main/src/core/services/catalog.service.ts#L265)
+Defined in: [core/services/catalog.service.ts:265](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/catalog.service.ts#L265)
 
 Matching `ITEM_VARIATION` objects, each once.

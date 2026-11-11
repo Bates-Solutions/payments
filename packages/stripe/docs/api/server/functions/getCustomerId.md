@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **getCustomerId**(`event`): `string` \| `undefined`
 
-Defined in: [server/webhook.ts:319](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/server/webhook.ts#L319)
+Defined in: [server/webhook.ts:321](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/webhook.ts#L321)
 
 Extract the Customer ID from a webhook event, when present.
 

@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **createStripeClient**(`config`): [`StripeClient`](../classes/StripeClient.md)
 
-Defined in: [core/client.ts:124](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/client.ts#L124)
+Defined in: [core/client.ts:127](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/client.ts#L127)
 
 Create a new Stripe client instance.
 

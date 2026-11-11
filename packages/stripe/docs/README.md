@@ -29,8 +29,9 @@ Welcome to the documentation for `@bates-solutions/stripe`, a TypeScript wrapper
 
 Complete API reference generated from source code with TypeDoc:
 
-- [Core Module](./api/README.md) - Client, services, utilities, error handling
-- [Server Module](./api/README.md) - Webhook handlers, middleware
+- [Browse it online](https://bates-solutions.github.io/payments/stripe/)
+- [Core Module](./api/core/README.md) - Client, services, utilities, error handling
+- [Server Module](./api/server/README.md) - Webhook handlers, middleware
 
 ## Additional Resources
 

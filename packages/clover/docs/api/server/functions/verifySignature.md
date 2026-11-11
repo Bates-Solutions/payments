@@ -1,4 +1,4 @@
-[**@bates-solutions/clover API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/clover API Reference v1.1.0**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **verifySignature**(`rawBody`, `signature`, `signingSecret`, `options?`): `Promise`\<[`WebhookVerificationResult`](../interfaces/WebhookVerificationResult.md)\>
 
-Defined in: server/webhook.ts:91
+Defined in: [server/webhook.ts:91](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/webhook.ts#L91)
 
 Verify a Clover Hosted-Checkout webhook signature.
 

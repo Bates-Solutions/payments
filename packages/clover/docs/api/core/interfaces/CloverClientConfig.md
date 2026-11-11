@@ -1,4 +1,4 @@
-[**@bates-solutions/clover API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/clover API Reference v1.1.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: CloverClientConfig
 
-Defined in: core/client.ts:10
+Defined in: [core/client.ts:12](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/client.ts#L12)
 
 Configuration options for the Clover client.
 
@@ -16,7 +16,7 @@ Configuration options for the Clover client.
 
 > **apiToken**: `string`
 
-Defined in: core/client.ts:12
+Defined in: [core/client.ts:14](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/client.ts#L14)
 
 Clover API token (OAuth access token or API key)
 
@@ -26,7 +26,7 @@ Clover API token (OAuth access token or API key)
 
 > `optional` **environment?**: [`CloverEnvironment`](../type-aliases/CloverEnvironment.md)
 
-Defined in: core/client.ts:22
+Defined in: [core/client.ts:24](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/client.ts#L24)
 
 Environment.
 
@@ -42,7 +42,7 @@ Environment.
 
 > `optional` **fetchImpl?**: \{(`input`, `init?`): `Promise`\<`Response`\>; (`input`, `init?`): `Promise`\<`Response`\>; \}
 
-Defined in: core/client.ts:24
+Defined in: [core/client.ts:26](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/client.ts#L26)
 
 Override the `fetch` implementation (mainly for tests).
 
@@ -92,7 +92,7 @@ Override the `fetch` implementation (mainly for tests).
 
 > `optional` **merchantId?**: `string`
 
-Defined in: core/client.ts:17
+Defined in: [core/client.ts:19](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/client.ts#L19)
 
 Merchant id. Required for platform (`/v3/merchants/{mId}`) operations such
-as `customers`; not needed for Ecommerce charges/refunds.
+as `customers` and `inventory`; not needed for Ecommerce charges/refunds.

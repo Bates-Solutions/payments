@@ -6,7 +6,7 @@
 
 # Interface: ExpressRequestLike
 
-Defined in: [server/middleware/express.ts:23](https://github.com/Bates-Solutions/squareup/blob/main/src/server/middleware/express.ts#L23)
+Defined in: [server/middleware/express.ts:23](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L23)
 
 Minimal structural stand-ins for the Express types this middleware touches.
 
@@ -31,7 +31,7 @@ reason. These interfaces are structurally compatible with Express 4 and 5, so
 
 > `optional` **body?**: `unknown`
 
-Defined in: [server/middleware/express.ts:25](https://github.com/Bates-Solutions/squareup/blob/main/src/server/middleware/express.ts#L25)
+Defined in: [server/middleware/express.ts:25](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L25)
 
 Parsed or raw request body (Buffer, string, or parsed JSON).
 
@@ -41,7 +41,7 @@ Parsed or raw request body (Buffer, string, or parsed JSON).
 
 > **headers**: `Record`\<`string`, `string` \| `string`[] \| `undefined`\>
 
-Defined in: [server/middleware/express.ts:27](https://github.com/Bates-Solutions/squareup/blob/main/src/server/middleware/express.ts#L27)
+Defined in: [server/middleware/express.ts:27](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L27)
 
 Request headers, keyed lowercase as Node/Express provide them.
 
@@ -51,7 +51,7 @@ Request headers, keyed lowercase as Node/Express provide them.
 
 > **on**(`event`, `listener`): `unknown`
 
-Defined in: [server/middleware/express.ts:29](https://github.com/Bates-Solutions/squareup/blob/main/src/server/middleware/express.ts#L29)
+Defined in: [server/middleware/express.ts:29](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L29)
 
 Node stream event subscription, used to capture the raw body.
 

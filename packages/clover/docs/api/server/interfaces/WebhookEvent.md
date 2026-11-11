@@ -1,4 +1,4 @@
-[**@bates-solutions/clover API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/clover API Reference v1.1.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: WebhookEvent
 
-Defined in: server/types.ts:8
+Defined in: [server/types.ts:8](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/types.ts#L8)
 
 A parsed Clover webhook event.
 
@@ -24,6 +24,6 @@ webhooks), so the event is kept generic — dispatch is keyed off an optional
 
 > `optional` **type?**: `string`
 
-Defined in: server/types.ts:10
+Defined in: [server/types.ts:10](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/types.ts#L10)
 
 Event type, when the payload carries one

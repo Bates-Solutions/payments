@@ -1,4 +1,4 @@
-[**@bates-solutions/clover API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/clover API Reference v1.1.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: LambdaProxyResult
 
-Defined in: server/middleware/lambda.ts:23
+Defined in: [server/middleware/lambda.ts:23](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/middleware/lambda.ts#L23)
 
 API Gateway proxy result shape.
 
@@ -16,7 +16,7 @@ API Gateway proxy result shape.
 
 > **body**: `string`
 
-Defined in: server/middleware/lambda.ts:26
+Defined in: [server/middleware/lambda.ts:26](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/middleware/lambda.ts#L26)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: server/middleware/lambda.ts:26
 
 > **headers**: `Record`\<`string`, `string`\>
 
-Defined in: server/middleware/lambda.ts:25
+Defined in: [server/middleware/lambda.ts:25](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/middleware/lambda.ts#L25)
 
 ***
 
@@ -32,4 +32,4 @@ Defined in: server/middleware/lambda.ts:25
 
 > **statusCode**: `number`
 
-Defined in: server/middleware/lambda.ts:24
+Defined in: [server/middleware/lambda.ts:24](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/middleware/lambda.ts#L24)

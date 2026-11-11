@@ -1,9 +1,17 @@
 {
   "$schema": "https://typedoc.org/schema.json",
   "entryPoints": ["src/core/index.ts", "src/server/index.ts"],
-  "out": "docs/api",
+  "outputs": [
+    {
+      "name": "markdown",
+      "path": "docs/api"
+    }
+  ],
   "plugin": ["typedoc-plugin-markdown"],
   "readme": "none",
+  "disableGit": true,
+  "gitRevision": "main",
+  "sourceLinkTemplate": "https://github.com/Bates-Solutions/payments/blob/{gitRevision}/packages/clover/src/{path}#L{line}",
   "excludePrivate": true,
   "excludeInternal": true,
   "excludeExternals": true,

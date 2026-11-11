@@ -1,4 +1,4 @@
-[**@bates-solutions/clover API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/clover API Reference v1.1.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: CaptureChargeOptions
 
-Defined in: core/services/payments.service.ts:29
+Defined in: [core/services/payments.service.ts:29](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/payments.service.ts#L29)
 
 Options for capturing a previously authorized charge.
 
@@ -16,7 +16,7 @@ Options for capturing a previously authorized charge.
 
 > `optional` **amount?**: `number`
 
-Defined in: core/services/payments.service.ts:31
+Defined in: [core/services/payments.service.ts:31](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/payments.service.ts#L31)
 
 Amount in cents to capture (defaults to the full authorized amount)
 
@@ -26,4 +26,4 @@ Amount in cents to capture (defaults to the full authorized amount)
 
 > `optional` **idempotencyKey?**: `string`
 
-Defined in: core/services/payments.service.ts:32
+Defined in: [core/services/payments.service.ts:32](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/payments.service.ts#L32)

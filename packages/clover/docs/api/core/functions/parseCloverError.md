@@ -1,4 +1,4 @@
-[**@bates-solutions/clover API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/clover API Reference v1.1.0**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **parseCloverError**(`error`): [`CloverError`](../classes/CloverError.md)
 
-Defined in: core/errors.ts:180
+Defined in: [core/errors.ts:203](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L203)
 
 Parse any thrown value into a typed Clover error.
 

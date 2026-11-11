@@ -100,6 +100,13 @@ jobs:
       - name: Test with coverage
         run: npm run test:coverage -w "packages/$PACKAGE"
 
+      # The docs site build (docs.yml) is path-filtered and cannot be a required
+      # check, so typedoc is checked here, under ci-ok. --emit none writes nothing.
+      - name: API docs (typedoc)
+        if: hashFiles(format('packages/{0}/typedoc.json', matrix.package)) != ''
+        working-directory: packages/${{ matrix.package }}
+        run: npx typedoc --emit none
+
       # Before the Codecov upload, which leaves its CLI in the checkout: the dry run
       # refuses a dirty tree.
       - name: JSR publish dry run

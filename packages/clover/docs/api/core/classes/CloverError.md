@@ -1,4 +1,4 @@
-[**@bates-solutions/clover API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/clover API Reference v1.1.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: CloverError
 
-Defined in: core/errors.ts:22
+Defined in: [core/errors.ts:22](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L22)
 
 Base Clover error class
 
@@ -27,7 +27,7 @@ Base Clover error class
 
 > **new CloverError**(`message`, `code?`, `statusCode?`, `details?`): `CloverError`
 
-Defined in: core/errors.ts:27
+Defined in: [core/errors.ts:27](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L27)
 
 #### Parameters
 
@@ -61,7 +61,7 @@ Defined in: core/errors.ts:27
 
 > `readonly` **code**: [`CloverErrorCode`](../type-aliases/CloverErrorCode.md)
 
-Defined in: core/errors.ts:23
+Defined in: [core/errors.ts:23](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L23)
 
 ***
 
@@ -69,7 +69,7 @@ Defined in: core/errors.ts:23
 
 > `readonly` `optional` **details?**: `unknown`
 
-Defined in: core/errors.ts:25
+Defined in: [core/errors.ts:25](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L25)
 
 ***
 
@@ -77,4 +77,4 @@ Defined in: core/errors.ts:25
 
 > `readonly` `optional` **statusCode?**: `number`
 
-Defined in: core/errors.ts:24
+Defined in: [core/errors.ts:24](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L24)

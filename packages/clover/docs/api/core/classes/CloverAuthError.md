@@ -1,4 +1,4 @@
-[**@bates-solutions/clover API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/clover API Reference v1.1.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: CloverAuthError
 
-Defined in: core/errors.ts:68
+Defined in: [core/errors.ts:68](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L68)
 
 Authentication / authorization errors (401 / 403)
 
@@ -18,9 +18,9 @@ Authentication / authorization errors (401 / 403)
 
 ### Constructor
 
-> **new CloverAuthError**(`message`, `statusCode?`, `code?`): `CloverAuthError`
+> **new CloverAuthError**(`message`, `statusCode?`, `code?`, `options?`): `CloverAuthError`
 
-Defined in: core/errors.ts:69
+Defined in: [core/errors.ts:74](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L74)
 
 #### Parameters
 
@@ -36,6 +36,16 @@ Defined in: core/errors.ts:69
 
 [`CloverErrorCode`](../type-aliases/CloverErrorCode.md) = `'UNAUTHORIZED'`
 
+##### options?
+
+###### cloverCode?
+
+`string`
+
+###### requestId?
+
+`string`
+
 #### Returns
 
 `CloverAuthError`
@@ -46,11 +56,21 @@ Defined in: core/errors.ts:69
 
 ## Properties
 
+### cloverCode?
+
+> `readonly` `optional` **cloverCode?**: `string`
+
+Defined in: [core/errors.ts:70](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L70)
+
+Clover's own error code, when present
+
+***
+
 ### code
 
 > `readonly` **code**: [`CloverErrorCode`](../type-aliases/CloverErrorCode.md)
 
-Defined in: core/errors.ts:23
+Defined in: [core/errors.ts:23](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L23)
 
 #### Inherited from
 
@@ -62,7 +82,7 @@ Defined in: core/errors.ts:23
 
 > `readonly` `optional` **details?**: `unknown`
 
-Defined in: core/errors.ts:25
+Defined in: [core/errors.ts:25](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L25)
 
 #### Inherited from
 
@@ -70,11 +90,21 @@ Defined in: core/errors.ts:25
 
 ***
 
+### requestId?
+
+> `readonly` `optional` **requestId?**: `string`
+
+Defined in: [core/errors.ts:72](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L72)
+
+Request id for tracing with Clover support
+
+***
+
 ### statusCode?
 
 > `readonly` `optional` **statusCode?**: `number`
 
-Defined in: core/errors.ts:24
+Defined in: [core/errors.ts:24](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L24)
 
 #### Inherited from
 

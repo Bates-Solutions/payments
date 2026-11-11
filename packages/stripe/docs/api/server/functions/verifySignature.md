@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **verifySignature**(`rawBody`, `signature`, `signingSecret`, `options?`): `Promise`\<[`WebhookVerificationResult`](../interfaces/WebhookVerificationResult.md)\>
 
-Defined in: [server/webhook.ts:108](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/server/webhook.ts#L108)
+Defined in: [server/webhook.ts:108](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/webhook.ts#L108)
 
 Verify a Stripe webhook signature.
 

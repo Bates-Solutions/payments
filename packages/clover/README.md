@@ -208,7 +208,7 @@ formatMoney(1099, 'usd'); // "$10.99"
 
 - [Getting started](./docs/getting-started/installation.md)
 - [Guides](./docs/guides/README.md)
-- [API reference](./docs/api/README.md)
+- [API reference](https://bates-solutions.github.io/payments/clover/) (also [in this repo](./docs/api/README.md), as markdown)
 
 ## Related libraries
 

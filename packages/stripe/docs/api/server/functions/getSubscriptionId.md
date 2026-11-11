@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **getSubscriptionId**(`event`): `string` \| `undefined`
 
-Defined in: [server/webhook.ts:345](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/server/webhook.ts#L345)
+Defined in: [server/webhook.ts:347](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/webhook.ts#L347)
 
 Extract the Subscription ID from a webhook event, when present.
 

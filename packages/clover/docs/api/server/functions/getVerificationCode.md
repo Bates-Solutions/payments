@@ -1,4 +1,4 @@
-[**@bates-solutions/clover API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/clover API Reference v1.1.0**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **getVerificationCode**(`event`): `string` \| `undefined`
 
-Defined in: server/webhook.ts:150
+Defined in: [server/webhook.ts:150](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/webhook.ts#L150)
 
 The verification code Clover sends when first validating a webhook URL.
 
