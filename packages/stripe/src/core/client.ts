@@ -22,6 +22,13 @@ function assertAccountId(accountId: unknown, field: string): void {
 }
 
 /**
+ * The SDK constructor's config type. Spelled via the constructor rather than
+ * `Stripe.StripeConfig`, which the SDK's types stopped exporting from the
+ * `Stripe` namespace in 22.0.0 to 22.3.0.
+ */
+type StripeCtorConfig = NonNullable<ConstructorParameters<typeof Stripe>[1]>;
+
+/**
  * Configuration options for the Stripe client
  */
 export interface StripeClientConfig {
@@ -102,12 +109,12 @@ export class StripeClient {
     // correctly, not just standard secret keys (`sk_live_…`).
     this.environmentValue = config.apiKey.includes('_live_') ? 'live' : 'test';
 
-    const stripeConfig: Stripe.StripeConfig = {
+    const stripeConfig: StripeCtorConfig = {
       maxNetworkRetries: config.maxNetworkRetries ?? 1,
       typescript: true,
     };
     if (config.apiVersion) {
-      stripeConfig.apiVersion = config.apiVersion as Stripe.StripeConfig['apiVersion'];
+      stripeConfig.apiVersion = config.apiVersion as StripeCtorConfig['apiVersion'];
     }
 
     if (config.stripeAccount !== undefined) {

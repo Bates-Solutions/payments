@@ -36,7 +36,7 @@ A thin, consistent wrapper over the official [`stripe`](https://www.npmjs.com/pa
 
 | Dependency | Version |
 | ---------- | ------- |
-| Stripe SDK | 17–18   |
+| Stripe SDK | 18–23   |
 | Node.js    | 22+     |
 | TypeScript | 5.0+    |
 
@@ -128,6 +128,25 @@ sub.currentPeriodEnd;   // Date
 
 // Read your catalog from Stripe (products expanded)
 const { data: prices } = await client.prices.list({ active: true, expandProduct: true });
+```
+
+### Managing the catalog
+
+```typescript
+const product = await client.products.create({
+  name: 'Sourdough loaf',
+  metadata: { sku: 'SD-001' }, // tag it with your own id
+});
+const price = await client.prices.create({
+  product: product.id,
+  unitAmount: 899,
+  currency: 'usd',
+});
+
+// Prices are immutable: replace creates a new one and deactivates the old one
+const { price: newPrice } = await client.prices.replace(price.id, { unitAmount: 949 });
+
+await client.products.archive(product.id);
 ```
 
 ### Connected accounts (Connect)
@@ -244,8 +263,8 @@ Stripe's epoch-seconds timestamps to a `Date`.
 | `checkout`      | Hosted Checkout Sessions (subscription & one-time)              |
 | `billingPortal` | Customer billing portal sessions                                |
 | `subscriptions` | Get, list, cancel subscriptions, normalized with `Date`s     |
-| `prices`        | List/retrieve prices (with product expansion)                   |
-| `products`      | List/retrieve products                                          |
+| `prices`        | List, retrieve, create, update, archive and replace prices      |
+| `products`      | List, retrieve, create, update and archive products             |
 | `invoices`      | Invoices + invoice items (create, finalize, pay, void, send)    |
 | `oauth`         | Connect OAuth: exchange a code, deauthorize an account          |
 
@@ -271,9 +290,9 @@ This library is one of three sibling payment-API wrappers from Bates Solutions t
 
 | Library | Wraps | Install (JSR) | Source |
 | --- | --- | --- | --- |
-| **[`@bates-solutions/stripe`](https://jsr.io/@bates-solutions/stripe)** _(this package)_ | Stripe | `jsr:@bates-solutions/stripe` | [GitHub](https://github.com/mbates/stripe) |
-| [`@bates-solutions/squareup`](https://jsr.io/@bates-solutions/squareup) | Square | `jsr:@bates-solutions/squareup` | [GitHub](https://github.com/mbates/squareup) |
-| [`@bates-solutions/clover`](https://jsr.io/@bates-solutions/clover) | Clover | `jsr:@bates-solutions/clover` | [GitHub](https://github.com/mbates/clover) |
+| **[`@bates-solutions/stripe`](https://jsr.io/@bates-solutions/stripe)** _(this package)_ | Stripe | `jsr:@bates-solutions/stripe` | [GitHub](https://github.com/Bates-Solutions/stripe) |
+| [`@bates-solutions/squareup`](https://jsr.io/@bates-solutions/squareup) | Square | `jsr:@bates-solutions/squareup` | [GitHub](https://github.com/Bates-Solutions/squareup) |
+| [`@bates-solutions/clover`](https://jsr.io/@bates-solutions/clover) | Clover | `jsr:@bates-solutions/clover` | [GitHub](https://github.com/Bates-Solutions/clover) |
 
 ### How they're related
 

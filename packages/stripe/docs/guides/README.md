@@ -13,7 +13,7 @@ Backend API integration guides:
 - [Billing Portal](./core/billing-portal.md) - Customer self-service billing
 - [Subscriptions](./core/subscriptions.md) - Recurring billing, version-stable shape
 - [Connected Accounts](./core/connect.md) - Connect OAuth and acting as a connected account
-- [Prices & Products](./core/prices-and-products.md) - Reading the plan catalog from Stripe
+- [Prices & Products](./core/prices-and-products.md) - Reading and managing the catalog
 
 ## Server
 
