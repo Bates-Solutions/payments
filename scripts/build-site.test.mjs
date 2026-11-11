@@ -2,8 +2,9 @@
 import assert from 'node:assert/strict';
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { after, describe, it } from 'node:test';
+import { fileURLToPath } from 'node:url';
 
 import {
   assertSafeOutDir,
@@ -12,6 +13,8 @@ import {
   REPO_URL,
   renderIndex,
 } from './build-site.mjs';
+
+const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 const tempDirs = [];
 after(() => {
@@ -165,4 +168,34 @@ describe('buildSite', () => {
     assert.throws(() => buildSite(root, root, { runTypedoc: () => {} }), /Refusing/);
     assert.ok(existsSync(join(root, 'packages', 'stripe', 'package.json')));
   });
+});
+
+// The site build relies on these: with `out` set, typedoc writes it on every run, so
+// --html would add markdown output beside the HTML instead of replacing it; and
+// without explicit source links the output depends on the checkout (a worktree
+// drops them).
+describe('the packages in this repo', () => {
+  const packages = discoverDocPackages(REPO_ROOT);
+
+  it('include every provider', () => {
+    const dirs = packages.map((p) => p.dir);
+    for (const dir of ['clover', 'squareup', 'stripe']) assert.ok(dirs.includes(dir), dir);
+  });
+
+  for (const { dir } of packages) {
+    it(`${dir}: typedoc.json lists only markdown outputs and sets explicit source links`, () => {
+      const config = JSON.parse(
+        readFileSync(join(REPO_ROOT, 'packages', dir, 'typedoc.json'), 'utf8')
+      );
+      assert.equal(config.out, undefined, 'use outputs, not out');
+      assert.equal(config.html, undefined, 'no html output in the committed config');
+      assert.deepEqual(config.outputs, [{ name: 'markdown', path: 'docs/api' }]);
+      assert.equal(config.disableGit, true);
+      assert.equal(config.gitRevision, 'main');
+      assert.equal(
+        config.sourceLinkTemplate,
+        `${REPO_URL}/blob/{gitRevision}/packages/${dir}/src/{path}#L{line}`
+      );
+    });
+  }
 });

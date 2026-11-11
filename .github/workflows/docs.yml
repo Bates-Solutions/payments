@@ -1,8 +1,9 @@
 # Builds the combined API docs site (scripts/build-site.mjs) and deploys it to
 # GitHub Pages: https://bates-solutions.github.io/payments/<package>/
 #
-# Pull requests build the site only, so a change that breaks typedoc shows up
-# before it merges. A push to main (or a manual run from main) also deploys.
+# Pull requests build the site only; a push to main (or a manual run from main)
+# also deploys. What gates a merge is ci.yml, which runs typedoc for every
+# affected package (this workflow is path-filtered, so it cannot be required).
 #
 # One-time setup: Settings > Pages > Build and deployment > Source: "GitHub
 # Actions". The first deploy creates the github-pages environment.
@@ -16,6 +17,8 @@ on:
       - 'packages/*/typedoc.json'
       - 'packages/*/jsr.json'
       - 'packages/*/package.json'
+      - 'packages/*/tsconfig.json'
+      - 'tsconfig.base.json'
       - 'package.json'
       - 'package-lock.json'
       - 'scripts/build-site.mjs'
@@ -28,6 +31,8 @@ on:
       - 'packages/*/typedoc.json'
       - 'packages/*/jsr.json'
       - 'packages/*/package.json'
+      - 'packages/*/tsconfig.json'
+      - 'tsconfig.base.json'
       - 'package.json'
       - 'package-lock.json'
       - 'scripts/build-site.mjs'
@@ -39,9 +44,11 @@ permissions:
   contents: read
 
 concurrency:
-  # One deploy at a time and never cancelled mid-deploy; PR builds cancel older
-  # runs of the same PR.
-  group: docs-${{ github.event_name == 'pull_request' && github.event.pull_request.number || 'pages' }}
+  # PR builds cancel older runs of the same PR. Other runs are grouped per ref,
+  # so main's deploys queue behind each other and are never cancelled in
+  # progress, and a manual run from another ref cannot displace a pending main
+  # deploy.
+  group: docs-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
