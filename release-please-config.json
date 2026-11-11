@@ -1,0 +1,41 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "bootstrap-sha": "a262a4921ba7354343226fddc12965d2a53f0861",
+  "release-type": "node",
+  "include-component-in-tag": true,
+  "include-v-in-tag": true,
+  "tag-separator": "-",
+  "separate-pull-requests": false,
+  "plugins": [{ "type": "node-workspace" }],
+  "pull-request-header": "Merging this PR tags each package below and publishes it to JSR.",
+  "changelog-sections": [
+    { "type": "feat", "section": "Features" },
+    { "type": "fix", "section": "Bug Fixes" },
+    { "type": "perf", "section": "Performance" },
+    { "type": "revert", "section": "Reverts" },
+    { "type": "deps", "section": "Dependencies" },
+    { "type": "docs", "section": "Documentation", "hidden": true },
+    { "type": "chore", "section": "Miscellaneous", "hidden": true },
+    { "type": "refactor", "section": "Refactoring", "hidden": true },
+    { "type": "test", "section": "Tests", "hidden": true },
+    { "type": "build", "section": "Build", "hidden": true },
+    { "type": "ci", "section": "CI", "hidden": true }
+  ],
+  "packages": {
+    "packages/clover": {
+      "component": "clover",
+      "package-name": "@bates-solutions/clover",
+      "extra-files": [{ "type": "json", "path": "jsr.json", "jsonpath": "$.version" }]
+    },
+    "packages/squareup": {
+      "component": "squareup",
+      "package-name": "@bates-solutions/squareup",
+      "extra-files": [{ "type": "json", "path": "jsr.json", "jsonpath": "$.version" }]
+    },
+    "packages/stripe": {
+      "component": "stripe",
+      "package-name": "@bates-solutions/stripe",
+      "extra-files": [{ "type": "json", "path": "jsr.json", "jsonpath": "$.version" }]
+    }
+  }
+}
