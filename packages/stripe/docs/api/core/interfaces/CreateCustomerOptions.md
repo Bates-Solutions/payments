@@ -6,7 +6,7 @@
 
 # Interface: CreateCustomerOptions
 
-Defined in: [core/services/customers.service.ts:26](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/customers.service.ts#L26)
+Defined in: [core/services/customers.service.ts:26](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/customers.service.ts#L26)
 
 Options for creating a customer
 
@@ -16,7 +16,7 @@ Options for creating a customer
 
 > `optional` **address?**: [`CustomerAddress`](CustomerAddress.md)
 
-Defined in: [core/services/customers.service.ts:31](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/customers.service.ts#L31)
+Defined in: [core/services/customers.service.ts:31](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/customers.service.ts#L31)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [core/services/customers.service.ts:31](https://github.com/Bates-Sol
 
 > `optional` **description?**: `string`
 
-Defined in: [core/services/customers.service.ts:30](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/customers.service.ts#L30)
+Defined in: [core/services/customers.service.ts:30](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/customers.service.ts#L30)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [core/services/customers.service.ts:30](https://github.com/Bates-Sol
 
 > `optional` **email?**: `string`
 
-Defined in: [core/services/customers.service.ts:27](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/customers.service.ts#L27)
+Defined in: [core/services/customers.service.ts:27](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/customers.service.ts#L27)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [core/services/customers.service.ts:27](https://github.com/Bates-Sol
 
 > `optional` **idempotencyKey?**: `string`
 
-Defined in: [core/services/customers.service.ts:33](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/customers.service.ts#L33)
+Defined in: [core/services/customers.service.ts:33](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/customers.service.ts#L33)
 
 ***
 
@@ -48,7 +48,7 @@ Defined in: [core/services/customers.service.ts:33](https://github.com/Bates-Sol
 
 > `optional` **metadata?**: `Record`\<`string`, `string`\>
 
-Defined in: [core/services/customers.service.ts:32](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/customers.service.ts#L32)
+Defined in: [core/services/customers.service.ts:32](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/customers.service.ts#L32)
 
 ***
 
@@ -56,7 +56,7 @@ Defined in: [core/services/customers.service.ts:32](https://github.com/Bates-Sol
 
 > `optional` **name?**: `string`
 
-Defined in: [core/services/customers.service.ts:28](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/customers.service.ts#L28)
+Defined in: [core/services/customers.service.ts:28](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/customers.service.ts#L28)
 
 ***
 
@@ -64,4 +64,4 @@ Defined in: [core/services/customers.service.ts:28](https://github.com/Bates-Sol
 
 > `optional` **phone?**: `string`
 
-Defined in: [core/services/customers.service.ts:29](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/customers.service.ts#L29)
+Defined in: [core/services/customers.service.ts:29](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/customers.service.ts#L29)

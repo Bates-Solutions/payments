@@ -71,6 +71,7 @@ export const POST = createNextWebhookHandler({
 - [createNextWebhookHandler](functions/createNextWebhookHandler.md)
 - [createWebhookHandler](functions/createWebhookHandler.md)
 - [createWebhookProcessor](functions/createWebhookProcessor.md)
+- [getAccountId](functions/getAccountId.md)
 - [getChargeId](functions/getChargeId.md)
 - [getCustomerId](functions/getCustomerId.md)
 - [getInvoiceId](functions/getInvoiceId.md)

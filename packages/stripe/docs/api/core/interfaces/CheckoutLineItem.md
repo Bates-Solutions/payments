@@ -6,7 +6,7 @@
 
 # Interface: CheckoutLineItem
 
-Defined in: [core/services/checkout.service.ts:14](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/checkout.service.ts#L14)
+Defined in: [core/services/checkout.service.ts:32](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/checkout.service.ts#L32)
 
 A line item for a Checkout Session (references an existing Price).
 
@@ -16,7 +16,7 @@ A line item for a Checkout Session (references an existing Price).
 
 > **price**: `string`
 
-Defined in: [core/services/checkout.service.ts:16](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/checkout.service.ts#L16)
+Defined in: [core/services/checkout.service.ts:34](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/checkout.service.ts#L34)
 
 Price ID (e.g. `price_…`)
 
@@ -26,6 +26,6 @@ Price ID (e.g. `price_…`)
 
 > `optional` **quantity?**: `number`
 
-Defined in: [core/services/checkout.service.ts:18](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/checkout.service.ts#L18)
+Defined in: [core/services/checkout.service.ts:36](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/checkout.service.ts#L36)
 
 Quantity (default 1)

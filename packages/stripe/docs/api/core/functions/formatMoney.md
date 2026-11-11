@@ -8,9 +8,13 @@
 
 > **formatMoney**(`minor`, `currency?`, `locale?`): `string`
 
-Defined in: [core/utils.ts:77](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/utils.ts#L77)
+Defined in: [core/utils.ts:197](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/utils.ts#L197)
 
 Format money for display.
+
+Converts with [fromMinor](fromMinor.md), then formats with `Intl.NumberFormat`, which
+picks the display decimals for the currency (e.g. none for `jpy` and `isk`,
+three for `kwd`).
 
 ## Parameters
 
@@ -24,7 +28,7 @@ Amount in the smallest currency unit
 
 [`CurrencyCode`](../type-aliases/CurrencyCode.md) = `'usd'`
 
-Currency code (default: usd)
+Currency code, any case (default: usd)
 
 ### locale?
 
@@ -38,9 +42,14 @@ Locale for formatting (default: en-US)
 
 Formatted currency string
 
+## Throws
+
+If `currency` is not a non-empty string
+
 ## Example
 
 ```typescript
 formatMoney(1050) // "$10.50"
 formatMoney(1000, 'jpy', 'ja-JP') // "￥1,000"
+formatMoney(5120, 'kwd') // "KWD 5.120"
 ```

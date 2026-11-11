@@ -6,7 +6,7 @@
 
 # Class: StripePaymentError
 
-Defined in: [core/errors.ts:87](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/errors.ts#L87)
+Defined in: [core/errors.ts:91](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/errors.ts#L91)
 
 Payment processing errors (card declines, etc.)
 
@@ -20,7 +20,7 @@ Payment processing errors (card declines, etc.)
 
 > **new StripePaymentError**(`message`, `code`, `options?`): `StripePaymentError`
 
-Defined in: [core/errors.ts:92](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/errors.ts#L92)
+Defined in: [core/errors.ts:96](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/errors.ts#L96)
 
 #### Parameters
 
@@ -56,7 +56,7 @@ Defined in: [core/errors.ts:92](https://github.com/Bates-Solutions/stripe/blob/9
 
 > `readonly` **code**: [`StripeErrorCode`](../type-aliases/StripeErrorCode.md)
 
-Defined in: [core/errors.ts:28](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/errors.ts#L28)
+Defined in: [core/errors.ts:29](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/errors.ts#L29)
 
 #### Inherited from
 
@@ -68,7 +68,7 @@ Defined in: [core/errors.ts:28](https://github.com/Bates-Solutions/stripe/blob/9
 
 > `readonly` `optional` **declineCode?**: `string`
 
-Defined in: [core/errors.ts:90](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/errors.ts#L90)
+Defined in: [core/errors.ts:94](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/errors.ts#L94)
 
 Stripe decline code (e.g. `insufficient_funds`), when present
 
@@ -78,7 +78,7 @@ Stripe decline code (e.g. `insufficient_funds`), when present
 
 > `readonly` `optional` **details?**: `unknown`
 
-Defined in: [core/errors.ts:30](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/errors.ts#L30)
+Defined in: [core/errors.ts:31](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/errors.ts#L31)
 
 #### Inherited from
 
@@ -90,7 +90,7 @@ Defined in: [core/errors.ts:30](https://github.com/Bates-Solutions/stripe/blob/9
 
 > `readonly` `optional` **paymentIntentId?**: `string`
 
-Defined in: [core/errors.ts:88](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/errors.ts#L88)
+Defined in: [core/errors.ts:92](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/errors.ts#L92)
 
 ***
 
@@ -98,7 +98,7 @@ Defined in: [core/errors.ts:88](https://github.com/Bates-Solutions/stripe/blob/9
 
 > `readonly` `optional` **statusCode?**: `number`
 
-Defined in: [core/errors.ts:29](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/errors.ts#L29)
+Defined in: [core/errors.ts:30](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/errors.ts#L30)
 
 #### Inherited from
 
