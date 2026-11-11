@@ -29,6 +29,7 @@ A thin, consistent wrapper over the official [`stripe`](https://www.npmjs.com/pa
 - **Typed Errors** – `parseStripeError` normalizes Stripe errors into a small class hierarchy
 - **Edge-ready webhooks** – WebCrypto signature verification that runs on Node, **Deno**, Bun, and Workers, plus Express / Next.js / Lambda adapters
 - **Version-stable subscriptions** – Normalized shape with `Date` period fields, absorbing Stripe's API churn
+- **Connected accounts** – Connect OAuth helpers and `client.forAccount(id)`, which runs every service as a connected account
 - **Escape Hatch** – `client.sdk` exposes the underlying Stripe instance for anything not wrapped
 
 ## Requirements
@@ -148,6 +149,25 @@ const { price: newPrice } = await client.prices.replace(price.id, { unitAmount: 
 await client.products.archive(product.id);
 ```
 
+### Connected accounts (Connect)
+
+```typescript
+import { buildAuthorizeUrl } from '@bates-solutions/stripe';
+
+// 1. Send the user to Stripe to connect their account
+const state = crypto.randomUUID(); // store it server side for the callback
+const url = buildAuthorizeUrl({ clientId: 'ca_123', state });
+
+// 2. In the redirect handler: require the stored state, delete it (one use),
+//    compare it with the query value, handle `error`, require a string `code`
+//    (full example in docs/guides/core/connect.md)
+const { stripeUserId } = await client.oauth.exchangeCode(code);
+
+// 3. Act as the connected account: every call sends Stripe-Account
+const retailer = client.forAccount(stripeUserId);
+await retailer.products.list();
+```
+
 ### Webhook Handling (Express)
 
 ```typescript
@@ -228,7 +248,8 @@ Deno.serve(handler);
 ```
 
 Entity helpers extract common IDs from any event: `getPaymentIntentId`,
-`getChargeId`, `getCustomerId`, `getSubscriptionId`, and `resolveId` (collapses
+`getChargeId`, `getCustomerId`, `getSubscriptionId`, `getInvoiceId`, `getAccountId`
+(the connected account of a Connect event), and `resolveId` (collapses
 an id-string-or-expanded-object reference). `fromUnixTime(seconds)` converts
 Stripe's epoch-seconds timestamps to a `Date`.
 
@@ -245,6 +266,7 @@ Stripe's epoch-seconds timestamps to a `Date`.
 | `prices`        | List, retrieve, create, update, archive and replace prices      |
 | `products`      | List, retrieve, create, update and archive products             |
 | `invoices`      | Invoices + invoice items (create, finalize, pay, void, send)    |
+| `oauth`         | Connect OAuth: exchange a code, deauthorize an account          |
 
 ## Utilities
 
