@@ -31,6 +31,27 @@ export interface PaginationOptions {
 }
 
 /**
+ * A time range filter, e.g. on an object's `created` time. Each bound is a
+ * `Date` or Unix seconds; omit a bound to leave that side open.
+ *
+ * @example
+ * ```typescript
+ * // Everything created in March 2026 (UTC)
+ * const march = { gte: new Date('2026-03-01T00:00:00Z'), lt: new Date('2026-04-01T00:00:00Z') };
+ * ```
+ */
+export interface TimeRange {
+  /** On or after */
+  gte?: Date | number;
+  /** Strictly after */
+  gt?: Date | number;
+  /** On or before */
+  lte?: Date | number;
+  /** Strictly before */
+  lt?: Date | number;
+}
+
+/**
  * Common paginated response
  */
 export interface PaginatedResponse<T> {
@@ -67,6 +88,13 @@ export interface CreatePaymentOptions {
    * @default false
    */
   confirm?: boolean;
+  /**
+   * The customer is not present (charging a saved payment method). Use with
+   * `confirm: true`. If the bank asks for authentication, Stripe then fails
+   * the payment (`authentication_required`) instead of leaving it in
+   * `requires_action`.
+   */
+  offSession?: boolean;
   /** Arbitrary description shown in the Stripe dashboard */
   description?: string;
   /** Email address to send the receipt to */

@@ -71,6 +71,7 @@ import {
   getChargeId,
   getCustomerId,
   getSubscriptionId,
+  getAccountId,
   resolveId,
 } from '@bates-solutions/stripe/server';
 
@@ -78,6 +79,7 @@ getPaymentIntentId(event); // works on payment_intent.* and charge.* events
 getChargeId(event);
 getCustomerId(event);      // works on customer.* events and any object with a customer
 getSubscriptionId(event);  // works on customer.subscription.* and objects referencing a subscription
+getAccountId(event);       // connected account of a Connect event, undefined for platform events
 
 // Collapse an "id string OR expanded object" reference to its id
 resolveId(event.data.object.customer); // 'cus_…'

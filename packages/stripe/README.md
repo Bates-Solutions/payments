@@ -26,16 +26,17 @@ A thin, consistent wrapper over the official [`stripe`](https://www.npmjs.com/pa
 
 - **Simplified APIs** – Less boilerplate over payments, subscriptions, hosted checkout, and billing
 - **Type-Safe** – Full TypeScript support; wraps Stripe's own types
-- **Typed Errors** – `parseStripeError` normalizes Stripe errors into a small class hierarchy
+- **Typed Errors** – `parseStripeError` normalizes Stripe errors into a small class hierarchy with stable codes (see the [errors guide](./docs/guides/core/errors.md))
 - **Edge-ready webhooks** – WebCrypto signature verification that runs on Node, **Deno**, Bun, and Workers, plus Express / Next.js / Lambda adapters
 - **Version-stable subscriptions** – Normalized shape with `Date` period fields, absorbing Stripe's API churn
+- **Connected accounts** – Connect OAuth helpers and `client.forAccount(id)`, which runs every service as a connected account
 - **Escape Hatch** – `client.sdk` exposes the underlying Stripe instance for anything not wrapped
 
 ## Requirements
 
 | Dependency | Version |
 | ---------- | ------- |
-| Stripe SDK | 17–18   |
+| Stripe SDK | 18–23   |
 | Node.js    | 22+     |
 | TypeScript | 5.0+    |
 
@@ -121,12 +122,98 @@ const portal = await client.billingPortal.create({
 
 // Read a subscription with period fields already as JS Dates
 const sub = await client.subscriptions.get('sub_123');
-sub.status;             // 'active'
-sub.priceId;            // 'price_123'
-sub.currentPeriodEnd;   // Date
+sub.status; // 'active'
+sub.priceId; // 'price_123'
+sub.currentPeriodEnd; // Date
 
 // Read your catalog from Stripe (products expanded)
 const { data: prices } = await client.prices.list({ active: true, expandProduct: true });
+```
+
+### Managing the catalog
+
+```typescript
+const product = await client.products.create({
+  name: 'Sourdough loaf',
+  metadata: { sku: 'SD-001' }, // tag it with your own id
+});
+const price = await client.prices.create({
+  product: product.id,
+  unitAmount: 899,
+  currency: 'usd',
+});
+
+// Prices are immutable: replace creates a new one and deactivates the old one
+const { price: newPrice } = await client.prices.replace(price.id, { unitAmount: 949 });
+
+await client.products.archive(product.id);
+```
+
+### Connected accounts (Connect)
+
+```typescript
+import { buildAuthorizeUrl } from '@bates-solutions/stripe';
+
+// 1. Send the user to Stripe to connect their account
+const state = crypto.randomUUID(); // store it server side for the callback
+const url = buildAuthorizeUrl({ clientId: 'ca_123', state });
+
+// 2. In the redirect handler: require the stored state, delete it (one use),
+//    compare it with the query value, handle `error`, require a string `code`
+//    (full example in docs/guides/core/connect.md)
+const { stripeUserId } = await client.oauth.exchangeCode(code);
+
+// 3. Act as the connected account: every call sends Stripe-Account
+const retailer = client.forAccount(stripeUserId);
+await retailer.products.list();
+```
+
+### Reading what was sold
+
+```typescript
+// Completed Checkout Sessions (including Payment Link sales) in a window.
+// list returns one page, so follow nextCursor to cover the whole window.
+const march = { gte: new Date('2026-03-01'), lt: new Date('2026-04-01') };
+let cursor: string | undefined;
+do {
+  const page = await client.checkout.list({
+    status: 'complete',
+    created: march,
+    limit: 100,
+    startingAfter: cursor,
+  });
+  for (const session of page.data) {
+    const items = await client.checkout.listLineItems(session.id); // all of its pages
+  }
+  cursor = page.nextCursor;
+} while (cursor);
+
+// Paid invoices and their lines, the same way
+cursor = undefined;
+do {
+  const page = await client.invoices.list({
+    status: 'paid',
+    created: march,
+    limit: 100,
+    startingAfter: cursor,
+  });
+  for (const invoice of page.data) {
+    const lines = await client.invoices.listLines(invoice.id);
+  }
+  cursor = page.nextCursor;
+} while (cursor);
+```
+
+### Saving a card for later
+
+```typescript
+// Server: create a SetupIntent and hand its client secret to Stripe.js
+const intent = await client.setupIntents.create({ customerId: 'cus_123' });
+// ...the browser confirms it with stripe.confirmCardSetup(intent.client_secret)
+
+// Later: list the saved cards and make one the default
+const { data: cards } = await client.paymentMethods.list({ customerId: 'cus_123', type: 'card' });
+await client.paymentMethods.setDefault('cus_123', cards[0].id);
 ```
 
 ### Webhook Handling (Express)
@@ -209,46 +296,53 @@ Deno.serve(handler);
 ```
 
 Entity helpers extract common IDs from any event: `getPaymentIntentId`,
-`getChargeId`, `getCustomerId`, `getSubscriptionId`, and `resolveId` (collapses
+`getChargeId`, `getCustomerId`, `getSubscriptionId`, `getInvoiceId`, `getAccountId`
+(the connected account of a Connect event), and `resolveId` (collapses
 an id-string-or-expanded-object reference). `fromUnixTime(seconds)` converts
 Stripe's epoch-seconds timestamps to a `Date`.
 
 ## Available Services
 
-| Service         | Description                                                     |
-| --------------- | --------------------------------------------------------------- |
-| `payments`      | Create and manage payments (PaymentIntents)                     |
-| `customers`     | Customer management + search                                    |
-| `refunds`       | Create and list refunds                                         |
-| `checkout`      | Hosted Checkout Sessions (subscription & one-time)              |
-| `billingPortal` | Customer billing portal sessions                                |
-| `subscriptions` | Get, list, cancel subscriptions, normalized with `Date`s     |
-| `prices`        | List/retrieve prices (with product expansion)                   |
-| `products`      | List/retrieve products                                          |
-| `invoices`      | Invoices + invoice items (create, finalize, pay, void, send)    |
+| Service          | Description                                                              |
+| ---------------- | ------------------------------------------------------------------------ |
+| `payments`       | Create and manage payments (PaymentIntents)                              |
+| `customers`      | Customer management + search                                             |
+| `refunds`        | Create and list refunds                                                  |
+| `checkout`       | Hosted Checkout Sessions (subscription & one-time), sold line items      |
+| `billingPortal`  | Customer billing portal sessions                                         |
+| `subscriptions`  | Get, list, cancel subscriptions, normalized with `Date`s                 |
+| `prices`         | List, retrieve, create, update, archive and replace prices               |
+| `products`       | List, retrieve, create, update and archive products                      |
+| `invoices`       | Invoices + invoice items (create, finalize, pay, void, send, read lines) |
+| `paymentLinks`   | Read Payment Links and their line items                                  |
+| `oauth`          | Connect OAuth: exchange a code, deauthorize an account                   |
+| `paymentMethods` | Saved payment methods: list, attach, detach, set the default             |
+| `setupIntents`   | Save a payment method for later (off-session) charges                    |
 
 ## Utilities
 
 ```typescript
-import { toMinor, fromMinor, formatMoney } from '@bates-solutions/stripe';
+import { toMinor, fromMinor, formatMoney, toUnixTime } from '@bates-solutions/stripe';
 
-toMinor(10.99);            // 1099
-fromMinor(1099);           // 10.99
-formatMoney(1099, 'usd');  // "$10.99"
+toMinor(10.99); // 1099
+fromMinor(1099); // 10.99
+formatMoney(1099, 'usd'); // "$10.99"
 
-toMinor(5000, 'KRW');      // 5000 (zero-decimal; codes are case-insensitive)
-toMinor(5.124, 'kwd');     // 5120 (three-decimal, rounded to a multiple of 10)
-toMinor(5, 'isk');         // 500  (sent as two-decimal, decimals always 00)
+toMinor(5000, 'KRW'); // 5000 (zero-decimal; codes are case-insensitive)
+toMinor(5.124, 'kwd'); // 5120 (three-decimal, rounded to a multiple of 10)
+toMinor(5, 'isk'); // 500  (sent as two-decimal, decimals always 00)
+
+toUnixTime(new Date('2026-03-01T00:00:00Z')); // 1772323200 (Stripe's time format)
 ```
 
 `toMinor` and `fromMinor` follow [Stripe's currency rules](https://docs.stripe.com/currencies):
 
-| Currencies | Stripe `amount` | Example |
-| ---------- | --------------- | ------- |
-| Two-decimal (default, e.g. `usd`, `eur`, `huf`, `twd`) | major × 100 | 10.99 USD → `1099` |
-| Zero-decimal: `bif clp djf gnf jpy kmf krw mga pyg rwf vnd vuv xaf xof xpf` | major × 1 | 500 JPY → `500` |
-| Three-decimal: `bhd jod kwd omr tnd` | major × 1000, rounded to a multiple of 10 | 5.124 KWD → `5120` |
-| `isk`, `ugx` | whole units × 100 (decimals always `00`) | 5 ISK → `500` |
+| Currencies                                                                  | Stripe `amount`                           | Example            |
+| --------------------------------------------------------------------------- | ----------------------------------------- | ------------------ |
+| Two-decimal (default, e.g. `usd`, `eur`, `huf`, `twd`)                      | major × 100                               | 10.99 USD → `1099` |
+| Zero-decimal: `bif clp djf gnf jpy kmf krw mga pyg rwf vnd vuv xaf xof xpf` | major × 1                                 | 500 JPY → `500`    |
+| Three-decimal: `bhd jod kwd omr tnd`                                        | major × 1000, rounded to a multiple of 10 | 5.124 KWD → `5120` |
+| `isk`, `ugx`                                                                | whole units × 100 (decimals always `00`)  | 5 ISK → `500`      |
 
 `huf` and `twd` charges take two-decimal amounts, but Stripe payouts in those currencies must be multiples of 100; the helpers don't enforce that.
 
@@ -264,11 +358,11 @@ toMinor(5, 'isk');         // 500  (sent as two-decimal, decimals always 00)
 
 This library is one of three sibling payment-API wrappers from Bates Solutions that deliberately share the same design — learn one and you know all three:
 
-| Library | Wraps | Install (JSR) | Source |
-| --- | --- | --- | --- |
-| **[`@bates-solutions/stripe`](https://jsr.io/@bates-solutions/stripe)** _(this package)_ | Stripe | `jsr:@bates-solutions/stripe` | [GitHub](https://github.com/mbates/stripe) |
-| [`@bates-solutions/squareup`](https://jsr.io/@bates-solutions/squareup) | Square | `jsr:@bates-solutions/squareup` | [GitHub](https://github.com/mbates/squareup) |
-| [`@bates-solutions/clover`](https://jsr.io/@bates-solutions/clover) | Clover | `jsr:@bates-solutions/clover` | [GitHub](https://github.com/mbates/clover) |
+| Library                                                                                  | Wraps  | Install (JSR)                   | Source                                                |
+| ---------------------------------------------------------------------------------------- | ------ | ------------------------------- | ----------------------------------------------------- |
+| **[`@bates-solutions/stripe`](https://jsr.io/@bates-solutions/stripe)** _(this package)_ | Stripe | `jsr:@bates-solutions/stripe`   | [GitHub](https://github.com/Bates-Solutions/stripe)   |
+| [`@bates-solutions/squareup`](https://jsr.io/@bates-solutions/squareup)                  | Square | `jsr:@bates-solutions/squareup` | [GitHub](https://github.com/Bates-Solutions/squareup) |
+| [`@bates-solutions/clover`](https://jsr.io/@bates-solutions/clover)                      | Clover | `jsr:@bates-solutions/clover`   | [GitHub](https://github.com/Bates-Solutions/clover)   |
 
 ### How they're related
 

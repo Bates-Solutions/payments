@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
 
 ***
 
@@ -8,24 +8,4 @@
 
 > **InvoicePaidEvent** = `Extract`\<`Stripe.Event`, \{ `type`: `"invoice.paid"`; \}\>
 
-Defined in: [server/types.ts:77](https://github.com/mbates/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/server/types.ts#L77)
-
-@bates-solutions/stripe/server
-
-Server utilities for handling Stripe webhooks.
-
-## Example
-
-```typescript
-// Next.js App Router
-import { createNextWebhookHandler } from '@bates-solutions/stripe/server';
-
-export const POST = createNextWebhookHandler({
-  signingSecret: process.env.STRIPE_WEBHOOK_SECRET!,
-  handlers: {
-    'payment_intent.succeeded': async (event) => {
-      console.log('Paid:', event.data.object.id);
-    },
-  },
-});
-```
+Defined in: [server/types.ts:77](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/server/types.ts#L77)
