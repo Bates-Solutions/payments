@@ -26,6 +26,9 @@ Thumbs.db
 *.log
 npm-debug.log*
 
+# Docs site build output (npm run docs:site)
+site/
+
 # Test coverage
 coverage/
 

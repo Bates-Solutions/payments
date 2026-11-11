@@ -2,11 +2,11 @@
 
 TypeScript payment provider libraries from Bates Solutions, in one repo:
 
-| Package | Provider | JSR |
-|---|---|---|
-| `@bates-solutions/squareup` | Square | [jsr.io/@bates-solutions/squareup](https://jsr.io/@bates-solutions/squareup) |
-| `@bates-solutions/stripe` | Stripe | [jsr.io/@bates-solutions/stripe](https://jsr.io/@bates-solutions/stripe) |
-| `@bates-solutions/clover` | Clover | [jsr.io/@bates-solutions/clover](https://jsr.io/@bates-solutions/clover) |
+| Package | Provider | JSR | API docs |
+|---|---|---|---|
+| `@bates-solutions/squareup` | Square | [jsr.io/@bates-solutions/squareup](https://jsr.io/@bates-solutions/squareup) | [docs](https://bates-solutions.github.io/payments/squareup/) |
+| `@bates-solutions/stripe` | Stripe | [jsr.io/@bates-solutions/stripe](https://jsr.io/@bates-solutions/stripe) | [docs](https://bates-solutions.github.io/payments/stripe/) |
+| `@bates-solutions/clover` | Clover | [jsr.io/@bates-solutions/clover](https://jsr.io/@bates-solutions/clover) | [docs](https://bates-solutions.github.io/payments/clover/) |
 
 **Status: under construction.** This repo is being set up. Until the move is finished, each package is still developed and published from its own repo:
 
@@ -31,6 +31,15 @@ Releases are automated with [release-please](https://github.com/googleapis/relea
 Never bump versions, create tags or run `jsr publish` by hand.
 
 The release workflow stays off until the move from the old repos is finished: those repos still release these packages until then.
+
+## Docs
+
+The API reference for every package is at https://bates-solutions.github.io/payments/, one path per package (for example [/stripe/](https://bates-solutions.github.io/payments/stripe/)). Each package also has hand-written guides in `packages/<name>/docs/`.
+
+- `npm run docs` regenerates each package's markdown API reference in `packages/<name>/docs/api/`, which is committed and readable on GitHub.
+- `npm run docs:site` builds the HTML site into `site/` (`scripts/build-site.mjs`): typedoc HTML for each package plus an index page. It does not touch the committed markdown.
+
+`.github/workflows/docs.yml` builds the site on pull requests that touch a package's source or docs config, and deploys it to GitHub Pages on each such push to `main`.
 
 ## License
 

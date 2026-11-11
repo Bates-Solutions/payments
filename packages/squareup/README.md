@@ -297,6 +297,12 @@ fromCents(1099);          // 10.99
 formatMoney(1099, 'USD'); // "$10.99"
 ```
 
+## Documentation
+
+- [Getting started](./docs/getting-started/installation.md)
+- [Guides](./docs/guides/README.md)
+- [API reference](https://bates-solutions.github.io/payments/squareup/) (also [in this repo](./docs/api/README.md), as markdown)
+
 ## Related libraries
 
 This library is one of three sibling payment-API wrappers from Bates Solutions that deliberately share the same design — learn one and you know all three:

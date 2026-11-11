@@ -39,6 +39,7 @@ Welcome to the documentation for `@bates-solutions/squareup`, a TypeScript wrapp
 
 Complete API reference generated from source code with TypeDoc:
 
+- [Browse it online](https://bates-solutions.github.io/payments/squareup/)
 - [Core Module](./api/core/README.md) - Client, services, utilities, error handling
 - [Server Module](./api/server/README.md) - Webhook handlers, middleware
 

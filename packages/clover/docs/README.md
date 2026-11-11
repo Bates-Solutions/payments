@@ -28,8 +28,9 @@ TypeScript wrapper for the Clover Ecommerce and Platform APIs with edge-ready we
 
 Generated from source with TypeDoc:
 
-- [Core Module](./api/README.md)
-- [Server Module](./api/README.md)
+- [Browse it online](https://bates-solutions.github.io/payments/clover/)
+- [Core Module](./api/core/README.md)
+- [Server Module](./api/server/README.md)
 
 ## Additional Resources
 
