@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: PaymentMethodsService
 
-Defined in: [core/services/payment-methods.service.ts:44](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/payment-methods.service.ts#L44)
+Defined in: [core/services/payment-methods.service.ts:44](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/payment-methods.service.ts#L44)
 
 Payment Methods service wrapping Stripe
 [PaymentMethods](https://docs.stripe.com/api/payment_methods): read, attach
@@ -29,7 +29,7 @@ await stripe.paymentMethods.setDefault('cus_123', cards[0].id);
 
 > **new PaymentMethodsService**(`client`): `PaymentMethodsService`
 
-Defined in: [core/services/payment-methods.service.ts:45](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/payment-methods.service.ts#L45)
+Defined in: [core/services/payment-methods.service.ts:45](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/payment-methods.service.ts#L45)
 
 #### Parameters
 
@@ -47,7 +47,7 @@ Defined in: [core/services/payment-methods.service.ts:45](https://github.com/Bat
 
 > **attach**(`paymentMethodId`, `options`): `Promise`\<`PaymentMethod`\>
 
-Defined in: [core/services/payment-methods.service.ts:91](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/payment-methods.service.ts#L91)
+Defined in: [core/services/payment-methods.service.ts:91](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/payment-methods.service.ts#L91)
 
 Attach a payment method to a customer.
 
@@ -84,7 +84,7 @@ When `paymentMethodId` or `customerId` is missing
 
 > **detach**(`paymentMethodId`, `options?`): `Promise`\<`PaymentMethod`\>
 
-Defined in: [core/services/payment-methods.service.ts:114](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/payment-methods.service.ts#L114)
+Defined in: [core/services/payment-methods.service.ts:114](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/payment-methods.service.ts#L114)
 
 Detach a payment method from its customer. It can't be used again
 afterwards.
@@ -115,7 +115,7 @@ When `paymentMethodId` is missing
 
 > **get**(`paymentMethodId`): `Promise`\<`PaymentMethod`\>
 
-Defined in: [core/services/payment-methods.service.ts:52](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/payment-methods.service.ts#L52)
+Defined in: [core/services/payment-methods.service.ts:52](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/payment-methods.service.ts#L52)
 
 Retrieve a payment method by ID.
 
@@ -139,7 +139,7 @@ When `paymentMethodId` is missing
 
 > **list**(`options?`): `Promise`\<[`PaginatedResponse`](../interfaces/PaginatedResponse.md)\<`PaymentMethod`\>\>
 
-Defined in: [core/services/payment-methods.service.ts:64](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/payment-methods.service.ts#L64)
+Defined in: [core/services/payment-methods.service.ts:64](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/payment-methods.service.ts#L64)
 
 List payment methods with cursor-based pagination.
 
@@ -159,7 +159,7 @@ List payment methods with cursor-based pagination.
 
 > **setDefault**(`customerId`, `paymentMethodId`, `options?`): `Promise`\<`Customer`\>
 
-Defined in: [core/services/payment-methods.service.ts:138](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/payment-methods.service.ts#L138)
+Defined in: [core/services/payment-methods.service.ts:138](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/payment-methods.service.ts#L138)
 
 Make a payment method the customer's default for invoices and
 subscriptions (`invoice_settings.default_payment_method`). The payment

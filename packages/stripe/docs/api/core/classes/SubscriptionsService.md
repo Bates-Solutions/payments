@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: SubscriptionsService
 
-Defined in: [core/services/subscriptions.service.ts:120](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/subscriptions.service.ts#L120)
+Defined in: [core/services/subscriptions.service.ts:120](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/subscriptions.service.ts#L120)
 
 Subscriptions service wrapping Stripe [Subscriptions](https://docs.stripe.com/api/subscriptions).
 
@@ -27,7 +27,7 @@ sub.priceId;          // 'price_…'
 
 > **new SubscriptionsService**(`client`): `SubscriptionsService`
 
-Defined in: [core/services/subscriptions.service.ts:121](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/subscriptions.service.ts#L121)
+Defined in: [core/services/subscriptions.service.ts:121](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/subscriptions.service.ts#L121)
 
 #### Parameters
 
@@ -45,7 +45,7 @@ Defined in: [core/services/subscriptions.service.ts:121](https://github.com/Bate
 
 > **cancel**(`subscriptionId`, `options?`): `Promise`\<[`NormalizedSubscription`](../interfaces/NormalizedSubscription.md)\>
 
-Defined in: [core/services/subscriptions.service.ts:160](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/subscriptions.service.ts#L160)
+Defined in: [core/services/subscriptions.service.ts:160](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/subscriptions.service.ts#L160)
 
 Cancel a subscription, immediately or at period end.
 
@@ -69,7 +69,7 @@ Cancel a subscription, immediately or at period end.
 
 > **get**(`subscriptionId`): `Promise`\<[`NormalizedSubscription`](../interfaces/NormalizedSubscription.md)\>
 
-Defined in: [core/services/subscriptions.service.ts:126](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/subscriptions.service.ts#L126)
+Defined in: [core/services/subscriptions.service.ts:126](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/subscriptions.service.ts#L126)
 
 Get a subscription by ID, normalized.
 
@@ -89,7 +89,7 @@ Get a subscription by ID, normalized.
 
 > **list**(`options?`): `Promise`\<[`PaginatedResponse`](../interfaces/PaginatedResponse.md)\<[`NormalizedSubscription`](../interfaces/NormalizedSubscription.md)\>\>
 
-Defined in: [core/services/subscriptions.service.ts:138](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/subscriptions.service.ts#L138)
+Defined in: [core/services/subscriptions.service.ts:138](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/subscriptions.service.ts#L138)
 
 List subscriptions with cursor-based pagination, normalized.
 
@@ -109,7 +109,7 @@ List subscriptions with cursor-based pagination, normalized.
 
 > **resume**(`subscriptionId`): `Promise`\<[`NormalizedSubscription`](../interfaces/NormalizedSubscription.md)\>
 
-Defined in: [core/services/subscriptions.service.ts:177](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/subscriptions.service.ts#L177)
+Defined in: [core/services/subscriptions.service.ts:177](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/subscriptions.service.ts#L177)
 
 Resume a subscription that was set to cancel at period end.
 

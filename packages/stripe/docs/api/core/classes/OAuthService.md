@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: OAuthService
 
-Defined in: [core/services/oauth.service.ts:128](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/oauth.service.ts#L128)
+Defined in: [core/services/oauth.service.ts:128](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/oauth.service.ts#L128)
 
 Connect OAuth service: finish the connect flow and disconnect accounts.
 
@@ -34,7 +34,7 @@ const { data: products } = await retailer.products.list({ active: true });
 
 > **new OAuthService**(`getClient`, `defaultClientId?`): `OAuthService`
 
-Defined in: [core/services/oauth.service.ts:135](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/oauth.service.ts#L135)
+Defined in: [core/services/oauth.service.ts:135](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/oauth.service.ts#L135)
 
 #### Parameters
 
@@ -62,7 +62,7 @@ Connect client ID used by `deauthorize` when the
 
 > **deauthorize**(`stripeUserId`, `options?`): `Promise`\<`void`\>
 
-Defined in: [core/services/oauth.service.ts:181](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/oauth.service.ts#L181)
+Defined in: [core/services/oauth.service.ts:181](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/oauth.service.ts#L181)
 
 Disconnect a connected account from your platform. Your platform can no
 longer act on it afterwards.
@@ -102,7 +102,7 @@ await stripe.oauth.deauthorize(retailer.stripeAccountId);
 
 > **exchangeCode**(`code`): `Promise`\<[`ConnectedAccountGrant`](../interfaces/ConnectedAccountGrant.md)\>
 
-Defined in: [core/services/oauth.service.ts:147](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/oauth.service.ts#L147)
+Defined in: [core/services/oauth.service.ts:147](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/oauth.service.ts#L147)
 
 Exchange the authorization `code` from the OAuth redirect for the
 connected account's ID.

@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: LambdaProxyEvent
 
-Defined in: [server/middleware/lambda.ts:14](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/server/middleware/lambda.ts#L14)
+Defined in: [server/middleware/lambda.ts:14](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/server/middleware/lambda.ts#L14)
 
 Minimal API Gateway proxy event shape (avoids an aws-lambda dependency).
 
@@ -16,7 +16,7 @@ Minimal API Gateway proxy event shape (avoids an aws-lambda dependency).
 
 > **body**: `string` \| `null`
 
-Defined in: [server/middleware/lambda.ts:17](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/server/middleware/lambda.ts#L17)
+Defined in: [server/middleware/lambda.ts:17](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/server/middleware/lambda.ts#L17)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [server/middleware/lambda.ts:17](https://github.com/Bates-Solutions/
 
 > `optional` **headers?**: `Record`\<`string`, `string` \| `undefined`\> \| `null`
 
-Defined in: [server/middleware/lambda.ts:16](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/server/middleware/lambda.ts#L16)
+Defined in: [server/middleware/lambda.ts:16](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/server/middleware/lambda.ts#L16)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [server/middleware/lambda.ts:16](https://github.com/Bates-Solutions/
 
 > **httpMethod**: `string`
 
-Defined in: [server/middleware/lambda.ts:15](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/server/middleware/lambda.ts#L15)
+Defined in: [server/middleware/lambda.ts:15](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/server/middleware/lambda.ts#L15)
 
 ***
 
@@ -40,4 +40,4 @@ Defined in: [server/middleware/lambda.ts:15](https://github.com/Bates-Solutions/
 
 > `optional` **isBase64Encoded?**: `boolean`
 
-Defined in: [server/middleware/lambda.ts:18](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/server/middleware/lambda.ts#L18)
+Defined in: [server/middleware/lambda.ts:18](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/server/middleware/lambda.ts#L18)

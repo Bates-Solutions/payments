@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: TimeRange
 
-Defined in: [core/types/index.ts:43](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/types/index.ts#L43)
+Defined in: [core/types/index.ts:43](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/types/index.ts#L43)
 
 A time range filter, e.g. on an object's `created` time. Each bound is a
 `Date` or Unix seconds; omit a bound to leave that side open.
@@ -24,7 +24,7 @@ const march = { gte: new Date('2026-03-01T00:00:00Z'), lt: new Date('2026-04-01T
 
 > `optional` **gt?**: `number` \| `Date`
 
-Defined in: [core/types/index.ts:47](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/types/index.ts#L47)
+Defined in: [core/types/index.ts:47](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/types/index.ts#L47)
 
 Strictly after
 
@@ -34,7 +34,7 @@ Strictly after
 
 > `optional` **gte?**: `number` \| `Date`
 
-Defined in: [core/types/index.ts:45](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/types/index.ts#L45)
+Defined in: [core/types/index.ts:45](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/types/index.ts#L45)
 
 On or after
 
@@ -44,7 +44,7 @@ On or after
 
 > `optional` **lt?**: `number` \| `Date`
 
-Defined in: [core/types/index.ts:51](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/types/index.ts#L51)
+Defined in: [core/types/index.ts:51](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/types/index.ts#L51)
 
 Strictly before
 
@@ -54,6 +54,6 @@ Strictly before
 
 > `optional` **lte?**: `number` \| `Date`
 
-Defined in: [core/types/index.ts:49](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/types/index.ts#L49)
+Defined in: [core/types/index.ts:49](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/types/index.ts#L49)
 
 On or before

@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: PriceRecurring
 
-Defined in: [core/services/prices.service.ts:32](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/prices.service.ts#L32)
+Defined in: [core/services/prices.service.ts:32](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/prices.service.ts#L32)
 
 Billing interval for a recurring price.
 
@@ -16,7 +16,7 @@ Billing interval for a recurring price.
 
 > **interval**: `"day"` \| `"week"` \| `"month"` \| `"year"`
 
-Defined in: [core/services/prices.service.ts:34](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/prices.service.ts#L34)
+Defined in: [core/services/prices.service.ts:34](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/prices.service.ts#L34)
 
 How often the price is charged
 
@@ -26,7 +26,7 @@ How often the price is charged
 
 > `optional` **intervalCount?**: `number`
 
-Defined in: [core/services/prices.service.ts:39](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/prices.service.ts#L39)
+Defined in: [core/services/prices.service.ts:39](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/prices.service.ts#L39)
 
 Number of intervals between charges (e.g. `3` with `month` is quarterly).
 

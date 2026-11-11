@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: CreatePriceOptions
 
-Defined in: [core/services/prices.service.ts:45](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/prices.service.ts#L45)
+Defined in: [core/services/prices.service.ts:45](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/prices.service.ts#L45)
 
 Options for creating a price
 
@@ -16,7 +16,7 @@ Options for creating a price
 
 > `optional` **active?**: `boolean`
 
-Defined in: [core/services/prices.service.ts:67](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/prices.service.ts#L67)
+Defined in: [core/services/prices.service.ts:67](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/prices.service.ts#L67)
 
 Whether the price can be used for new purchases.
 
@@ -32,7 +32,7 @@ true
 
 > **currency**: `string`
 
-Defined in: [core/services/prices.service.ts:51](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/prices.service.ts#L51)
+Defined in: [core/services/prices.service.ts:51](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/prices.service.ts#L51)
 
 Lowercase ISO currency code (e.g. `usd`)
 
@@ -42,7 +42,7 @@ Lowercase ISO currency code (e.g. `usd`)
 
 > `optional` **idempotencyKey?**: `string`
 
-Defined in: [core/services/prices.service.ts:71](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/prices.service.ts#L71)
+Defined in: [core/services/prices.service.ts:71](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/prices.service.ts#L71)
 
 Idempotency key (defaults to a generated UUID)
 
@@ -52,7 +52,7 @@ Idempotency key (defaults to a generated UUID)
 
 > `optional` **lookupKey?**: `string`
 
-Defined in: [core/services/prices.service.ts:57](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/prices.service.ts#L57)
+Defined in: [core/services/prices.service.ts:57](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/prices.service.ts#L57)
 
 Your own stable key for looking the price up (must be unique per account)
 
@@ -62,7 +62,7 @@ Your own stable key for looking the price up (must be unique per account)
 
 > `optional` **metadata?**: `Record`\<`string`, `string`\>
 
-Defined in: [core/services/prices.service.ts:69](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/prices.service.ts#L69)
+Defined in: [core/services/prices.service.ts:69](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/prices.service.ts#L69)
 
 Key/value metadata, e.g. your own id for the price
 
@@ -72,7 +72,7 @@ Key/value metadata, e.g. your own id for the price
 
 > `optional` **nickname?**: `string`
 
-Defined in: [core/services/prices.service.ts:55](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/prices.service.ts#L55)
+Defined in: [core/services/prices.service.ts:55](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/prices.service.ts#L55)
 
 Internal label, not shown to customers
 
@@ -82,7 +82,7 @@ Internal label, not shown to customers
 
 > **product**: `string`
 
-Defined in: [core/services/prices.service.ts:47](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/prices.service.ts#L47)
+Defined in: [core/services/prices.service.ts:47](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/prices.service.ts#L47)
 
 Product the price belongs to (`prod_…`)
 
@@ -92,7 +92,7 @@ Product the price belongs to (`prod_…`)
 
 > `optional` **recurring?**: [`PriceRecurring`](PriceRecurring.md)
 
-Defined in: [core/services/prices.service.ts:53](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/prices.service.ts#L53)
+Defined in: [core/services/prices.service.ts:53](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/prices.service.ts#L53)
 
 Make it a recurring price. Omit for a one-time price.
 
@@ -102,7 +102,7 @@ Make it a recurring price. Omit for a one-time price.
 
 > `optional` **transferLookupKey?**: `boolean`
 
-Defined in: [core/services/prices.service.ts:62](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/prices.service.ts#L62)
+Defined in: [core/services/prices.service.ts:62](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/prices.service.ts#L62)
 
 Move `lookupKey` from the price that currently holds it to this one.
 
@@ -118,6 +118,6 @@ false
 
 > **unitAmount**: `number`
 
-Defined in: [core/services/prices.service.ts:49](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/prices.service.ts#L49)
+Defined in: [core/services/prices.service.ts:49](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/prices.service.ts#L49)
 
 Amount in the smallest currency unit (e.g. cents). A non-negative integer.

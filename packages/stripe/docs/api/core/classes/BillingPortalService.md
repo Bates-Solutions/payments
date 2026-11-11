@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: BillingPortalService
 
-Defined in: [core/services/billing-portal.service.ts:38](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/billing-portal.service.ts#L38)
+Defined in: [core/services/billing-portal.service.ts:38](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/billing-portal.service.ts#L38)
 
 Billing Portal service wrapping Stripe
 [Billing Portal Sessions](https://docs.stripe.com/api/customer_portal/sessions).
@@ -28,7 +28,7 @@ redirect(session.url);
 
 > **new BillingPortalService**(`client`): `BillingPortalService`
 
-Defined in: [core/services/billing-portal.service.ts:39](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/billing-portal.service.ts#L39)
+Defined in: [core/services/billing-portal.service.ts:39](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/billing-portal.service.ts#L39)
 
 #### Parameters
 
@@ -46,7 +46,7 @@ Defined in: [core/services/billing-portal.service.ts:39](https://github.com/Bate
 
 > **create**(`options`): `Promise`\<`Session`\>
 
-Defined in: [core/services/billing-portal.service.ts:49](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/billing-portal.service.ts#L49)
+Defined in: [core/services/billing-portal.service.ts:49](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/billing-portal.service.ts#L49)
 
 Create a Billing Portal session for a customer.
 

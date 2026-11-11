@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: SetupIntentsService
 
-Defined in: [core/services/setup-intents.service.ts:81](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/setup-intents.service.ts#L81)
+Defined in: [core/services/setup-intents.service.ts:81](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/setup-intents.service.ts#L81)
 
 SetupIntents service wrapping Stripe
 [SetupIntents](https://docs.stripe.com/api/setup_intents): save a payment
@@ -29,7 +29,7 @@ return { clientSecret: intent.client_secret };
 
 > **new SetupIntentsService**(`client`): `SetupIntentsService`
 
-Defined in: [core/services/setup-intents.service.ts:82](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/setup-intents.service.ts#L82)
+Defined in: [core/services/setup-intents.service.ts:82](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/setup-intents.service.ts#L82)
 
 #### Parameters
 
@@ -47,7 +47,7 @@ Defined in: [core/services/setup-intents.service.ts:82](https://github.com/Bates
 
 > **cancel**(`setupIntentId`, `options?`): `Promise`\<`SetupIntent`\>
 
-Defined in: [core/services/setup-intents.service.ts:162](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/setup-intents.service.ts#L162)
+Defined in: [core/services/setup-intents.service.ts:162](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/setup-intents.service.ts#L162)
 
 Cancel a SetupIntent that hasn't succeeded.
 
@@ -81,7 +81,7 @@ When `setupIntentId` is missing
 
 > **confirm**(`setupIntentId`, `options?`): `Promise`\<`SetupIntent`\>
 
-Defined in: [core/services/setup-intents.service.ts:141](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/setup-intents.service.ts#L141)
+Defined in: [core/services/setup-intents.service.ts:141](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/setup-intents.service.ts#L141)
 
 Confirm a SetupIntent on the server (usually Stripe.js confirms it in the
 browser instead).
@@ -120,7 +120,7 @@ When `setupIntentId` is missing
 
 > **create**(`options?`): `Promise`\<`SetupIntent`\>
 
-Defined in: [core/services/setup-intents.service.ts:90](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/setup-intents.service.ts#L90)
+Defined in: [core/services/setup-intents.service.ts:90](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/setup-intents.service.ts#L90)
 
 Create a SetupIntent.
 
@@ -145,7 +145,7 @@ When `confirm` is set without `paymentMethod`,
 
 > **get**(`setupIntentId`): `Promise`\<`SetupIntent`\>
 
-Defined in: [core/services/setup-intents.service.ts:126](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/setup-intents.service.ts#L126)
+Defined in: [core/services/setup-intents.service.ts:126](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/setup-intents.service.ts#L126)
 
 Retrieve a SetupIntent by ID.
 
@@ -169,7 +169,7 @@ When `setupIntentId` is missing
 
 > **list**(`options?`): `Promise`\<[`PaginatedResponse`](../interfaces/PaginatedResponse.md)\<`SetupIntent`\>\>
 
-Defined in: [core/services/setup-intents.service.ts:184](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/setup-intents.service.ts#L184)
+Defined in: [core/services/setup-intents.service.ts:184](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/setup-intents.service.ts#L184)
 
 List SetupIntents with cursor-based pagination.
 

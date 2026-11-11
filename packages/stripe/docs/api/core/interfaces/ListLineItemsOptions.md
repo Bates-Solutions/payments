@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: ListLineItemsOptions
 
-Defined in: [core/services/checkout.service.ts:21](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/checkout.service.ts#L21)
+Defined in: [core/services/checkout.service.ts:21](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/checkout.service.ts#L21)
 
 Options for listing a session's line items
 
@@ -16,7 +16,7 @@ Options for listing a session's line items
 
 > `optional` **expandProduct?**: `boolean`
 
-Defined in: [core/services/checkout.service.ts:26](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/checkout.service.ts#L26)
+Defined in: [core/services/checkout.service.ts:26](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/checkout.service.ts#L26)
 
 Expand `price.product` to the full Product (e.g. to read its metadata).
 

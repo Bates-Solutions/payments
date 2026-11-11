@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: ConnectedAccountGrant
 
-Defined in: [core/services/oauth.service.ts:44](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/oauth.service.ts#L44)
+Defined in: [core/services/oauth.service.ts:44](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/oauth.service.ts#L44)
 
 Result of exchanging an authorization code.
 
@@ -20,7 +20,7 @@ deliberately not returned: store `stripeUserId` and act on the account with
 
 > `optional` **livemode?**: `boolean`
 
-Defined in: [core/services/oauth.service.ts:50](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/oauth.service.ts#L50)
+Defined in: [core/services/oauth.service.ts:50](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/oauth.service.ts#L50)
 
 Whether the grant is for live mode
 
@@ -30,7 +30,7 @@ Whether the grant is for live mode
 
 > `optional` **scope?**: `string`
 
-Defined in: [core/services/oauth.service.ts:48](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/oauth.service.ts#L48)
+Defined in: [core/services/oauth.service.ts:48](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/oauth.service.ts#L48)
 
 Scope that was granted
 
@@ -40,6 +40,6 @@ Scope that was granted
 
 > **stripeUserId**: `string`
 
-Defined in: [core/services/oauth.service.ts:46](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/oauth.service.ts#L46)
+Defined in: [core/services/oauth.service.ts:46](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/oauth.service.ts#L46)
 
 The connected account's ID (`acct_…`)

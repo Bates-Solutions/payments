@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: WebhookEventContext
 
-Defined in: [server/middleware/lambda.ts:33](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/server/middleware/lambda.ts#L33)
+Defined in: [server/middleware/lambda.ts:33](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/server/middleware/lambda.ts#L33)
 
 Context passed to Lambda webhook handlers with auto-extracted entity IDs.
 
@@ -16,7 +16,7 @@ Context passed to Lambda webhook handlers with auto-extracted entity IDs.
 
 > `optional` **chargeId?**: `string`
 
-Defined in: [server/middleware/lambda.ts:35](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/server/middleware/lambda.ts#L35)
+Defined in: [server/middleware/lambda.ts:35](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/server/middleware/lambda.ts#L35)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [server/middleware/lambda.ts:35](https://github.com/Bates-Solutions/
 
 > `optional` **customerId?**: `string`
 
-Defined in: [server/middleware/lambda.ts:36](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/server/middleware/lambda.ts#L36)
+Defined in: [server/middleware/lambda.ts:36](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/server/middleware/lambda.ts#L36)
 
 ***
 
@@ -32,4 +32,4 @@ Defined in: [server/middleware/lambda.ts:36](https://github.com/Bates-Solutions/
 
 > `optional` **paymentIntentId?**: `string`
 
-Defined in: [server/middleware/lambda.ts:34](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/server/middleware/lambda.ts#L34)
+Defined in: [server/middleware/lambda.ts:34](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/server/middleware/lambda.ts#L34)

@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: ProductsService
 
-Defined in: [core/services/products.service.ts:81](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/products.service.ts#L81)
+Defined in: [core/services/products.service.ts:81](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/products.service.ts#L81)
 
 Products service wrapping Stripe [Products](https://docs.stripe.com/api/products).
 
@@ -27,7 +27,7 @@ await stripe.products.archive(product.id);
 
 > **new ProductsService**(`client`): `ProductsService`
 
-Defined in: [core/services/products.service.ts:82](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/products.service.ts#L82)
+Defined in: [core/services/products.service.ts:82](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/products.service.ts#L82)
 
 #### Parameters
 
@@ -45,7 +45,7 @@ Defined in: [core/services/products.service.ts:82](https://github.com/Bates-Solu
 
 > **archive**(`productId`, `options?`): `Promise`\<`Product`\>
 
-Defined in: [core/services/products.service.ts:200](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/products.service.ts#L200)
+Defined in: [core/services/products.service.ts:200](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/products.service.ts#L200)
 
 Archive a product (`active: false`). Stripe keeps archived products so
 past payments still reference them, but they can no longer be bought.
@@ -77,7 +77,7 @@ When `productId` is missing
 
 > **create**(`options`): `Promise`\<`Product`\>
 
-Defined in: [core/services/products.service.ts:130](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/products.service.ts#L130)
+Defined in: [core/services/products.service.ts:130](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/products.service.ts#L130)
 
 Create a product.
 
@@ -111,7 +111,7 @@ const product = await stripe.products.create({
 
 > **get**(`productId`): `Promise`\<`Product`\>
 
-Defined in: [core/services/products.service.ts:108](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/products.service.ts#L108)
+Defined in: [core/services/products.service.ts:108](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/products.service.ts#L108)
 
 Retrieve a product by ID.
 
@@ -131,7 +131,7 @@ Retrieve a product by ID.
 
 > **list**(`options?`): `Promise`\<[`PaginatedResponse`](../interfaces/PaginatedResponse.md)\<`Product`\>\>
 
-Defined in: [core/services/products.service.ts:87](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/products.service.ts#L87)
+Defined in: [core/services/products.service.ts:87](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/products.service.ts#L87)
 
 List products with cursor-based pagination.
 
@@ -151,7 +151,7 @@ List products with cursor-based pagination.
 
 > **update**(`productId`, `options`): `Promise`\<`Product`\>
 
-Defined in: [core/services/products.service.ts:167](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/products.service.ts#L167)
+Defined in: [core/services/products.service.ts:167](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/products.service.ts#L167)
 
 Update a product. Only the fields you pass are changed.
 

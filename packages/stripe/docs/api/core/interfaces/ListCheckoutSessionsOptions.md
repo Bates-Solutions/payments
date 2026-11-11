@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: ListCheckoutSessionsOptions
 
-Defined in: [core/services/checkout.service.ts:71](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/checkout.service.ts#L71)
+Defined in: [core/services/checkout.service.ts:71](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/checkout.service.ts#L71)
 
 Options for listing Checkout Sessions
 
@@ -16,7 +16,7 @@ Options for listing Checkout Sessions
 
 > `optional` **created?**: [`TimeRange`](TimeRange.md)
 
-Defined in: [core/services/checkout.service.ts:80](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/checkout.service.ts#L80)
+Defined in: [core/services/checkout.service.ts:80](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/checkout.service.ts#L80)
 
 Only sessions created in this time range
 
@@ -26,7 +26,7 @@ Only sessions created in this time range
 
 > `optional` **customerId?**: `string`
 
-Defined in: [core/services/checkout.service.ts:73](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/checkout.service.ts#L73)
+Defined in: [core/services/checkout.service.ts:73](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/checkout.service.ts#L73)
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: [core/services/checkout.service.ts:73](https://github.com/Bates-Solu
 
 > `optional` **expandLineItems?**: `boolean`
 
-Defined in: [core/services/checkout.service.ts:87](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/checkout.service.ts#L87)
+Defined in: [core/services/checkout.service.ts:87](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/checkout.service.ts#L87)
 
 Expand each session's `line_items`. Stripe includes only the first page
 of line items this way; use [CheckoutService.listLineItems](../classes/CheckoutService.md#listlineitems) to get
@@ -52,7 +52,7 @@ false
 
 > `optional` **limit?**: `number`
 
-Defined in: [core/services/checkout.service.ts:72](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/checkout.service.ts#L72)
+Defined in: [core/services/checkout.service.ts:72](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/checkout.service.ts#L72)
 
 ***
 
@@ -60,7 +60,7 @@ Defined in: [core/services/checkout.service.ts:72](https://github.com/Bates-Solu
 
 > `optional` **paymentLinkId?**: `string`
 
-Defined in: [core/services/checkout.service.ts:76](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/checkout.service.ts#L76)
+Defined in: [core/services/checkout.service.ts:76](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/checkout.service.ts#L76)
 
 Only sessions created from this Payment Link (`plink_…`)
 
@@ -70,7 +70,7 @@ Only sessions created from this Payment Link (`plink_…`)
 
 > `optional` **startingAfter?**: `string`
 
-Defined in: [core/services/checkout.service.ts:88](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/checkout.service.ts#L88)
+Defined in: [core/services/checkout.service.ts:88](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/checkout.service.ts#L88)
 
 ***
 
@@ -78,7 +78,7 @@ Defined in: [core/services/checkout.service.ts:88](https://github.com/Bates-Solu
 
 > `optional` **status?**: `"open"` \| `"complete"` \| `"expired"`
 
-Defined in: [core/services/checkout.service.ts:78](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/checkout.service.ts#L78)
+Defined in: [core/services/checkout.service.ts:78](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/checkout.service.ts#L78)
 
 Only sessions in this status. Use `'complete'` for finished sales.
 
@@ -88,4 +88,4 @@ Only sessions in this status. Use `'complete'` for finished sales.
 
 > `optional` **subscriptionId?**: `string`
 
-Defined in: [core/services/checkout.service.ts:74](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/checkout.service.ts#L74)
+Defined in: [core/services/checkout.service.ts:74](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/checkout.service.ts#L74)

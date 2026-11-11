@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: ListSetupIntentsOptions
 
-Defined in: [core/services/setup-intents.service.ts:53](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/setup-intents.service.ts#L53)
+Defined in: [core/services/setup-intents.service.ts:53](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/setup-intents.service.ts#L53)
 
 Options for listing SetupIntents
 
@@ -16,7 +16,7 @@ Options for listing SetupIntents
 
 > `optional` **customerId?**: `string`
 
-Defined in: [core/services/setup-intents.service.ts:54](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/setup-intents.service.ts#L54)
+Defined in: [core/services/setup-intents.service.ts:54](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/setup-intents.service.ts#L54)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [core/services/setup-intents.service.ts:54](https://github.com/Bates
 
 > `optional` **limit?**: `number`
 
-Defined in: [core/services/setup-intents.service.ts:56](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/setup-intents.service.ts#L56)
+Defined in: [core/services/setup-intents.service.ts:56](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/setup-intents.service.ts#L56)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [core/services/setup-intents.service.ts:56](https://github.com/Bates
 
 > `optional` **paymentMethodId?**: `string`
 
-Defined in: [core/services/setup-intents.service.ts:55](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/setup-intents.service.ts#L55)
+Defined in: [core/services/setup-intents.service.ts:55](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/setup-intents.service.ts#L55)
 
 ***
 
@@ -40,4 +40,4 @@ Defined in: [core/services/setup-intents.service.ts:55](https://github.com/Bates
 
 > `optional` **startingAfter?**: `string`
 
-Defined in: [core/services/setup-intents.service.ts:57](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/setup-intents.service.ts#L57)
+Defined in: [core/services/setup-intents.service.ts:57](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/setup-intents.service.ts#L57)

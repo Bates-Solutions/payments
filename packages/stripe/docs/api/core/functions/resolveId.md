@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **resolveId**(`value`): `string` \| `undefined`
 
-Defined in: [core/utils.ts:340](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/utils.ts#L340)
+Defined in: [core/utils.ts:340](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/utils.ts#L340)
 
 Resolve a Stripe reference that may be either an ID string or an expanded
 object, to its ID.

@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: RefundsService
 
-Defined in: [core/services/refunds.service.ts:59](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/refunds.service.ts#L59)
+Defined in: [core/services/refunds.service.ts:59](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/refunds.service.ts#L59)
 
 Refunds service wrapping Stripe Refunds.
 
@@ -24,7 +24,7 @@ const refund = await stripe.refunds.create({
 
 > **new RefundsService**(`client`): `RefundsService`
 
-Defined in: [core/services/refunds.service.ts:60](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/refunds.service.ts#L60)
+Defined in: [core/services/refunds.service.ts:60](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/refunds.service.ts#L60)
 
 #### Parameters
 
@@ -42,7 +42,7 @@ Defined in: [core/services/refunds.service.ts:60](https://github.com/Bates-Solut
 
 > **create**(`options`): `Promise`\<`Refund`\>
 
-Defined in: [core/services/refunds.service.ts:83](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/refunds.service.ts#L83)
+Defined in: [core/services/refunds.service.ts:83](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/refunds.service.ts#L83)
 
 Create a refund.
 
@@ -84,7 +84,7 @@ const partial = await stripe.refunds.create({
 
 > **get**(`refundId`): `Promise`\<`Refund`\>
 
-Defined in: [core/services/refunds.service.ts:120](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/refunds.service.ts#L120)
+Defined in: [core/services/refunds.service.ts:120](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/refunds.service.ts#L120)
 
 Retrieve a refund by ID.
 
@@ -114,7 +114,7 @@ const refund = await stripe.refunds.get('re_123');
 
 > **list**(`options?`): `Promise`\<[`PaginatedResponse`](../interfaces/PaginatedResponse.md)\<`Refund`\>\>
 
-Defined in: [core/services/refunds.service.ts:139](https://github.com/Bates-Solutions/stripe/blob/f16fab00a2fcf006c7a6c7fcfcb9abd308a81c41/src/core/services/refunds.service.ts#L139)
+Defined in: [core/services/refunds.service.ts:139](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/refunds.service.ts#L139)
 
 List refunds with cursor-based pagination.
 
