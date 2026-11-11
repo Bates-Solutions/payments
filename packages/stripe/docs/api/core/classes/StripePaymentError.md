@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: StripePaymentError
 
-Defined in: [core/errors.ts:87](https://github.com/Bates-Solutions/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/errors.ts#L87)
+Defined in: [core/errors.ts:87](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/errors.ts#L87)
 
 Payment processing errors (card declines, etc.)
 
@@ -20,7 +20,7 @@ Payment processing errors (card declines, etc.)
 
 > **new StripePaymentError**(`message`, `code`, `options?`): `StripePaymentError`
 
-Defined in: [core/errors.ts:92](https://github.com/Bates-Solutions/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/errors.ts#L92)
+Defined in: [core/errors.ts:92](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/errors.ts#L92)
 
 #### Parameters
 
@@ -56,7 +56,7 @@ Defined in: [core/errors.ts:92](https://github.com/Bates-Solutions/stripe/blob/5
 
 > `readonly` **code**: [`StripeErrorCode`](../type-aliases/StripeErrorCode.md)
 
-Defined in: [core/errors.ts:28](https://github.com/Bates-Solutions/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/errors.ts#L28)
+Defined in: [core/errors.ts:28](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/errors.ts#L28)
 
 #### Inherited from
 
@@ -68,7 +68,7 @@ Defined in: [core/errors.ts:28](https://github.com/Bates-Solutions/stripe/blob/5
 
 > `readonly` `optional` **declineCode?**: `string`
 
-Defined in: [core/errors.ts:90](https://github.com/Bates-Solutions/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/errors.ts#L90)
+Defined in: [core/errors.ts:90](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/errors.ts#L90)
 
 Stripe decline code (e.g. `insufficient_funds`), when present
 
@@ -78,7 +78,7 @@ Stripe decline code (e.g. `insufficient_funds`), when present
 
 > `readonly` `optional` **details?**: `unknown`
 
-Defined in: [core/errors.ts:30](https://github.com/Bates-Solutions/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/errors.ts#L30)
+Defined in: [core/errors.ts:30](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/errors.ts#L30)
 
 #### Inherited from
 
@@ -90,7 +90,7 @@ Defined in: [core/errors.ts:30](https://github.com/Bates-Solutions/stripe/blob/5
 
 > `readonly` `optional` **paymentIntentId?**: `string`
 
-Defined in: [core/errors.ts:88](https://github.com/Bates-Solutions/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/errors.ts#L88)
+Defined in: [core/errors.ts:88](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/errors.ts#L88)
 
 ***
 
@@ -98,7 +98,7 @@ Defined in: [core/errors.ts:88](https://github.com/Bates-Solutions/stripe/blob/5
 
 > `readonly` `optional` **statusCode?**: `number`
 
-Defined in: [core/errors.ts:29](https://github.com/Bates-Solutions/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/core/errors.ts#L29)
+Defined in: [core/errors.ts:29](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/errors.ts#L29)
 
 #### Inherited from
 

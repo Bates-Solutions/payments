@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **WebhookHandler**\<`E`\> = (`event`) => `void` \| `Promise`\<`void`\>
 
-Defined in: [server/types.ts:19](https://github.com/Bates-Solutions/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/server/types.ts#L19)
+Defined in: [server/types.ts:19](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/server/types.ts#L19)
 
 Handler for a webhook event of a specific type.
 

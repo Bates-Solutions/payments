@@ -36,4 +36,4 @@ Complete API reference generated from source code with TypeDoc:
 
 - [GitHub Repository](https://github.com/Bates-Solutions/stripe)
 - [Stripe API Documentation](https://docs.stripe.com/api)
-- [Changelog](../CHANGELOG.md)
+- [Releases](https://github.com/Bates-Solutions/stripe/releases)

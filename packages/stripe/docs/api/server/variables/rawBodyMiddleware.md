@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v0.0.0**](../../README.md)
+[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > `const` **rawBodyMiddleware**: `RequestHandler`
 
-Defined in: [server/middleware/express.ts:138](https://github.com/Bates-Solutions/stripe/blob/5c0411e48cf3edbc8319fbc8c4243148781f78cd/src/server/middleware/express.ts#L138)
+Defined in: [server/middleware/express.ts:138](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/server/middleware/express.ts#L138)
 
 Raw body parser middleware for Express.
 
