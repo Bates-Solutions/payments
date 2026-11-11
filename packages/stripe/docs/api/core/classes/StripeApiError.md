@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: StripeApiError
 
-Defined in: [core/errors.ts:52](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/errors.ts#L52)
+Defined in: [core/errors.ts:53](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/errors.ts#L53)
 
 API-level errors from Stripe
 
@@ -20,7 +20,7 @@ API-level errors from Stripe
 
 > **new StripeApiError**(`message`, `code`, `statusCode`, `options?`): `StripeApiError`
 
-Defined in: [core/errors.ts:60](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/errors.ts#L60)
+Defined in: [core/errors.ts:64](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/errors.ts#L64)
 
 #### Parameters
 
@@ -68,7 +68,7 @@ Defined in: [core/errors.ts:60](https://github.com/Bates-Solutions/stripe/blob/9
 
 > `readonly` **code**: [`StripeErrorCode`](../type-aliases/StripeErrorCode.md)
 
-Defined in: [core/errors.ts:28](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/errors.ts#L28)
+Defined in: [core/errors.ts:29](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/errors.ts#L29)
 
 #### Inherited from
 
@@ -80,7 +80,7 @@ Defined in: [core/errors.ts:28](https://github.com/Bates-Solutions/stripe/blob/9
 
 > `readonly` `optional` **details?**: `unknown`
 
-Defined in: [core/errors.ts:30](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/errors.ts#L30)
+Defined in: [core/errors.ts:31](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/errors.ts#L31)
 
 #### Inherited from
 
@@ -92,7 +92,7 @@ Defined in: [core/errors.ts:30](https://github.com/Bates-Solutions/stripe/blob/9
 
 > `readonly` `optional` **param?**: `string`
 
-Defined in: [core/errors.ts:56](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/errors.ts#L56)
+Defined in: [core/errors.ts:60](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/errors.ts#L60)
 
 Request parameter the error relates to, if any
 
@@ -102,7 +102,7 @@ Request parameter the error relates to, if any
 
 > `readonly` `optional` **requestId?**: `string`
 
-Defined in: [core/errors.ts:58](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/errors.ts#L58)
+Defined in: [core/errors.ts:62](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/errors.ts#L62)
 
 Stripe request ID for support/debugging
 
@@ -112,7 +112,7 @@ Stripe request ID for support/debugging
 
 > `readonly` `optional` **statusCode?**: `number`
 
-Defined in: [core/errors.ts:29](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/errors.ts#L29)
+Defined in: [core/errors.ts:30](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/errors.ts#L30)
 
 #### Inherited from
 
@@ -124,6 +124,7 @@ Defined in: [core/errors.ts:29](https://github.com/Bates-Solutions/stripe/blob/9
 
 > `readonly` `optional` **type?**: `string`
 
-Defined in: [core/errors.ts:54](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/errors.ts#L54)
+Defined in: [core/errors.ts:58](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/errors.ts#L58)
 
-Raw Stripe error `type` (e.g. `invalid_request_error`)
+The error type Stripe sent (e.g. `invalid_request_error`, or an OAuth
+error such as `invalid_grant`). Use `code` for the classification.

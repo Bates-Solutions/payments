@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: AddInvoiceItemOptions
 
-Defined in: [core/services/invoices.service.ts:52](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/invoices.service.ts#L52)
+Defined in: [core/services/invoices.service.ts:58](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/invoices.service.ts#L58)
 
 Options for adding an invoice item.
 
@@ -19,7 +19,7 @@ bill an existing Price.
 
 > `optional` **amount?**: `number`
 
-Defined in: [core/services/invoices.service.ts:56](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/invoices.service.ts#L56)
+Defined in: [core/services/invoices.service.ts:62](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/invoices.service.ts#L62)
 
 Amount in the smallest currency unit (e.g. cents). Mutually exclusive with `priceId`.
 
@@ -29,7 +29,7 @@ Amount in the smallest currency unit (e.g. cents). Mutually exclusive with `pric
 
 > `optional` **currency?**: `string`
 
-Defined in: [core/services/invoices.service.ts:58](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/invoices.service.ts#L58)
+Defined in: [core/services/invoices.service.ts:64](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/invoices.service.ts#L64)
 
 ISO currency code (required with `amount`)
 
@@ -39,7 +39,7 @@ ISO currency code (required with `amount`)
 
 > **customerId**: `string`
 
-Defined in: [core/services/invoices.service.ts:54](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/invoices.service.ts#L54)
+Defined in: [core/services/invoices.service.ts:60](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/invoices.service.ts#L60)
 
 Customer the item is billed to
 
@@ -49,7 +49,7 @@ Customer the item is billed to
 
 > `optional` **description?**: `string`
 
-Defined in: [core/services/invoices.service.ts:69](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/invoices.service.ts#L69)
+Defined in: [core/services/invoices.service.ts:75](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/invoices.service.ts#L75)
 
 Arbitrary description shown on the line item
 
@@ -59,7 +59,7 @@ Arbitrary description shown on the line item
 
 > `optional` **idempotencyKey?**: `string`
 
-Defined in: [core/services/invoices.service.ts:73](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/invoices.service.ts#L73)
+Defined in: [core/services/invoices.service.ts:79](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/invoices.service.ts#L79)
 
 Idempotency key (defaults to a generated UUID)
 
@@ -69,7 +69,7 @@ Idempotency key (defaults to a generated UUID)
 
 > `optional` **invoiceId?**: `string`
 
-Defined in: [core/services/invoices.service.ts:67](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/invoices.service.ts#L67)
+Defined in: [core/services/invoices.service.ts:73](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/invoices.service.ts#L73)
 
 Attach to a specific draft invoice. When omitted, the item is pending and
 is drawn onto the customer's next invoice.
@@ -80,7 +80,7 @@ is drawn onto the customer's next invoice.
 
 > `optional` **metadata?**: `Record`\<`string`, `string`\>
 
-Defined in: [core/services/invoices.service.ts:71](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/invoices.service.ts#L71)
+Defined in: [core/services/invoices.service.ts:77](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/invoices.service.ts#L77)
 
 Key/value metadata attached to the invoice item
 
@@ -90,7 +90,7 @@ Key/value metadata attached to the invoice item
 
 > `optional` **priceId?**: `string`
 
-Defined in: [core/services/invoices.service.ts:60](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/invoices.service.ts#L60)
+Defined in: [core/services/invoices.service.ts:66](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/invoices.service.ts#L66)
 
 Existing Price to bill. Mutually exclusive with `amount`.
 
@@ -100,6 +100,6 @@ Existing Price to bill. Mutually exclusive with `amount`.
 
 > `optional` **quantity?**: `number`
 
-Defined in: [core/services/invoices.service.ts:62](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/invoices.service.ts#L62)
+Defined in: [core/services/invoices.service.ts:68](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/invoices.service.ts#L68)
 
 Quantity (used with `priceId`)

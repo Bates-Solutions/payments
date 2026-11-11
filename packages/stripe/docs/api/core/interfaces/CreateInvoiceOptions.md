@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: CreateInvoiceOptions
 
-Defined in: [core/services/invoices.service.ts:20](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/invoices.service.ts#L20)
+Defined in: [core/services/invoices.service.ts:26](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/invoices.service.ts#L26)
 
 Options for creating an invoice.
 
@@ -16,7 +16,7 @@ Options for creating an invoice.
 
 > `optional` **autoAdvance?**: `boolean`
 
-Defined in: [core/services/invoices.service.ts:28](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/invoices.service.ts#L28)
+Defined in: [core/services/invoices.service.ts:34](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/invoices.service.ts#L34)
 
 Let Stripe automatically finalize and (for `charge_automatically`) pay the
 invoice. Leave `false` to keep it a draft you finalize yourself.
@@ -33,7 +33,7 @@ false
 
 > `optional` **collectionMethod?**: `CollectionMethod`
 
-Defined in: [core/services/invoices.service.ts:33](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/invoices.service.ts#L33)
+Defined in: [core/services/invoices.service.ts:39](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/invoices.service.ts#L39)
 
 How the invoice is collected.
 
@@ -49,7 +49,7 @@ How the invoice is collected.
 
 > **customerId**: `string`
 
-Defined in: [core/services/invoices.service.ts:22](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/invoices.service.ts#L22)
+Defined in: [core/services/invoices.service.ts:28](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/invoices.service.ts#L28)
 
 Customer the invoice is billed to
 
@@ -59,7 +59,7 @@ Customer the invoice is billed to
 
 > `optional` **daysUntilDue?**: `number`
 
-Defined in: [core/services/invoices.service.ts:35](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/invoices.service.ts#L35)
+Defined in: [core/services/invoices.service.ts:41](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/invoices.service.ts#L41)
 
 Days until due — only valid with `collectionMethod: 'send_invoice'`
 
@@ -69,7 +69,7 @@ Days until due — only valid with `collectionMethod: 'send_invoice'`
 
 > `optional` **description?**: `string`
 
-Defined in: [core/services/invoices.service.ts:37](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/invoices.service.ts#L37)
+Defined in: [core/services/invoices.service.ts:43](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/invoices.service.ts#L43)
 
 Arbitrary description shown on the invoice
 
@@ -79,7 +79,7 @@ Arbitrary description shown on the invoice
 
 > `optional` **idempotencyKey?**: `string`
 
-Defined in: [core/services/invoices.service.ts:43](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/invoices.service.ts#L43)
+Defined in: [core/services/invoices.service.ts:49](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/invoices.service.ts#L49)
 
 Idempotency key (defaults to a generated UUID)
 
@@ -89,7 +89,7 @@ Idempotency key (defaults to a generated UUID)
 
 > `optional` **metadata?**: `Record`\<`string`, `string`\>
 
-Defined in: [core/services/invoices.service.ts:41](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/invoices.service.ts#L41)
+Defined in: [core/services/invoices.service.ts:47](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/invoices.service.ts#L47)
 
 Key/value metadata attached to the invoice
 
@@ -99,6 +99,6 @@ Key/value metadata attached to the invoice
 
 > `optional` **subscriptionId?**: `string`
 
-Defined in: [core/services/invoices.service.ts:39](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/invoices.service.ts#L39)
+Defined in: [core/services/invoices.service.ts:45](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/invoices.service.ts#L45)
 
 Attach the invoice to an existing subscription

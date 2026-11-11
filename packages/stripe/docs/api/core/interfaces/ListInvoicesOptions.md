@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,17 +6,27 @@
 
 # Interface: ListInvoicesOptions
 
-Defined in: [core/services/invoices.service.ts:79](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/invoices.service.ts#L79)
+Defined in: [core/services/invoices.service.ts:85](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/invoices.service.ts#L85)
 
 Options for listing invoices.
 
 ## Properties
 
+### created?
+
+> `optional` **created?**: [`TimeRange`](TimeRange.md)
+
+Defined in: [core/services/invoices.service.ts:91](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/invoices.service.ts#L91)
+
+Only invoices created in this time range
+
+***
+
 ### customerId?
 
 > `optional` **customerId?**: `string`
 
-Defined in: [core/services/invoices.service.ts:80](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/invoices.service.ts#L80)
+Defined in: [core/services/invoices.service.ts:86](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/invoices.service.ts#L86)
 
 ***
 
@@ -24,7 +34,7 @@ Defined in: [core/services/invoices.service.ts:80](https://github.com/Bates-Solu
 
 > `optional` **limit?**: `number`
 
-Defined in: [core/services/invoices.service.ts:83](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/invoices.service.ts#L83)
+Defined in: [core/services/invoices.service.ts:92](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/invoices.service.ts#L92)
 
 ***
 
@@ -32,7 +42,7 @@ Defined in: [core/services/invoices.service.ts:83](https://github.com/Bates-Solu
 
 > `optional` **startingAfter?**: `string`
 
-Defined in: [core/services/invoices.service.ts:84](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/invoices.service.ts#L84)
+Defined in: [core/services/invoices.service.ts:93](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/invoices.service.ts#L93)
 
 ***
 
@@ -40,7 +50,9 @@ Defined in: [core/services/invoices.service.ts:84](https://github.com/Bates-Solu
 
 > `optional` **status?**: `Status`
 
-Defined in: [core/services/invoices.service.ts:82](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/invoices.service.ts#L82)
+Defined in: [core/services/invoices.service.ts:89](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/invoices.service.ts#L89)
+
+Only invoices in this status. Use `'paid'` for completed sales.
 
 ***
 
@@ -48,4 +60,4 @@ Defined in: [core/services/invoices.service.ts:82](https://github.com/Bates-Solu
 
 > `optional` **subscriptionId?**: `string`
 
-Defined in: [core/services/invoices.service.ts:81](https://github.com/Bates-Solutions/stripe/blob/964221c430bc064fc82fc04138a48dfee1651d35/src/core/services/invoices.service.ts#L81)
+Defined in: [core/services/invoices.service.ts:87](https://github.com/Bates-Solutions/stripe/blob/287dd161f87c25c2829a16a655e574c4defe6fe7/src/core/services/invoices.service.ts#L87)
