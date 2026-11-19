@@ -8,6 +8,6 @@
 
 > **Product** = `Stripe.Product`
 
-Defined in: [core/services/products.service.ts:8](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/products.service.ts#L8)
+Defined in: [stripe/src/core/services/products.service.ts:8](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/products.service.ts#L8)
 
 A Stripe Product

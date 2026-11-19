@@ -6,7 +6,7 @@
 
 # Interface: Money
 
-Defined in: [core/utils.ts:6](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/utils.ts#L6)
+Defined in: [stripe/src/core/utils.ts:6](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/utils.ts#L6)
 
 Money representation
 
@@ -16,7 +16,7 @@ Money representation
 
 > **amount**: `number`
 
-Defined in: [core/utils.ts:8](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/utils.ts#L8)
+Defined in: [stripe/src/core/utils.ts:8](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/utils.ts#L8)
 
 Amount in the smallest currency unit (e.g. cents)
 
@@ -26,4 +26,4 @@ Amount in the smallest currency unit (e.g. cents)
 
 > **currency**: [`CurrencyCode`](../type-aliases/CurrencyCode.md)
 
-Defined in: [core/utils.ts:9](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/utils.ts#L9)
+Defined in: [stripe/src/core/utils.ts:9](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/utils.ts#L9)

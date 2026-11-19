@@ -6,7 +6,7 @@
 
 # Interface: UpdateItemOptions
 
-Defined in: [core/services/inventory.service.ts:141](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L141)
+Defined in: [clover/src/core/services/inventory.service.ts:141](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L141)
 
 Options for `inventory.updateItem()`. Give at least one field.
 
@@ -22,7 +22,7 @@ Stock is not changed here; use `inventory.updateItemStock()`.
 
 > `optional` **alternateName?**: `string`
 
-Defined in: [core/services/inventory.service.ts:110](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L110)
+Defined in: [clover/src/core/services/inventory.service.ts:110](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L110)
 
 #### Inherited from
 
@@ -34,7 +34,7 @@ Defined in: [core/services/inventory.service.ts:110](https://github.com/Bates-So
 
 > `optional` **available?**: `boolean`
 
-Defined in: [core/services/inventory.service.ts:121](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L121)
+Defined in: [clover/src/core/services/inventory.service.ts:121](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L121)
 
 #### Inherited from
 
@@ -46,7 +46,7 @@ Defined in: [core/services/inventory.service.ts:121](https://github.com/Bates-So
 
 > `optional` **code?**: `string`
 
-Defined in: [core/services/inventory.service.ts:112](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L112)
+Defined in: [clover/src/core/services/inventory.service.ts:112](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L112)
 
 Product code such as a UPC or EAN barcode
 
@@ -60,7 +60,7 @@ Product code such as a UPC or EAN barcode
 
 > `optional` **cost?**: `number`
 
-Defined in: [core/services/inventory.service.ts:118](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L118)
+Defined in: [clover/src/core/services/inventory.service.ts:118](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L118)
 
 The merchant's cost in cents (integer)
 
@@ -74,7 +74,7 @@ The merchant's cost in cents (integer)
 
 > `optional` **hidden?**: `boolean`
 
-Defined in: [core/services/inventory.service.ts:120](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L120)
+Defined in: [clover/src/core/services/inventory.service.ts:120](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L120)
 
 #### Inherited from
 
@@ -86,7 +86,7 @@ Defined in: [core/services/inventory.service.ts:120](https://github.com/Bates-So
 
 > `optional` **idempotencyKey?**: `string`
 
-Defined in: [core/services/inventory.service.ts:143](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L143)
+Defined in: [clover/src/core/services/inventory.service.ts:143](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L143)
 
 Idempotency key (defaults to a generated UUID)
 
@@ -96,7 +96,7 @@ Idempotency key (defaults to a generated UUID)
 
 > `optional` **isRevenue?**: `boolean`
 
-Defined in: [core/services/inventory.service.ts:122](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L122)
+Defined in: [clover/src/core/services/inventory.service.ts:122](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L122)
 
 #### Inherited from
 
@@ -108,7 +108,7 @@ Defined in: [core/services/inventory.service.ts:122](https://github.com/Bates-So
 
 > `optional` **name?**: `string`
 
-Defined in: [core/services/inventory.service.ts:109](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L109)
+Defined in: [clover/src/core/services/inventory.service.ts:109](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L109)
 
 #### Inherited from
 
@@ -120,7 +120,7 @@ Defined in: [core/services/inventory.service.ts:109](https://github.com/Bates-So
 
 > `optional` **price?**: `number`
 
-Defined in: [core/services/inventory.service.ts:115](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L115)
+Defined in: [clover/src/core/services/inventory.service.ts:115](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L115)
 
 Price in cents (integer)
 
@@ -134,7 +134,7 @@ Price in cents (integer)
 
 > `optional` **priceType?**: [`ItemPriceType`](../type-aliases/ItemPriceType.md)
 
-Defined in: [core/services/inventory.service.ts:116](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L116)
+Defined in: [clover/src/core/services/inventory.service.ts:116](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L116)
 
 #### Inherited from
 
@@ -146,7 +146,7 @@ Defined in: [core/services/inventory.service.ts:116](https://github.com/Bates-So
 
 > `optional` **sku?**: `string`
 
-Defined in: [core/services/inventory.service.ts:113](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L113)
+Defined in: [clover/src/core/services/inventory.service.ts:113](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L113)
 
 #### Inherited from
 
@@ -158,7 +158,7 @@ Defined in: [core/services/inventory.service.ts:113](https://github.com/Bates-So
 
 > `optional` **unitName?**: `string`
 
-Defined in: [core/services/inventory.service.ts:119](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L119)
+Defined in: [clover/src/core/services/inventory.service.ts:119](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L119)
 
 #### Inherited from
 

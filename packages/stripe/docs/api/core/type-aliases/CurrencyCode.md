@@ -8,7 +8,7 @@
 
 > **CurrencyCode** = `"usd"` \| `"cad"` \| `"gbp"` \| `"eur"` \| `"aud"` \| `"jpy"`
 
-Defined in: [core/types/index.ts:15](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/types/index.ts#L15)
+Defined in: [stripe/src/core/types/index.ts:15](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/types/index.ts#L15)
 
 Currency codes commonly used with Stripe.
 

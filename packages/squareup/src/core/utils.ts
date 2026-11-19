@@ -88,23 +88,7 @@ export function formatMoney(
   }).format(amount);
 }
 
-/**
- * Create a unique idempotency key for Square API requests
- *
- * Uses `globalThis.crypto.randomUUID()`, available on Node 22+, Deno, Bun, and
- * Cloudflare Workers.
- *
- * @returns UUID string
- *
- * @example
- * ```typescript
- * const key = createIdempotencyKey();
- * // "550e8400-e29b-41d4-a716-446655440000"
- * ```
- */
-export function createIdempotencyKey(): string {
-  return globalThis.crypto.randomUUID();
-}
+export { createIdempotencyKey } from '@bates-solutions/payments-core/crypto';
 
 /** Shortest idempotency-key limit among the endpoints keys are derived for. */
 const MAX_DERIVED_KEY_LENGTH = 128;

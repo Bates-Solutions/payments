@@ -8,7 +8,7 @@
 
 > **createLambdaWebhookHandler**(`config`): (`proxyEvent`) => `Promise`\<[`LambdaProxyResult`](../interfaces/LambdaProxyResult.md)\>
 
-Defined in: [server/middleware/lambda.ts:126](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/middleware/lambda.ts#L126)
+Defined in: [stripe/src/server/middleware/lambda.ts:126](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/middleware/lambda.ts#L126)
 
 Create an AWS Lambda handler for Stripe webhooks.
 

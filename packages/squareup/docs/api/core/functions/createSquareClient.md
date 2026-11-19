@@ -8,7 +8,7 @@
 
 > **createSquareClient**(`config`): [`SquareClient`](../classes/SquareClient.md)
 
-Defined in: [core/client.ts:170](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/client.ts#L170)
+Defined in: [squareup/src/core/client.ts:170](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/client.ts#L170)
 
 Create a new Square client instance
 

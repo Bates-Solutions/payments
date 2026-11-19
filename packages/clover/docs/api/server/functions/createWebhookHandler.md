@@ -8,7 +8,7 @@
 
 > **createWebhookHandler**(`config`): (`request`) => `Promise`\<`Response`\>
 
-Defined in: [server/middleware/web.ts:35](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/middleware/web.ts#L35)
+Defined in: [clover/src/server/middleware/web.ts:35](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/middleware/web.ts#L35)
 
 Create a framework-neutral Clover webhook handler on the Web platform.
 

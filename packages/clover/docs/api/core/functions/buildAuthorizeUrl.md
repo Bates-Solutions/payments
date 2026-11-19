@@ -8,7 +8,7 @@
 
 > **buildAuthorizeUrl**(`options`): `string`
 
-Defined in: [core/oauth.ts:60](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/oauth.ts#L60)
+Defined in: [clover/src/core/oauth.ts:66](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/oauth.ts#L66)
 
 Build the URL that sends a merchant to Clover to authorize your app (v2
 OAuth code flow, expiring tokens). Pure function, no network call.

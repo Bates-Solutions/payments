@@ -1,5 +1,11 @@
+import { requireNonEmpty as requireNonEmptyOption } from '@bates-solutions/payments-core/errors';
 import type { CloverEnvironment } from './types/index.js';
-import { CloverError, CloverValidationError, cloverErrorFromResponse, parseCloverError } from './errors.js';
+import {
+  CloverError,
+  CloverValidationError,
+  cloverErrorFromResponse,
+  parseCloverError,
+} from './errors.js';
 import { HOSTS } from './http.js';
 
 /**
@@ -228,7 +234,10 @@ export class CloverOAuthClient {
       accessToken,
       expiresAt: parseUnixSeconds(json?.access_token_expiration, 'access_token_expiration'),
       refreshToken,
-      refreshTokenExpiresAt: parseUnixSeconds(json?.refresh_token_expiration, 'refresh_token_expiration'),
+      refreshTokenExpiresAt: parseUnixSeconds(
+        json?.refresh_token_expiration,
+        'refresh_token_expiration'
+      ),
     };
   }
 }
@@ -260,8 +269,6 @@ function parseUnixSeconds(value: unknown, field: string): Date {
   return new Date(value * 1000);
 }
 
-function requireNonEmpty(value: string | undefined, field: string): void {
-  if (!value) {
-    throw new CloverValidationError(`${field} is required`, field);
-  }
+function requireNonEmpty(value: string | undefined, field: string): asserts value is string {
+  requireNonEmptyOption(value, field, (message, name) => new CloverValidationError(message, name));
 }

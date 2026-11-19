@@ -6,7 +6,7 @@
 
 # Interface: PaginationOptions
 
-Defined in: [core/types/index.ts:27](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/types/index.ts#L27)
+Defined in: [clover/src/core/types/index.ts:27](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/types/index.ts#L27)
 
 Common pagination options for platform (`/v3`) list endpoints.
 
@@ -21,7 +21,7 @@ Common pagination options for platform (`/v3`) list endpoints.
 
 > `optional` **limit?**: `number`
 
-Defined in: [core/types/index.ts:29](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/types/index.ts#L29)
+Defined in: [clover/src/core/types/index.ts:29](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/types/index.ts#L29)
 
 Maximum number of records to return
 
@@ -31,6 +31,6 @@ Maximum number of records to return
 
 > `optional` **offset?**: `number`
 
-Defined in: [core/types/index.ts:31](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/types/index.ts#L31)
+Defined in: [clover/src/core/types/index.ts:31](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/types/index.ts#L31)
 
 Number of records to skip

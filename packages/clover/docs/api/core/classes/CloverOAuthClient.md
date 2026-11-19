@@ -6,7 +6,7 @@
 
 # Class: CloverOAuthClient
 
-Defined in: [core/oauth.ts:142](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/oauth.ts#L142)
+Defined in: [clover/src/core/oauth.ts:148](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/oauth.ts#L148)
 
 OAuth client for the app-credential endpoints: exchanging an authorization
 code and refreshing an expiring token pair (Clover v2 OAuth, high-trust
@@ -39,7 +39,7 @@ const clover = createCloverClient({
 
 > **new CloverOAuthClient**(`config`): `CloverOAuthClient`
 
-Defined in: [core/oauth.ts:149](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/oauth.ts#L149)
+Defined in: [clover/src/core/oauth.ts:155](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/oauth.ts#L155)
 
 #### Parameters
 
@@ -57,7 +57,7 @@ Defined in: [core/oauth.ts:149](https://github.com/Bates-Solutions/payments/blob
 
 > **obtainToken**(`options`): `Promise`\<[`OAuthTokens`](../interfaces/OAuthTokens.md)\>
 
-Defined in: [core/oauth.ts:172](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/oauth.ts#L172)
+Defined in: [clover/src/core/oauth.ts:178](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/oauth.ts#L178)
 
 Exchange the authorization `code` from the OAuth redirect for an expiring
 token pair.
@@ -89,7 +89,7 @@ const { accessToken, refreshToken, expiresAt } =
 
 > **refreshToken**(`options`): `Promise`\<[`OAuthTokens`](../interfaces/OAuthTokens.md)\>
 
-Defined in: [core/oauth.ts:191](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/oauth.ts#L191)
+Defined in: [clover/src/core/oauth.ts:197](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/oauth.ts#L197)
 
 Get a new token pair using a refresh token. The refresh token is single
 use: store the returned `refreshToken`, the old one stops working.

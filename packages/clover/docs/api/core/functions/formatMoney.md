@@ -8,7 +8,7 @@
 
 > **formatMoney**(`cents`, `currency?`, `locale?`): `string`
 
-Defined in: [core/utils.ts:56](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/utils.ts#L56)
+Defined in: [clover/src/core/utils.ts:56](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/utils.ts#L56)
 
 Format money for display.
 

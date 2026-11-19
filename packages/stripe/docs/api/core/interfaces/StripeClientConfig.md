@@ -6,7 +6,7 @@
 
 # Interface: StripeClientConfig
 
-Defined in: [core/client.ts:16](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/client.ts#L16)
+Defined in: [stripe/src/core/client.ts:16](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/client.ts#L16)
 
 Configuration options for the Stripe client
 
@@ -16,7 +16,7 @@ Configuration options for the Stripe client
 
 > **apiKey**: `string`
 
-Defined in: [core/client.ts:20](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/client.ts#L20)
+Defined in: [stripe/src/core/client.ts:20](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/client.ts#L20)
 
 Stripe secret API key (e.g. `sk_test_…` or `sk_live_…`)
 
@@ -26,7 +26,7 @@ Stripe secret API key (e.g. `sk_test_…` or `sk_live_…`)
 
 > `optional` **apiVersion?**: `string`
 
-Defined in: [core/client.ts:26](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/client.ts#L26)
+Defined in: [stripe/src/core/client.ts:26](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/client.ts#L26)
 
 Pin a specific Stripe API version. Omit to use the version configured on
 your Stripe account.
@@ -37,7 +37,7 @@ your Stripe account.
 
 > `optional` **maxNetworkRetries?**: `number`
 
-Defined in: [core/client.ts:32](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/client.ts#L32)
+Defined in: [stripe/src/core/client.ts:32](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/client.ts#L32)
 
 Number of times the Stripe SDK retries failed requests.
 

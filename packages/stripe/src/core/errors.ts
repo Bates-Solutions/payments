@@ -1,3 +1,5 @@
+import { PaymentsError } from '@bates-solutions/payments-core/errors';
+
 /**
  * Normalized Stripe error codes
  */
@@ -22,27 +24,18 @@ export type StripeErrorCode =
   | 'UNKNOWN';
 
 /**
- * Base Stripe error class
+ * Base Stripe error class. It extends core's `PaymentsError`, so
+ * `error instanceof PaymentsError` catches any provider's error.
  */
-export class StripeError extends Error {
-  public readonly code: StripeErrorCode;
-  public readonly statusCode?: number;
-  public readonly details?: unknown;
-
+export class StripeError extends PaymentsError<StripeErrorCode> {
   constructor(
     message: string,
     code: StripeErrorCode = 'UNKNOWN',
     statusCode?: number,
     details?: unknown
   ) {
-    super(message);
+    super(message, code, statusCode, details);
     this.name = 'StripeError';
-    this.code = code;
-    this.statusCode = statusCode;
-    this.details = details;
-
-    // Maintains proper stack trace for where error was thrown (V8 engines)
-    Error.captureStackTrace(this, this.constructor);
   }
 }
 

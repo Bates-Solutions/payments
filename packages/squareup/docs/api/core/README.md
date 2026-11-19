@@ -46,6 +46,7 @@ const payment = await square.payments.create({
 - [OAuthService](classes/OAuthService.md)
 - [OrderBuilder](classes/OrderBuilder.md)
 - [OrdersService](classes/OrdersService.md)
+- [PaymentsError](classes/PaymentsError.md)
 - [PaymentsService](classes/PaymentsService.md)
 - [SquareApiError](classes/SquareApiError.md)
 - [SquareAuthError](classes/SquareAuthError.md)

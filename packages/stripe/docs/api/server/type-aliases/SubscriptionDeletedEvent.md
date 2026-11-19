@@ -8,4 +8,4 @@
 
 > **SubscriptionDeletedEvent** = `Extract`\<`Stripe.Event`, \{ `type`: `"customer.subscription.deleted"`; \}\>
 
-Defined in: [server/types.ts:76](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/types.ts#L76)
+Defined in: [stripe/src/server/types.ts:76](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/types.ts#L76)

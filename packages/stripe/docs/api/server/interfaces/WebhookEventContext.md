@@ -6,7 +6,7 @@
 
 # Interface: WebhookEventContext
 
-Defined in: [server/middleware/lambda.ts:33](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/middleware/lambda.ts#L33)
+Defined in: [stripe/src/server/middleware/lambda.ts:33](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/middleware/lambda.ts#L33)
 
 Context passed to Lambda webhook handlers with auto-extracted entity IDs.
 
@@ -16,7 +16,7 @@ Context passed to Lambda webhook handlers with auto-extracted entity IDs.
 
 > `optional` **chargeId?**: `string`
 
-Defined in: [server/middleware/lambda.ts:35](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/middleware/lambda.ts#L35)
+Defined in: [stripe/src/server/middleware/lambda.ts:35](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/middleware/lambda.ts#L35)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [server/middleware/lambda.ts:35](https://github.com/Bates-Solutions/
 
 > `optional` **customerId?**: `string`
 
-Defined in: [server/middleware/lambda.ts:36](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/middleware/lambda.ts#L36)
+Defined in: [stripe/src/server/middleware/lambda.ts:36](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/middleware/lambda.ts#L36)
 
 ***
 
@@ -32,4 +32,4 @@ Defined in: [server/middleware/lambda.ts:36](https://github.com/Bates-Solutions/
 
 > `optional` **paymentIntentId?**: `string`
 
-Defined in: [server/middleware/lambda.ts:34](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/middleware/lambda.ts#L34)
+Defined in: [stripe/src/server/middleware/lambda.ts:34](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/middleware/lambda.ts#L34)

@@ -6,7 +6,7 @@
 
 # Interface: Order
 
-Defined in: [core/services/orders.service.ts:90](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L90)
+Defined in: [clover/src/core/services/orders.service.ts:90](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L90)
 
 A Clover Platform order (`/v3/merchants/{mId}/orders`).
 
@@ -16,7 +16,7 @@ A Clover Platform order (`/v3/merchants/{mId}/orders`).
 
 > `optional` **clientCreatedTime?**: `number`
 
-Defined in: [core/services/orders.service.ts:128](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L128)
+Defined in: [clover/src/core/services/orders.service.ts:128](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L128)
 
 Created on the device, in milliseconds since the epoch
 
@@ -26,7 +26,7 @@ Created on the device, in milliseconds since the epoch
 
 > `optional` **createdTime?**: `number`
 
-Defined in: [core/services/orders.service.ts:126](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L126)
+Defined in: [clover/src/core/services/orders.service.ts:126](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L126)
 
 Created on Clover's servers, in milliseconds since the epoch
 
@@ -36,7 +36,7 @@ Created on Clover's servers, in milliseconds since the epoch
 
 > `optional` **credits?**: `CloverObject`[]
 
-Defined in: [core/services/orders.service.ts:118](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L118)
+Defined in: [clover/src/core/services/orders.service.ts:118](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L118)
 
 With `expand: ['credits']`
 
@@ -46,7 +46,7 @@ With `expand: ['credits']`
 
 > `optional` **currency?**: `string`
 
-Defined in: [core/services/orders.service.ts:93](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L93)
+Defined in: [clover/src/core/services/orders.service.ts:93](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L93)
 
 ISO 4217 currency code
 
@@ -56,7 +56,7 @@ ISO 4217 currency code
 
 > `optional` **customers?**: `CloverObject`[]
 
-Defined in: [core/services/orders.service.ts:110](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L110)
+Defined in: [clover/src/core/services/orders.service.ts:110](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L110)
 
 With `expand: ['customers']`
 
@@ -66,7 +66,7 @@ With `expand: ['customers']`
 
 > `optional` **discounts?**: `CloverObject`[]
 
-Defined in: [core/services/orders.service.ts:122](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L122)
+Defined in: [clover/src/core/services/orders.service.ts:122](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L122)
 
 With `expand: ['discounts']`
 
@@ -76,7 +76,7 @@ With `expand: ['discounts']`
 
 > `optional` **employee?**: `object`
 
-Defined in: [core/services/orders.service.ts:104](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L104)
+Defined in: [clover/src/core/services/orders.service.ts:104](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L104)
 
 #### id
 
@@ -88,7 +88,7 @@ Defined in: [core/services/orders.service.ts:104](https://github.com/Bates-Solut
 
 > `optional` **externalReferenceId?**: `string`
 
-Defined in: [core/services/orders.service.ts:103](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L103)
+Defined in: [clover/src/core/services/orders.service.ts:103](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L103)
 
 ***
 
@@ -96,7 +96,7 @@ Defined in: [core/services/orders.service.ts:103](https://github.com/Bates-Solut
 
 > `optional` **id?**: `string`
 
-Defined in: [core/services/orders.service.ts:91](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L91)
+Defined in: [clover/src/core/services/orders.service.ts:91](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L91)
 
 ***
 
@@ -104,7 +104,7 @@ Defined in: [core/services/orders.service.ts:91](https://github.com/Bates-Soluti
 
 > `optional` **lineItems?**: [`LineItem`](LineItem.md)[]
 
-Defined in: [core/services/orders.service.ts:112](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L112)
+Defined in: [clover/src/core/services/orders.service.ts:112](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L112)
 
 With `expand: ['lineItems']`
 
@@ -114,7 +114,7 @@ With `expand: ['lineItems']`
 
 > `optional` **manualTransaction?**: `boolean`
 
-Defined in: [core/services/orders.service.ts:123](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L123)
+Defined in: [clover/src/core/services/orders.service.ts:123](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L123)
 
 ***
 
@@ -122,7 +122,7 @@ Defined in: [core/services/orders.service.ts:123](https://github.com/Bates-Solut
 
 > `optional` **modifiedTime?**: `number`
 
-Defined in: [core/services/orders.service.ts:129](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L129)
+Defined in: [clover/src/core/services/orders.service.ts:129](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L129)
 
 ***
 
@@ -130,7 +130,7 @@ Defined in: [core/services/orders.service.ts:129](https://github.com/Bates-Solut
 
 > `optional` **note?**: `string`
 
-Defined in: [core/services/orders.service.ts:102](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L102)
+Defined in: [clover/src/core/services/orders.service.ts:102](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L102)
 
 ***
 
@@ -138,7 +138,7 @@ Defined in: [core/services/orders.service.ts:102](https://github.com/Bates-Solut
 
 > `optional` **payments?**: `CloverObject`[]
 
-Defined in: [core/services/orders.service.ts:114](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L114)
+Defined in: [clover/src/core/services/orders.service.ts:114](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L114)
 
 With `expand: ['payments']`
 
@@ -148,7 +148,7 @@ With `expand: ['payments']`
 
 > `optional` **paymentState?**: [`OrderPaymentState`](../type-aliases/OrderPaymentState.md)
 
-Defined in: [core/services/orders.service.ts:99](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L99)
+Defined in: [clover/src/core/services/orders.service.ts:99](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L99)
 
 ***
 
@@ -156,7 +156,7 @@ Defined in: [core/services/orders.service.ts:99](https://github.com/Bates-Soluti
 
 > `optional` **payType?**: `"SPLIT_GUEST"` \| `"SPLIT_ITEM"` \| `"SPLIT_CUSTOM"` \| `"FULL"`
 
-Defined in: [core/services/orders.service.ts:100](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L100)
+Defined in: [clover/src/core/services/orders.service.ts:100](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L100)
 
 ***
 
@@ -164,7 +164,7 @@ Defined in: [core/services/orders.service.ts:100](https://github.com/Bates-Solut
 
 > `optional` **refunds?**: `CloverObject`[]
 
-Defined in: [core/services/orders.service.ts:116](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L116)
+Defined in: [clover/src/core/services/orders.service.ts:116](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L116)
 
 With `expand: ['refunds']`
 
@@ -174,7 +174,7 @@ With `expand: ['refunds']`
 
 > `optional` **state?**: `string`
 
-Defined in: [core/services/orders.service.ts:98](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L98)
+Defined in: [clover/src/core/services/orders.service.ts:98](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L98)
 
 Order state, e.g. `open` or `locked`
 
@@ -184,7 +184,7 @@ Order state, e.g. `open` or `locked`
 
 > `optional` **testMode?**: `boolean`
 
-Defined in: [core/services/orders.service.ts:124](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L124)
+Defined in: [clover/src/core/services/orders.service.ts:124](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L124)
 
 ***
 
@@ -192,7 +192,7 @@ Defined in: [core/services/orders.service.ts:124](https://github.com/Bates-Solut
 
 > `optional` **title?**: `string`
 
-Defined in: [core/services/orders.service.ts:101](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L101)
+Defined in: [clover/src/core/services/orders.service.ts:101](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L101)
 
 ***
 
@@ -200,7 +200,7 @@ Defined in: [core/services/orders.service.ts:101](https://github.com/Bates-Solut
 
 > `optional` **total?**: `number`
 
-Defined in: [core/services/orders.service.ts:95](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L95)
+Defined in: [clover/src/core/services/orders.service.ts:95](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L95)
 
 Total in cents
 
@@ -210,7 +210,7 @@ Total in cents
 
 > `optional` **unpaidBalance?**: `number`
 
-Defined in: [core/services/orders.service.ts:96](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L96)
+Defined in: [clover/src/core/services/orders.service.ts:96](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L96)
 
 ***
 
@@ -218,6 +218,6 @@ Defined in: [core/services/orders.service.ts:96](https://github.com/Bates-Soluti
 
 > `optional` **voids?**: `CloverObject`[]
 
-Defined in: [core/services/orders.service.ts:120](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L120)
+Defined in: [clover/src/core/services/orders.service.ts:120](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L120)
 
 With `expand: ['voids']`

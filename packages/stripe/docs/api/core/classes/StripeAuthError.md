@@ -6,7 +6,7 @@
 
 # Class: StripeAuthError
 
-Defined in: [core/errors.ts:77](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L77)
+Defined in: [stripe/src/core/errors.ts:70](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L70)
 
 Authentication errors
 
@@ -20,7 +20,7 @@ Authentication errors
 
 > **new StripeAuthError**(`message`, `code?`): `StripeAuthError`
 
-Defined in: [core/errors.ts:78](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L78)
+Defined in: [stripe/src/core/errors.ts:71](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L71)
 
 #### Parameters
 
@@ -46,7 +46,9 @@ Defined in: [core/errors.ts:78](https://github.com/Bates-Solutions/payments/blob
 
 > `readonly` **code**: [`StripeErrorCode`](../type-aliases/StripeErrorCode.md)
 
-Defined in: [core/errors.ts:28](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L28)
+Defined in: [payments-core/dist/errors/payments-error.d.ts:24](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/dist/errors/payments-error.d.ts#L24)
+
+Normalized error code. Each provider defines its own union.
 
 #### Inherited from
 
@@ -58,11 +60,13 @@ Defined in: [core/errors.ts:28](https://github.com/Bates-Solutions/payments/blob
 
 > `readonly` `optional` **details?**: `unknown`
 
-Defined in: [core/errors.ts:30](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L30)
+Defined in: [payments-core/dist/errors/payments-error.d.ts:28](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/dist/errors/payments-error.d.ts#L28)
+
+The raw error body or other context, if any.
 
 #### Inherited from
 
-[`StripeError`](StripeError.md).[`details`](StripeError.md#details)
+[`PaymentsError`](PaymentsError.md).[`details`](PaymentsError.md#details)
 
 ***
 
@@ -70,8 +74,10 @@ Defined in: [core/errors.ts:30](https://github.com/Bates-Solutions/payments/blob
 
 > `readonly` `optional` **statusCode?**: `number`
 
-Defined in: [core/errors.ts:29](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L29)
+Defined in: [payments-core/dist/errors/payments-error.d.ts:26](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/dist/errors/payments-error.d.ts#L26)
+
+HTTP status of the response that caused the error, if any.
 
 #### Inherited from
 
-[`StripeError`](StripeError.md).[`statusCode`](StripeError.md#statuscode)
+[`PaymentsError`](PaymentsError.md).[`statusCode`](PaymentsError.md#statuscode)

@@ -8,18 +8,16 @@
 
 > **createIdempotencyKey**(): `string`
 
-Defined in: [core/utils.ts:105](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/utils.ts#L105)
+Defined in: [payments-core/dist/crypto/random.d.ts:13](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/../../payments-core/dist/crypto/random.d.ts#L13)
 
-Create a unique idempotency key for Square API requests
-
-Uses `globalThis.crypto.randomUUID()`, available on Node 22+, Deno, Bun, and
-Cloudflare Workers.
+Create a random idempotency key: a version 4 UUID from WebCrypto's
+`randomUUID`, so it runs on Node 22+, Deno, Bun and Workers.
 
 ## Returns
 
 `string`
 
-UUID string
+A UUID string
 
 ## Example
 

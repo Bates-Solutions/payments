@@ -8,7 +8,7 @@
 
 > **parseAndVerifyWebhook**(`rawBody`, `signature`, `signatureKey`, `notificationUrl?`): [`ParsedWebhookRequest`](../interfaces/ParsedWebhookRequest.md)
 
-Defined in: [server/webhook.ts:110](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/webhook.ts#L110)
+Defined in: [squareup/src/server/webhook.ts:110](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/webhook.ts#L110)
 
 Parse and verify a webhook request
 

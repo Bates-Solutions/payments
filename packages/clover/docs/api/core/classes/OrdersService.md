@@ -6,7 +6,7 @@
 
 # Class: OrdersService
 
-Defined in: [core/services/orders.service.ts:251](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L251)
+Defined in: [clover/src/core/services/orders.service.ts:251](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L251)
 
 Orders service wrapping Clover's Platform
 [orders](https://docs.clover.com/dev/reference/ordergetorders) API
@@ -30,7 +30,7 @@ const { data: orders } = await clover.orders.list({
 
 > **new OrdersService**(`http`): `OrdersService`
 
-Defined in: [core/services/orders.service.ts:252](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L252)
+Defined in: [clover/src/core/services/orders.service.ts:252](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L252)
 
 #### Parameters
 
@@ -48,7 +48,7 @@ Defined in: [core/services/orders.service.ts:252](https://github.com/Bates-Solut
 
 > **get**(`orderId`, `options?`): `Promise`\<[`Order`](../interfaces/Order.md)\>
 
-Defined in: [core/services/orders.service.ts:347](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L347)
+Defined in: [clover/src/core/services/orders.service.ts:347](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L347)
 
 Retrieve an order by ID.
 
@@ -78,7 +78,7 @@ const order = await clover.orders.get('ORDER_1', { expand: ['lineItems'] });
 
 > **list**(`options?`): `Promise`\<[`PaginatedResponse`](../interfaces/PaginatedResponse.md)\<[`Order`](../interfaces/Order.md)\>\>
 
-Defined in: [core/services/orders.service.ts:294](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L294)
+Defined in: [clover/src/core/services/orders.service.ts:294](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L294)
 
 List orders with offset-based pagination, optionally in a creation time
 window and with line items. Clover returns 100 orders per page by

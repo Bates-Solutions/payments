@@ -86,6 +86,8 @@ export {
   parseStripeError,
 } from './errors.js';
 export type { StripeErrorCode } from './errors.js';
+// Core's base class, so `instanceof PaymentsError` works without installing core.
+export { PaymentsError } from '@bates-solutions/payments-core/errors';
 
 // Utils
 export {

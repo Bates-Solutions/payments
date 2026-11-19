@@ -8,6 +8,6 @@
 
 > **OrderPaymentState** = `"OPEN"` \| `"PAID"` \| `"REFUNDED"` \| `"CREDITED"` \| `"PARTIALLY_PAID"` \| `"PARTIALLY_REFUNDED"`
 
-Defined in: [core/services/orders.service.ts:32](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L32)
+Defined in: [clover/src/core/services/orders.service.ts:32](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L32)
 
 Payment state of an order.

@@ -6,7 +6,7 @@
 
 # Interface: WebhookVerificationResult
 
-Defined in: [server/types.ts:62](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/types.ts#L62)
+Defined in: [clover/src/server/types.ts:62](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/types.ts#L62)
 
 Result of webhook signature verification.
 
@@ -16,7 +16,7 @@ Result of webhook signature verification.
 
 > `optional` **error?**: `string`
 
-Defined in: [server/types.ts:64](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/types.ts#L64)
+Defined in: [clover/src/server/types.ts:64](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/types.ts#L64)
 
 ***
 
@@ -24,4 +24,4 @@ Defined in: [server/types.ts:64](https://github.com/Bates-Solutions/payments/blo
 
 > **valid**: `boolean`
 
-Defined in: [server/types.ts:63](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/types.ts#L63)
+Defined in: [clover/src/server/types.ts:63](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/types.ts#L63)

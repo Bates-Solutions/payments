@@ -65,14 +65,4 @@ export function formatMoney(
   }).format(fromCents(cents));
 }
 
-/**
- * Create a unique idempotency key for Clover requests.
- *
- * Uses WebCrypto `randomUUID`, so it runs on any modern runtime (Node 22+,
- * Deno, Bun, Cloudflare Workers).
- *
- * @returns UUID string
- */
-export function createIdempotencyKey(): string {
-  return globalThis.crypto.randomUUID();
-}
+export { createIdempotencyKey } from '@bates-solutions/payments-core/crypto';

@@ -8,7 +8,7 @@
 
 > **createCloverClient**(`config`): [`CloverClient`](../classes/CloverClient.md)
 
-Defined in: [core/client.ts:97](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/client.ts#L97)
+Defined in: [clover/src/core/client.ts:97](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/client.ts#L97)
 
 Create a new Clover client instance.
 

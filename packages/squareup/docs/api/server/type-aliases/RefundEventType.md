@@ -8,4 +8,4 @@
 
 > **RefundEventType** = `"refund.created"` \| `"refund.updated"`
 
-Defined in: [server/types.ts:11](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L11)
+Defined in: [squareup/src/server/types.ts:11](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L11)

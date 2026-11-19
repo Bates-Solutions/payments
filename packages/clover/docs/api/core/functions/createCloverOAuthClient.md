@@ -8,7 +8,7 @@
 
 > **createCloverOAuthClient**(`config`): [`CloverOAuthClient`](../classes/CloverOAuthClient.md)
 
-Defined in: [core/oauth.ts:248](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/oauth.ts#L248)
+Defined in: [clover/src/core/oauth.ts:257](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/oauth.ts#L257)
 
 Create an OAuth client for the app-credential endpoints.
 

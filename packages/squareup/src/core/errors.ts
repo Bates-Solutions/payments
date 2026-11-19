@@ -1,3 +1,5 @@
+import { PaymentsError } from '@bates-solutions/payments-core/errors';
+
 /**
  * Square error codes
  */
@@ -27,27 +29,18 @@ export type SquareErrorCode =
   | 'UNKNOWN';
 
 /**
- * Base Square error class
+ * Base Square error class. It extends core's `PaymentsError`, so
+ * `error instanceof PaymentsError` catches any provider's error.
  */
-export class SquareError extends Error {
-  public readonly code: SquareErrorCode;
-  public readonly statusCode?: number;
-  public readonly details?: unknown;
-
+export class SquareError extends PaymentsError<SquareErrorCode> {
   constructor(
     message: string,
     code: SquareErrorCode = 'UNKNOWN',
     statusCode?: number,
     details?: unknown
   ) {
-    super(message);
+    super(message, code, statusCode, details);
     this.name = 'SquareError';
-    this.code = code;
-    this.statusCode = statusCode;
-    this.details = details;
-
-    // Maintains proper stack trace for where error was thrown (V8 engines)
-    Error.captureStackTrace(this, this.constructor);
   }
 }
 
@@ -210,7 +203,9 @@ export function isRetryableSquareError(error: unknown): boolean {
   if (!(error instanceof SquareError) || error instanceof SquareValidationError) return false;
 
   const { statusCode } = error;
-  return statusCode === 408 || statusCode === 429 || (statusCode !== undefined && statusCode >= 500);
+  return (
+    statusCode === 408 || statusCode === 429 || (statusCode !== undefined && statusCode >= 500)
+  );
 }
 
 /**
@@ -223,7 +218,12 @@ export function isRetryableSquareError(error: unknown): boolean {
  * @internal
  */
 export function assertNoResponseErrors(response: {
-  errors?: ReadonlyArray<{ category: string; code: string; detail?: string | null; field?: string | null }> | null;
+  errors?: ReadonlyArray<{
+    category: string;
+    code: string;
+    detail?: string | null;
+    field?: string | null;
+  }> | null;
 }): void {
   if (!response.errors?.length) return;
 

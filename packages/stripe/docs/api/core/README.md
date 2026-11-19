@@ -31,6 +31,7 @@ const customer = await stripe.customers.create({ email: 'jane@example.com' });
 - [CheckoutService](classes/CheckoutService.md)
 - [CustomersService](classes/CustomersService.md)
 - [InvoicesService](classes/InvoicesService.md)
+- [PaymentsError](classes/PaymentsError.md)
 - [PaymentsService](classes/PaymentsService.md)
 - [PricesService](classes/PricesService.md)
 - [ProductsService](classes/ProductsService.md)

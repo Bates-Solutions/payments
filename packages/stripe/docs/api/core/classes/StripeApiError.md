@@ -6,7 +6,7 @@
 
 # Class: StripeApiError
 
-Defined in: [core/errors.ts:52](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L52)
+Defined in: [stripe/src/core/errors.ts:45](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L45)
 
 API-level errors from Stripe
 
@@ -20,7 +20,7 @@ API-level errors from Stripe
 
 > **new StripeApiError**(`message`, `code`, `statusCode`, `options?`): `StripeApiError`
 
-Defined in: [core/errors.ts:60](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L60)
+Defined in: [stripe/src/core/errors.ts:53](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L53)
 
 #### Parameters
 
@@ -68,7 +68,9 @@ Defined in: [core/errors.ts:60](https://github.com/Bates-Solutions/payments/blob
 
 > `readonly` **code**: [`StripeErrorCode`](../type-aliases/StripeErrorCode.md)
 
-Defined in: [core/errors.ts:28](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L28)
+Defined in: [payments-core/dist/errors/payments-error.d.ts:24](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/dist/errors/payments-error.d.ts#L24)
+
+Normalized error code. Each provider defines its own union.
 
 #### Inherited from
 
@@ -80,11 +82,13 @@ Defined in: [core/errors.ts:28](https://github.com/Bates-Solutions/payments/blob
 
 > `readonly` `optional` **details?**: `unknown`
 
-Defined in: [core/errors.ts:30](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L30)
+Defined in: [payments-core/dist/errors/payments-error.d.ts:28](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/dist/errors/payments-error.d.ts#L28)
+
+The raw error body or other context, if any.
 
 #### Inherited from
 
-[`StripeError`](StripeError.md).[`details`](StripeError.md#details)
+[`PaymentsError`](PaymentsError.md).[`details`](PaymentsError.md#details)
 
 ***
 
@@ -92,7 +96,7 @@ Defined in: [core/errors.ts:30](https://github.com/Bates-Solutions/payments/blob
 
 > `readonly` `optional` **param?**: `string`
 
-Defined in: [core/errors.ts:56](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L56)
+Defined in: [stripe/src/core/errors.ts:49](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L49)
 
 Request parameter the error relates to, if any
 
@@ -102,7 +106,7 @@ Request parameter the error relates to, if any
 
 > `readonly` `optional` **requestId?**: `string`
 
-Defined in: [core/errors.ts:58](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L58)
+Defined in: [stripe/src/core/errors.ts:51](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L51)
 
 Stripe request ID for support/debugging
 
@@ -112,11 +116,13 @@ Stripe request ID for support/debugging
 
 > `readonly` `optional` **statusCode?**: `number`
 
-Defined in: [core/errors.ts:29](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L29)
+Defined in: [payments-core/dist/errors/payments-error.d.ts:26](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/dist/errors/payments-error.d.ts#L26)
+
+HTTP status of the response that caused the error, if any.
 
 #### Inherited from
 
-[`StripeError`](StripeError.md).[`statusCode`](StripeError.md#statuscode)
+[`PaymentsError`](PaymentsError.md).[`statusCode`](PaymentsError.md#statuscode)
 
 ***
 
@@ -124,6 +130,6 @@ Defined in: [core/errors.ts:29](https://github.com/Bates-Solutions/payments/blob
 
 > `readonly` `optional` **type?**: `string`
 
-Defined in: [core/errors.ts:54](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L54)
+Defined in: [stripe/src/core/errors.ts:47](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L47)
 
 Raw Stripe error `type` (e.g. `invalid_request_error`)

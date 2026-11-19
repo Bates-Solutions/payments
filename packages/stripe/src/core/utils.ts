@@ -87,23 +87,7 @@ export function formatMoney(
   }).format(amount);
 }
 
-/**
- * Create a unique idempotency key for Stripe API requests.
- *
- * Uses the WebCrypto `randomUUID`, so it runs on any modern runtime (Node 22+,
- * Deno, Bun, Cloudflare Workers) — not just Node.
- *
- * @returns UUID string
- *
- * @example
- * ```typescript
- * const key = createIdempotencyKey();
- * // "550e8400-e29b-41d4-a716-446655440000"
- * ```
- */
-export function createIdempotencyKey(): string {
-  return globalThis.crypto.randomUUID();
-}
+export { createIdempotencyKey } from '@bates-solutions/payments-core/crypto';
 
 /**
  * Convert a Unix timestamp (seconds) to a JS `Date`.
@@ -142,9 +126,7 @@ export function fromUnixTime(seconds: number | null | undefined): Date | undefin
  * resolveId(null);             // undefined
  * ```
  */
-export function resolveId(
-  value: string | { id?: string } | null | undefined
-): string | undefined {
+export function resolveId(value: string | { id?: string } | null | undefined): string | undefined {
   if (typeof value === 'string') {
     return value;
   }

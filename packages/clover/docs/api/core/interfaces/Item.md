@@ -6,7 +6,7 @@
 
 # Interface: Item
 
-Defined in: [core/services/inventory.service.ts:48](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L48)
+Defined in: [clover/src/core/services/inventory.service.ts:48](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L48)
 
 A Clover inventory item (`/v3/merchants/{mId}/items`).
 
@@ -16,7 +16,7 @@ A Clover inventory item (`/v3/merchants/{mId}/items`).
 
 > `optional` **alternateName?**: `string`
 
-Defined in: [core/services/inventory.service.ts:51](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L51)
+Defined in: [clover/src/core/services/inventory.service.ts:51](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L51)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [core/services/inventory.service.ts:51](https://github.com/Bates-Sol
 
 > `optional` **autoManage?**: `boolean`
 
-Defined in: [core/services/inventory.service.ts:68](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L68)
+Defined in: [clover/src/core/services/inventory.service.ts:68](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L68)
 
 Availability managed automatically from stock
 
@@ -34,7 +34,7 @@ Availability managed automatically from stock
 
 > `optional` **available?**: `boolean`
 
-Defined in: [core/services/inventory.service.ts:66](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L66)
+Defined in: [clover/src/core/services/inventory.service.ts:66](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L66)
 
 Sellable on all channels
 
@@ -44,7 +44,7 @@ Sellable on all channels
 
 > `optional` **categories?**: `object`[]
 
-Defined in: [core/services/inventory.service.ts:76](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L76)
+Defined in: [clover/src/core/services/inventory.service.ts:76](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L76)
 
 #### id
 
@@ -60,7 +60,7 @@ Defined in: [core/services/inventory.service.ts:76](https://github.com/Bates-Sol
 
 > `optional` **code?**: `string`
 
-Defined in: [core/services/inventory.service.ts:53](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L53)
+Defined in: [clover/src/core/services/inventory.service.ts:53](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L53)
 
 Product code such as a UPC or EAN barcode. Searchable with `findItemsByCode()`.
 
@@ -70,7 +70,7 @@ Product code such as a UPC or EAN barcode. Searchable with `findItemsByCode()`.
 
 > `optional` **cost?**: `number`
 
-Defined in: [core/services/inventory.service.ts:60](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L60)
+Defined in: [clover/src/core/services/inventory.service.ts:60](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L60)
 
 The merchant's cost in cents
 
@@ -80,7 +80,7 @@ The merchant's cost in cents
 
 > `optional` **defaultTaxRates?**: `boolean`
 
-Defined in: [core/services/inventory.service.ts:70](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L70)
+Defined in: [clover/src/core/services/inventory.service.ts:70](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L70)
 
 ***
 
@@ -88,7 +88,7 @@ Defined in: [core/services/inventory.service.ts:70](https://github.com/Bates-Sol
 
 > `optional` **deletedTime?**: `number`
 
-Defined in: [core/services/inventory.service.ts:79](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L79)
+Defined in: [clover/src/core/services/inventory.service.ts:79](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L79)
 
 ***
 
@@ -96,7 +96,7 @@ Defined in: [core/services/inventory.service.ts:79](https://github.com/Bates-Sol
 
 > `optional` **hidden?**: `boolean`
 
-Defined in: [core/services/inventory.service.ts:64](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L64)
+Defined in: [clover/src/core/services/inventory.service.ts:64](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L64)
 
 Hidden in the Register app
 
@@ -106,7 +106,7 @@ Hidden in the Register app
 
 > `optional` **id?**: `string`
 
-Defined in: [core/services/inventory.service.ts:49](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L49)
+Defined in: [clover/src/core/services/inventory.service.ts:49](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L49)
 
 ***
 
@@ -114,7 +114,7 @@ Defined in: [core/services/inventory.service.ts:49](https://github.com/Bates-Sol
 
 > `optional` **isRevenue?**: `boolean`
 
-Defined in: [core/services/inventory.service.ts:69](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L69)
+Defined in: [clover/src/core/services/inventory.service.ts:69](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L69)
 
 ***
 
@@ -122,7 +122,7 @@ Defined in: [core/services/inventory.service.ts:69](https://github.com/Bates-Sol
 
 > `optional` **itemStock?**: [`ItemStock`](ItemStock.md)
 
-Defined in: [core/services/inventory.service.ts:72](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L72)
+Defined in: [clover/src/core/services/inventory.service.ts:72](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L72)
 
 Present when requested with `expand: ['itemStock']`
 
@@ -132,7 +132,7 @@ Present when requested with `expand: ['itemStock']`
 
 > `optional` **modifiedTime?**: `number`
 
-Defined in: [core/services/inventory.service.ts:78](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L78)
+Defined in: [clover/src/core/services/inventory.service.ts:78](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L78)
 
 Last modified, in milliseconds since the epoch
 
@@ -142,7 +142,7 @@ Last modified, in milliseconds since the epoch
 
 > `optional` **name?**: `string`
 
-Defined in: [core/services/inventory.service.ts:50](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L50)
+Defined in: [clover/src/core/services/inventory.service.ts:50](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L50)
 
 ***
 
@@ -150,7 +150,7 @@ Defined in: [core/services/inventory.service.ts:50](https://github.com/Bates-Sol
 
 > `optional` **price?**: `number`
 
-Defined in: [core/services/inventory.service.ts:57](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L57)
+Defined in: [clover/src/core/services/inventory.service.ts:57](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L57)
 
 Price in cents
 
@@ -160,7 +160,7 @@ Price in cents
 
 > `optional` **priceType?**: [`ItemPriceType`](../type-aliases/ItemPriceType.md)
 
-Defined in: [core/services/inventory.service.ts:58](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L58)
+Defined in: [clover/src/core/services/inventory.service.ts:58](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L58)
 
 ***
 
@@ -168,7 +168,7 @@ Defined in: [core/services/inventory.service.ts:58](https://github.com/Bates-Sol
 
 > `optional` **sku?**: `string`
 
-Defined in: [core/services/inventory.service.ts:55](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L55)
+Defined in: [clover/src/core/services/inventory.service.ts:55](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L55)
 
 Stock keeping unit. Searchable with `findItemsByCode()`.
 
@@ -178,7 +178,7 @@ Stock keeping unit. Searchable with `findItemsByCode()`.
 
 > `optional` **stockCount?**: `number`
 
-Defined in: [core/services/inventory.service.ts:74](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L74)
+Defined in: [clover/src/core/services/inventory.service.ts:74](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L74)
 
 #### Deprecated
 
@@ -190,7 +190,7 @@ Clover deprecated this in favour of `itemStock.quantity`.
 
 > `optional` **tags?**: `object`[]
 
-Defined in: [core/services/inventory.service.ts:75](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L75)
+Defined in: [clover/src/core/services/inventory.service.ts:75](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L75)
 
 #### id
 
@@ -206,6 +206,6 @@ Defined in: [core/services/inventory.service.ts:75](https://github.com/Bates-Sol
 
 > `optional` **unitName?**: `string`
 
-Defined in: [core/services/inventory.service.ts:62](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L62)
+Defined in: [clover/src/core/services/inventory.service.ts:62](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L62)
 
 Unit of measure for `PER_UNIT` items, e.g. `lb`

@@ -39,6 +39,7 @@ const charge = await clover.payments.create({ amount: 1000, source: 'clv_tok' })
 - [CustomersService](classes/CustomersService.md)
 - [InventoryService](classes/InventoryService.md)
 - [OrdersService](classes/OrdersService.md)
+- [PaymentsError](classes/PaymentsError.md)
 - [PaymentsService](classes/PaymentsService.md)
 - [RefundsService](classes/RefundsService.md)
 

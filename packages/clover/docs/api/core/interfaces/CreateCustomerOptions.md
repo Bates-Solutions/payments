@@ -6,7 +6,7 @@
 
 # Interface: CreateCustomerOptions
 
-Defined in: [core/services/customers.service.ts:23](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L23)
+Defined in: [clover/src/core/services/customers.service.ts:23](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L23)
 
 Options for creating a customer. `email`/`phone` are conveniences that map to
 Clover's `emailAddresses` / `phoneNumbers` arrays.
@@ -17,7 +17,7 @@ Clover's `emailAddresses` / `phoneNumbers` arrays.
 
 > `optional` **email?**: `string`
 
-Defined in: [core/services/customers.service.ts:26](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L26)
+Defined in: [clover/src/core/services/customers.service.ts:26](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L26)
 
 ***
 
@@ -25,7 +25,7 @@ Defined in: [core/services/customers.service.ts:26](https://github.com/Bates-Sol
 
 > `optional` **firstName?**: `string`
 
-Defined in: [core/services/customers.service.ts:24](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L24)
+Defined in: [clover/src/core/services/customers.service.ts:24](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L24)
 
 ***
 
@@ -33,7 +33,7 @@ Defined in: [core/services/customers.service.ts:24](https://github.com/Bates-Sol
 
 > `optional` **idempotencyKey?**: `string`
 
-Defined in: [core/services/customers.service.ts:31](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L31)
+Defined in: [clover/src/core/services/customers.service.ts:31](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L31)
 
 Idempotency key (defaults to a generated UUID)
 
@@ -43,7 +43,7 @@ Idempotency key (defaults to a generated UUID)
 
 > `optional` **lastName?**: `string`
 
-Defined in: [core/services/customers.service.ts:25](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L25)
+Defined in: [clover/src/core/services/customers.service.ts:25](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L25)
 
 ***
 
@@ -51,7 +51,7 @@ Defined in: [core/services/customers.service.ts:25](https://github.com/Bates-Sol
 
 > `optional` **marketingAllowed?**: `boolean`
 
-Defined in: [core/services/customers.service.ts:28](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L28)
+Defined in: [clover/src/core/services/customers.service.ts:28](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L28)
 
 ***
 
@@ -59,7 +59,7 @@ Defined in: [core/services/customers.service.ts:28](https://github.com/Bates-Sol
 
 > `optional` **metadata?**: `Record`\<`string`, `unknown`\>
 
-Defined in: [core/services/customers.service.ts:29](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L29)
+Defined in: [clover/src/core/services/customers.service.ts:29](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L29)
 
 ***
 
@@ -67,4 +67,4 @@ Defined in: [core/services/customers.service.ts:29](https://github.com/Bates-Sol
 
 > `optional` **phone?**: `string`
 
-Defined in: [core/services/customers.service.ts:27](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L27)
+Defined in: [clover/src/core/services/customers.service.ts:27](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L27)

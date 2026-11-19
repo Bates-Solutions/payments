@@ -8,6 +8,6 @@
 
 > **Customer** = `Stripe.Customer`
 
-Defined in: [core/services/customers.service.ts:9](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/customers.service.ts#L9)
+Defined in: [stripe/src/core/services/customers.service.ts:9](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/customers.service.ts#L9)
 
 A Stripe Customer

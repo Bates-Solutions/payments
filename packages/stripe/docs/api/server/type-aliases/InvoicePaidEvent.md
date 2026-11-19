@@ -8,4 +8,4 @@
 
 > **InvoicePaidEvent** = `Extract`\<`Stripe.Event`, \{ `type`: `"invoice.paid"`; \}\>
 
-Defined in: [server/types.ts:77](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/types.ts#L77)
+Defined in: [stripe/src/server/types.ts:77](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/types.ts#L77)

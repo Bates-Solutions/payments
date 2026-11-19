@@ -6,7 +6,7 @@
 
 # Interface: GetItemOptions
 
-Defined in: [core/services/inventory.service.ts:100](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L100)
+Defined in: [clover/src/core/services/inventory.service.ts:100](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L100)
 
 Options for `inventory.getItem()`.
 
@@ -16,6 +16,6 @@ Options for `inventory.getItem()`.
 
 > `optional` **expand?**: [`ItemExpand`](../type-aliases/ItemExpand.md)[]
 
-Defined in: [core/services/inventory.service.ts:102](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L102)
+Defined in: [clover/src/core/services/inventory.service.ts:102](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L102)
 
 Related data to embed, e.g. `['itemStock']`
