@@ -6,7 +6,7 @@
 
 # Class: CloverApiError
 
-Defined in: [clover/src/core/errors.ts:40](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L40)
+Defined in: [clover/src/core/errors.ts:41](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L41)
 
 API-level errors returned by Clover
 
@@ -20,7 +20,7 @@ API-level errors returned by Clover
 
 > **new CloverApiError**(`message`, `code`, `statusCode`, `options?`): `CloverApiError`
 
-Defined in: [clover/src/core/errors.ts:46](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L46)
+Defined in: [clover/src/core/errors.ts:47](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L47)
 
 #### Parameters
 
@@ -64,7 +64,7 @@ Defined in: [clover/src/core/errors.ts:46](https://github.com/Bates-Solutions/pa
 
 > `readonly` `optional` **cloverCode?**: `string`
 
-Defined in: [clover/src/core/errors.ts:42](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L42)
+Defined in: [clover/src/core/errors.ts:43](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L43)
 
 Raw Clover error code, when present
 
@@ -102,7 +102,7 @@ The raw error body or other context, if any.
 
 > `readonly` `optional` **requestId?**: `string`
 
-Defined in: [clover/src/core/errors.ts:44](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L44)
+Defined in: [clover/src/core/errors.ts:45](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L45)
 
 Clover request id for support/debugging
 

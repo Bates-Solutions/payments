@@ -6,7 +6,7 @@
 
 # Class: SquarePaymentError
 
-Defined in: [squareup/src/core/errors.ts:83](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L83)
+Defined in: [squareup/src/core/errors.ts:84](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L84)
 
 Payment processing errors
 
@@ -20,7 +20,7 @@ Payment processing errors
 
 > **new SquarePaymentError**(`message`, `code`, `paymentId?`): `SquarePaymentError`
 
-Defined in: [squareup/src/core/errors.ts:86](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L86)
+Defined in: [squareup/src/core/errors.ts:87](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L87)
 
 #### Parameters
 
@@ -78,7 +78,7 @@ The raw error body or other context, if any.
 
 > `readonly` `optional` **paymentId?**: `string`
 
-Defined in: [squareup/src/core/errors.ts:84](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L84)
+Defined in: [squareup/src/core/errors.ts:85](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L85)
 
 ***
 

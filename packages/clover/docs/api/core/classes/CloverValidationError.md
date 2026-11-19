@@ -6,7 +6,7 @@
 
 # Class: CloverValidationError
 
-Defined in: [clover/src/core/errors.ts:109](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L109)
+Defined in: [clover/src/core/errors.ts:110](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L110)
 
 Validation errors for input this wrapper checks before calling Clover
 
@@ -20,7 +20,7 @@ Validation errors for input this wrapper checks before calling Clover
 
 > **new CloverValidationError**(`message`, `field?`): `CloverValidationError`
 
-Defined in: [clover/src/core/errors.ts:112](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L112)
+Defined in: [clover/src/core/errors.ts:113](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L113)
 
 #### Parameters
 
@@ -74,7 +74,7 @@ The raw error body or other context, if any.
 
 > `readonly` `optional` **field?**: `string`
 
-Defined in: [clover/src/core/errors.ts:110](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L110)
+Defined in: [clover/src/core/errors.ts:111](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L111)
 
 ***
 

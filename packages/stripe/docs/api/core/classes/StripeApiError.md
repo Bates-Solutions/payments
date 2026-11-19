@@ -6,7 +6,7 @@
 
 # Class: StripeApiError
 
-Defined in: [stripe/src/core/errors.ts:45](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L45)
+Defined in: [stripe/src/core/errors.ts:46](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L46)
 
 API-level errors from Stripe
 
@@ -20,7 +20,7 @@ API-level errors from Stripe
 
 > **new StripeApiError**(`message`, `code`, `statusCode`, `options?`): `StripeApiError`
 
-Defined in: [stripe/src/core/errors.ts:53](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L53)
+Defined in: [stripe/src/core/errors.ts:54](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L54)
 
 #### Parameters
 
@@ -96,7 +96,7 @@ The raw error body or other context, if any.
 
 > `readonly` `optional` **param?**: `string`
 
-Defined in: [stripe/src/core/errors.ts:49](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L49)
+Defined in: [stripe/src/core/errors.ts:50](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L50)
 
 Request parameter the error relates to, if any
 
@@ -106,7 +106,7 @@ Request parameter the error relates to, if any
 
 > `readonly` `optional` **requestId?**: `string`
 
-Defined in: [stripe/src/core/errors.ts:51](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L51)
+Defined in: [stripe/src/core/errors.ts:52](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L52)
 
 Stripe request ID for support/debugging
 
@@ -130,6 +130,6 @@ HTTP status of the response that caused the error, if any.
 
 > `readonly` `optional` **type?**: `string`
 
-Defined in: [stripe/src/core/errors.ts:47](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L47)
+Defined in: [stripe/src/core/errors.ts:48](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L48)
 
 Raw Stripe error `type` (e.g. `invalid_request_error`)

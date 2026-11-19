@@ -6,7 +6,7 @@
 
 # Class: StripeValidationError
 
-Defined in: [stripe/src/core/errors.ts:100](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L100)
+Defined in: [stripe/src/core/errors.ts:101](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L101)
 
 Validation errors for input this wrapper checks before calling Stripe
 
@@ -20,7 +20,7 @@ Validation errors for input this wrapper checks before calling Stripe
 
 > **new StripeValidationError**(`message`, `field?`): `StripeValidationError`
 
-Defined in: [stripe/src/core/errors.ts:103](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L103)
+Defined in: [stripe/src/core/errors.ts:104](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L104)
 
 #### Parameters
 
@@ -74,7 +74,7 @@ The raw error body or other context, if any.
 
 > `readonly` `optional` **field?**: `string`
 
-Defined in: [stripe/src/core/errors.ts:101](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L101)
+Defined in: [stripe/src/core/errors.ts:102](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L102)
 
 ***
 

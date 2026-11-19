@@ -6,10 +6,11 @@
 
 # Class: StripeError
 
-Defined in: [stripe/src/core/errors.ts:30](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L30)
+Defined in: [stripe/src/core/errors.ts:31](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L31)
 
 Base Stripe error class. It extends core's `PaymentsError`, so
-`error instanceof PaymentsError` catches any provider's error.
+`error instanceof PaymentsError` catches any provider's error, as long as the
+providers resolve the same copy of `@bates-solutions/payments-core`.
 
 ## Extends
 
@@ -28,7 +29,7 @@ Base Stripe error class. It extends core's `PaymentsError`, so
 
 > **new StripeError**(`message`, `code?`, `statusCode?`, `details?`): `StripeError`
 
-Defined in: [stripe/src/core/errors.ts:31](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L31)
+Defined in: [stripe/src/core/errors.ts:32](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L32)
 
 #### Parameters
 

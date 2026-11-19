@@ -6,10 +6,11 @@
 
 # Class: CloverError
 
-Defined in: [clover/src/core/errors.ts:25](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L25)
+Defined in: [clover/src/core/errors.ts:26](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L26)
 
 Base Clover error class. It extends core's `PaymentsError`, so
-`error instanceof PaymentsError` catches any provider's error.
+`error instanceof PaymentsError` catches any provider's error, as long as the
+providers resolve the same copy of `@bates-solutions/payments-core`.
 
 ## Extends
 
@@ -28,7 +29,7 @@ Base Clover error class. It extends core's `PaymentsError`, so
 
 > **new CloverError**(`message`, `code?`, `statusCode?`, `details?`): `CloverError`
 
-Defined in: [clover/src/core/errors.ts:26](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L26)
+Defined in: [clover/src/core/errors.ts:27](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L27)
 
 #### Parameters
 

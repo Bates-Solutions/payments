@@ -8,7 +8,7 @@
 
 > **isRetryableSquareError**(`error`): `boolean`
 
-Defined in: [squareup/src/core/errors.ts:201](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L201)
+Defined in: [squareup/src/core/errors.ts:202](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L202)
 
 Whether retrying the failed call could succeed: a network failure or
 timeout, a request timeout (408), rate limiting (429), or a Square server

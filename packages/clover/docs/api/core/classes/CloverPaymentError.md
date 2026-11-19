@@ -6,7 +6,7 @@
 
 # Class: CloverPaymentError
 
-Defined in: [clover/src/core/errors.ts:84](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L84)
+Defined in: [clover/src/core/errors.ts:85](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L85)
 
 Payment processing errors (card declines, etc.)
 
@@ -20,7 +20,7 @@ Payment processing errors (card declines, etc.)
 
 > **new CloverPaymentError**(`message`, `code?`, `options?`): `CloverPaymentError`
 
-Defined in: [clover/src/core/errors.ts:92](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L92)
+Defined in: [clover/src/core/errors.ts:93](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L93)
 
 #### Parameters
 
@@ -64,7 +64,7 @@ Defined in: [clover/src/core/errors.ts:92](https://github.com/Bates-Solutions/pa
 
 > `readonly` `optional` **chargeId?**: `string`
 
-Defined in: [clover/src/core/errors.ts:85](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L85)
+Defined in: [clover/src/core/errors.ts:86](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L86)
 
 ***
 
@@ -72,7 +72,7 @@ Defined in: [clover/src/core/errors.ts:85](https://github.com/Bates-Solutions/pa
 
 > `readonly` `optional` **cloverCode?**: `string`
 
-Defined in: [clover/src/core/errors.ts:88](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L88)
+Defined in: [clover/src/core/errors.ts:89](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L89)
 
 Clover's own error code, when present
 
@@ -96,7 +96,7 @@ Normalized error code. Each provider defines its own union.
 
 > `readonly` `optional` **declineCode?**: `string`
 
-Defined in: [clover/src/core/errors.ts:86](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L86)
+Defined in: [clover/src/core/errors.ts:87](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L87)
 
 ***
 
@@ -118,7 +118,7 @@ The raw error body or other context, if any.
 
 > `readonly` `optional` **requestId?**: `string`
 
-Defined in: [clover/src/core/errors.ts:90](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L90)
+Defined in: [clover/src/core/errors.ts:91](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L91)
 
 Request id for tracing with Clover support
 

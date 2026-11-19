@@ -25,7 +25,8 @@ export type StripeErrorCode =
 
 /**
  * Base Stripe error class. It extends core's `PaymentsError`, so
- * `error instanceof PaymentsError` catches any provider's error.
+ * `error instanceof PaymentsError` catches any provider's error, as long as the
+ * providers resolve the same copy of `@bates-solutions/payments-core`.
  */
 export class StripeError extends PaymentsError<StripeErrorCode> {
   constructor(

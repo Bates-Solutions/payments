@@ -6,7 +6,7 @@
 
 # Class: SquareAuthError
 
-Defined in: [squareup/src/core/errors.ts:73](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L73)
+Defined in: [squareup/src/core/errors.ts:74](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L74)
 
 Authentication errors
 
@@ -20,7 +20,7 @@ Authentication errors
 
 > **new SquareAuthError**(`message`, `code?`): `SquareAuthError`
 
-Defined in: [squareup/src/core/errors.ts:74](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L74)
+Defined in: [squareup/src/core/errors.ts:75](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L75)
 
 #### Parameters
 

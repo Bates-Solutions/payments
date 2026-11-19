@@ -6,7 +6,7 @@
 
 # Class: CloverAuthError
 
-Defined in: [clover/src/core/errors.ts:62](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L62)
+Defined in: [clover/src/core/errors.ts:63](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L63)
 
 Authentication / authorization errors (401 / 403)
 
@@ -20,7 +20,7 @@ Authentication / authorization errors (401 / 403)
 
 > **new CloverAuthError**(`message`, `statusCode?`, `code?`, `options?`): `CloverAuthError`
 
-Defined in: [clover/src/core/errors.ts:68](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L68)
+Defined in: [clover/src/core/errors.ts:69](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L69)
 
 #### Parameters
 
@@ -60,7 +60,7 @@ Defined in: [clover/src/core/errors.ts:68](https://github.com/Bates-Solutions/pa
 
 > `readonly` `optional` **cloverCode?**: `string`
 
-Defined in: [clover/src/core/errors.ts:64](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L64)
+Defined in: [clover/src/core/errors.ts:65](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L65)
 
 Clover's own error code, when present
 
@@ -98,7 +98,7 @@ The raw error body or other context, if any.
 
 > `readonly` `optional` **requestId?**: `string`
 
-Defined in: [clover/src/core/errors.ts:66](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L66)
+Defined in: [clover/src/core/errors.ts:67](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L67)
 
 Request id for tracing with Clover support
 

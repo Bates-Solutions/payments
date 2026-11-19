@@ -8,7 +8,7 @@
 
 > **parseCloverError**(`error`): [`CloverError`](../classes/CloverError.md)
 
-Defined in: [clover/src/core/errors.ts:204](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L204)
+Defined in: [clover/src/core/errors.ts:205](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L205)
 
 Parse any thrown value into a typed Clover error.
 

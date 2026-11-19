@@ -6,7 +6,7 @@
 
 # Class: SquareApiError
 
-Defined in: [squareup/src/core/errors.ts:50](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L50)
+Defined in: [squareup/src/core/errors.ts:51](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L51)
 
 API-level errors from Square
 
@@ -20,7 +20,7 @@ API-level errors from Square
 
 > **new SquareApiError**(`message`, `code`, `statusCode`, `errors`): `SquareApiError`
 
-Defined in: [squareup/src/core/errors.ts:58](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L58)
+Defined in: [squareup/src/core/errors.ts:59](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L59)
 
 #### Parameters
 
@@ -82,7 +82,7 @@ The raw error body or other context, if any.
 
 > `readonly` **errors**: `object`[]
 
-Defined in: [squareup/src/core/errors.ts:51](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L51)
+Defined in: [squareup/src/core/errors.ts:52](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L52)
 
 #### category
 
