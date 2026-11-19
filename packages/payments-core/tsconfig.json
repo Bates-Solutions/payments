@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    // No ambient @types/* (the root installs @types/node for the other packages):
+    // core must type-check against the web platform alone, so a Buffer or process
+    // reference fails here rather than on Deno or a Worker.
+    "types": []
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
+}

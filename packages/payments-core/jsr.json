@@ -1,0 +1,18 @@
+{
+  "name": "@bates-solutions/payments-core",
+  "version": "0.1.0",
+  "exports": {
+    ".": "./src/index.ts",
+    "./crypto": "./src/crypto/index.ts"
+  },
+  "exclude": [
+    "**/__tests__",
+    "**/*.test.ts",
+    "dist",
+    "coverage",
+    "node_modules",
+    "vitest.config.ts",
+    "typedoc.json",
+    "docs"
+  ]
+}

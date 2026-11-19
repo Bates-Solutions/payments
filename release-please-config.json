@@ -22,6 +22,12 @@
     { "type": "ci", "section": "CI", "hidden": true }
   ],
   "packages": {
+    "packages/payments-core": {
+      "component": "payments-core",
+      "package-name": "@bates-solutions/payments-core",
+      "initial-version": "0.1.0",
+      "extra-files": [{ "type": "json", "path": "jsr.json", "jsonpath": "$.version" }]
+    },
     "packages/clover": {
       "component": "clover",
       "package-name": "@bates-solutions/clover",
