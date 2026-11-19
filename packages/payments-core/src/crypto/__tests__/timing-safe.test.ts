@@ -37,6 +37,23 @@ describe('timingSafeEqual', () => {
 
   it('treats strings with the same character count but different UTF-8 lengths as unequal', () => {
     expect(timingSafeEqual('aé', 'ab')).toBe(false);
+    expect(timingSafeEqual('aé', new TextEncoder().encode('ab'))).toBe(false);
+  });
+
+  // Unpaired surrogates all encode to U+FFFD in UTF-8, so a byte compare would
+  // call these equal. Two strings are compared as code units instead.
+  it('tells apart strings that differ only in unpaired surrogates', () => {
+    expect(timingSafeEqual('x\ud800', 'x\udc00')).toBe(false);
+    expect(timingSafeEqual('x\ud800', 'x\ud800')).toBe(true);
+  });
+
+  it('agrees with === for two strings', () => {
+    const samples = ['a', 'b', 'ab', 'ba', 'é', 'é', '😀', 'deadbeef'];
+    for (const x of samples) {
+      for (const y of samples) {
+        expect(timingSafeEqual(x, y)).toBe(x === y);
+      }
+    }
   });
 
   it('finds a difference in the first, middle and last byte', () => {
