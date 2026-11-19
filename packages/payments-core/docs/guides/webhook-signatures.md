@@ -16,13 +16,24 @@ const fresh = Math.abs(Math.floor(Date.now() / 1000) - timestamp) <= 300;
 const valid = signed && fresh;
 ```
 
-Square style, base64 over `notificationUrl + rawBody`, with no timestamp:
+`verifyTimestampedHmac` does all of that in one call, and tells you why a check failed:
 
 ```typescript
-import { hmacSha256, timingSafeEqual, toBase64 } from 'jsr:@bates-solutions/payments-core/crypto';
+import { verifyTimestampedHmac } from 'jsr:@bates-solutions/payments-core/crypto';
 
-const expected = toBase64(await hmacSha256(signatureKey, notificationUrl + rawBody));
-const valid = timingSafeEqual(signature, expected);
+const result = await verifyTimestampedHmac(rawBody, header, signingSecret, { tolerance: 300 });
+if (!result.valid) {
+  // result.reason: 'malformed-header' | 'signature-mismatch' | 'timestamp-outside-tolerance'
+}
+```
+
+Square style, base64 over `notificationUrl + rawBody`, with no timestamp. Comparing the decoded bytes accepts the same spellings of a signature (missing padding, URL-safe characters) that a `node:crypto` check decoding with `Buffer` accepts:
+
+```typescript
+import { fromBase64, hmacSha256, timingSafeEqual } from 'jsr:@bates-solutions/payments-core/crypto';
+
+const expected = await hmacSha256(signatureKey, notificationUrl + rawBody);
+const valid = timingSafeEqual(fromBase64(signature), expected);
 ```
 
 Notes:
