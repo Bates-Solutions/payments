@@ -1,7 +1,8 @@
 const encoder = new TextEncoder();
 
 function toBytes(value: string | Uint8Array): Uint8Array<ArrayBuffer> {
-  // A copy, so WebCrypto always gets a plain ArrayBuffer-backed view.
+  // Always a fresh ArrayBuffer-backed copy: WebCrypto rejects views over a
+  // SharedArrayBuffer, which a caller's Uint8Array may be.
   return typeof value === 'string' ? encoder.encode(value) : new Uint8Array(value);
 }
 
@@ -12,6 +13,10 @@ function toBytes(value: string | Uint8Array): Uint8Array<ArrayBuffer> {
  *
  * Returns the raw 32-byte digest; encode it with {@link toHex} or
  * {@link toBase64} to compare against a provider's signature header.
+ *
+ * The promise rejects with a WebCrypto `DataError` for an empty `secret`, which
+ * WebCrypto does not accept as an HMAC key. Check for a missing secret before
+ * calling, as the providers do.
  *
  * @example
  * ```typescript

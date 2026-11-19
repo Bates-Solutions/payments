@@ -48,10 +48,25 @@ describe('hmacSha256', () => {
     }
   });
 
-  it('is not affected by the caller changing its bytes afterwards', async () => {
-    const payload = new TextEncoder().encode('payload');
-    const before = await hmacSha256('key', payload);
-    payload.fill(0);
-    expect(await hmacSha256('key', 'payload')).toEqual(before);
+  // WebCrypto rejects views over a SharedArrayBuffer, so the bytes are copied first.
+  it('accepts a secret and payload backed by a SharedArrayBuffer', async () => {
+    const shared = (text: string) => {
+      const encoded = new TextEncoder().encode(text);
+      const view = new Uint8Array(new SharedArrayBuffer(encoded.length));
+      view.set(encoded);
+      return view;
+    };
+    const digest = await hmacSha256(shared('Jefe'), shared('what do ya want for nothing?'));
+    expect(toHex(digest)).toBe('5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843');
+  });
+
+  it('hashes only the bytes in view, not the rest of the buffer', async () => {
+    const buffer = new TextEncoder().encode('xxpayloadxx');
+    const view = new Uint8Array(buffer.buffer, 2, 7);
+    expect(await hmacSha256('key', view)).toEqual(await hmacSha256('key', 'payload'));
+  });
+
+  it('rejects an empty secret, which WebCrypto does not accept as an HMAC key', async () => {
+    await expect(hmacSha256('', 'payload')).rejects.toThrow();
   });
 });

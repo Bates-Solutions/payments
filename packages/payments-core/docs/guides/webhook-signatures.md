@@ -8,7 +8,12 @@ Stripe and Clover style, where the header is `t=<timestamp>,v1=<hex signature>`,
 import { hmacSha256, timingSafeEqual, toHex } from 'jsr:@bates-solutions/payments-core/crypto';
 
 const expected = toHex(await hmacSha256(signingSecret, `${timestamp}.${rawBody}`));
-const valid = signatures.some((signature) => timingSafeEqual(signature, expected));
+const signed = signatures.some((signature) => timingSafeEqual(signature, expected));
+
+// Reject old timestamps too, or a captured webhook can be replayed later.
+// The providers use a 300-second tolerance.
+const fresh = Math.abs(Math.floor(Date.now() / 1000) - timestamp) <= 300;
+const valid = signed && fresh;
 ```
 
 Square style, base64 over `notificationUrl + rawBody`, with no timestamp:
@@ -24,4 +29,5 @@ Notes:
 
 - Use the **raw** request body, exactly as received. A body that was parsed and serialized again produces a different digest.
 - `timingSafeEqual` returns `false` for different lengths or an empty input, so a missing header never verifies.
+- `hmacSha256` rejects an empty secret (WebCrypto refuses a zero-length HMAC key), so check for a missing secret first.
 - Everything runs on WebCrypto (`globalThis.crypto.subtle`): Node 22+, Deno, Bun, Supabase Edge Functions and Cloudflare Workers.

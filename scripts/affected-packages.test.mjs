@@ -71,6 +71,21 @@ describe('affectedPackages', () => {
     });
   }
 
+  it('treats a change under payments-core as affecting every package', () => {
+    const packages = [...PACKAGES, 'payments-core'];
+    assert.deepEqual(
+      affectedPackages(['packages/payments-core/src/crypto/hmac.ts'], packages),
+      [...packages].sort()
+    );
+  });
+
+  it('still maps a provider-only change to that provider when payments-core exists', () => {
+    assert.deepEqual(
+      affectedPackages(['packages/stripe/src/core/client.ts'], [...PACKAGES, 'payments-core']),
+      ['stripe']
+    );
+  });
+
   it('returns nothing for an empty change set', () => {
     assert.deepEqual(affectedPackages([], PACKAGES), []);
   });
@@ -89,13 +104,11 @@ describe('discoverPackages', () => {
   });
 
   it('lets a newly added package be affected on its own', () => {
-    const packages = discoverPackages(tempRepo([...PACKAGES, 'payments-core']));
-    assert.deepEqual(affectedPackages(['packages/payments-core/src/index.ts'], packages), [
-      'payments-core',
-    ]);
+    const packages = discoverPackages(tempRepo([...PACKAGES, 'paypal']));
+    assert.deepEqual(affectedPackages(['packages/paypal/src/index.ts'], packages), ['paypal']);
     assert.deepEqual(affectedPackages(['tsconfig.base.json'], packages), [
       'clover',
-      'payments-core',
+      'paypal',
       'squareup',
       'stripe',
     ]);

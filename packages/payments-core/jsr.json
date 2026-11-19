@@ -12,7 +12,6 @@
     "coverage",
     "node_modules",
     "vitest.config.ts",
-    "typedoc.json",
-    "docs"
+    "typedoc.json"
   ]
 }

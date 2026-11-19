@@ -8,7 +8,7 @@
 
 > **hmacSha256**(`secret`, `payload`): `Promise`\<`Uint8Array`\<`ArrayBufferLike`\>\>
 
-Defined in: [crypto/hmac.ts:22](https://github.com/Bates-Solutions/payments/blob/main/packages/payments-core/src/crypto/hmac.ts#L22)
+Defined in: [crypto/hmac.ts:27](https://github.com/Bates-Solutions/payments/blob/main/packages/payments-core/src/crypto/hmac.ts#L27)
 
 HMAC-SHA256 of `payload` under `secret`, computed with WebCrypto
 (`globalThis.crypto.subtle`), so it runs on Node 22+, Deno, Bun and Workers
@@ -16,6 +16,10 @@ with no Node built-ins. Strings are encoded as UTF-8.
 
 Returns the raw 32-byte digest; encode it with [toHex](toHex.md) or
 [toBase64](toBase64.md) to compare against a provider's signature header.
+
+The promise rejects with a WebCrypto `DataError` for an empty `secret`, which
+WebCrypto does not accept as an HMAC key. Check for a missing secret before
+calling, as the providers do.
 
 ## Parameters
 
