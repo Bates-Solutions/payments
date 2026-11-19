@@ -1,6 +1,6 @@
 {
   "$schema": "https://typedoc.org/schema.json",
-  "entryPoints": ["src/index.ts", "src/crypto/index.ts"],
+  "entryPoints": ["src/index.ts", "src/crypto/index.ts", "src/errors/index.ts"],
   "outputs": [
     {
       "name": "markdown",

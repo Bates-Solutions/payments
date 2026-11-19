@@ -9,7 +9,11 @@
 Edge-safe primitives shared by `@bates-solutions/squareup`,
 `@bates-solutions/stripe` and `@bates-solutions/clover`. Everything here runs
 on Node 22+, Deno, Bun and Workers: no `node:*` imports, `Buffer` or
-`process`. Each area is also its own entry point (`./crypto`).
+`process`. Each area is also its own entry point (`./crypto`, `./errors`).
+
+## Classes
+
+- [PaymentsError](classes/PaymentsError.md)
 
 ## Interfaces
 
@@ -23,9 +27,11 @@ on Node 22+, Deno, Bun and Workers: no `node:*` imports, `Buffer` or
 
 ## Functions
 
+- [createIdempotencyKey](functions/createIdempotencyKey.md)
 - [fromBase64](functions/fromBase64.md)
 - [hmacSha256](functions/hmacSha256.md)
 - [parseTimestampedSignatureHeader](functions/parseTimestampedSignatureHeader.md)
+- [requireNonEmpty](functions/requireNonEmpty.md)
 - [timingSafeEqual](functions/timingSafeEqual.md)
 - [toBase64](functions/toBase64.md)
 - [toHex](functions/toHex.md)
