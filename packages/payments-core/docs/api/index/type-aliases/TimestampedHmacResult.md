@@ -8,6 +8,6 @@
 
 > **TimestampedHmacResult** = \{ `timestamp`: `number`; `valid`: `true`; \} \| \{ `reason`: [`TimestampedHmacFailure`](TimestampedHmacFailure.md); `valid`: `false`; \}
 
-Defined in: [crypto/timestamped.ts:42](https://github.com/Bates-Solutions/payments/blob/main/packages/payments-core/src/crypto/timestamped.ts#L42)
+Defined in: [crypto/timestamped.ts:43](https://github.com/Bates-Solutions/payments/blob/main/packages/payments-core/src/crypto/timestamped.ts#L43)
 
 The result of [verifyTimestampedHmac](../functions/verifyTimestampedHmac.md).

@@ -21,8 +21,9 @@ export interface VerifyTimestampedHmacOptions {
    */
   tolerance?: number;
   /**
-   * The current time in Unix seconds. Defaults to the system clock. A value
-   * that isn't a finite number rejects every timestamp.
+   * The current time in Unix seconds. Defaults to the system clock. Coerced
+   * with `Number()` like the tolerance; a value that doesn't coerce to a finite
+   * number rejects every timestamp.
    */
   now?: number;
   /** The header key the signatures are listed under. Defaults to `v1`. */

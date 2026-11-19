@@ -16,10 +16,11 @@ Options for [verifyTimestampedHmac](../functions/verifyTimestampedHmac.md).
 
 > `optional` **now?**: `number`
 
-Defined in: [crypto/timestamped.ts:27](https://github.com/Bates-Solutions/payments/blob/main/packages/payments-core/src/crypto/timestamped.ts#L27)
+Defined in: [crypto/timestamped.ts:28](https://github.com/Bates-Solutions/payments/blob/main/packages/payments-core/src/crypto/timestamped.ts#L28)
 
-The current time in Unix seconds. Defaults to the system clock. A value
-that isn't a finite number rejects every timestamp.
+The current time in Unix seconds. Defaults to the system clock. Coerced
+with `Number()` like the tolerance; a value that doesn't coerce to a finite
+number rejects every timestamp.
 
 ***
 
@@ -27,7 +28,7 @@ that isn't a finite number rejects every timestamp.
 
 > `optional` **scheme?**: `string`
 
-Defined in: [crypto/timestamped.ts:29](https://github.com/Bates-Solutions/payments/blob/main/packages/payments-core/src/crypto/timestamped.ts#L29)
+Defined in: [crypto/timestamped.ts:30](https://github.com/Bates-Solutions/payments/blob/main/packages/payments-core/src/crypto/timestamped.ts#L30)
 
 The header key the signatures are listed under. Defaults to `v1`.
 

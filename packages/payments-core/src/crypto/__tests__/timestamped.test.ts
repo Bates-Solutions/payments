@@ -172,6 +172,9 @@ describe('verifyTimestampedHmac', () => {
       expect(
         (await loose(PAYLOAD, fresh, SECRET, { now: String(NOW), tolerance: '5' })).valid
       ).toBe(false);
+      expect(
+        (await loose(PAYLOAD, fresh, SECRET, { now: String(NOW), tolerance: '600' })).valid
+      ).toBe(true);
       expect((await loose(PAYLOAD, signed, SECRET, { now: NOW, tolerance: '0' })).valid).toBe(true);
       // A fresh timestamp too: the check must not be skipped either way.
       expect(

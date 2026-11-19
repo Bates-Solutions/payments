@@ -8,7 +8,7 @@
 
 > **parseTimestampedSignatureHeader**(`header`, `scheme?`): [`TimestampedSignatureHeader`](../interfaces/TimestampedSignatureHeader.md)
 
-Defined in: [crypto/timestamped.ts:61](https://github.com/Bates-Solutions/payments/blob/main/packages/payments-core/src/crypto/timestamped.ts#L61)
+Defined in: [crypto/timestamped.ts:62](https://github.com/Bates-Solutions/payments/blob/main/packages/payments-core/src/crypto/timestamped.ts#L62)
 
 Parse a `t=<timestamp>,v1=<signature>,v1=…` header, the format Stripe and
 Clover use.
