@@ -1,0 +1,58 @@
+{
+  "name": "@bates-solutions/payments-core",
+  "version": "0.1.0",
+  "description": "Edge-safe primitives shared by the Bates Solutions payment provider libraries: HMAC-SHA256, constant-time compare and encoding over WebCrypto",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./crypto": {
+      "types": "./dist/crypto/index.d.ts",
+      "import": "./dist/crypto/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "docs": "typedoc"
+  },
+  "keywords": [
+    "payments",
+    "webhooks",
+    "hmac",
+    "webcrypto",
+    "edge",
+    "deno",
+    "typescript"
+  ],
+  "author": "Bates Solutions",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bates-Solutions/payments.git",
+    "directory": "packages/payments-core"
+  },
+  "bugs": {
+    "url": "https://github.com/Bates-Solutions/payments/issues"
+  },
+  "homepage": "https://github.com/Bates-Solutions/payments/tree/main/packages/payments-core#readme",
+  "engines": {
+    "node": ">=22"
+  }
+}

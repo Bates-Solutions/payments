@@ -6,6 +6,7 @@
 //
 // Rules, per changed path:
 //   packages/<p>/...                      affects <p> (when packages/<p>/package.json exists)
+//   packages/payments-core/...            affects every package: the providers import it
 //   a root *.md file or LICENSE*          affects nothing
 //   anything else (root config, lockfile, .github/, scripts/, a path under
 //   packages/ that is not a package)      affects every package
@@ -31,6 +32,9 @@ export function discoverPackages(root) {
     .sort();
 }
 
+/** Packages the others import, so a change to one affects every package. */
+export const SHARED_PACKAGES = ['payments-core'];
+
 /** True for root files that cannot change any package's checks. */
 function isRootDoc(path) {
   if (path.includes('/')) return false;
@@ -45,7 +49,7 @@ export function affectedPackages(changedFiles, packages) {
     const path = raw.trim();
     if (path === '' || isRootDoc(path)) continue;
     const match = /^packages\/([^/]+)\/./.exec(path);
-    if (match && known.has(match[1])) {
+    if (match && known.has(match[1]) && !SHARED_PACKAGES.includes(match[1])) {
       affected.add(match[1]);
       continue;
     }

@@ -1,0 +1,43 @@
+# @bates-solutions/payments-core
+
+Edge-safe primitives shared by [`@bates-solutions/squareup`](https://jsr.io/@bates-solutions/squareup), [`@bates-solutions/stripe`](https://jsr.io/@bates-solutions/stripe) and [`@bates-solutions/clover`](https://jsr.io/@bates-solutions/clover). Published to JSR as TypeScript source.
+
+Everything here runs on WebCrypto, with no `node:*` imports, `Buffer` or `process`: Node 22+, Deno, Bun, Supabase Edge Functions and Cloudflare Workers.
+
+> **0.x:** the API may change in a minor release until all three providers use it.
+
+## Install
+
+```bash
+# Deno
+deno add jsr:@bates-solutions/payments-core
+
+# Node, through JSR's npm registry
+npx jsr add @bates-solutions/payments-core
+```
+
+## What's in it
+
+| Export | Entry point | What it does |
+|---|---|---|
+| `hmacSha256(secret, payload)` | `./crypto` | HMAC-SHA256 over WebCrypto. Strings are UTF-8; returns the raw 32-byte digest. |
+| `timingSafeEqual(a, b)` | `./crypto` | Constant-time compare of two strings or two byte sequences (`Uint8Array` or `ArrayBuffer`; a string against bytes is compared as UTF-8). `false` for different lengths or empty input; throws a `TypeError` for other input types. |
+| `toHex(bytes)` | `./crypto` | Lowercase hex. |
+| `toBase64(bytes)` | `./crypto` | Standard base64 with padding. |
+
+Every export is also available from the package root.
+
+```typescript
+import { hmacSha256, timingSafeEqual, toHex } from '@bates-solutions/payments-core/crypto';
+
+const expected = toHex(await hmacSha256(signingSecret, `${timestamp}.${rawBody}`));
+if (!timingSafeEqual(signatureFromHeader, expected)) {
+  throw new Error('Invalid signature');
+}
+```
+
+See the [guides](./docs/guides/README.md) and the [API reference](https://bates-solutions.github.io/payments/payments-core/).
+
+## License
+
+MIT

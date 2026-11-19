@@ -7,6 +7,7 @@ TypeScript payment provider libraries from Bates Solutions, in one repo:
 | `@bates-solutions/squareup` | Square | [jsr.io/@bates-solutions/squareup](https://jsr.io/@bates-solutions/squareup) | [docs](https://bates-solutions.github.io/payments/squareup/) |
 | `@bates-solutions/stripe` | Stripe | [jsr.io/@bates-solutions/stripe](https://jsr.io/@bates-solutions/stripe) | [docs](https://bates-solutions.github.io/payments/stripe/) |
 | `@bates-solutions/clover` | Clover | [jsr.io/@bates-solutions/clover](https://jsr.io/@bates-solutions/clover) | [docs](https://bates-solutions.github.io/payments/clover/) |
+| `@bates-solutions/payments-core` | Shared primitives (0.x, not yet on JSR) | [jsr.io/@bates-solutions/payments-core](https://jsr.io/@bates-solutions/payments-core) | [docs](https://bates-solutions.github.io/payments/payments-core/) |
 
 **Status: under construction.** This repo is being set up. Until the move is finished, each package is still developed and published from its own repo:
 

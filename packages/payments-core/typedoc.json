@@ -1,0 +1,25 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["src/index.ts", "src/crypto/index.ts"],
+  "outputs": [
+    {
+      "name": "markdown",
+      "path": "docs/api"
+    }
+  ],
+  "plugin": ["typedoc-plugin-markdown"],
+  "readme": "none",
+  "disableGit": true,
+  "gitRevision": "main",
+  "sourceLinkTemplate": "https://github.com/Bates-Solutions/payments/blob/{gitRevision}/packages/payments-core/src/{path}#L{line}",
+  "excludePrivate": true,
+  "excludeInternal": true,
+  "excludeExternals": true,
+  "name": "@bates-solutions/payments-core API Reference",
+  "includeVersion": true,
+  "categorizeByGroup": true,
+  "navigation": {
+    "includeCategories": true,
+    "includeGroups": true
+  }
+}

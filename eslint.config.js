@@ -16,7 +16,7 @@ import { defineConfig } from 'eslint/config';
 import prettierConfig from 'eslint-config-prettier';
 import importX from 'eslint-plugin-import-x';
 import { existsSync } from 'node:fs';
-import { isBuiltin } from 'node:module';
+import { builtinModules, isBuiltin } from 'node:module';
 import path from 'node:path';
 import tseslint from 'typescript-eslint';
 
@@ -96,6 +96,39 @@ export default defineConfig(
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/prefer-nullish-coalescing': 'error',
       '@typescript-eslint/prefer-optional-chain': 'error',
+    },
+  },
+  // payments-core runs on Deno and Workers as published TypeScript source, so its
+  // source may not reach for Node: no node:* or bare built-in imports, and no
+  // Buffer or process globals. Its tsconfig also loads no @types/node.
+  {
+    files: ['packages/payments-core/src/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: builtinModules.map((name) => ({
+            name,
+            message:
+              'payments-core must stay edge-safe: use WebCrypto or web APIs, not Node built-ins.',
+          })),
+          patterns: [
+            {
+              regex: '^node:',
+              message:
+                'payments-core must stay edge-safe: use WebCrypto or web APIs, not Node built-ins.',
+            },
+          ],
+        },
+      ],
+      'no-restricted-globals': [
+        'error',
+        { name: 'Buffer', message: 'Use Uint8Array, TextEncoder and btoa/atob instead.' },
+        {
+          name: 'process',
+          message: 'payments-core takes configuration as arguments, not from the environment.',
+        },
+      ],
     },
   }
 );
