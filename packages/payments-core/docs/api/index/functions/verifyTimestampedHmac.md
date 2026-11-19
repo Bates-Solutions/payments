@@ -8,7 +8,7 @@
 
 > **verifyTimestampedHmac**(`payload`, `header`, `secret`, `options?`): `Promise`\<[`TimestampedHmacResult`](../type-aliases/TimestampedHmacResult.md)\>
 
-Defined in: [crypto/timestamped.ts:99](https://github.com/Bates-Solutions/payments/blob/main/packages/payments-core/src/crypto/timestamped.ts#L99)
+Defined in: [crypto/timestamped.ts:104](https://github.com/Bates-Solutions/payments/blob/main/packages/payments-core/src/crypto/timestamped.ts#L104)
 
 Verify a timestamped HMAC-SHA256 signature header, the scheme Stripe and
 Clover use: the provider signs `${timestamp}.${payload}` and sends

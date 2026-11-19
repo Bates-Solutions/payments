@@ -14,8 +14,10 @@ export interface TimestampedSignatureHeader {
 export interface VerifyTimestampedHmacOptions {
   /**
    * Maximum age (or skew into the future) of the timestamp, in seconds.
-   * Defaults to 300. Zero or a negative number turns the check off; `NaN` (or
-   * a non-number) rejects every timestamp rather than skipping the check.
+   * Defaults to 300. Zero or a negative number turns the check off. A value
+   * that isn't a number is coerced with `Number()`, as the providers' old checks
+   * did; one that coerces to `NaN` rejects every timestamp rather than skipping
+   * the check.
    */
   tolerance?: number;
   /**
@@ -77,6 +79,9 @@ export function parseTimestampedSignatureHeader(
   return { timestamp, signatures };
 }
 
+/** Options are typed as numbers, but untyped callers can pass anything. */
+const toNumber = (value: unknown): number => Number(value);
+
 /**
  * Verify a timestamped HMAC-SHA256 signature header, the scheme Stripe and
  * Clover use: the provider signs `${timestamp}.${payload}` and sends
@@ -112,14 +117,16 @@ export async function verifyTimestampedHmac(
     return { valid: false, reason: 'signature-mismatch' };
   }
 
-  const tolerance = options?.tolerance ?? 300;
-  // Fail closed: a tolerance or clock that isn't a number must not turn the
-  // replay check off. `!(x <= tolerance)` is also true when x is NaN.
-  if (typeof tolerance !== 'number' || Number.isNaN(tolerance)) {
+  // Number() coerces the way the providers' old comparisons did, so an untyped
+  // caller's '600' still means 600 s. Fail closed on what doesn't coerce: a
+  // NaN tolerance or clock must not turn the replay check off, and
+  // `!(x <= tolerance)` is also true when x is NaN.
+  const tolerance = toNumber(options?.tolerance ?? 300);
+  if (Number.isNaN(tolerance)) {
     return { valid: false, reason: 'timestamp-outside-tolerance' };
   }
   if (tolerance > 0) {
-    const now = options?.now ?? Math.floor(Date.now() / 1000);
+    const now = toNumber(options?.now ?? Math.floor(Date.now() / 1000));
     if (!Number.isFinite(now) || !(Math.abs(now - timestamp) <= tolerance)) {
       return { valid: false, reason: 'timestamp-outside-tolerance' };
     }

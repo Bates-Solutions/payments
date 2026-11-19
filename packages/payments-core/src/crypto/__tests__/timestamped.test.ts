@@ -147,7 +147,7 @@ describe('verifyTimestampedHmac', () => {
       expect((await at(NOW - 10_000_000, { tolerance: -1 })).valid).toBe(true);
     });
 
-    it('fails closed when the tolerance or the clock is not a number', async () => {
+    it('coerces the tolerance and clock, and fails closed on NaN', async () => {
       const outside = { valid: false, reason: 'timestamp-outside-tolerance' };
       const signed = header(NOW - 10_000, sign(NOW - 10_000));
       const loose = verifyTimestampedHmac as (
@@ -164,6 +164,15 @@ describe('verifyTimestampedHmac', () => {
           outside
         );
       }
+      // Numeric strings coerce, as the providers' old comparisons did.
+      const fresh = header(NOW - 10, sign(NOW - 10));
+      expect((await loose(PAYLOAD, fresh, SECRET, { now: NOW, tolerance: '600' })).valid).toBe(
+        true
+      );
+      expect(
+        (await loose(PAYLOAD, fresh, SECRET, { now: String(NOW), tolerance: '5' })).valid
+      ).toBe(false);
+      expect((await loose(PAYLOAD, signed, SECRET, { now: NOW, tolerance: '0' })).valid).toBe(true);
       // A fresh timestamp too: the check must not be skipped either way.
       expect(
         await verifyTimestampedHmac(PAYLOAD, header(NOW, sign(NOW)), SECRET, { now: Number.NaN })

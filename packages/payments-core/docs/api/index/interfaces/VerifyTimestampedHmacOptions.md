@@ -16,7 +16,7 @@ Options for [verifyTimestampedHmac](../functions/verifyTimestampedHmac.md).
 
 > `optional` **now?**: `number`
 
-Defined in: [crypto/timestamped.ts:25](https://github.com/Bates-Solutions/payments/blob/main/packages/payments-core/src/crypto/timestamped.ts#L25)
+Defined in: [crypto/timestamped.ts:27](https://github.com/Bates-Solutions/payments/blob/main/packages/payments-core/src/crypto/timestamped.ts#L27)
 
 The current time in Unix seconds. Defaults to the system clock. A value
 that isn't a finite number rejects every timestamp.
@@ -27,7 +27,7 @@ that isn't a finite number rejects every timestamp.
 
 > `optional` **scheme?**: `string`
 
-Defined in: [crypto/timestamped.ts:27](https://github.com/Bates-Solutions/payments/blob/main/packages/payments-core/src/crypto/timestamped.ts#L27)
+Defined in: [crypto/timestamped.ts:29](https://github.com/Bates-Solutions/payments/blob/main/packages/payments-core/src/crypto/timestamped.ts#L29)
 
 The header key the signatures are listed under. Defaults to `v1`.
 
@@ -37,8 +37,10 @@ The header key the signatures are listed under. Defaults to `v1`.
 
 > `optional` **tolerance?**: `number`
 
-Defined in: [crypto/timestamped.ts:20](https://github.com/Bates-Solutions/payments/blob/main/packages/payments-core/src/crypto/timestamped.ts#L20)
+Defined in: [crypto/timestamped.ts:22](https://github.com/Bates-Solutions/payments/blob/main/packages/payments-core/src/crypto/timestamped.ts#L22)
 
 Maximum age (or skew into the future) of the timestamp, in seconds.
-Defaults to 300. Zero or a negative number turns the check off; `NaN` (or
-a non-number) rejects every timestamp rather than skipping the check.
+Defaults to 300. Zero or a negative number turns the check off. A value
+that isn't a number is coerced with `Number()`, as the providers' old checks
+did; one that coerces to `NaN` rejects every timestamp rather than skipping
+the check.
