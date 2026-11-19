@@ -285,7 +285,7 @@ export const handler = createLambdaWebhookHandler({
 
 ## Error Handling
 
-Every call throws a typed `SquareError` subclass: `SquareValidationError`, `SquareAuthError`, `SquarePaymentError`, `SquareApiError`, or `SquareNetworkError` when no response arrived (connection failure or timeout). `SquareError` extends `PaymentsError` (also exported here, from `@bates-solutions/payments-core`), so one `instanceof PaymentsError` check catches errors from any of the three provider packages. `isRetryableSquareError(error)` tells you whether a retry could succeed. When retrying a mutating call, pass the same `idempotencyKey`. See [Errors and Retries](./docs/guides/core/errors.md).
+Every call throws a typed `SquareError` subclass: `SquareValidationError`, `SquareAuthError`, `SquarePaymentError`, `SquareApiError`, or `SquareNetworkError` when no response arrived (connection failure or timeout). `SquareError` extends `PaymentsError` (also exported here, from `@bates-solutions/payments-core`), so one `instanceof PaymentsError` check catches errors from any of the three provider packages when they resolve the same copy of `@bates-solutions/payments-core`. `isRetryableSquareError(error)` tells you whether a retry could succeed. When retrying a mutating call, pass the same `idempotencyKey`. See [Errors and Retries](./docs/guides/core/errors.md).
 
 ## Utilities
 

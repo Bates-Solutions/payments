@@ -46,7 +46,7 @@ Defined in: [squareup/src/core/errors.ts:99](https://github.com/Bates-Solutions/
 
 > `readonly` **code**: [`SquareErrorCode`](../type-aliases/SquareErrorCode.md)
 
-Defined in: [payments-core/dist/errors/payments-error.d.ts:24](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/../../payments-core/dist/errors/payments-error.d.ts#L24)
+Defined in: [payments-core/dist/errors/payments-error.d.ts:27](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/../../payments-core/dist/errors/payments-error.d.ts#L27)
 
 Normalized error code. Each provider defines its own union.
 
@@ -60,7 +60,7 @@ Normalized error code. Each provider defines its own union.
 
 > `readonly` `optional` **details?**: `unknown`
 
-Defined in: [payments-core/dist/errors/payments-error.d.ts:28](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/../../payments-core/dist/errors/payments-error.d.ts#L28)
+Defined in: [payments-core/dist/errors/payments-error.d.ts:31](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/../../payments-core/dist/errors/payments-error.d.ts#L31)
 
 The raw error body or other context, if any.
 
@@ -82,7 +82,7 @@ Defined in: [squareup/src/core/errors.ts:97](https://github.com/Bates-Solutions/
 
 > `readonly` `optional` **statusCode?**: `number`
 
-Defined in: [payments-core/dist/errors/payments-error.d.ts:26](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/../../payments-core/dist/errors/payments-error.d.ts#L26)
+Defined in: [payments-core/dist/errors/payments-error.d.ts:29](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/../../payments-core/dist/errors/payments-error.d.ts#L29)
 
 HTTP status of the response that caused the error, if any.
 

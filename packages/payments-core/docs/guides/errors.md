@@ -2,7 +2,9 @@
 
 ## `PaymentsError`
 
-`SquareError`, `StripeError` and `CloverError` all extend `PaymentsError`, from `./errors`. Each provider package also re-exports it, so an app that uses two providers can handle both in one place:
+`SquareError`, `StripeError` and `CloverError` all extend `PaymentsError`, from `./errors`. Each provider package also re-exports it, so an app that uses two providers can handle both in one place.
+
+That needs the providers to resolve the same copy of payments-core. While core is 0.x, a caret range covers one minor only (`^0.1.0` doesn't include 0.2.0), so providers released against different core minors install separate copies, and each copy has its own `PaymentsError` class. Check `npm ls @bates-solutions/payments-core` (or the Deno lockfile) if the check doesn't match.
 
 ```typescript
 import { PaymentsError } from '@bates-solutions/payments-core/errors';
@@ -44,7 +46,7 @@ export class AcmeError extends PaymentsError<AcmeErrorCode> {
 }
 ```
 
-Don't redeclare `code`, `statusCode` or `details` in the subclass: with ES2022 class fields, a redeclared field is reset to `undefined` after `super()` returns.
+Don't redeclare `code`, `statusCode` or `details` in the subclass: with ES2022 class fields, a redeclared field is reset to `undefined` after `super()` returns. Narrowing a field's type with `declare` is safe, since it emits nothing: `declare readonly code: 'NETWORK_ERROR' | 'TIMEOUT';`.
 
 ## `requireNonEmpty`
 

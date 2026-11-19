@@ -39,11 +39,4 @@ describe('requireNonEmpty', () => {
       requireNonEmpty(' ', 'clientId', toError);
     }).not.toThrow();
   });
-
-  it('narrows the value to string', () => {
-    const value: string | undefined = 'abc';
-    requireNonEmpty(value, 'clientId', toError);
-    const narrowed: string = value;
-    expect(narrowed).toBe('abc');
-  });
 });

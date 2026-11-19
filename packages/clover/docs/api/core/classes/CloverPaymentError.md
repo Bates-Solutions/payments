@@ -82,7 +82,7 @@ Clover's own error code, when present
 
 > `readonly` **code**: [`CloverErrorCode`](../type-aliases/CloverErrorCode.md)
 
-Defined in: [payments-core/dist/errors/payments-error.d.ts:24](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/../../payments-core/dist/errors/payments-error.d.ts#L24)
+Defined in: [payments-core/dist/errors/payments-error.d.ts:27](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/../../payments-core/dist/errors/payments-error.d.ts#L27)
 
 Normalized error code. Each provider defines its own union.
 
@@ -104,7 +104,7 @@ Defined in: [clover/src/core/errors.ts:86](https://github.com/Bates-Solutions/pa
 
 > `readonly` `optional` **details?**: `unknown`
 
-Defined in: [payments-core/dist/errors/payments-error.d.ts:28](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/../../payments-core/dist/errors/payments-error.d.ts#L28)
+Defined in: [payments-core/dist/errors/payments-error.d.ts:31](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/../../payments-core/dist/errors/payments-error.d.ts#L31)
 
 The raw error body or other context, if any.
 
@@ -128,7 +128,7 @@ Request id for tracing with Clover support
 
 > `readonly` `optional` **statusCode?**: `number`
 
-Defined in: [payments-core/dist/errors/payments-error.d.ts:26](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/../../payments-core/dist/errors/payments-error.d.ts#L26)
+Defined in: [payments-core/dist/errors/payments-error.d.ts:29](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/../../payments-core/dist/errors/payments-error.d.ts#L29)
 
 HTTP status of the response that caused the error, if any.
 

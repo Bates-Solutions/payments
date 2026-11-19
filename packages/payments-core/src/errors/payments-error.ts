@@ -6,7 +6,10 @@ type CaptureStackTrace = (target: object, constructorOpt?: unknown) => void;
  * `StripeError`, `CloverError`). It carries a provider-specific `code`, plus the
  * HTTP status and raw details when the error came from an API response.
  *
- * Catch it to handle any provider's error in one place:
+ * Catch it to handle any provider's error in one place. That works across
+ * providers only when they resolve the same copy of this package: core is
+ * 0.x, so providers built on different minors install separate copies, each
+ * with its own `PaymentsError` class.
  *
  * @example
  * ```typescript
