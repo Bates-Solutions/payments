@@ -48,20 +48,46 @@ describe('fromBase64', () => {
 
   // The point of the leniency: decode exactly what Node's Buffer decodes, so a
   // WebCrypto check agrees with a node:crypto one. Tests only use Buffer.
-  it('matches Buffer.from(text, "base64") on random input', () => {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/-_= !.\né';
+  describe('matches Buffer.from(text, "base64")', () => {
     let seed = 42;
     const random = () => {
       seed = (seed * 1103515245 + 12345) % 2 ** 31;
       return seed / 2 ** 31;
     };
-    for (let n = 0; n < 5000; n++) {
-      let text = '';
-      const length = Math.floor(random() * 16);
-      for (let i = 0; i < length; i++) text += chars[Math.floor(random() * chars.length)];
+    const agree = (text: string) => {
       expect(hex(fromBase64(text)), JSON.stringify(text)).toBe(
         Buffer.from(text, 'base64').toString('hex')
       );
-    }
+    };
+
+    it('on random base64-like input', () => {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/-_= !.\né';
+      for (let n = 0; n < 5000; n++) {
+        let text = '';
+        const length = Math.floor(random() * 64);
+        for (let i = 0; i < length; i++) text += chars[Math.floor(random() * chars.length)];
+        agree(text);
+      }
+    });
+
+    // Node reads each UTF-16 code unit by its low byte: U+0141 counts as 'A',
+    // and the high surrogate of an emoji (0xD83D) as '='.
+    it('on any UTF-16 code unit, including those above U+00FF and surrogates', () => {
+      agree('ŁŁŁŁ');
+      agree('Zm9v😀YmFy');
+      for (let n = 0; n < 3000; n++) {
+        let text = '';
+        const length = Math.floor(random() * 300);
+        for (let i = 0; i < length; i++)
+          text += String.fromCharCode(Math.floor(random() * 0x10000));
+        agree(text);
+      }
+    });
+
+    it('on long input', () => {
+      const long = toBase64(Uint8Array.from({ length: 3000 }, (_, i) => (i * 7) % 256));
+      agree(long);
+      agree(`${long.slice(0, 1000)}é ${long.slice(1000)}`);
+    });
   });
 });

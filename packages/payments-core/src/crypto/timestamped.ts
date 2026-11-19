@@ -14,10 +14,14 @@ export interface TimestampedSignatureHeader {
 export interface VerifyTimestampedHmacOptions {
   /**
    * Maximum age (or skew into the future) of the timestamp, in seconds.
-   * Defaults to 300. Zero or a negative number turns the check off.
+   * Defaults to 300. Zero or a negative number turns the check off; `NaN` (or
+   * a non-number) rejects every timestamp rather than skipping the check.
    */
   tolerance?: number;
-  /** The current time in Unix seconds. Defaults to the system clock. */
+  /**
+   * The current time in Unix seconds. Defaults to the system clock. A value
+   * that isn't a finite number rejects every timestamp.
+   */
   now?: number;
   /** The header key the signatures are listed under. Defaults to `v1`. */
   scheme?: string;
@@ -40,10 +44,17 @@ export type TimestampedHmacResult =
  * Parse a `t=<timestamp>,v1=<signature>,v1=…` header, the format Stripe and
  * Clover use.
  *
- * Parts are split on `,`, and each on its first `=` only; keys and values are
- * trimmed, and a part with an empty key or value is skipped. A later `t`
- * replaces an earlier one. The timestamp is read with `parseInt`, so
- * `t=0123` is 123.
+ * These are the rules Stripe's and Clover's packages used before core, kept
+ * exactly:
+ *
+ * - Parts are split on `,`, and each part with `split('=', 2)`: the key is the
+ *   text before the first `=`, the value the text up to the next `=`, and
+ *   anything after a second `=` is dropped (`v1=abc=junk` reads as `abc`).
+ * - A part whose key or value is empty is skipped. That check comes before
+ *   trimming, so `v1= ` adds an empty signature (which never matches) and
+ *   `t= ` resets the timestamp to `null`.
+ * - Keys and values are then trimmed. A later `t` replaces an earlier one.
+ * - The timestamp is read with `parseInt`, so `t=0123` is 123 and `t=12abc` is 12.
  */
 export function parseTimestampedSignatureHeader(
   header: string,
@@ -102,9 +113,14 @@ export async function verifyTimestampedHmac(
   }
 
   const tolerance = options?.tolerance ?? 300;
+  // Fail closed: a tolerance or clock that isn't a number must not turn the
+  // replay check off. `!(x <= tolerance)` is also true when x is NaN.
+  if (typeof tolerance !== 'number' || Number.isNaN(tolerance)) {
+    return { valid: false, reason: 'timestamp-outside-tolerance' };
+  }
   if (tolerance > 0) {
     const now = options?.now ?? Math.floor(Date.now() / 1000);
-    if (Math.abs(now - timestamp) > tolerance) {
+    if (!Number.isFinite(now) || !(Math.abs(now - timestamp) <= tolerance)) {
       return { valid: false, reason: 'timestamp-outside-tolerance' };
     }
   }

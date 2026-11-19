@@ -8,15 +8,22 @@
 
 > **parseTimestampedSignatureHeader**(`header`, `scheme?`): [`TimestampedSignatureHeader`](../interfaces/TimestampedSignatureHeader.md)
 
-Defined in: [crypto/timestamped.ts:48](https://github.com/Bates-Solutions/payments/blob/main/packages/payments-core/src/crypto/timestamped.ts#L48)
+Defined in: [crypto/timestamped.ts:59](https://github.com/Bates-Solutions/payments/blob/main/packages/payments-core/src/crypto/timestamped.ts#L59)
 
 Parse a `t=<timestamp>,v1=<signature>,v1=…` header, the format Stripe and
 Clover use.
 
-Parts are split on `,`, and each on its first `=` only; keys and values are
-trimmed, and a part with an empty key or value is skipped. A later `t`
-replaces an earlier one. The timestamp is read with `parseInt`, so
-`t=0123` is 123.
+These are the rules Stripe's and Clover's packages used before core, kept
+exactly:
+
+- Parts are split on `,`, and each part with `split('=', 2)`: the key is the
+  text before the first `=`, the value the text up to the next `=`, and
+  anything after a second `=` is dropped (`v1=abc=junk` reads as `abc`).
+- A part whose key or value is empty is skipped. That check comes before
+  trimming, so `v1= ` adds an empty signature (which never matches) and
+  `t= ` resets the timestamp to `null`.
+- Keys and values are then trimmed. A later `t` replaces an earlier one.
+- The timestamp is read with `parseInt`, so `t=0123` is 123 and `t=12abc` is 12.
 
 ## Parameters
 

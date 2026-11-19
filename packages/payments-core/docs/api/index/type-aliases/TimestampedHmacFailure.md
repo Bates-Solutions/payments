@@ -8,6 +8,6 @@
 
 > **TimestampedHmacFailure** = `"malformed-header"` \| `"signature-mismatch"` \| `"timestamp-outside-tolerance"`
 
-Defined in: [crypto/timestamped.ts:27](https://github.com/Bates-Solutions/payments/blob/main/packages/payments-core/src/crypto/timestamped.ts#L27)
+Defined in: [crypto/timestamped.ts:31](https://github.com/Bates-Solutions/payments/blob/main/packages/payments-core/src/crypto/timestamped.ts#L31)
 
 Why [verifyTimestampedHmac](../functions/verifyTimestampedHmac.md) rejected a signature.

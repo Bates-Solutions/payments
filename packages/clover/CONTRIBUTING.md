@@ -27,8 +27,8 @@ reports coverage.
 
 ## Conventions
 
-- **Package manager:** `npm`. No runtime dependencies — the client uses global
-  `fetch` and WebCrypto.
+- **Package manager:** `npm`. No vendor SDK: the client uses global `fetch` and
+  WebCrypto. The one runtime dependency is `@bates-solutions/payments-core`.
 - **One service per Clover domain** in `src/core/services/<name>.service.ts`.
 - All `http` calls are wrapped in `try/catch` and rethrown through
   `parseCloverError(error)`.

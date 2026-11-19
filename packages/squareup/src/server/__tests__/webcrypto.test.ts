@@ -198,7 +198,6 @@ describe('verifySignature and verifySignatureAsync agree', () => {
     ['the canonical signature', canonical],
     ['no padding', canonical.replace(/=+$/, '')],
     ['non-zero trailing bits', flipLastBits(canonical)],
-    ['the URL-safe alphabet', canonical.replace(/\+/g, '-').replace(/\//g, '_')],
     ['surrounding whitespace', ` ${canonical}\n`],
     ['characters outside the alphabet', `${canonical.slice(0, 10)}!${canonical.slice(10)}`],
     ['text after the padding', `${canonical}AAAA`],
@@ -226,6 +225,20 @@ describe('verifySignature and verifySignatureAsync agree', () => {
     expect(await verifySignatureAsync(BODY, flipLastBits(canonical), KEY, URL_)).toEqual({
       valid: true,
     });
+  });
+
+  it('agrees on, and accepts, the URL-safe spelling of a signature with + and /', async () => {
+    // The fixture's signature has neither, so find a body whose signature has both.
+    let body = BODY;
+    let signature = nodeSignature(body, KEY, URL_);
+    for (let n = 0; !(signature.includes('+') && signature.includes('/')); n++) {
+      body = `${BODY}\n${n.toString()}`;
+      signature = nodeSignature(body, KEY, URL_);
+    }
+    const urlSafe = signature.replace(/\+/g, '-').replace(/\//g, '_');
+    expect(urlSafe).not.toBe(signature);
+    expect(verifySignature(body, urlSafe, KEY, URL_)).toEqual({ valid: true });
+    expect(await verifySignatureAsync(body, urlSafe, KEY, URL_)).toEqual({ valid: true });
   });
 
   it('still rejects a signature for another body', async () => {

@@ -147,6 +147,35 @@ describe('verifyTimestampedHmac', () => {
       expect((await at(NOW - 10_000_000, { tolerance: -1 })).valid).toBe(true);
     });
 
+    it('fails closed when the tolerance or the clock is not a number', async () => {
+      const outside = { valid: false, reason: 'timestamp-outside-tolerance' };
+      const signed = header(NOW - 10_000, sign(NOW - 10_000));
+      const loose = verifyTimestampedHmac as (
+        ...args: [string, string, string, Record<string, unknown>]
+      ) => ReturnType<typeof verifyTimestampedHmac>;
+      for (const options of [
+        { now: NOW, tolerance: Number.NaN },
+        { now: NOW, tolerance: 'x' },
+        { now: Number.NaN },
+        { now: 'x' },
+        { now: Number.POSITIVE_INFINITY },
+      ]) {
+        expect(await loose(PAYLOAD, signed, SECRET, options), JSON.stringify(options)).toEqual(
+          outside
+        );
+      }
+      // A fresh timestamp too: the check must not be skipped either way.
+      expect(
+        await verifyTimestampedHmac(PAYLOAD, header(NOW, sign(NOW)), SECRET, { now: Number.NaN })
+      ).toEqual(outside);
+    });
+
+    it('treats an infinite tolerance as accepting any timestamp', async () => {
+      expect((await at(NOW - 10_000_000, { tolerance: Number.POSITIVE_INFINITY })).valid).toBe(
+        true
+      );
+    });
+
     it('checks the signature before the timestamp', async () => {
       const result = await verifyTimestampedHmac(
         PAYLOAD,
