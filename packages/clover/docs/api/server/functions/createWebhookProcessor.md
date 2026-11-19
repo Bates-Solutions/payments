@@ -8,7 +8,7 @@
 
 > **createWebhookProcessor**(`config`): (`rawBody`, `signature`) => `Promise`\<\{ `error?`: `string`; `event?`: [`WebhookEvent`](../interfaces/WebhookEvent.md); `success`: `boolean`; \}\>
 
-Defined in: [server/webhook.ts:206](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/webhook.ts#L206)
+Defined in: [server/webhook.ts:144](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/webhook.ts#L144)
 
 Create a webhook handler that verifies and processes raw webhook requests.
 

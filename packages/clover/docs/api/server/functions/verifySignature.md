@@ -8,7 +8,7 @@
 
 > **verifySignature**(`rawBody`, `signature`, `signingSecret`, `options?`): `Promise`\<[`WebhookVerificationResult`](../interfaces/WebhookVerificationResult.md)\>
 
-Defined in: [server/webhook.ts:91](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/webhook.ts#L91)
+Defined in: [server/webhook.ts:43](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/webhook.ts#L43)
 
 Verify a Clover Hosted-Checkout webhook signature.
 

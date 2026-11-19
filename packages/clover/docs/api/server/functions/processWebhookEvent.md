@@ -8,7 +8,7 @@
 
 > **processWebhookEvent**(`event`, `config`): `Promise`\<`void`\>
 
-Defined in: [server/webhook.ts:177](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/webhook.ts#L177)
+Defined in: [server/webhook.ts:115](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/webhook.ts#L115)
 
 Dispatch an event to the handler registered for its `type`.
 

@@ -8,7 +8,7 @@
 
 > **parseWebhookEvent**(`rawBody`): `Event`
 
-Defined in: [server/webhook.ts:161](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/webhook.ts#L161)
+Defined in: [server/webhook.ts:95](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/webhook.ts#L95)
 
 Parse a webhook request body into a typed event.
 
