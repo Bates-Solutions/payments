@@ -21,7 +21,7 @@ npx jsr add @bates-solutions/payments-core
 | Export | Entry point | What it does |
 |---|---|---|
 | `hmacSha256(secret, payload)` | `./crypto` | HMAC-SHA256 over WebCrypto. Strings are UTF-8; returns the raw 32-byte digest. |
-| `timingSafeEqual(a, b)` | `./crypto` | Constant-time compare of two strings or two byte sequences (a string against bytes is compared as UTF-8). `false` for different lengths or empty input. |
+| `timingSafeEqual(a, b)` | `./crypto` | Constant-time compare of two strings or two byte sequences (`Uint8Array` or `ArrayBuffer`; a string against bytes is compared as UTF-8). `false` for different lengths or empty input; throws a `TypeError` for other input types. |
 | `toHex(bytes)` | `./crypto` | Lowercase hex. |
 | `toBase64(bytes)` | `./crypto` | Standard base64 with padding. |
 

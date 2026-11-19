@@ -24,7 +24,7 @@
     "docs": "npm run docs --workspaces --if-present",
     "docs:site": "node scripts/build-site.mjs",
     "check": "npm run lint && npm run typecheck && npm run build && npm run test && npm run test:scripts",
-    "prepare": "npm run build -w packages/payments-core"
+    "prepare": "npm run build -w packages/payments-core -- --noCheck"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

@@ -56,6 +56,28 @@ describe('timingSafeEqual', () => {
     }
   });
 
+  it('compares ArrayBuffers by their bytes', () => {
+    expect(timingSafeEqual(bytes(1, 2, 3).buffer, bytes(1, 2, 3).buffer)).toBe(true);
+    expect(timingSafeEqual(bytes(1, 2, 3).buffer, bytes(1, 2, 4).buffer)).toBe(false);
+    expect(timingSafeEqual(bytes(1, 2, 3).buffer, bytes(1, 2, 3))).toBe(true);
+    expect(timingSafeEqual('abc', new TextEncoder().encode('abc').buffer)).toBe(true);
+  });
+
+  it('is false for an empty ArrayBuffer', () => {
+    expect(timingSafeEqual(new ArrayBuffer(0), new ArrayBuffer(0))).toBe(false);
+    expect(timingSafeEqual(bytes(1).buffer, new ArrayBuffer(0))).toBe(false);
+  });
+
+  // A loose check on inputs with no .length would compare nothing and return true.
+  it('throws for other input types instead of failing open', () => {
+    const view = new DataView(bytes(1, 2).buffer);
+    const loose = timingSafeEqual as (a: unknown, b: unknown) => boolean;
+    expect(() => loose(view, new DataView(bytes(3, 4).buffer))).toThrow(TypeError);
+    expect(() => loose([1, 2], [3, 4])).toThrow(TypeError);
+    expect(() => loose(null, 'a')).toThrow(TypeError);
+    expect(() => loose('a', undefined)).toThrow(TypeError);
+  });
+
   it('finds a difference in the first, middle and last byte', () => {
     const base = 'a'.repeat(64);
     for (const i of [0, 31, 63]) {
