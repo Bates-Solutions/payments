@@ -1,44 +1,5 @@
+import { fromBase64, hmacSha256, timingSafeEqual } from '@bates-solutions/payments-core/crypto';
 import type { WebhookVerificationResult } from './types.js';
-
-/**
- * Compute an HMAC-SHA256 base64 digest using WebCrypto.
- *
- * Uses `globalThis.crypto.subtle` so verification runs on any modern runtime
- * (Node 22+, Deno, Bun, Cloudflare Workers) with no Node built-ins.
- */
-async function hmacSha256Base64(key: string, payload: string): Promise<string> {
-  const encoder = new TextEncoder();
-  const cryptoKey = await globalThis.crypto.subtle.importKey(
-    'raw',
-    encoder.encode(key),
-    { name: 'HMAC', hash: 'SHA-256' },
-    false,
-    ['sign']
-  );
-  const digest = await globalThis.crypto.subtle.sign('HMAC', cryptoKey, encoder.encode(payload));
-  let binary = '';
-  for (const byte of new Uint8Array(digest)) {
-    binary += String.fromCharCode(byte);
-  }
-  return btoa(binary);
-}
-
-/**
- * Constant-time comparison of two strings.
- *
- * Pure JS (no `node:crypto`) so it works on edge runtimes. Returns `false` for
- * unequal lengths or empty input without comparing characters.
- */
-function timingSafeEqualString(a: string, b: string): boolean {
-  if (a.length !== b.length || a.length === 0) {
-    return false;
-  }
-  let mismatch = 0;
-  for (let i = 0; i < a.length; i++) {
-    mismatch |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  }
-  return mismatch === 0;
-}
 
 /**
  * Verify a Square webhook signature with WebCrypto (edge-safe, async).
@@ -95,9 +56,12 @@ export async function verifySignatureAsync(
 
   try {
     const stringToSign = notificationUrl ? notificationUrl + rawBody : rawBody;
-    const expectedSignature = await hmacSha256Base64(signatureKey, stringToSign);
+    const expected = await hmacSha256(signatureKey, stringToSign);
 
-    if (!timingSafeEqualString(signature, expectedSignature)) {
+    // Compare bytes, decoding the header with the same base64 rules as the
+    // node:crypto verifySignature, so both accept exactly the same signatures.
+    // A non-string header (from untyped callers) is never a valid signature.
+    if (typeof signature !== 'string' || !timingSafeEqual(fromBase64(signature), expected)) {
       return { valid: false, error: 'Invalid signature' };
     }
 

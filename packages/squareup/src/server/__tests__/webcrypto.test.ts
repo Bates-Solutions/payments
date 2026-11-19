@@ -179,3 +179,72 @@ describe('verifySignatureAsync', () => {
     }
   });
 });
+
+// verifySignature decodes the header with Buffer and compares bytes, so it
+// accepts non-canonical spellings of a valid signature. The async path decodes
+// with payments-core's fromBase64 and must accept and reject exactly the same
+// headers.
+describe('verifySignature and verifySignatureAsync agree', () => {
+  const canonical = nodeSignature(BODY, KEY, URL_);
+  const flipLastBits = (sig: string) => {
+    // A 32-byte digest is 43 base64 characters plus '='; the 43rd carries two
+    // bits that are not part of any byte. Changing only those keeps the bytes.
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+    const index = alphabet.indexOf(sig.charAt(42));
+    return sig.slice(0, 42) + alphabet.charAt(index ^ 1) + sig.slice(43);
+  };
+
+  const variants: [string, string][] = [
+    ['the canonical signature', canonical],
+    ['no padding', canonical.replace(/=+$/, '')],
+    ['non-zero trailing bits', flipLastBits(canonical)],
+    ['surrounding whitespace', ` ${canonical}\n`],
+    ['characters outside the alphabet', `${canonical.slice(0, 10)}!${canonical.slice(10)}`],
+    ['text after the padding', `${canonical}AAAA`],
+    ['one byte short', nodeSignature(BODY, KEY, URL_).slice(0, 40)],
+    ['a different signature', nodeSignature(BODY, 'other-key', URL_)],
+    ['an empty decode', '!!!!'],
+    [
+      'the hex encoding',
+      createHmac('sha256', KEY)
+        .update(URL_ + BODY)
+        .digest('hex'),
+    ],
+  ];
+
+  it.each(variants)('gives the same result for %s', async (_, signature) => {
+    const sync = verifySignature(BODY, signature, KEY, URL_);
+    const async = await verifySignatureAsync(BODY, signature, KEY, URL_);
+    expect(async).toEqual(sync);
+  });
+
+  it('accepts a non-canonical base64 spelling of a valid signature', async () => {
+    const unpadded = canonical.replace(/=+$/, '');
+    expect(unpadded).not.toBe(canonical);
+    expect(await verifySignatureAsync(BODY, unpadded, KEY, URL_)).toEqual({ valid: true });
+    expect(await verifySignatureAsync(BODY, flipLastBits(canonical), KEY, URL_)).toEqual({
+      valid: true,
+    });
+  });
+
+  it('agrees on, and accepts, the URL-safe spelling of a signature with + and /', async () => {
+    // The fixture's signature has neither, so find a body whose signature has both.
+    let body = BODY;
+    let signature = nodeSignature(body, KEY, URL_);
+    for (let n = 0; !(signature.includes('+') && signature.includes('/')); n++) {
+      body = `${BODY}\n${n.toString()}`;
+      signature = nodeSignature(body, KEY, URL_);
+    }
+    const urlSafe = signature.replace(/\+/g, '-').replace(/\//g, '_');
+    expect(urlSafe).not.toBe(signature);
+    expect(verifySignature(body, urlSafe, KEY, URL_)).toEqual({ valid: true });
+    expect(await verifySignatureAsync(body, urlSafe, KEY, URL_)).toEqual({ valid: true });
+  });
+
+  it('still rejects a signature for another body', async () => {
+    expect(await verifySignatureAsync(`${BODY} `, canonical, KEY, URL_)).toEqual({
+      valid: false,
+      error: 'Invalid signature',
+    });
+  });
+});

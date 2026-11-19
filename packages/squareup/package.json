@@ -80,5 +80,8 @@
   },
   "devDependencies": {
     "square": "^46.0.0"
+  },
+  "dependencies": {
+    "@bates-solutions/payments-core": "^0.1.0"
   }
 }

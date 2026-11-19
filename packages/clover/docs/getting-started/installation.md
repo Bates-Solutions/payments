@@ -8,11 +8,13 @@ yarn add @bates-solutions/clover
 pnpm add @bates-solutions/clover
 ```
 
-## No runtime dependencies
+## No vendor SDK
 
-The client uses the global `fetch` and WebCrypto (`crypto.subtle`) — there is no
-vendor SDK to install. It runs on any modern runtime: **Node.js 22+**, Deno,
-Bun, and Cloudflare Workers.
+The client uses the global `fetch` and WebCrypto (`crypto.subtle`), so there is no
+vendor SDK to install. Its only dependency is `@bates-solutions/payments-core`
+(the shared webhook signature primitives), which your package manager installs
+with it. It runs on any modern runtime: **Node.js 22+**, Deno, Bun, and
+Cloudflare Workers.
 
 ## TypeScript
 

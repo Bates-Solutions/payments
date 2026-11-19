@@ -62,5 +62,8 @@
   },
   "devDependencies": {
     "stripe": "^23.1.0"
+  },
+  "dependencies": {
+    "@bates-solutions/payments-core": "^0.1.0"
   }
 }

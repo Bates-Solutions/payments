@@ -24,6 +24,9 @@ npx jsr add @bates-solutions/payments-core
 | `timingSafeEqual(a, b)` | `./crypto` | Constant-time compare of two strings or two byte sequences (`Uint8Array` or `ArrayBuffer`; a string against bytes is compared as UTF-8). `false` for different lengths or empty input; throws a `TypeError` for other input types. |
 | `toHex(bytes)` | `./crypto` | Lowercase hex. |
 | `toBase64(bytes)` | `./crypto` | Standard base64 with padding. |
+| `fromBase64(text)` | `./crypto` | Decodes base64 the way Node's `Buffer.from(text, 'base64')` does: standard or URL-safe alphabet, padding optional, other characters skipped. |
+| `verifyTimestampedHmac(payload, header, secret, options?)` | `./crypto` | Checks a `t=<timestamp>,v1=<hex>` header (Stripe, Clover): HMAC over `${t}.${payload}`, constant-time compare, 300 s tolerance by default. Returns `{ valid: true, timestamp }` or `{ valid: false, reason }`. |
+| `parseTimestampedSignatureHeader(header, scheme?)` | `./crypto` | Splits that header into its timestamp and signatures. |
 
 Every export is also available from the package root.
 

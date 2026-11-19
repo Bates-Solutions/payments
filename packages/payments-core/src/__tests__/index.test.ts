@@ -5,10 +5,13 @@ import * as root from '../index';
 describe('entry points', () => {
   it('exports the crypto primitives from ./crypto', () => {
     expect(Object.keys(cryptoEntry).sort()).toEqual([
+      'fromBase64',
       'hmacSha256',
+      'parseTimestampedSignatureHeader',
       'timingSafeEqual',
       'toBase64',
       'toHex',
+      'verifyTimestampedHmac',
     ]);
   });
 

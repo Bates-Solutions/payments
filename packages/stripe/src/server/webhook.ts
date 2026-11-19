@@ -1,3 +1,7 @@
+import {
+  verifyTimestampedHmac,
+  type TimestampedHmacFailure,
+} from '@bates-solutions/payments-core/crypto';
 import { resolveId } from '../core/utils.js';
 import type {
   WebhookConfig,
@@ -14,68 +18,12 @@ export { resolveId };
  */
 export const SIGNATURE_HEADER = 'stripe-signature';
 
-/**
- * Compute an HMAC-SHA256 hex digest using WebCrypto.
- *
- * Uses `globalThis.crypto.subtle` so verification runs on any modern runtime
- * (Node 22+, Deno, Bun, Cloudflare Workers) with no Node built-ins.
- */
-async function hmacSha256Hex(secret: string, payload: string): Promise<string> {
-  const encoder = new TextEncoder();
-  const key = await globalThis.crypto.subtle.importKey(
-    'raw',
-    encoder.encode(secret),
-    { name: 'HMAC', hash: 'SHA-256' },
-    false,
-    ['sign']
-  );
-  const signature = await globalThis.crypto.subtle.sign('HMAC', key, encoder.encode(payload));
-  return Array.from(new Uint8Array(signature))
-    .map((byte) => byte.toString(16).padStart(2, '0'))
-    .join('');
-}
-
-/**
- * Constant-time comparison of two equal-length hex strings.
- *
- * Pure JS (no `node:crypto`) so it works on edge runtimes.
- */
-function timingSafeEqualHex(a: string, b: string): boolean {
-  if (a.length !== b.length || a.length === 0) {
-    return false;
-  }
-  let mismatch = 0;
-  for (let i = 0; i < a.length; i++) {
-    mismatch |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  }
-  return mismatch === 0;
-}
-
-/**
- * Parse a `stripe-signature` header into its timestamp and v1 signatures.
- *
- * Header format: `t=1492774577,v1=5257a869…,v1=…`
- */
-function parseSignatureHeader(header: string): {
-  timestamp: number | null;
-  signatures: string[];
-} {
-  let timestamp: number | null = null;
-  const signatures: string[] = [];
-
-  for (const part of header.split(',')) {
-    const [key, value] = part.split('=', 2);
-    if (!key || !value) continue;
-    if (key.trim() === 't') {
-      const parsed = Number.parseInt(value.trim(), 10);
-      timestamp = Number.isNaN(parsed) ? null : parsed;
-    } else if (key.trim() === 'v1') {
-      signatures.push(value.trim());
-    }
-  }
-
-  return { timestamp, signatures };
-}
+/** This package's error message for each reason core's check can fail. */
+const FAILURE_MESSAGES: Record<TimestampedHmacFailure, string> = {
+  'malformed-header': 'Invalid signature header format',
+  'signature-mismatch': 'Invalid signature',
+  'timestamp-outside-tolerance': 'Timestamp outside the tolerance zone',
+};
 
 /**
  * Verify a Stripe webhook signature.
@@ -121,25 +69,11 @@ export async function verifySignature(
     return { valid: false, error: 'Missing signing secret' };
   }
 
-  const { timestamp, signatures } = parseSignatureHeader(signature);
-  if (timestamp === null || signatures.length === 0) {
-    return { valid: false, error: 'Invalid signature header format' };
-  }
-
-  const signedPayload = `${timestamp.toString()}.${rawBody}`;
-  const expected = await hmacSha256Hex(signingSecret, signedPayload);
-
-  const matches = signatures.some((sig) => timingSafeEqualHex(sig, expected));
-  if (!matches) {
-    return { valid: false, error: 'Invalid signature' };
-  }
-
-  const tolerance = options?.tolerance ?? 300;
-  if (tolerance > 0) {
-    const now = Math.floor(Date.now() / 1000);
-    if (Math.abs(now - timestamp) > tolerance) {
-      return { valid: false, error: 'Timestamp outside the tolerance zone' };
-    }
+  const result = await verifyTimestampedHmac(rawBody, signature, signingSecret, {
+    tolerance: options?.tolerance,
+  });
+  if (!result.valid) {
+    return { valid: false, error: FAILURE_MESSAGES[result.reason] };
   }
 
   return { valid: true };

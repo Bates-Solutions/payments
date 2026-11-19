@@ -20,7 +20,7 @@
 
 ---
 
-Clover has no first-class Node SDK, so this library talks to Clover over a small typed **`fetch`-based client** — zero runtime dependencies. It gives you a service-oriented client, a typed error hierarchy, money helpers, and framework-ready webhook handling. Part of the same family as [`@bates-solutions/squareup`](https://jsr.io/@bates-solutions/squareup) and [`@bates-solutions/stripe`](https://jsr.io/@bates-solutions/stripe), so if you know one, you know this.
+Clover has no first-class Node SDK, so this library talks to Clover over a small typed **`fetch`-based client**, with no vendor SDK. Its only dependency is [`@bates-solutions/payments-core`](https://jsr.io/@bates-solutions/payments-core), the shared WebCrypto webhook primitives. It gives you a service-oriented client, a typed error hierarchy, money helpers, and framework-ready webhook handling. Part of the same family as [`@bates-solutions/squareup`](https://jsr.io/@bates-solutions/squareup) and [`@bates-solutions/stripe`](https://jsr.io/@bates-solutions/stripe), so if you know one, you know this.
 
 It targets both Clover hosts transparently:
 
@@ -29,7 +29,7 @@ It targets both Clover hosts transparently:
 
 ## Features
 
-- **Zero dependencies** – A tiny `fetch` client; no vendor SDK
+- **No vendor SDK** – A tiny `fetch` client; the only dependency is the family's own `@bates-solutions/payments-core`
 - **Type-Safe** – Full TypeScript types for inputs and results
 - **OAuth** – Authorize URL plus code exchange and refresh for Clover's expiring v2 tokens
 - **Typed Errors** – `parseCloverError` normalizes HTTP failures into a small class hierarchy

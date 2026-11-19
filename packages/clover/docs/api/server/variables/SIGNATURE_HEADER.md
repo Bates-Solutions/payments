@@ -8,6 +8,6 @@
 
 > `const` **SIGNATURE\_HEADER**: `"clover-signature"` = `'clover-signature'`
 
-Defined in: [server/webhook.ts:12](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/webhook.ts#L12)
+Defined in: [server/webhook.ts:16](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/webhook.ts#L16)
 
 Header carrying the Clover Hosted-Checkout webhook signature.

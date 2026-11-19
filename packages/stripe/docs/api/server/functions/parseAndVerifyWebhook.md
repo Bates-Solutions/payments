@@ -8,7 +8,7 @@
 
 > **parseAndVerifyWebhook**(`rawBody`, `signature`, `signingSecret`, `options?`): `Promise`\<[`ParsedWebhookRequest`](../interfaces/ParsedWebhookRequest.md)\>
 
-Defined in: [server/webhook.ts:188](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/webhook.ts#L188)
+Defined in: [server/webhook.ts:122](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/webhook.ts#L122)
 
 Verify and parse a webhook request.
 
