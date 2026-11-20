@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: PaginationOptions
 
-Defined in: [stripe/src/core/types/index.ts:20](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/types/index.ts#L20)
+Defined in: [stripe/src/core/types/index.ts:26](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/types/index.ts#L26)
 
 Common cursor pagination options
 
@@ -16,7 +16,7 @@ Common cursor pagination options
 
 > `optional` **limit?**: `number`
 
-Defined in: [stripe/src/core/types/index.ts:22](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/types/index.ts#L22)
+Defined in: [stripe/src/core/types/index.ts:28](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/types/index.ts#L28)
 
 Maximum number of records to return
 
@@ -26,6 +26,6 @@ Maximum number of records to return
 
 > `optional` **startingAfter?**: `string`
 
-Defined in: [stripe/src/core/types/index.ts:24](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/types/index.ts#L24)
+Defined in: [stripe/src/core/types/index.ts:30](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/types/index.ts#L30)
 
 Cursor: return records after this object ID (`starting_after`)

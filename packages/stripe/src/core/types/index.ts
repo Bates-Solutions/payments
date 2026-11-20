@@ -7,12 +7,18 @@
 export type StripeEnvironment = 'test' | 'live';
 
 /**
- * Currency codes commonly used with Stripe.
+ * A Stripe currency code.
  *
- * Stripe currency codes are lowercase ISO 4217 (e.g. `usd`). This is a
- * representative subset; Stripe supports many more.
+ * Stripe currency codes are lowercase ISO 4217 (e.g. `usd`). The listed codes
+ * are a representative subset offered for autocomplete; any other ISO code
+ * Stripe supports (e.g. `krw`, `kwd`, `isk`) is accepted too. The money
+ * helpers (`toMinor`, `fromMinor`, `formatMoney`) match codes
+ * case-insensitively.
+ *
+ * @see https://docs.stripe.com/currencies
  */
-export type CurrencyCode = 'usd' | 'cad' | 'gbp' | 'eur' | 'aud' | 'jpy';
+export type CurrencyCode =
+  'usd' | 'cad' | 'gbp' | 'eur' | 'aud' | 'jpy' | (string & Record<never, never>);
 
 /**
  * Common cursor pagination options
@@ -22,6 +28,27 @@ export interface PaginationOptions {
   limit?: number;
   /** Cursor: return records after this object ID (`starting_after`) */
   startingAfter?: string;
+}
+
+/**
+ * A time range filter, e.g. on an object's `created` time. Each bound is a
+ * `Date` or Unix seconds; omit a bound to leave that side open.
+ *
+ * @example
+ * ```typescript
+ * // Everything created in March 2026 (UTC)
+ * const march = { gte: new Date('2026-03-01T00:00:00Z'), lt: new Date('2026-04-01T00:00:00Z') };
+ * ```
+ */
+export interface TimeRange {
+  /** On or after */
+  gte?: Date | number;
+  /** Strictly after */
+  gt?: Date | number;
+  /** On or before */
+  lte?: Date | number;
+  /** Strictly before */
+  lt?: Date | number;
 }
 
 /**
@@ -61,6 +88,13 @@ export interface CreatePaymentOptions {
    * @default false
    */
   confirm?: boolean;
+  /**
+   * The customer is not present (charging a saved payment method). Use with
+   * `confirm: true`. If the bank asks for authentication, Stripe then fails
+   * the payment (`authentication_required`) instead of leaving it in
+   * `requires_action`.
+   */
+  offSession?: boolean;
   /** Arbitrary description shown in the Stripe dashboard */
   description?: string;
   /** Email address to send the receipt to */
