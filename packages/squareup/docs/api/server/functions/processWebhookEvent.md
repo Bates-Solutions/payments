@@ -8,7 +8,7 @@
 
 > **processWebhookEvent**(`event`, `config`): `Promise`\<`void`\>
 
-Defined in: [squareup/src/server/events.ts:48](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/events.ts#L48)
+Defined in: [squareup/src/server/events.ts:59](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/events.ts#L59)
 
 Process a webhook event by calling the appropriate handler
 

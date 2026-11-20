@@ -6,7 +6,7 @@
 
 # Interface: SubscriptionPlan
 
-Defined in: [squareup/src/core/services/subscriptions.service.ts:59](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L59)
+Defined in: [squareup/src/core/services/subscriptions.service.ts:63](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L63)
 
 Subscription plan from Square API
 
@@ -16,7 +16,7 @@ Subscription plan from Square API
 
 > `optional` **id?**: `string`
 
-Defined in: [squareup/src/core/services/subscriptions.service.ts:60](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L60)
+Defined in: [squareup/src/core/services/subscriptions.service.ts:64](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L64)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [squareup/src/core/services/subscriptions.service.ts:60](https://git
 
 > `optional` **subscriptionPlanData?**: `object`
 
-Defined in: [squareup/src/core/services/subscriptions.service.ts:62](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L62)
+Defined in: [squareup/src/core/services/subscriptions.service.ts:66](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L66)
 
 #### name?
 
@@ -40,4 +40,4 @@ Defined in: [squareup/src/core/services/subscriptions.service.ts:62](https://git
 
 > `optional` **type?**: `string`
 
-Defined in: [squareup/src/core/services/subscriptions.service.ts:61](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L61)
+Defined in: [squareup/src/core/services/subscriptions.service.ts:65](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L65)

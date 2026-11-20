@@ -6,7 +6,7 @@
 
 # Interface: CreateOrderOptions
 
-Defined in: [squareup/src/core/types/index.ts:162](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L162)
+Defined in: [squareup/src/core/types/index.ts:192](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L192)
 
 Create order options
 
@@ -16,7 +16,7 @@ Create order options
 
 > `optional` **customerId?**: `string`
 
-Defined in: [squareup/src/core/types/index.ts:164](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L164)
+Defined in: [squareup/src/core/types/index.ts:194](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L194)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [squareup/src/core/types/index.ts:164](https://github.com/Bates-Solu
 
 > `optional` **discounts?**: [`OrderDiscountInput`](OrderDiscountInput.md)[]
 
-Defined in: [squareup/src/core/types/index.ts:173](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L173)
+Defined in: [squareup/src/core/types/index.ts:203](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L203)
 
 Order-level and line-level discounts. Reference `CatalogDiscount` ids to
 keep pricing authoritative (the number tracks the catalog rather than being
@@ -38,7 +38,7 @@ copied into the order). For a subscription order template, carry discounts
 
 > `optional` **idempotencyKey?**: `string`
 
-Defined in: [squareup/src/core/types/index.ts:184](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L184)
+Defined in: [squareup/src/core/types/index.ts:214](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L214)
 
 ***
 
@@ -46,7 +46,7 @@ Defined in: [squareup/src/core/types/index.ts:184](https://github.com/Bates-Solu
 
 > **lineItems**: [`LineItemInput`](LineItemInput.md)[]
 
-Defined in: [squareup/src/core/types/index.ts:163](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L163)
+Defined in: [squareup/src/core/types/index.ts:193](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L193)
 
 ***
 
@@ -54,7 +54,7 @@ Defined in: [squareup/src/core/types/index.ts:163](https://github.com/Bates-Solu
 
 > `optional` **locationId?**: `string`
 
-Defined in: [squareup/src/core/types/index.ts:183](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L183)
+Defined in: [squareup/src/core/types/index.ts:213](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L213)
 
 Override the client's default location for this order.
 
@@ -64,7 +64,7 @@ Override the client's default location for this order.
 
 > `optional` **pricingOptions?**: [`OrderPricingOptions`](OrderPricingOptions.md)
 
-Defined in: [squareup/src/core/types/index.ts:179](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L179)
+Defined in: [squareup/src/core/types/index.ts:209](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L209)
 
 ***
 
@@ -72,7 +72,7 @@ Defined in: [squareup/src/core/types/index.ts:179](https://github.com/Bates-Solu
 
 > `optional` **referenceId?**: `string`
 
-Defined in: [squareup/src/core/types/index.ts:165](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L165)
+Defined in: [squareup/src/core/types/index.ts:195](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L195)
 
 ***
 
@@ -80,7 +80,7 @@ Defined in: [squareup/src/core/types/index.ts:165](https://github.com/Bates-Solu
 
 > `optional` **state?**: `"DRAFT"` \| `"OPEN"`
 
-Defined in: [squareup/src/core/types/index.ts:178](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L178)
+Defined in: [squareup/src/core/types/index.ts:208](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L208)
 
 Order state. Use `'DRAFT'` when creating an order template that will back
 a subscription phase (`subscriptions.create({ phases: [...] })`).

@@ -24,9 +24,9 @@ The incoming request
 
 ### signatureKey
 
-`string`
+[`WebhookSignatureKey`](../type-aliases/WebhookSignatureKey.md)
 
-Your webhook signature key
+Your webhook signature key, or a list of keys during rotation
 
 ### notificationUrl?
 

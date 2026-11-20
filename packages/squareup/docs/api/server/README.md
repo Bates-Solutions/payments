@@ -105,6 +105,7 @@ app.post('/webhook', createExpressWebhookHandler({
 - [WebhookEventType](type-aliases/WebhookEventType.md)
 - [WebhookHandler](type-aliases/WebhookHandler.md)
 - [WebhookHandlers](type-aliases/WebhookHandlers.md)
+- [WebhookSignatureKey](type-aliases/WebhookSignatureKey.md)
 
 ## Variables
 

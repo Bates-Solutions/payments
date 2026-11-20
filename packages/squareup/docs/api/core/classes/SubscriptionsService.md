@@ -6,7 +6,7 @@
 
 # Class: SubscriptionsService
 
-Defined in: [squareup/src/core/services/subscriptions.service.ts:144](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L144)
+Defined in: [squareup/src/core/services/subscriptions.service.ts:174](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L174)
 
 Subscriptions service for managing Square subscriptions
 
@@ -17,6 +17,7 @@ Subscriptions service for managing Square subscriptions
 const subscription = await square.subscriptions.create({
   customerId: 'CUST_123',
   planVariationId: 'PLAN_VAR_123',
+  idempotencyKey: createIdempotencyKey(),
 });
 
 // Cancel a subscription
@@ -29,7 +30,7 @@ await square.subscriptions.cancel('SUB_123');
 
 > **new SubscriptionsService**(`client`, `defaultLocationId?`, `defaultCurrency?`): `SubscriptionsService`
 
-Defined in: [squareup/src/core/services/subscriptions.service.ts:145](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L145)
+Defined in: [squareup/src/core/services/subscriptions.service.ts:175](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L175)
 
 #### Parameters
 
@@ -55,7 +56,7 @@ Defined in: [squareup/src/core/services/subscriptions.service.ts:145](https://gi
 
 > **cancel**(`subscriptionId`): `Promise`\<[`Subscription`](../interfaces/Subscription.md)\>
 
-Defined in: [squareup/src/core/services/subscriptions.service.ts:316](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L316)
+Defined in: [squareup/src/core/services/subscriptions.service.ts:371](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L371)
 
 Cancel a subscription
 
@@ -85,7 +86,7 @@ const subscription = await square.subscriptions.cancel('SUB_123');
 
 > **create**(`options`): `Promise`\<[`Subscription`](../interfaces/Subscription.md)\>
 
-Defined in: [squareup/src/core/services/subscriptions.service.ts:166](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L166)
+Defined in: [squareup/src/core/services/subscriptions.service.ts:197](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L197)
 
 Create a new subscription
 
@@ -110,6 +111,7 @@ const subscription = await square.subscriptions.create({
   customerId: 'CUST_123',
   planVariationId: 'PLAN_VAR_123',
   startDate: '2024-02-01',
+  idempotencyKey: 'subscribe-CUST_123-PLAN_VAR_123',
 });
 ```
 
@@ -119,7 +121,7 @@ const subscription = await square.subscriptions.create({
 
 > **get**(`subscriptionId`): `Promise`\<[`Subscription`](../interfaces/Subscription.md)\>
 
-Defined in: [squareup/src/core/services/subscriptions.service.ts:242](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L242)
+Defined in: [squareup/src/core/services/subscriptions.service.ts:275](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L275)
 
 Get a subscription by ID
 
@@ -149,7 +151,7 @@ const subscription = await square.subscriptions.get('SUB_123');
 
 > **pause**(`subscriptionId`, `options?`): `Promise`\<[`Subscription`](../interfaces/Subscription.md)\>
 
-Defined in: [squareup/src/core/services/subscriptions.service.ts:345](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L345)
+Defined in: [squareup/src/core/services/subscriptions.service.ts:400](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L400)
 
 Pause a subscription
 
@@ -193,7 +195,7 @@ const subscription = await square.subscriptions.pause('SUB_123', {
 
 > **resume**(`subscriptionId`, `resumeEffectiveDate?`): `Promise`\<[`Subscription`](../interfaces/Subscription.md)\>
 
-Defined in: [squareup/src/core/services/subscriptions.service.ts:384](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L384)
+Defined in: [squareup/src/core/services/subscriptions.service.ts:439](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L439)
 
 Resume a paused subscription
 
@@ -229,7 +231,7 @@ const subscription = await square.subscriptions.resume('SUB_123');
 
 > **search**(`options?`): `Promise`\<\{ `cursor?`: `string`; `data`: [`Subscription`](../interfaces/Subscription.md)[]; \}\>
 
-Defined in: [squareup/src/core/services/subscriptions.service.ts:415](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L415)
+Defined in: [squareup/src/core/services/subscriptions.service.ts:470](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L470)
 
 Search for subscriptions
 
@@ -275,9 +277,13 @@ const results = await square.subscriptions.search({
 
 > **update**(`subscriptionId`, `options`): `Promise`\<[`Subscription`](../interfaces/Subscription.md)\>
 
-Defined in: [squareup/src/core/services/subscriptions.service.ts:271](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L271)
+Defined in: [squareup/src/core/services/subscriptions.service.ts:313](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L313)
 
 Update a subscription
+
+Only the fields you set change. Square's UpdateSubscription takes no
+idempotency key; the change is a sparse overwrite, so resending the same
+update is harmless.
 
 #### Parameters
 
@@ -289,19 +295,9 @@ Subscription ID
 
 ##### options
 
+[`UpdateSubscriptionOptions`](../interfaces/UpdateSubscriptionOptions.md)
+
 Update options
-
-###### cardId?
-
-`string`
-
-###### priceOverride?
-
-`number`
-
-###### taxPercentage?
-
-`string`
 
 #### Returns
 
@@ -309,10 +305,17 @@ Update options
 
 Updated subscription
 
+#### Throws
+
+When both price override fields are set, or the amount is negative
+
 #### Example
 
 ```typescript
+// Move the subscription to a new card on file and a new price
 const subscription = await square.subscriptions.update('SUB_123', {
-  priceOverride: 1500,
+  cardId: 'ccof:CARD_456',
+  priceOverrideMoney: { amount: 1500, currency: 'USD' },
+  taxPercentage: '8.5',
 });
 ```

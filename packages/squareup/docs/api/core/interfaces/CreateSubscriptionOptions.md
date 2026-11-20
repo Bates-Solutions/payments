@@ -6,7 +6,7 @@
 
 # Interface: CreateSubscriptionOptions
 
-Defined in: [squareup/src/core/services/subscriptions.service.ts:109](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L109)
+Defined in: [squareup/src/core/services/subscriptions.service.ts:113](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L113)
 
 Options for creating a subscription.
 
@@ -20,7 +20,7 @@ phases drive product-based billing from order templates.
 
 > `optional` **cardId?**: `string`
 
-Defined in: [squareup/src/core/services/subscriptions.service.ts:122](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L122)
+Defined in: [squareup/src/core/services/subscriptions.service.ts:126](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L126)
 
 ***
 
@@ -28,15 +28,18 @@ Defined in: [squareup/src/core/services/subscriptions.service.ts:122](https://gi
 
 > **customerId**: `string`
 
-Defined in: [squareup/src/core/services/subscriptions.service.ts:110](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L110)
+Defined in: [squareup/src/core/services/subscriptions.service.ts:114](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L114)
 
 ***
 
-### idempotencyKey?
+### idempotencyKey
 
-> `optional` **idempotencyKey?**: `string`
+> **idempotencyKey**: `string`
 
-Defined in: [squareup/src/core/services/subscriptions.service.ts:126](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L126)
+Defined in: [squareup/src/core/services/subscriptions.service.ts:134](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L134)
+
+Required. Square creates the subscription once per key, so a retry with
+the same key cannot create (and bill) a second one. At most 45 characters.
 
 ***
 
@@ -44,7 +47,7 @@ Defined in: [squareup/src/core/services/subscriptions.service.ts:126](https://gi
 
 > `optional` **locationId?**: `string`
 
-Defined in: [squareup/src/core/services/subscriptions.service.ts:120](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L120)
+Defined in: [squareup/src/core/services/subscriptions.service.ts:124](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L124)
 
 ***
 
@@ -52,7 +55,7 @@ Defined in: [squareup/src/core/services/subscriptions.service.ts:120](https://gi
 
 > `optional` **phases?**: [`SubscriptionPhaseInput`](SubscriptionPhaseInput.md)[]
 
-Defined in: [squareup/src/core/services/subscriptions.service.ts:119](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L119)
+Defined in: [squareup/src/core/services/subscriptions.service.ts:123](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L123)
 
 Ordered list of billing phases. Each phase references an order template
 that defines the line items billed during that phase.
@@ -63,7 +66,7 @@ that defines the line items billed during that phase.
 
 > `optional` **planVariationId?**: `string`
 
-Defined in: [squareup/src/core/services/subscriptions.service.ts:114](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L114)
+Defined in: [squareup/src/core/services/subscriptions.service.ts:118](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L118)
 
 Plan variation ID. Required when `phases` is omitted.
 
@@ -73,7 +76,7 @@ Plan variation ID. Required when `phases` is omitted.
 
 > `optional` **priceOverride?**: `number`
 
-Defined in: [squareup/src/core/services/subscriptions.service.ts:124](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L124)
+Defined in: [squareup/src/core/services/subscriptions.service.ts:128](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L128)
 
 ***
 
@@ -81,7 +84,7 @@ Defined in: [squareup/src/core/services/subscriptions.service.ts:124](https://gi
 
 > `optional` **startDate?**: `string`
 
-Defined in: [squareup/src/core/services/subscriptions.service.ts:121](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L121)
+Defined in: [squareup/src/core/services/subscriptions.service.ts:125](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L125)
 
 ***
 
@@ -89,7 +92,7 @@ Defined in: [squareup/src/core/services/subscriptions.service.ts:121](https://gi
 
 > `optional` **taxPercentage?**: `string`
 
-Defined in: [squareup/src/core/services/subscriptions.service.ts:125](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L125)
+Defined in: [squareup/src/core/services/subscriptions.service.ts:129](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L129)
 
 ***
 
@@ -97,4 +100,4 @@ Defined in: [squareup/src/core/services/subscriptions.service.ts:125](https://gi
 
 > `optional` **timezone?**: `string`
 
-Defined in: [squareup/src/core/services/subscriptions.service.ts:123](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L123)
+Defined in: [squareup/src/core/services/subscriptions.service.ts:127](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L127)

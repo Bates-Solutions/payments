@@ -6,7 +6,7 @@
 
 # Class: SquareValidationError
 
-Defined in: [squareup/src/core/errors.ts:97](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L97)
+Defined in: [squareup/src/core/errors.ts:115](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L115)
 
 Validation errors
 
@@ -20,7 +20,7 @@ Validation errors
 
 > **new SquareValidationError**(`message`, `field?`): `SquareValidationError`
 
-Defined in: [squareup/src/core/errors.ts:100](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L100)
+Defined in: [squareup/src/core/errors.ts:118](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L118)
 
 #### Parameters
 
@@ -74,7 +74,7 @@ The raw error body or other context, if any.
 
 > `readonly` `optional` **field?**: `string`
 
-Defined in: [squareup/src/core/errors.ts:98](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L98)
+Defined in: [squareup/src/core/errors.ts:116](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L116)
 
 ***
 

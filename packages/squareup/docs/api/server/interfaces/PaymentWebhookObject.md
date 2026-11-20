@@ -6,7 +6,7 @@
 
 # Interface: PaymentWebhookObject
 
-Defined in: [squareup/src/server/types.ts:155](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L155)
+Defined in: [squareup/src/server/types.ts:162](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L162)
 
 Payment object in a webhook event payload
 
@@ -16,7 +16,7 @@ Payment object in a webhook event payload
 
 > **payment**: `object`
 
-Defined in: [squareup/src/server/types.ts:156](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L156)
+Defined in: [squareup/src/server/types.ts:163](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L163)
 
 #### amount\_money?
 

@@ -8,7 +8,7 @@
 
 > **verifySignature**(`rawBody`, `signature`, `signatureKey`, `notificationUrl?`): [`WebhookVerificationResult`](../interfaces/WebhookVerificationResult.md)
 
-Defined in: [squareup/src/server/webhook.ts:39](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/webhook.ts#L39)
+Defined in: [squareup/src/server/webhook.ts:48](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/webhook.ts#L48)
 
 Verify a Square webhook signature using HMAC-SHA256
 
@@ -28,9 +28,9 @@ The signature from the x-square-hmacsha256-signature header
 
 ### signatureKey
 
-`string`
+[`WebhookSignatureKey`](../type-aliases/WebhookSignatureKey.md)
 
-Your webhook signature key from Square
+Your webhook signature key from Square, or a list of keys while you rotate it (any match is valid)
 
 ### notificationUrl?
 
@@ -58,4 +58,7 @@ const result = verifySignature(
 if (!result.valid) {
   return res.status(401).json({ error: result.error });
 }
+
+// While rotating the key, accept the new and the old one
+verifySignature(rawBody, signature, [process.env.SQUARE_WEBHOOK_KEY!, process.env.SQUARE_WEBHOOK_KEY_OLD!]);
 ```

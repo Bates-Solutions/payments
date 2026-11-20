@@ -6,7 +6,7 @@
 
 # Interface: ParsedWebhookRequest
 
-Defined in: [squareup/src/server/types.ts:141](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L141)
+Defined in: [squareup/src/server/types.ts:148](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L148)
 
 Parsed webhook request
 
@@ -16,7 +16,7 @@ Parsed webhook request
 
 > **event**: [`WebhookEvent`](WebhookEvent.md)
 
-Defined in: [squareup/src/server/types.ts:147](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L147)
+Defined in: [squareup/src/server/types.ts:154](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L154)
 
 Parsed event data
 
@@ -26,7 +26,7 @@ Parsed event data
 
 > **rawBody**: `string`
 
-Defined in: [squareup/src/server/types.ts:143](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L143)
+Defined in: [squareup/src/server/types.ts:150](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L150)
 
 The raw request body
 
@@ -36,6 +36,6 @@ The raw request body
 
 > **signature**: `string`
 
-Defined in: [squareup/src/server/types.ts:145](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L145)
+Defined in: [squareup/src/server/types.ts:152](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L152)
 
 The signature from headers

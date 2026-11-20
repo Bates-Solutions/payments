@@ -62,7 +62,7 @@ Defined in: [squareup/src/core/services/gift-cards.service.ts:215](https://githu
 
 ### sortOrder?
 
-> `optional` **sortOrder?**: `"DESC"` \| `"ASC"`
+> `optional` **sortOrder?**: `"ASC"` \| `"DESC"`
 
 Defined in: [squareup/src/core/services/gift-cards.service.ts:220](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L220)
 

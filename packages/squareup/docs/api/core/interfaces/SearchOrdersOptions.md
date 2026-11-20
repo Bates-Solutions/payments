@@ -6,7 +6,7 @@
 
 # Interface: SearchOrdersOptions
 
-Defined in: [squareup/src/core/types/index.ts:259](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L259)
+Defined in: [squareup/src/core/types/index.ts:289](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L289)
 
 Search orders options
 
@@ -16,7 +16,7 @@ Search orders options
 
 > `optional` **cursor?**: `string`
 
-Defined in: [squareup/src/core/types/index.ts:261](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L261)
+Defined in: [squareup/src/core/types/index.ts:291](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L291)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [squareup/src/core/types/index.ts:261](https://github.com/Bates-Solu
 
 > `optional` **limit?**: `number`
 
-Defined in: [squareup/src/core/types/index.ts:262](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L262)
+Defined in: [squareup/src/core/types/index.ts:292](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L292)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [squareup/src/core/types/index.ts:262](https://github.com/Bates-Solu
 
 > `optional` **locationIds?**: `string`[]
 
-Defined in: [squareup/src/core/types/index.ts:260](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L260)
+Defined in: [squareup/src/core/types/index.ts:290](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L290)
 
 ***
 
@@ -40,4 +40,4 @@ Defined in: [squareup/src/core/types/index.ts:260](https://github.com/Bates-Solu
 
 > `optional` **query?**: `SearchOrdersQuery`
 
-Defined in: [squareup/src/core/types/index.ts:263](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L263)
+Defined in: [squareup/src/core/types/index.ts:293](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L293)

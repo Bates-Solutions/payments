@@ -6,7 +6,7 @@
 
 # Interface: SearchRecentOrdersOptions
 
-Defined in: [squareup/src/core/types/index.ts:269](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L269)
+Defined in: [squareup/src/core/types/index.ts:299](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L299)
 
 Simplified options for searching recent orders
 
@@ -16,7 +16,7 @@ Simplified options for searching recent orders
 
 > `optional` **cursor?**: `string`
 
-Defined in: [squareup/src/core/types/index.ts:275](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L275)
+Defined in: [squareup/src/core/types/index.ts:305](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L305)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [squareup/src/core/types/index.ts:275](https://github.com/Bates-Solu
 
 > `optional` **limit?**: `number`
 
-Defined in: [squareup/src/core/types/index.ts:274](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L274)
+Defined in: [squareup/src/core/types/index.ts:304](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L304)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [squareup/src/core/types/index.ts:274](https://github.com/Bates-Solu
 
 > `optional` **locationIds?**: `string`[]
 
-Defined in: [squareup/src/core/types/index.ts:270](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L270)
+Defined in: [squareup/src/core/types/index.ts:300](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L300)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [squareup/src/core/types/index.ts:270](https://github.com/Bates-Solu
 
 > `optional` **since?**: `Date`
 
-Defined in: [squareup/src/core/types/index.ts:272](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L272)
+Defined in: [squareup/src/core/types/index.ts:302](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L302)
 
 ***
 
@@ -48,7 +48,7 @@ Defined in: [squareup/src/core/types/index.ts:272](https://github.com/Bates-Solu
 
 > `optional` **states?**: `OrderState`[]
 
-Defined in: [squareup/src/core/types/index.ts:271](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L271)
+Defined in: [squareup/src/core/types/index.ts:301](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L301)
 
 ***
 
@@ -56,4 +56,4 @@ Defined in: [squareup/src/core/types/index.ts:271](https://github.com/Bates-Solu
 
 > `optional` **until?**: `Date`
 
-Defined in: [squareup/src/core/types/index.ts:273](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L273)
+Defined in: [squareup/src/core/types/index.ts:303](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L303)
