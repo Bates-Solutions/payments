@@ -5,6 +5,22 @@
 
 * **server:** edge runtime webhooks. `createWebhookHandler` (a framework-neutral `(Request) => Promise<Response>` handler for Deno, Supabase Edge Functions, Cloudflare Workers and Bun) and `verifySignatureAsync` (Web Crypto) at the new `@bates-solutions/squareup/server/web` entry point, which pulls in no Node built-ins. Both are also exported from `./server`. `createIdempotencyKey` now uses `globalThis.crypto.randomUUID()`. Additive: the sync `verifySignature` and `parseAndVerifyWebhook` are unchanged ([#163](https://github.com/Bates-Solutions/squareup/pull/163))
 
+## [2.6.0](https://github.com/Bates-Solutions/payments/compare/squareup-v2.5.0...squareup-v2.6.0) (2026-11-20)
+
+
+### Features
+
+* **payments-core:** match instanceof PaymentsError across copies of the package ([58d0b04](https://github.com/Bates-Solutions/payments/commit/58d0b0464c2b9b8e6bc40cde4bbdb60dd3797ce7))
+* PaymentsError base class and shared helpers in payments-core (S9) ([b3aeeb9](https://github.com/Bates-Solutions/payments/commit/b3aeeb9599de996f854a9f05c928072278e62cc5))
+* **squareup,stripe,clover:** extend PaymentsError and use core helpers ([1eca758](https://github.com/Bates-Solutions/payments/commit/1eca7583a03d2f3ce65c438afabcbb96c29e4973))
+* verify webhook signatures with payments-core in all three providers (S8) ([da67efa](https://github.com/Bates-Solutions/payments/commit/da67efaadd3335f5ab1f8c843cef343df53c4c6e))
+
+
+### Bug Fixes
+
+* **payments-core:** address PR review feedback ([d371287](https://github.com/Bates-Solutions/payments/commit/d37128768f64e85ebe520145b984dd5103714fcb))
+* **squareup:** accept the same signatures in verifySignatureAsync as in verifySignature ([791d5b7](https://github.com/Bates-Solutions/payments/commit/791d5b716df8b6b47ecf3a579570753f53a0f224))
+
 ## [2.4.0](https://github.com/Bates-Solutions/squareup/compare/v2.3.0...v2.4.0) (2026-11-08)
 
 
