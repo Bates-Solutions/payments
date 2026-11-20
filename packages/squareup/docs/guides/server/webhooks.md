@@ -70,8 +70,8 @@ import { verifySignature } from '@bates-solutions/squareup/server';
 const result = verifySignature(
   rawBody,              // Raw request body as string
   signature,            // From x-square-hmacsha256-signature header
-  signatureKey,         // Your webhook signature key
-  notificationUrl       // Optional: URL for additional verification
+  signatureKey,         // Your webhook signature key, or [newKey, oldKey] while rotating
+  notificationUrl       // The URL registered on the subscription (Square signs it)
 );
 
 if (!result.valid) {
@@ -101,6 +101,25 @@ const event = parseWebhookEvent(rawBody);
 
 For a complete handler, see `createWebhookHandler` in the
 [middleware guide](./middleware.md#web--edge-handler).
+
+### Rotating the signature key
+
+Every verifier and adapter takes `signatureKey` as one key or a list. While you
+rotate the key, pass both, newest first; a signature that matches either is
+valid. Drop the old key once every delivery is signed with the new one.
+
+```typescript
+createWebhookHandler({
+  signatureKey: [process.env.SQUARE_WEBHOOK_KEY!, process.env.SQUARE_WEBHOOK_KEY_OLD!],
+  notificationUrl: 'https://example.com/webhook',
+  handlers: { /* ... */ },
+});
+
+verifySignature(rawBody, signature, [newKey, oldKey], notificationUrl);
+```
+
+Empty strings in the list are ignored (so an unset `..._OLD` variable is
+harmless); a list with no keys fails as a missing signature key.
 
 ### Security Notes
 

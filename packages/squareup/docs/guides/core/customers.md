@@ -239,6 +239,7 @@ const payment = await square.payments.create({
   sourceId: 'cnon:card-nonce-ok',
   amount: 1000,
   customerId: customer.id,
+  idempotencyKey: createIdempotencyKey(),
 });
 ```
 
@@ -254,7 +255,7 @@ const order = await square.orders
 
 ## Storing Cards on File
 
-Save a card for future payments (requires additional Square setup):
+Save a card for future payments with `square.cards` (see [Cards on File](./cards.md)):
 
 ```typescript
 // 1. Create the customer
@@ -263,24 +264,23 @@ const customer = await square.customers.create({
   givenName: 'John',
 });
 
-// 2. Create a card on file using the raw SDK
-const card = await square.sdk.cards.create({
-  idempotencyKey: crypto.randomUUID(),
+// 2. Store the card on file
+const card = await square.cards.create({
   sourceId: 'cnon:card-nonce-ok',
-  card: {
-    customerId: customer.id,
-    billingAddress: {
-      addressLine1: '123 Main St',
-      postalCode: '94102',
-    },
+  customerId: customer.id!,
+  idempotencyKey: createIdempotencyKey(),
+  billingAddress: {
+    addressLine1: '123 Main St',
+    postalCode: '94102',
   },
 });
 
 // 3. Later, charge the saved card
 const payment = await square.payments.create({
-  sourceId: card.card!.id!,
+  sourceId: card.id!,
   amount: 1000,
   customerId: customer.id,
+  idempotencyKey: createIdempotencyKey(),
 });
 ```
 

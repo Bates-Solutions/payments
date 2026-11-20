@@ -6,7 +6,9 @@ Comprehensive tutorials and examples for `@bates-solutions/squareup`.
 
 Backend API integration guides:
 
-- [Processing Payments](./core/payments.md) - Create, capture, and cancel payments
+- [Processing Payments](./core/payments.md) - Create, capture, and cancel payments; idempotency keys; declines
+- [Cards on File](./core/cards.md) - Store, list and disable a customer's cards, and charge them later
+- [Refunds](./core/refunds.md) - Refund all or part of a payment, and look refunds up
 - [Managing Orders](./core/orders.md) - Order builder and order lifecycle
 - [Managing Customers](./core/customers.md) - Customer CRUD and search
 - [Managing the Catalog](./core/catalog.md) - Items, categories, and variations
@@ -44,7 +46,7 @@ npm install square                        # peer dependency
 ### 2. Backend Setup
 
 ```typescript
-import { createSquareClient } from '@bates-solutions/squareup';
+import { createIdempotencyKey, createSquareClient } from '@bates-solutions/squareup';
 
 const square = createSquareClient({
   accessToken: process.env.SQUARE_ACCESS_TOKEN!,
@@ -56,6 +58,7 @@ const square = createSquareClient({
 const payment = await square.payments.create({
   sourceId: 'cnon:card-nonce-ok',
   amount: 1000,
+  idempotencyKey: createIdempotencyKey(),
 });
 ```
 

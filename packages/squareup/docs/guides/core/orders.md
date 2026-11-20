@@ -354,6 +354,7 @@ const payment = await square.payments.create({
   sourceId: 'cnon:card-nonce-ok',
   amount: 800, // Must match order total
   orderId: 'ORDER_123',
+  idempotencyKey: createIdempotencyKey(),
 });
 
 // Then, mark the order as paid. Pass an idempotencyKey and reuse it if you retry.
@@ -370,12 +371,14 @@ const payment1 = await square.payments.create({
   sourceId: 'cnon:card-nonce-1',
   amount: 500,
   orderId: 'ORDER_123',
+  idempotencyKey: createIdempotencyKey(),
 });
 
 const payment2 = await square.payments.create({
   sourceId: 'cnon:card-nonce-2',
   amount: 300,
   orderId: 'ORDER_123',
+  idempotencyKey: createIdempotencyKey(),
 });
 
 const paidOrder = await square.orders.pay('ORDER_123', [
@@ -427,6 +430,7 @@ async function checkout(
     amount: Number(order.totalMoney?.amount ?? 0),
     orderId: order.id,
     customerId,
+    idempotencyKey: `pay-${order.id!}`, // one payment per order, even on retries
   });
 
   // 3. Mark order as paid

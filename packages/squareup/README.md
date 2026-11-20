@@ -27,9 +27,9 @@ Stop wrestling with Square's low-level APIs. **squareup** gives you a simplified
 - **Simplified APIs** - Less boilerplate, more productivity
 - **Type-Safe** - Full TypeScript support with strict types
 - **Fluent Builders** - Chainable order and payment construction
-- **Webhook Support** - Signature verification plus adapters for Express, Next.js, AWS Lambda, and a framework-neutral Web/edge handler (Deno, Supabase Edge Functions, Cloudflare Workers, Bun)
+- **Webhook Support** - Signature verification (with signature key rotation) plus adapters for Express, Next.js, AWS Lambda, and a framework-neutral Web/edge handler (Deno, Supabase Edge Functions, Cloudflare Workers, Bun)
 - **OAuth** - Authorize URL, code exchange, refresh, revoke and token status for multi-tenant apps ([guide](./docs/guides/core/oauth.md))
-- **Service Classes** - Payments, Orders, Customers, Customer Groups, Catalog (incl. pricing rules and subscription plan listing), Inventory, Subscriptions, Invoices, Loyalty, Gift Cards
+- **Service Classes** - Payments, Cards on file, Refunds, Orders, Customers, Customer Groups, Catalog (incl. pricing rules and subscription plan listing), Inventory, Subscriptions, Invoices, Loyalty, Gift Cards
 
 ## Requirements
 
@@ -97,7 +97,7 @@ import { createExpressWebhookHandler } from '@bates-solutions/squareup/server/ex
 ### Basic Usage
 
 ```typescript
-import { createSquareClient } from '@bates-solutions/squareup';
+import { createIdempotencyKey, createSquareClient } from '@bates-solutions/squareup';
 
 const client = createSquareClient({
   accessToken: process.env.SQUARE_ACCESS_TOKEN!,
@@ -109,6 +109,18 @@ const payment = await client.payments.create({
   sourceId: 'cnon:card-nonce',
   amount: 1000, // $10.00
   currency: 'USD',
+  idempotencyKey: createIdempotencyKey(),
+});
+
+// Money-moving calls (payments.create, refunds.refundPayment, cards.create,
+// subscriptions.create) require an idempotencyKey. Keep it and reuse it if you
+// retry the same request, so Square never charges twice.
+
+// Refund part of it
+await client.refunds.refundPayment({
+  paymentId: payment.id!,
+  amountMoney: { amount: 500 },
+  idempotencyKey: `refund-${payment.id!}`,
 });
 
 // Create an order with the fluent builder
@@ -146,6 +158,10 @@ const results = await client.customers.search({ query: 'john doe' });
 
 Square signs `notificationUrl + rawBody`, so pass `notificationUrl` set to the
 exact URL registered on your webhook subscription.
+
+While you rotate the signature key, pass both keys: `signatureKey: [newKey,
+oldKey]`. A signature that matches either is valid, in every verifier and
+adapter. A single string works as before.
 
 ### Webhook Handling (Edge: Deno, Supabase Edge Functions, Cloudflare Workers, Bun)
 
@@ -255,6 +271,7 @@ import { createLambdaWebhookHandler } from '@bates-solutions/squareup/server';
 
 export const handler = createLambdaWebhookHandler({
   signatureKey: process.env.SQUARE_WEBHOOK_SIGNATURE_KEY!,
+  notificationUrl: 'https://api.example.com/webhooks/square', // required
   handlers: {
     'payment.completed': async (event, context) => {
       // context.orderId, context.customerId auto-extracted
@@ -264,11 +281,16 @@ export const handler = createLambdaWebhookHandler({
 });
 ```
 
+A handler that throws makes the Lambda return `500`, so Square retries the
+delivery; make handlers idempotent (for example on `event.event_id`).
+
 ## Available Services
 
 | Service          | Description                                                    |
 | ---------------- | -------------------------------------------------------------- |
 | `payments`       | Process and manage payments                                    |
+| `cards`          | Cards on file: store, get, list and disable a customer's cards |
+| `refunds`        | Refund payments, and get or list refunds                       |
 | `orders`         | Create and manage orders, incl. DRAFT templates for subscriptions, fulfillment updates and cancelling |
 | `customers`      | Customer management                                            |
 | `customerGroups` | Customer groups + group membership (gates pricing rules)       |
@@ -285,7 +307,7 @@ export const handler = createLambdaWebhookHandler({
 
 ## Error Handling
 
-Every call throws a typed `SquareError` subclass: `SquareValidationError`, `SquareAuthError`, `SquarePaymentError`, `SquareApiError`, or `SquareNetworkError` when no response arrived (connection failure or timeout). `SquareError` extends `PaymentsError` (also exported here, from `@bates-solutions/payments-core`), so one `instanceof PaymentsError` check catches errors from any of the three provider packages, even when they install different copies of `@bates-solutions/payments-core`. `isRetryableSquareError(error)` tells you whether a retry could succeed. When retrying a mutating call, pass the same `idempotencyKey`. See [Errors and Retries](./docs/guides/core/errors.md).
+Every call throws a typed `SquareError` subclass: `SquareValidationError`, `SquareAuthError`, `SquarePaymentError`, `SquareApiError`, or `SquareNetworkError` when no response arrived (connection failure or timeout). `SquareError` extends `PaymentsError` (also exported here, from `@bates-solutions/payments-core`), so one `instanceof PaymentsError` check catches errors from any of the three provider packages, even when they install different copies of `@bates-solutions/payments-core`. `isRetryableSquareError(error)` tells you whether a retry could succeed. When retrying a mutating call, pass the same `idempotencyKey`. For a card decline, `declineReason(error)` gives Square's code and whether charging the same card again later can succeed (for example `INSUFFICIENT_FUNDS` yes, after a few days; `GENERIC_DECLINE` no). See [Errors and Retries](./docs/guides/core/errors.md).
 
 ## Utilities
 

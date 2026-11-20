@@ -13,6 +13,8 @@ Welcome to the documentation for `@bates-solutions/squareup`, a TypeScript wrapp
 ### Core (Backend)
 
 - [Payments](./guides/core/payments.md) - Processing payments
+- [Cards on File](./guides/core/cards.md) - Store and charge customer cards
+- [Refunds](./guides/core/refunds.md) - Refunding payments
 - [Orders](./guides/core/orders.md) - Managing orders
 - [Customers](./guides/core/customers.md) - Customer operations
 - [Customer Groups](./guides/core/customer-groups.md) - Customer groups for wholesale tiers and member pricing

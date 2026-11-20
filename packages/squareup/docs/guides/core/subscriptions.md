@@ -32,6 +32,7 @@ const subscription = await square.subscriptions.create({
   planVariationId: 'PLAN_VAR_MONTHLY_30',
   startDate: '2026-05-01',
   cardId: 'CARD_ON_FILE_ID',
+  idempotencyKey: createIdempotencyKey(),
 });
 ```
 
@@ -66,6 +67,7 @@ const subscription = await square.subscriptions.create({
   phases: [{ orderTemplateId: template.id! }],
   startDate: '2026-05-01',
   cardId: 'CARD_RETAILER_42',
+  idempotencyKey: createIdempotencyKey(),
 });
 ```
 
@@ -83,6 +85,7 @@ await square.subscriptions.create({
     { ordinal: 1, orderTemplateId: 'TEMPLATE_REGULAR' },
   ],
   startDate: '2026-05-01',
+  idempotencyKey: createIdempotencyKey(),
 });
 ```
 
@@ -97,6 +100,7 @@ await square.subscriptions.create({
   customerId: 'CUST_123',
   planVariationId: 'PLAN_VAR_RELATIVE_NET30',
   phases: [{ orderTemplateId: template.id! }],
+  idempotencyKey: createIdempotencyKey(),
 });
 ```
 
@@ -112,12 +116,18 @@ console.log('Charged through:', subscription.chargedThroughDate);
 ## Updating a Subscription
 
 ```typescript
+// Only the fields you set change. Square's UpdateSubscription takes no
+// idempotency key, so update takes none.
 const updated = await square.subscriptions.update('SUB_123', {
-  priceOverride: 1800,  // cents
-  cardId: 'NEW_CARD_ID',
+  priceOverrideMoney: { amount: 1800, currency: 'USD' }, // cents; currency defaults to the client's
+  cardId: 'ccof:NEW_CARD_ID', // e.g. from cards.create()
   taxPercentage: '8.5',
 });
 ```
+
+`priceOverrideMoney` allows `amount: 0` (a free subscription). The older
+`priceOverride` (cents in the client's `defaultCurrency`) still works, but
+ignores `0`; set one or the other, not both.
 
 ## Pausing and Resuming
 
@@ -192,6 +202,7 @@ try {
   await square.subscriptions.create({
     customerId: 'CUST_123',
     // missing both planVariationId and phases
+    idempotencyKey: createIdempotencyKey(),
   });
 } catch (error) {
   if (error instanceof SquareValidationError) {
