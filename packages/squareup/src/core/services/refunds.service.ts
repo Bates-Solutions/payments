@@ -123,9 +123,7 @@ export class RefundsService {
    * const page2 = await square.refunds.list({ status: 'COMPLETED', cursor: page1.cursor });
    * ```
    */
-  async list(
-    options?: ListRefundsOptions
-  ): Promise<{ refunds: PaymentRefund[]; cursor?: string }> {
+  async list(options?: ListRefundsOptions): Promise<{ refunds: PaymentRefund[]; cursor?: string }> {
     try {
       const page = await this.client.refunds.list({
         beginTime: options?.beginTime,

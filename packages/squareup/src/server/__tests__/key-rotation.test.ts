@@ -32,7 +32,9 @@ const BODY = JSON.stringify({
 });
 
 function sign(key: string, body = BODY, url = URL_): string {
-  return createHmac('sha256', key).update(url + body).digest('base64');
+  return createHmac('sha256', key)
+    .update(url + body)
+    .digest('base64');
 }
 
 describe('verifySignature with several keys', () => {
@@ -130,7 +132,11 @@ describe('helpers and adapters with several keys', () => {
     });
     const post = (signature: string) =>
       webhook(
-        new Request(URL_, { method: 'POST', body: BODY, headers: { [SIGNATURE_HEADER]: signature } })
+        new Request(URL_, {
+          method: 'POST',
+          body: BODY,
+          headers: { [SIGNATURE_HEADER]: signature },
+        })
       );
 
     expect((await post(sign(OLD_KEY))).status).toBe(200);
