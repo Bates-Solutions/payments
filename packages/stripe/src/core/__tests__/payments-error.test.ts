@@ -1,4 +1,8 @@
 import { PaymentsError } from '@bates-solutions/payments-core/errors';
+import { mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { dirname, join } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import * as errors from '../errors';
 import * as entry from '../index';
@@ -22,7 +26,8 @@ describe('StripeError and PaymentsError', () => {
   it.each(classes)('%s is a StripeError and a PaymentsError', (_, ErrorClass) => {
     const prototype: unknown = ErrorClass.prototype;
     expect(ErrorClass === errors.StripeError || prototype instanceof errors.StripeError).toBe(true);
-    expect(prototype instanceof PaymentsError).toBe(true);
+    // The copy of PaymentsError this package re-exports, not just any copy.
+    expect(Object.prototype.isPrototypeOf.call(PaymentsError.prototype, prototype)).toBe(true);
     expect(prototype instanceof Error).toBe(true);
   });
 
@@ -58,5 +63,27 @@ describe('StripeError and PaymentsError', () => {
     expect(error.name).toBe('StripeError');
     expect(error.statusCode).toBeUndefined();
     expect(error.details).toBeUndefined();
+  });
+
+  it('is a PaymentsError of another copy of payments-core', async () => {
+    // A second copy on disk, as when another provider installs a different core
+    // version: core's built errors entry, copied to a temp directory and imported.
+    const entry = fileURLToPath(import.meta.resolve('@bates-solutions/payments-core/errors'));
+    const dir = mkdtempSync(join(tmpdir(), 'payments-core-copy-'));
+    try {
+      // The .js files only, without their source map comments: the maps would point
+      // at sources that are not in the copy.
+      for (const file of readdirSync(dirname(entry)).filter((f) => f.endsWith('.js'))) {
+        const code = readFileSync(join(dirname(entry), file), 'utf8');
+        writeFileSync(join(dir, file), code.replace(/^\/\/# sourceMappingURL=.*$/m, ''));
+      }
+      const copy = (await import(pathToFileURL(join(dir, 'index.js')).href)) as {
+        PaymentsError: typeof PaymentsError;
+      };
+      expect(copy.PaymentsError).not.toBe(PaymentsError);
+      expect(new errors.StripeError('boom')).toBeInstanceOf(copy.PaymentsError);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
   });
 });
