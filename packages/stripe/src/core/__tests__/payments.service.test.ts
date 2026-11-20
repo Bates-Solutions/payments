@@ -39,6 +39,27 @@ describe('PaymentsService', () => {
       );
     });
 
+    it('passes offSession as off_session', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ id: 'pi_123' }),
+      });
+
+      const service = new PaymentsService(client);
+      await service.create({ amount: 1000, paymentMethod: 'pm_1', confirm: true, offSession: true });
+      await service.create({ amount: 1000 });
+
+      expect(client.paymentIntents.create).toHaveBeenNthCalledWith(
+        1,
+        expect.objectContaining({ off_session: true, confirm: true }),
+        expect.anything()
+      );
+      expect(client.paymentIntents.create).toHaveBeenNthCalledWith(
+        2,
+        expect.objectContaining({ off_session: undefined }),
+        expect.anything()
+      );
+    });
+
     it('uses a custom currency', async () => {
       const client = createMockClient({
         create: vi.fn().mockResolvedValue({ id: 'pi_123' }),

@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: StripePaymentError
 
-Defined in: [stripe/src/core/errors.ts:81](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L81)
+Defined in: [stripe/src/core/errors.ts:85](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L85)
 
 Payment processing errors (card declines, etc.)
 
@@ -20,7 +20,7 @@ Payment processing errors (card declines, etc.)
 
 > **new StripePaymentError**(`message`, `code`, `options?`): `StripePaymentError`
 
-Defined in: [stripe/src/core/errors.ts:86](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L86)
+Defined in: [stripe/src/core/errors.ts:90](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L90)
 
 #### Parameters
 
@@ -70,7 +70,7 @@ Normalized error code. Each provider defines its own union.
 
 > `readonly` `optional` **declineCode?**: `string`
 
-Defined in: [stripe/src/core/errors.ts:84](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L84)
+Defined in: [stripe/src/core/errors.ts:88](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L88)
 
 Stripe decline code (e.g. `insufficient_funds`), when present
 
@@ -94,7 +94,7 @@ The raw error body or other context, if any.
 
 > `readonly` `optional` **paymentIntentId?**: `string`
 
-Defined in: [stripe/src/core/errors.ts:82](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L82)
+Defined in: [stripe/src/core/errors.ts:86](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L86)
 
 ***
 

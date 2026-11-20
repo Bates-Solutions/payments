@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../README.md)
 
 ***
 
@@ -71,6 +71,7 @@ export const POST = createNextWebhookHandler({
 - [createNextWebhookHandler](functions/createNextWebhookHandler.md)
 - [createWebhookHandler](functions/createWebhookHandler.md)
 - [createWebhookProcessor](functions/createWebhookProcessor.md)
+- [getAccountId](functions/getAccountId.md)
 - [getChargeId](functions/getChargeId.md)
 - [getCustomerId](functions/getCustomerId.md)
 - [getInvoiceId](functions/getInvoiceId.md)

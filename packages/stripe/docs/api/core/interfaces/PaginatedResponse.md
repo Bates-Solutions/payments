@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: PaginatedResponse\<T\>
 
-Defined in: [stripe/src/core/types/index.ts:30](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/types/index.ts#L30)
+Defined in: [stripe/src/core/types/index.ts:57](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/types/index.ts#L57)
 
 Common paginated response
 
@@ -22,7 +22,7 @@ Common paginated response
 
 > **data**: `T`[]
 
-Defined in: [stripe/src/core/types/index.ts:31](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/types/index.ts#L31)
+Defined in: [stripe/src/core/types/index.ts:58](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/types/index.ts#L58)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: [stripe/src/core/types/index.ts:31](https://github.com/Bates-Solutio
 
 > **hasMore**: `boolean`
 
-Defined in: [stripe/src/core/types/index.ts:33](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/types/index.ts#L33)
+Defined in: [stripe/src/core/types/index.ts:60](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/types/index.ts#L60)
 
 Whether more records are available
 
@@ -40,6 +40,6 @@ Whether more records are available
 
 > `optional` **nextCursor?**: `string`
 
-Defined in: [stripe/src/core/types/index.ts:35](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/types/index.ts#L35)
+Defined in: [stripe/src/core/types/index.ts:62](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/types/index.ts#L62)
 
 Cursor to pass as `startingAfter` for the next page
