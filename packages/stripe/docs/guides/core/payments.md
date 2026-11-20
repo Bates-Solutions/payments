@@ -2,6 +2,14 @@
 
 The `payments` service wraps Stripe [PaymentIntents](https://docs.stripe.com/api/payment_intents). Amounts are always in the smallest currency unit (e.g. cents).
 
+Use `toMinor` to convert a major-unit amount: it applies Stripe's [currency rules](https://docs.stripe.com/currencies) for zero-decimal (`jpy`, `krw`, ...), three-decimal (`kwd`, `bhd`, ...) and special-case (`isk`, `ugx`) currencies, and matches codes case-insensitively. See the [Utilities section of the README](../../../README.md#utilities) for the full table.
+
+```typescript
+import { toMinor } from '@bates-solutions/stripe';
+
+await stripe.payments.create({ amount: toMinor(5000, 'krw'), currency: 'krw' }); // amount: 5000
+```
+
 ## Create a payment
 
 ```typescript
@@ -18,7 +26,7 @@ Options:
 | Field           | Type                     | Description                                        |
 | --------------- | ------------------------ | -------------------------------------------------- |
 | `amount`        | `number`                 | **Required.** Amount in the smallest currency unit. |
-| `currency`      | `CurrencyCode`           | Defaults to `usd`.                                 |
+| `currency`      | `CurrencyCode`           | Any Stripe currency code. Defaults to `usd`.       |
 | `customerId`    | `string`                 | Attach the payment to a customer.                  |
 | `paymentMethod` | `string`                 | Payment method to charge (e.g. `pm_…`).            |
 | `confirm`       | `boolean`                | Confirm immediately after creation. Default `false`. |

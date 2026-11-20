@@ -45,7 +45,7 @@ Defined in: [stripe/src/core/services/payments.service.ts:36](https://github.com
 
 > **cancel**(`paymentId`): `Promise`\<`PaymentIntent`\>
 
-Defined in: [stripe/src/core/services/payments.service.ts:133](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/payments.service.ts#L133)
+Defined in: [stripe/src/core/services/payments.service.ts:134](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/payments.service.ts#L134)
 
 Cancel a payment.
 
@@ -75,7 +75,7 @@ const payment = await stripe.payments.cancel('pi_123');
 
 > **capture**(`paymentId`): `Promise`\<`PaymentIntent`\>
 
-Defined in: [stripe/src/core/services/payments.service.ts:114](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/payments.service.ts#L114)
+Defined in: [stripe/src/core/services/payments.service.ts:115](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/payments.service.ts#L115)
 
 Capture a payment that was authorized with `capture_method: manual`.
 
@@ -149,7 +149,7 @@ const payment = await stripe.payments.create({
 
 > **get**(`paymentId`): `Promise`\<`PaymentIntent`\>
 
-Defined in: [stripe/src/core/services/payments.service.ts:95](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/payments.service.ts#L95)
+Defined in: [stripe/src/core/services/payments.service.ts:96](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/payments.service.ts#L96)
 
 Retrieve a payment by ID.
 
@@ -179,7 +179,7 @@ const payment = await stripe.payments.get('pi_123');
 
 > **list**(`options?`): `Promise`\<[`PaginatedResponse`](../interfaces/PaginatedResponse.md)\<`PaymentIntent`\>\>
 
-Defined in: [stripe/src/core/services/payments.service.ts:153](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/payments.service.ts#L153)
+Defined in: [stripe/src/core/services/payments.service.ts:154](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/payments.service.ts#L154)
 
 List payments with cursor-based pagination.
 

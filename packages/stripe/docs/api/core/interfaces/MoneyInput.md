@@ -6,7 +6,7 @@
 
 # Interface: MoneyInput
 
-Defined in: [stripe/src/core/types/index.ts:41](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/types/index.ts#L41)
+Defined in: [stripe/src/core/types/index.ts:68](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/types/index.ts#L68)
 
 Simple money representation for API inputs
 
@@ -16,7 +16,7 @@ Simple money representation for API inputs
 
 > **amount**: `number`
 
-Defined in: [stripe/src/core/types/index.ts:43](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/types/index.ts#L43)
+Defined in: [stripe/src/core/types/index.ts:70](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/types/index.ts#L70)
 
 Amount in the smallest currency unit (e.g. cents)
 
@@ -26,4 +26,4 @@ Amount in the smallest currency unit (e.g. cents)
 
 > `optional` **currency?**: [`CurrencyCode`](../type-aliases/CurrencyCode.md)
 
-Defined in: [stripe/src/core/types/index.ts:44](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/types/index.ts#L44)
+Defined in: [stripe/src/core/types/index.ts:71](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/types/index.ts#L71)

@@ -6,7 +6,7 @@
 
 # Class: StripeAuthError
 
-Defined in: [stripe/src/core/errors.ts:71](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L71)
+Defined in: [stripe/src/core/errors.ts:75](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L75)
 
 Authentication errors
 
@@ -20,7 +20,7 @@ Authentication errors
 
 > **new StripeAuthError**(`message`, `code?`): `StripeAuthError`
 
-Defined in: [stripe/src/core/errors.ts:72](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L72)
+Defined in: [stripe/src/core/errors.ts:76](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L76)
 
 #### Parameters
 

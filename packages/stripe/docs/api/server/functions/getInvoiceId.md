@@ -8,7 +8,7 @@
 
 > **getInvoiceId**(`event`): `string` \| `undefined`
 
-Defined in: [stripe/src/server/webhook.ts:296](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/webhook.ts#L296)
+Defined in: [stripe/src/server/webhook.ts:307](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/webhook.ts#L307)
 
 Extract the Invoice ID from a webhook event, when present.
 

@@ -6,7 +6,7 @@
 
 # Class: StripeApiError
 
-Defined in: [stripe/src/core/errors.ts:46](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L46)
+Defined in: [stripe/src/core/errors.ts:47](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L47)
 
 API-level errors from Stripe
 
@@ -20,7 +20,7 @@ API-level errors from Stripe
 
 > **new StripeApiError**(`message`, `code`, `statusCode`, `options?`): `StripeApiError`
 
-Defined in: [stripe/src/core/errors.ts:54](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L54)
+Defined in: [stripe/src/core/errors.ts:58](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L58)
 
 #### Parameters
 
@@ -96,7 +96,7 @@ The raw error body or other context, if any.
 
 > `readonly` `optional` **param?**: `string`
 
-Defined in: [stripe/src/core/errors.ts:50](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L50)
+Defined in: [stripe/src/core/errors.ts:54](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L54)
 
 Request parameter the error relates to, if any
 
@@ -106,7 +106,7 @@ Request parameter the error relates to, if any
 
 > `readonly` `optional` **requestId?**: `string`
 
-Defined in: [stripe/src/core/errors.ts:52](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L52)
+Defined in: [stripe/src/core/errors.ts:56](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L56)
 
 Stripe request ID for support/debugging
 
@@ -130,9 +130,10 @@ HTTP status of the response that caused the error, if any.
 
 > `readonly` `optional` **type?**: `string`
 
-Defined in: [stripe/src/core/errors.ts:48](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L48)
+Defined in: [stripe/src/core/errors.ts:52](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L52)
 
-Raw Stripe error `type` (e.g. `invalid_request_error`)
+The error type Stripe sent (e.g. `invalid_request_error`, or an OAuth
+error such as `invalid_grant`). Use `code` for the classification.
 
 ## Methods
 
