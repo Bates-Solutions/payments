@@ -106,11 +106,18 @@ export type WebhookHandlers = {
 };
 
 /**
+ * A webhook signature key, or several. Pass a list while you rotate the key
+ * (for example `[newKey, oldKey]`): a signature that matches any of them is
+ * valid. Empty strings in the list are ignored.
+ */
+export type WebhookSignatureKey = string | readonly string[];
+
+/**
  * Configuration for webhook handling
  */
 export interface WebhookConfig {
-  /** Square webhook signature key */
-  signatureKey: string;
+  /** Square webhook signature key, or a list of keys during rotation */
+  signatureKey: WebhookSignatureKey;
   /** Event handlers by type */
   handlers: WebhookHandlers;
   /** URL where webhooks are received (for signature verification) */

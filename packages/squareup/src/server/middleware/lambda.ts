@@ -6,7 +6,7 @@ import {
   getCustomerId,
   SIGNATURE_HEADER,
 } from '../webhook.js';
-import type { WebhookEvent } from '../types.js';
+import type { WebhookEvent, WebhookSignatureKey } from '../types.js';
 
 /**
  * Minimal API Gateway proxy event shape (avoids aws-lambda dependency)
@@ -68,8 +68,8 @@ const defaultLogger: WebhookLogger = {
  * Configuration for Lambda webhook handling
  */
 export interface LambdaWebhookConfig {
-  /** Square webhook signature key */
-  signatureKey: string;
+  /** Square webhook signature key, or a list of keys during rotation */
+  signatureKey: WebhookSignatureKey;
   /** Event handlers by type */
   handlers: LambdaWebhookHandlers;
   /** URL where webhooks are received (for signature verification) */

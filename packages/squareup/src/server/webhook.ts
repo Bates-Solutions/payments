@@ -1,13 +1,19 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import type {
   WebhookConfig,
+  WebhookSignatureKey,
   WebhookEvent,
   WebhookVerificationResult,
   ParsedWebhookRequest,
   PaymentWebhookObject,
   RefundWebhookObject,
 } from './types.js';
-import { SIGNATURE_HEADER, parseWebhookEvent, processWebhookEvent } from './events.js';
+import {
+  SIGNATURE_HEADER,
+  parseWebhookEvent,
+  processWebhookEvent,
+  signatureKeyList,
+} from './events.js';
 
 // Defined in the Node-free events module so the edge entry point can share them.
 export { SIGNATURE_HEADER, parseWebhookEvent, processWebhookEvent };
@@ -17,7 +23,7 @@ export { SIGNATURE_HEADER, parseWebhookEvent, processWebhookEvent };
  *
  * @param rawBody - The raw request body as a string
  * @param signature - The signature from the x-square-hmacsha256-signature header
- * @param signatureKey - Your webhook signature key from Square
+ * @param signatureKey - Your webhook signature key from Square, or a list of keys while you rotate it (any match is valid)
  * @param notificationUrl - The URL where the webhook was sent (optional, for additional verification)
  * @returns Verification result with valid flag and optional error
  *
@@ -34,12 +40,15 @@ export { SIGNATURE_HEADER, parseWebhookEvent, processWebhookEvent };
  * if (!result.valid) {
  *   return res.status(401).json({ error: result.error });
  * }
+ *
+ * // While rotating the key, accept the new and the old one
+ * verifySignature(rawBody, signature, [process.env.SQUARE_WEBHOOK_KEY!, process.env.SQUARE_WEBHOOK_KEY_OLD!]);
  * ```
  */
 export function verifySignature(
   rawBody: string,
   signature: string,
-  signatureKey: string,
+  signatureKey: WebhookSignatureKey,
   notificationUrl?: string
 ): WebhookVerificationResult {
   if (!rawBody) {
@@ -50,7 +59,8 @@ export function verifySignature(
     return { valid: false, error: 'Missing signature header' };
   }
 
-  if (!signatureKey) {
+  const keys = signatureKeyList(signatureKey);
+  if (keys.length === 0) {
     return { valid: false, error: 'Missing signature key' };
   }
 
@@ -58,28 +68,23 @@ export function verifySignature(
     // Build the string to sign
     // Square uses: notificationUrl + rawBody (if URL provided) or just rawBody
     const stringToSign = notificationUrl ? notificationUrl + rawBody : rawBody;
-
-    // Generate HMAC-SHA256 signature
-    const expectedSignature = createHmac('sha256', signatureKey)
-      .update(stringToSign)
-      .digest('base64');
-
-    // Use timing-safe comparison to prevent timing attacks
     const signatureBuffer = Buffer.from(signature, 'base64');
-    const expectedBuffer = Buffer.from(expectedSignature, 'base64');
 
-    // Buffers must be same length for timingSafeEqual
-    if (signatureBuffer.length !== expectedBuffer.length) {
-      return { valid: false, error: 'Invalid signature' };
+    for (const key of keys) {
+      // Generate HMAC-SHA256 signature
+      const expectedBuffer = createHmac('sha256', key).update(stringToSign).digest();
+
+      // Use timing-safe comparison to prevent timing attacks. Buffers must be
+      // the same length for timingSafeEqual.
+      if (
+        signatureBuffer.length === expectedBuffer.length &&
+        timingSafeEqual(signatureBuffer, expectedBuffer)
+      ) {
+        return { valid: true };
+      }
     }
 
-    const isValid = timingSafeEqual(signatureBuffer, expectedBuffer);
-
-    if (!isValid) {
-      return { valid: false, error: 'Invalid signature' };
-    }
-
-    return { valid: true };
+    return { valid: false, error: 'Invalid signature' };
   } catch (error) {
     return {
       valid: false,
@@ -93,7 +98,7 @@ export function verifySignature(
  *
  * @param rawBody - The raw request body string
  * @param signature - The signature from headers
- * @param signatureKey - Your webhook signature key
+ * @param signatureKey - Your webhook signature key, or a list of keys during rotation
  * @param notificationUrl - Optional notification URL for verification
  * @returns Parsed and verified webhook request
  * @throws Error if verification or parsing fails
@@ -110,7 +115,7 @@ export function verifySignature(
 export function parseAndVerifyWebhook(
   rawBody: string,
   signature: string,
-  signatureKey: string,
+  signatureKey: WebhookSignatureKey,
   notificationUrl?: string
 ): ParsedWebhookRequest {
   const verification = verifySignature(rawBody, signature, signatureKey, notificationUrl);

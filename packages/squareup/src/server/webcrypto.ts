@@ -1,5 +1,6 @@
 import { fromBase64, hmacSha256, timingSafeEqual } from '@bates-solutions/payments-core/crypto';
-import type { WebhookVerificationResult } from './types.js';
+import { signatureKeyList } from './events.js';
+import type { WebhookSignatureKey, WebhookVerificationResult } from './types.js';
 
 /**
  * Verify a Square webhook signature with WebCrypto (edge-safe, async).
@@ -15,7 +16,7 @@ import type { WebhookVerificationResult } from './types.js';
  *
  * @param rawBody - The raw request body as a string
  * @param signature - The signature from the x-square-hmacsha256-signature header
- * @param signatureKey - Your webhook signature key from Square
+ * @param signatureKey - Your webhook signature key from Square, or a list of keys while you rotate it (any match is valid)
  * @param notificationUrl - The URL registered on the webhook subscription (Square signs it)
  * @returns Verification result with valid flag and optional error
  *
@@ -39,7 +40,7 @@ import type { WebhookVerificationResult } from './types.js';
 export async function verifySignatureAsync(
   rawBody: string,
   signature: string,
-  signatureKey: string,
+  signatureKey: WebhookSignatureKey,
   notificationUrl?: string
 ): Promise<WebhookVerificationResult> {
   if (!rawBody) {
@@ -50,22 +51,30 @@ export async function verifySignatureAsync(
     return { valid: false, error: 'Missing signature header' };
   }
 
-  if (!signatureKey) {
+  const keys = signatureKeyList(signatureKey);
+  if (keys.length === 0) {
     return { valid: false, error: 'Missing signature key' };
   }
 
   try {
-    const stringToSign = notificationUrl ? notificationUrl + rawBody : rawBody;
-    const expected = await hmacSha256(signatureKey, stringToSign);
-
-    // Compare bytes, decoding the header with the same base64 rules as the
-    // node:crypto verifySignature, so both accept exactly the same signatures.
     // A non-string header (from untyped callers) is never a valid signature.
-    if (typeof signature !== 'string' || !timingSafeEqual(fromBase64(signature), expected)) {
+    if (typeof signature !== 'string') {
       return { valid: false, error: 'Invalid signature' };
     }
 
-    return { valid: true };
+    const stringToSign = notificationUrl ? notificationUrl + rawBody : rawBody;
+    // Decode the header with the same base64 rules as the node:crypto
+    // verifySignature, so both accept exactly the same signatures.
+    const received = fromBase64(signature);
+
+    for (const key of keys) {
+      const expected = await hmacSha256(key, stringToSign);
+      if (timingSafeEqual(received, expected)) {
+        return { valid: true };
+      }
+    }
+
+    return { valid: false, error: 'Invalid signature' };
   } catch (error) {
     return {
       valid: false,

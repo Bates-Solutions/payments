@@ -75,6 +75,7 @@ export type {
   WebhookHandler,
   WebhookHandlers,
   WebhookConfig,
+  WebhookSignatureKey,
   WebhookVerificationResult,
   ParsedWebhookRequest,
   PaymentWebhookObject,
