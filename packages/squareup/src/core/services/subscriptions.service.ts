@@ -135,6 +135,27 @@ export interface CreateSubscriptionOptions {
 }
 
 /**
+ * Options for `subscriptions.update()`. Only the fields you set change.
+ */
+export interface UpdateSubscriptionOptions {
+  /**
+   * New recurring price, in the smallest currency unit (cents). `currency`
+   * defaults to the client's `defaultCurrency`. `amount: 0` makes the
+   * subscription free.
+   */
+  priceOverrideMoney?: { amount: number | bigint; currency?: CurrencyCode };
+  /**
+   * New recurring price in cents, in the client's `defaultCurrency`. Prefer
+   * `priceOverrideMoney`; a `0` here is ignored (no override is sent).
+   */
+  priceOverride?: number;
+  /** Card on file to bill, for example a new card from `cards.create()`. */
+  cardId?: string;
+  /** Tax rate as a percentage string, for example `"8.5"`. */
+  taxPercentage?: string;
+}
+
+/**
  * Subscriptions service for managing Square subscriptions
  *
  * @example
@@ -269,35 +290,57 @@ export class SubscriptionsService {
   /**
    * Update a subscription
    *
+   * Only the fields you set change. Square's UpdateSubscription takes no
+   * idempotency key; the change is a sparse overwrite, so resending the same
+   * update is harmless.
+   *
    * @param subscriptionId - Subscription ID
    * @param options - Update options
    * @returns Updated subscription
    *
+   * @throws {SquareValidationError} When both price override fields are set, or the amount is negative
+   *
    * @example
    * ```typescript
+   * // Move the subscription to a new card on file and a new price
    * const subscription = await square.subscriptions.update('SUB_123', {
-   *   priceOverride: 1500,
+   *   cardId: 'ccof:CARD_456',
+   *   priceOverrideMoney: { amount: 1500, currency: 'USD' },
+   *   taxPercentage: '8.5',
    * });
    * ```
    */
-  async update(
-    subscriptionId: string,
-    options: {
-      priceOverride?: number;
-      cardId?: string;
-      taxPercentage?: string;
+  async update(subscriptionId: string, options: UpdateSubscriptionOptions): Promise<Subscription> {
+    requireNonEmpty(subscriptionId, 'subscriptionId');
+
+    if (options.priceOverride !== undefined && options.priceOverrideMoney !== undefined) {
+      throw new SquareValidationError(
+        'Set priceOverrideMoney or priceOverride, not both',
+        'priceOverrideMoney'
+      );
     }
-  ): Promise<Subscription> {
+    if (options.priceOverrideMoney !== undefined && options.priceOverrideMoney.amount < 0) {
+      throw new SquareValidationError(
+        'priceOverrideMoney.amount must not be negative',
+        'priceOverrideMoney.amount'
+      );
+    }
+
+    const priceOverrideMoney =
+      options.priceOverrideMoney !== undefined
+        ? {
+            amount: BigInt(options.priceOverrideMoney.amount),
+            currency: options.priceOverrideMoney.currency ?? this.defaultCurrency,
+          }
+        : options.priceOverride
+          ? { amount: BigInt(options.priceOverride), currency: this.defaultCurrency }
+          : undefined;
+
     try {
       const response = await this.client.subscriptions.update({
         subscriptionId,
         subscription: {
-          priceOverrideMoney: options.priceOverride
-            ? {
-                amount: BigInt(options.priceOverride),
-                currency: this.defaultCurrency,
-              }
-            : undefined,
+          priceOverrideMoney,
           cardId: options.cardId,
           taxPercentage: options.taxPercentage,
         },

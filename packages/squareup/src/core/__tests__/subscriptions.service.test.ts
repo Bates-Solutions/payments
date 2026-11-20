@@ -291,6 +291,71 @@ describe('SubscriptionsService', () => {
       const service = new SubscriptionsService(client);
       await expect(service.update('SUB_123', {})).rejects.toThrow('Subscription update failed');
     });
+
+    it('should send priceOverrideMoney, taxPercentage and cardId', async () => {
+      const client = createMockClient({
+        update: vi.fn().mockResolvedValue({ subscription: { id: 'SUB_123' } }),
+      });
+
+      const service = new SubscriptionsService(client, 'LOC_123', 'CAD');
+      await service.update('SUB_123', {
+        priceOverrideMoney: { amount: 1500, currency: 'USD' },
+        taxPercentage: '8.5',
+        cardId: 'ccof:CARD_456',
+      });
+
+      expect(client.subscriptions.update).toHaveBeenCalledWith({
+        subscriptionId: 'SUB_123',
+        subscription: {
+          priceOverrideMoney: { amount: BigInt(1500), currency: 'USD' },
+          cardId: 'ccof:CARD_456',
+          taxPercentage: '8.5',
+        },
+      });
+    });
+
+    it('should default the priceOverrideMoney currency and allow a zero price', async () => {
+      const client = createMockClient({
+        update: vi.fn().mockResolvedValue({ subscription: { id: 'SUB_123' } }),
+      });
+
+      const service = new SubscriptionsService(client, 'LOC_123', 'CAD');
+      await service.update('SUB_123', { priceOverrideMoney: { amount: 0 } });
+
+      expect(client.subscriptions.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          subscription: expect.objectContaining({
+            priceOverrideMoney: { amount: BigInt(0), currency: 'CAD' },
+          }) as unknown,
+        })
+      );
+    });
+
+    it('should reject both price override fields together', async () => {
+      const client = createMockClient();
+      const service = new SubscriptionsService(client);
+
+      await expect(
+        service.update('SUB_123', { priceOverride: 100, priceOverrideMoney: { amount: 100 } })
+      ).rejects.toThrow(SquareValidationError);
+      expect(client.subscriptions.update).not.toHaveBeenCalled();
+    });
+
+    it('should reject a negative priceOverrideMoney amount', async () => {
+      const service = new SubscriptionsService(createMockClient());
+
+      await expect(
+        service.update('SUB_123', { priceOverrideMoney: { amount: -1 } })
+      ).rejects.toThrow(SquareValidationError);
+    });
+
+    it('should require a subscription ID', async () => {
+      const service = new SubscriptionsService(createMockClient());
+
+      await expect(service.update('', { cardId: 'ccof:CARD' })).rejects.toThrow(
+        SquareValidationError
+      );
+    });
   });
 
   describe('cancel', () => {

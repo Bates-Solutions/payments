@@ -71,6 +71,7 @@ export type {
   SubscriptionPlan,
   SubscriptionPhaseInput,
   CreateSubscriptionOptions,
+  UpdateSubscriptionOptions,
 } from './services/subscriptions.service.js';
 export { InvoicesService } from './services/invoices.service.js';
 export { LoyaltyService } from './services/loyalty.service.js';
