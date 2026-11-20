@@ -41,21 +41,22 @@ export class PaymentsError<Code extends string = string> extends Error {
   /** The raw error body or other context, if any. */
   public readonly details?: unknown;
 
-  /**
-   * Makes `value instanceof PaymentsError` true for an error from any copy of
-   * this package, not only this one. It looks for a brand that every copy puts
-   * on `PaymentsError.prototype`. On a subclass, such as `SquareError`, it is
-   * the usual prototype-chain check.
-   *
-   * It returns a plain `boolean` rather than a type predicate, so TypeScript
-   * keeps narrowing `instanceof SquareError` to `SquareError`.
-   */
   static {
     // On the prototype, not each instance, and not enumerable: errors' own
     // keys, JSON output and logs are unchanged.
     Object.defineProperty(this.prototype, BRAND, { value: true });
   }
 
+  /**
+   * Makes `value instanceof PaymentsError` true for an error from any copy of
+   * this package, not only this one. It looks for a brand that every copy puts
+   * on `PaymentsError.prototype`, so the prototype itself is not counted as an
+   * instance. On a subclass, such as `SquareError`, it is the usual
+   * prototype-chain check.
+   *
+   * It returns a plain `boolean` rather than a type predicate, so TypeScript
+   * keeps narrowing `instanceof SquareError` to `SquareError`.
+   */
   static [Symbol.hasInstance](value: unknown): boolean {
     if (this !== PaymentsError) {
       return Function.prototype[Symbol.hasInstance].call(this, value);
@@ -63,7 +64,8 @@ export class PaymentsError<Code extends string = string> extends Error {
     return (
       (typeof value === 'object' || typeof value === 'function') &&
       value !== null &&
-      (value as { [BRAND]?: unknown })[BRAND] === true
+      (value as { [BRAND]?: unknown })[BRAND] === true &&
+      !Object.hasOwn(value, BRAND)
     );
   }
 

@@ -1,5 +1,5 @@
 import { PaymentsError } from '@bates-solutions/payments-core/errors';
-import { cpSync, mkdtempSync, rmSync } from 'node:fs';
+import { mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -26,7 +26,8 @@ describe('CloverError and PaymentsError', () => {
   it.each(classes)('%s is a CloverError and a PaymentsError', (_, ErrorClass) => {
     const prototype: unknown = ErrorClass.prototype;
     expect(ErrorClass === errors.CloverError || prototype instanceof errors.CloverError).toBe(true);
-    expect(prototype instanceof PaymentsError).toBe(true);
+    // The copy of PaymentsError this package re-exports, not just any copy.
+    expect(Object.prototype.isPrototypeOf.call(PaymentsError.prototype, prototype)).toBe(true);
     expect(prototype instanceof Error).toBe(true);
   });
 
@@ -70,7 +71,12 @@ describe('CloverError and PaymentsError', () => {
     const entry = fileURLToPath(import.meta.resolve('@bates-solutions/payments-core/errors'));
     const dir = mkdtempSync(join(tmpdir(), 'payments-core-copy-'));
     try {
-      cpSync(dirname(entry), dir, { recursive: true });
+      // The .js files only, without their source map comments: the maps would point
+      // at sources that are not in the copy.
+      for (const file of readdirSync(dirname(entry)).filter((f) => f.endsWith('.js'))) {
+        const code = readFileSync(join(dirname(entry), file), 'utf8');
+        writeFileSync(join(dir, file), code.replace(/^\/\/# sourceMappingURL=.*$/m, ''));
+      }
       const copy = (await import(pathToFileURL(join(dir, 'index.js')).href)) as {
         PaymentsError: typeof PaymentsError;
       };

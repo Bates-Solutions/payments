@@ -49,7 +49,7 @@ The provider's union of error codes.
 
 > **new PaymentsError**\<`Code`\>(`message`, `code`, `statusCode?`, `details?`): `PaymentsError`\<`Code`\>
 
-Defined in: [errors/payments-error.ts:70](https://github.com/Bates-Solutions/payments/blob/main/packages/payments-core/src/errors/payments-error.ts#L70)
+Defined in: [errors/payments-error.ts:72](https://github.com/Bates-Solutions/payments/blob/main/packages/payments-core/src/errors/payments-error.ts#L72)
 
 #### Parameters
 
@@ -113,7 +113,16 @@ HTTP status of the response that caused the error, if any.
 
 > `static` **\[hasInstance\]**(`value`): `boolean`
 
-Defined in: [errors/payments-error.ts:59](https://github.com/Bates-Solutions/payments/blob/main/packages/payments-core/src/errors/payments-error.ts#L59)
+Defined in: [errors/payments-error.ts:60](https://github.com/Bates-Solutions/payments/blob/main/packages/payments-core/src/errors/payments-error.ts#L60)
+
+Makes `value instanceof PaymentsError` true for an error from any copy of
+this package, not only this one. It looks for a brand that every copy puts
+on `PaymentsError.prototype`, so the prototype itself is not counted as an
+instance. On a subclass, such as `SquareError`, it is the usual
+prototype-chain check.
+
+It returns a plain `boolean` rather than a type predicate, so TypeScript
+keeps narrowing `instanceof SquareError` to `SquareError`.
 
 #### Parameters
 

@@ -130,6 +130,7 @@ describe('instanceof PaymentsError across copies of payments-core', () => {
       'PaymentsError',
       42,
       () => undefined,
+      PaymentsError.prototype,
     ]) {
       expect(value instanceof PaymentsError).toBe(false);
     }

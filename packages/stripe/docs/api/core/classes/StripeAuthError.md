@@ -84,11 +84,20 @@ HTTP status of the response that caused the error, if any.
 
 ## Methods
 
-### \[hasInstance\]()
+### notHasInstance()
 
-> `static` **\[hasInstance\]**(`value`): `boolean`
+> `static` **notHasInstance**(`value`): `boolean`
 
-Defined in: [payments-core/dist/errors/payments-error.d.ts:33](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/dist/errors/payments-error.d.ts#L33)
+Defined in: [payments-core/dist/errors/payments-error.d.ts:43](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/dist/errors/payments-error.d.ts#L43)
+
+Makes `value instanceof PaymentsError` true for an error from any copy of
+this package, not only this one. It looks for a brand that every copy puts
+on `PaymentsError.prototype`, so the prototype itself is not counted as an
+instance. On a subclass, such as `SquareError`, it is the usual
+prototype-chain check.
+
+It returns a plain `boolean` rather than a type predicate, so TypeScript
+keeps narrowing `instanceof SquareError` to `SquareError`.
 
 #### Parameters
 
@@ -102,4 +111,4 @@ Defined in: [payments-core/dist/errors/payments-error.d.ts:33](https://github.co
 
 #### Inherited from
 
-[`StripeError`](StripeError.md).[`[hasInstance]`](StripeError.md#hasinstance)
+[`StripeError`](StripeError.md).[`notHasInstance`](StripeError.md#nothasinstance)
