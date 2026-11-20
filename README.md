@@ -27,7 +27,7 @@ Releases are automated with [release-please](https://github.com/googleapis/relea
 
 Never bump versions, create tags or run `jsr publish` by hand.
 
-The release workflow stays off until the move from the old repos is finished: those repos still release these packages until then.
+Releases before the move were made from the old repos, which are archived. Their tags were imported here as `<package>-v<version>`.
 
 ## Docs
 

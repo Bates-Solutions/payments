@@ -7,9 +7,9 @@ notes below keep changes consistent and releasable.
 ## Getting started
 
 ```bash
-npm install        # install dependencies
-npm run build      # compile to dist/
-npm run dev        # compile in watch mode
+npm ci             # at the repo root: installs every workspace from the one lockfile
+npm run build      # in this package: compile to dist/
+npm run dev        # in this package: compile in watch mode
 ```
 
 ## Before you open a pull request
@@ -56,9 +56,9 @@ changes public API surface must update docs in the same PR:**
 - **Open a pull request for all changes** — nothing is pushed directly to `main`.
 - Use [Conventional Commits](https://www.conventionalcommits.org/) prefixes
   (`feat:`, `fix:`, `chore:`, `docs:`, `test:`, …).
-- Releasing: bump the `version` in `jsr.json` (keep `package.json` in sync) in a
-  PR and merge it — the JSR release workflow (OIDC) publishes the new version and
-  tags it automatically on the push to `main`. No manual tag needed.
+- Releasing: release-please opens a release PR from the commits under this
+  package's folder. Merging it tags the version and publishes it to JSR. Never
+  bump versions, create tags or run `jsr publish` by hand. See the root README.
 
 ## License
 
