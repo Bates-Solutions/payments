@@ -49,6 +49,37 @@ describe('PaymentsService', () => {
       );
     });
 
+    it('should pass customer details, buyer email, statement text and verification token', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ payment: { id: 'PAY_123' } }),
+      });
+
+      const service = new PaymentsService(client, defaultLocationId);
+      await service.create({
+        sourceId: 'ccof:CARD_123',
+        amount: 1000,
+        customerId: 'CUST_123',
+        orderId: 'ORDER_123',
+        note: 'Renewal',
+        customerDetails: { customerInitiated: false, sellerKeyedIn: false },
+        buyerEmailAddress: 'buyer@example.com',
+        statementDescriptionIdentifier: 'RENEWAL',
+        verificationToken: 'verf:TOKEN',
+      });
+
+      expect(client.payments.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          customerId: 'CUST_123',
+          orderId: 'ORDER_123',
+          note: 'Renewal',
+          customerDetails: { customerInitiated: false, sellerKeyedIn: false },
+          buyerEmailAddress: 'buyer@example.com',
+          statementDescriptionIdentifier: 'RENEWAL',
+          verificationToken: 'verf:TOKEN',
+        })
+      );
+    });
+
     it('should fall back to the client default currency (issue #119)', async () => {
       const client = createMockClient({
         create: vi.fn().mockResolvedValue({ payment: { id: 'PAY_123' } }),

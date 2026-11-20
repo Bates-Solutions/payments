@@ -90,6 +90,30 @@ export interface CreatePaymentOptions {
   note?: string;
   autocomplete?: boolean;
   idempotencyKey?: string;
+  /**
+   * Who started the payment. Set `customerInitiated: false` for a charge of a
+   * card on file that the buyer did not start (a merchant-initiated
+   * transaction, such as a renewal); `sellerKeyedIn: true` when the seller
+   * typed in the card details.
+   */
+  customerDetails?: {
+    customerInitiated?: boolean;
+    sellerKeyedIn?: boolean;
+  };
+  /** The buyer's email address, for the receipt and risk checks. */
+  buyerEmailAddress?: string;
+  /**
+   * Text added to the seller's name on the buyer's card statement (Square
+   * truncates the combined text to the card network's limit).
+   */
+  statementDescriptionIdentifier?: string;
+  /**
+   * A buyer verification token from the Web Payments SDK `verifyBuyer()`.
+   * Square has deprecated `verifyBuyer()` (`tokenize()` now runs buyer
+   * verification itself), so new integrations should leave this unset; it is
+   * kept for integrations that still send one.
+   */
+  verificationToken?: string;
 }
 
 /**

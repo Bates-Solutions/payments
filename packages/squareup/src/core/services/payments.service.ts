@@ -67,6 +67,16 @@ export class PaymentsService {
    *   orderId: 'ORDER_123',
    *   note: 'Payment for order #123',
    *   autocomplete: true,
+   *   buyerEmailAddress: 'buyer@example.com',
+   *   statementDescriptionIdentifier: 'ORDER123',
+   * });
+   *
+   * // Merchant-initiated charge of a card on file (e.g. a renewal)
+   * const payment = await square.payments.create({
+   *   sourceId: 'ccof:CARD_123',
+   *   customerId: 'CUST_123',
+   *   amount: 1000,
+   *   customerDetails: { customerInitiated: false, sellerKeyedIn: false },
    * });
    * ```
    */
@@ -103,6 +113,10 @@ export class PaymentsService {
         note: options.note,
         autocomplete: options.autocomplete ?? true,
         locationId,
+        customerDetails: options.customerDetails,
+        buyerEmailAddress: options.buyerEmailAddress,
+        statementDescriptionIdentifier: options.statementDescriptionIdentifier,
+        verificationToken: options.verificationToken,
       });
       assertNoResponseErrors(response);
 
