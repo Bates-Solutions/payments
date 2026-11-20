@@ -57,7 +57,7 @@ export class PaymentsError<Code extends string = string> extends Error {
    * It returns a plain `boolean` rather than a type predicate, so TypeScript
    * keeps narrowing `instanceof SquareError` to `SquareError`.
    */
-  static [Symbol.hasInstance](value: unknown): boolean {
+  static override [Symbol.hasInstance](value: unknown): boolean {
     if (this !== PaymentsError) {
       return Function.prototype[Symbol.hasInstance].call(this, value);
     }
