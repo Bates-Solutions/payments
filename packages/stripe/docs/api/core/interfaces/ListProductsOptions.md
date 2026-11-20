@@ -6,7 +6,7 @@
 
 # Interface: ListProductsOptions
 
-Defined in: [core/services/products.service.ts:13](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/products.service.ts#L13)
+Defined in: [stripe/src/core/services/products.service.ts:13](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/products.service.ts#L13)
 
 Options for listing products
 
@@ -16,7 +16,7 @@ Options for listing products
 
 > `optional` **active?**: `boolean`
 
-Defined in: [core/services/products.service.ts:15](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/products.service.ts#L15)
+Defined in: [stripe/src/core/services/products.service.ts:15](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/products.service.ts#L15)
 
 Only return active (or inactive) products
 
@@ -26,7 +26,7 @@ Only return active (or inactive) products
 
 > `optional` **limit?**: `number`
 
-Defined in: [core/services/products.service.ts:16](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/products.service.ts#L16)
+Defined in: [stripe/src/core/services/products.service.ts:16](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/products.service.ts#L16)
 
 ***
 
@@ -34,4 +34,4 @@ Defined in: [core/services/products.service.ts:16](https://github.com/Bates-Solu
 
 > `optional` **startingAfter?**: `string`
 
-Defined in: [core/services/products.service.ts:17](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/products.service.ts#L17)
+Defined in: [stripe/src/core/services/products.service.ts:17](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/products.service.ts#L17)

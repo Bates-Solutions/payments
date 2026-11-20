@@ -1,6 +1,6 @@
 # Errors and Retries
 
-Every service method throws a subclass of `SquareError`. Each one has a `code` (`SquareErrorCode`) and, when Square sent an HTTP response, a `statusCode`.
+Every service method throws a subclass of `SquareError`, which extends `PaymentsError` from `@bates-solutions/payments-core` (also exported from this package). Each one has a `code` (`SquareErrorCode`) and, when Square sent an HTTP response, a `statusCode`.
 
 | Class                   | When                                                                                  | `statusCode`       |
 | ----------------------- | ------------------------------------------------------------------------------------- | ------------------ |

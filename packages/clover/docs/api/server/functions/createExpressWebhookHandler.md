@@ -8,7 +8,7 @@
 
 > **createExpressWebhookHandler**(`config`): `RequestHandler`
 
-Defined in: [server/middleware/express.ts:41](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/middleware/express.ts#L41)
+Defined in: [clover/src/server/middleware/express.ts:41](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/middleware/express.ts#L41)
 
 Create Express middleware for handling Clover webhooks.
 

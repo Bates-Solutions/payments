@@ -6,7 +6,7 @@
 
 # Interface: OAuthTokenStatus
 
-Defined in: [core/oauth.ts:172](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/oauth.ts#L172)
+Defined in: [squareup/src/core/oauth.ts:178](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/oauth.ts#L178)
 
 Status of a merchant access token, from `square.oauth.tokenStatus()`.
 
@@ -16,7 +16,7 @@ Status of a merchant access token, from `square.oauth.tokenStatus()`.
 
 > `optional` **clientId?**: `string`
 
-Defined in: [core/oauth.ts:178](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/oauth.ts#L178)
+Defined in: [squareup/src/core/oauth.ts:184](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/oauth.ts#L184)
 
 Application the token was issued to
 
@@ -26,7 +26,7 @@ Application the token was issued to
 
 > `optional` **expiresAt?**: `Date`
 
-Defined in: [core/oauth.ts:176](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/oauth.ts#L176)
+Defined in: [squareup/src/core/oauth.ts:182](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/oauth.ts#L182)
 
 When the token expires. Absent for personal access tokens, which do not expire.
 
@@ -36,7 +36,7 @@ When the token expires. Absent for personal access tokens, which do not expire.
 
 > `optional` **merchantId?**: `string`
 
-Defined in: [core/oauth.ts:180](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/oauth.ts#L180)
+Defined in: [squareup/src/core/oauth.ts:186](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/oauth.ts#L186)
 
 Merchant the token belongs to
 
@@ -46,6 +46,6 @@ Merchant the token belongs to
 
 > **scopes**: `string`[]
 
-Defined in: [core/oauth.ts:174](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/oauth.ts#L174)
+Defined in: [squareup/src/core/oauth.ts:180](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/oauth.ts#L180)
 
 Permissions granted to the token

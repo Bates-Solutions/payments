@@ -8,7 +8,7 @@
 
 > **fromCents**(`cents`): `number`
 
-Defined in: [core/utils.ts:39](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/utils.ts#L39)
+Defined in: [clover/src/core/utils.ts:39](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/utils.ts#L39)
 
 Convert cents to a major-unit amount.
 

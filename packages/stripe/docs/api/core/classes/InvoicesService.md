@@ -6,7 +6,7 @@
 
 # Class: InvoicesService
 
-Defined in: [core/services/invoices.service.ts:102](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L102)
+Defined in: [stripe/src/core/services/invoices.service.ts:102](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L102)
 
 Invoices service wrapping Stripe [Invoices](https://docs.stripe.com/api/invoices)
 and [Invoice Items](https://docs.stripe.com/api/invoiceitems).
@@ -29,7 +29,7 @@ await stripe.invoices.send(finalized.id);
 
 > **new InvoicesService**(`client`): `InvoicesService`
 
-Defined in: [core/services/invoices.service.ts:103](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L103)
+Defined in: [stripe/src/core/services/invoices.service.ts:103](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L103)
 
 #### Parameters
 
@@ -47,7 +47,7 @@ Defined in: [core/services/invoices.service.ts:103](https://github.com/Bates-Sol
 
 > **addItem**(`options`): `Promise`\<`InvoiceItem`\>
 
-Defined in: [core/services/invoices.service.ts:140](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L140)
+Defined in: [stripe/src/core/services/invoices.service.ts:140](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L140)
 
 Add an invoice item — either to a specific draft invoice or pending on the
 customer's next invoice.
@@ -73,7 +73,7 @@ When `customerId` is missing, or neither
 
 > **create**(`options`): `Promise`\<`Invoice`\>
 
-Defined in: [core/services/invoices.service.ts:110](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L110)
+Defined in: [stripe/src/core/services/invoices.service.ts:110](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L110)
 
 Create an invoice (a draft by default).
 
@@ -97,7 +97,7 @@ When `customerId` is missing
 
 > **finalize**(`invoiceId`): `Promise`\<`Invoice`\>
 
-Defined in: [core/services/invoices.service.ts:212](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L212)
+Defined in: [stripe/src/core/services/invoices.service.ts:212](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L212)
 
 Finalize a draft invoice so it becomes payable.
 
@@ -117,7 +117,7 @@ Finalize a draft invoice so it becomes payable.
 
 > **get**(`invoiceId`): `Promise`\<`Invoice`\>
 
-Defined in: [core/services/invoices.service.ts:178](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L178)
+Defined in: [stripe/src/core/services/invoices.service.ts:178](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L178)
 
 Retrieve an invoice by ID.
 
@@ -137,7 +137,7 @@ Retrieve an invoice by ID.
 
 > **list**(`options?`): `Promise`\<[`PaginatedResponse`](../interfaces/PaginatedResponse.md)\<`Invoice`\>\>
 
-Defined in: [core/services/invoices.service.ts:189](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L189)
+Defined in: [stripe/src/core/services/invoices.service.ts:189](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L189)
 
 List invoices with cursor-based pagination.
 
@@ -157,7 +157,7 @@ List invoices with cursor-based pagination.
 
 > **pay**(`invoiceId`): `Promise`\<`Invoice`\>
 
-Defined in: [core/services/invoices.service.ts:223](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L223)
+Defined in: [stripe/src/core/services/invoices.service.ts:223](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L223)
 
 Pay a finalized invoice.
 
@@ -177,7 +177,7 @@ Pay a finalized invoice.
 
 > **send**(`invoiceId`): `Promise`\<`Invoice`\>
 
-Defined in: [core/services/invoices.service.ts:246](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L246)
+Defined in: [stripe/src/core/services/invoices.service.ts:246](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L246)
 
 Send an invoice to the customer for manual payment (`send_invoice`
 collection). Emails a hosted invoice link.
@@ -198,7 +198,7 @@ collection). Emails a hosted invoice link.
 
 > **voidInvoice**(`invoiceId`): `Promise`\<`Invoice`\>
 
-Defined in: [core/services/invoices.service.ts:234](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L234)
+Defined in: [stripe/src/core/services/invoices.service.ts:234](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L234)
 
 Void a finalized invoice (it can no longer be paid).
 

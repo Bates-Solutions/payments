@@ -8,7 +8,7 @@
 
 > **formatMoney**(`minor`, `currency?`, `locale?`): `string`
 
-Defined in: [core/utils.ts:77](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/utils.ts#L77)
+Defined in: [stripe/src/core/utils.ts:77](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/utils.ts#L77)
 
 Format money for display.
 

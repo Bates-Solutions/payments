@@ -6,7 +6,7 @@
 
 # Interface: GetOrderOptions
 
-Defined in: [core/services/orders.service.ts:156](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L156)
+Defined in: [clover/src/core/services/orders.service.ts:156](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L156)
 
 Options for `orders.get()`.
 
@@ -16,6 +16,6 @@ Options for `orders.get()`.
 
 > `optional` **expand?**: [`OrderExpand`](../type-aliases/OrderExpand.md)[]
 
-Defined in: [core/services/orders.service.ts:158](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L158)
+Defined in: [clover/src/core/services/orders.service.ts:158](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L158)
 
 Related data to embed, e.g. `['lineItems']`

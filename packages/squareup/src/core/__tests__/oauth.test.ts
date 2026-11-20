@@ -21,7 +21,9 @@ describe('buildAuthorizeUrl', () => {
   });
 
   it('defaults to the sandbox host', () => {
-    const url = new URL(buildAuthorizeUrl({ clientId: 'sandbox-sq0idb-APP', scopes: ['ITEMS_READ'], state: 's' }));
+    const url = new URL(
+      buildAuthorizeUrl({ clientId: 'sandbox-sq0idb-APP', scopes: ['ITEMS_READ'], state: 's' })
+    );
 
     expect(url.origin).toBe('https://connect.squareupsandbox.com');
     expect(url.pathname).toBe('/oauth2/authorize');
@@ -59,7 +61,10 @@ describe('SquareOAuthClient', () => {
 
   function respond(status: number, body: unknown) {
     fetchMock.mockResolvedValue(
-      new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json' } })
+      new Response(JSON.stringify(body), {
+        status,
+        headers: { 'content-type': 'application/json' },
+      })
     );
   }
 
@@ -87,8 +92,12 @@ describe('SquareOAuthClient', () => {
   });
 
   it('validates credentials on construction', () => {
-    expect(() => createSquareOAuthClient({ ...config, clientId: '' })).toThrow(SquareValidationError);
-    expect(() => createSquareOAuthClient({ ...config, clientSecret: '' })).toThrow(SquareValidationError);
+    expect(() => createSquareOAuthClient({ ...config, clientId: '' })).toThrow(
+      SquareValidationError
+    );
+    expect(() => createSquareOAuthClient({ ...config, clientSecret: '' })).toThrow(
+      SquareValidationError
+    );
     expect(createSquareOAuthClient(config)).toBeInstanceOf(SquareOAuthClient);
   });
 
@@ -104,7 +113,10 @@ describe('SquareOAuthClient', () => {
       respond(200, tokenBody);
       const oauth = createSquareOAuthClient(config);
 
-      const tokens = await oauth.obtainToken({ code: 'CODE', redirectUri: 'https://app.example.com/cb' });
+      const tokens = await oauth.obtainToken({
+        code: 'CODE',
+        redirectUri: 'https://app.example.com/cb',
+      });
 
       expect(tokens).toEqual({
         accessToken: 'EAAA-ACCESS',
@@ -127,7 +139,9 @@ describe('SquareOAuthClient', () => {
 
     it('uses the sandbox host by default', async () => {
       respond(200, tokenBody);
-      await createSquareOAuthClient({ clientId: 'APP', clientSecret: SECRET }).obtainToken({ code: 'C' });
+      await createSquareOAuthClient({ clientId: 'APP', clientSecret: SECRET }).obtainToken({
+        code: 'C',
+      });
 
       expect(lastRequest().url).toBe('https://connect.squareupsandbox.com/oauth2/token');
     });
@@ -155,7 +169,9 @@ describe('SquareOAuthClient', () => {
     it('does not leak the client secret from a network failure', async () => {
       fetchMock.mockRejectedValue(new TypeError('fetch failed'));
 
-      const error = await createSquareOAuthClient(config).obtainToken({ code: 'C' }).catch((e: unknown) => e);
+      const error = await createSquareOAuthClient(config)
+        .obtainToken({ code: 'C' })
+        .catch((e: unknown) => e);
 
       expect(error).toBeInstanceOf(SquareError);
       expect(inspect(error, { showHidden: true, depth: Infinity })).not.toContain(SECRET);
@@ -170,7 +186,9 @@ describe('SquareOAuthClient', () => {
     });
 
     it('rejects an empty code without calling Square', async () => {
-      await expect(createSquareOAuthClient(config).obtainToken({ code: '' })).rejects.toThrow(SquareValidationError);
+      await expect(createSquareOAuthClient(config).obtainToken({ code: '' })).rejects.toThrow(
+        SquareValidationError
+      );
       expect(fetchMock).not.toHaveBeenCalled();
     });
 
@@ -184,18 +202,39 @@ describe('SquareOAuthClient', () => {
     });
 
     it('throws a typed error for a 200 body carrying errors', async () => {
-      respond(200, { errors: [{ category: 'INVALID_REQUEST_ERROR', code: 'INVALID_VALUE', detail: 'bad code', field: 'code' }] });
+      respond(200, {
+        errors: [
+          {
+            category: 'INVALID_REQUEST_ERROR',
+            code: 'INVALID_VALUE',
+            detail: 'bad code',
+            field: 'code',
+          },
+        ],
+      });
 
-      const error = await createSquareOAuthClient(config).obtainToken({ code: 'C' }).catch((e: unknown) => e);
+      const error = await createSquareOAuthClient(config)
+        .obtainToken({ code: 'C' })
+        .catch((e: unknown) => e);
 
       expect(error).toBeInstanceOf(SquareApiError);
       expect(error).toMatchObject({ code: 'INVALID_VALUE', statusCode: 200, message: 'bad code' });
     });
 
     it('maps an HTTP error and never includes the client secret', async () => {
-      respond(401, { errors: [{ category: 'AUTHENTICATION_ERROR', code: 'UNAUTHORIZED', detail: 'Invalid client secret' }] });
+      respond(401, {
+        errors: [
+          {
+            category: 'AUTHENTICATION_ERROR',
+            code: 'UNAUTHORIZED',
+            detail: 'Invalid client secret',
+          },
+        ],
+      });
 
-      const error = await createSquareOAuthClient(config).obtainToken({ code: 'C' }).catch((e: unknown) => e);
+      const error = await createSquareOAuthClient(config)
+        .obtainToken({ code: 'C' })
+        .catch((e: unknown) => e);
 
       expect(error).toBeInstanceOf(SquareAuthError);
       expect(JSON.stringify(error)).not.toContain(SECRET);
@@ -208,7 +247,9 @@ describe('SquareOAuthClient', () => {
     it('sends grant_type refresh_token without a code', async () => {
       respond(200, tokenBody);
 
-      const tokens = await createSquareOAuthClient(config).refreshToken({ refreshToken: 'EQAA-REFRESH' });
+      const tokens = await createSquareOAuthClient(config).refreshToken({
+        refreshToken: 'EQAA-REFRESH',
+      });
 
       expect(tokens.accessToken).toBe('EAAA-ACCESS');
       const { body } = lastRequest();
@@ -220,15 +261,17 @@ describe('SquareOAuthClient', () => {
       const { refresh_token: _omit, ...withoutRefresh } = tokenBody;
       respond(200, withoutRefresh);
 
-      const tokens = await createSquareOAuthClient(config).refreshToken({ refreshToken: 'EQAA-KEEP' });
+      const tokens = await createSquareOAuthClient(config).refreshToken({
+        refreshToken: 'EQAA-KEEP',
+      });
 
       expect(tokens.refreshToken).toBe('EQAA-KEEP');
     });
 
     it('rejects an empty refresh token', async () => {
-      await expect(createSquareOAuthClient(config).refreshToken({ refreshToken: '' })).rejects.toThrow(
-        SquareValidationError
-      );
+      await expect(
+        createSquareOAuthClient(config).refreshToken({ refreshToken: '' })
+      ).rejects.toThrow(SquareValidationError);
     });
   });
 
@@ -247,7 +290,10 @@ describe('SquareOAuthClient', () => {
     it('revokes by access token, optionally only that token', async () => {
       respond(200, { success: true });
 
-      await createSquareOAuthClient(config).revokeToken({ accessToken: 'EAAA-ACCESS', revokeOnlyAccessToken: true });
+      await createSquareOAuthClient(config).revokeToken({
+        accessToken: 'EAAA-ACCESS',
+        revokeOnlyAccessToken: true,
+      });
 
       expect(lastRequest().body).toEqual({
         client_id: 'sq0idp-APP',
@@ -276,23 +322,45 @@ describe('SquareOAuthClient', () => {
     it('throws when Square does not confirm success', async () => {
       respond(200, { success: false });
 
-      await expect(createSquareOAuthClient(config).revokeToken({ merchantId: 'M' })).rejects.toThrow(SquareError);
+      await expect(
+        createSquareOAuthClient(config).revokeToken({ merchantId: 'M' })
+      ).rejects.toThrow(SquareError);
     });
 
     it('throws a typed error for a 200 body carrying errors', async () => {
-      respond(200, { errors: [{ category: 'INVALID_REQUEST_ERROR', code: 'NOT_FOUND', detail: 'no such merchant' }] });
+      respond(200, {
+        errors: [
+          { category: 'INVALID_REQUEST_ERROR', code: 'NOT_FOUND', detail: 'no such merchant' },
+        ],
+      });
 
-      await expect(createSquareOAuthClient(config).revokeToken({ merchantId: 'M' })).rejects.toBeInstanceOf(
-        SquareApiError
-      );
+      await expect(
+        createSquareOAuthClient(config).revokeToken({ merchantId: 'M' })
+      ).rejects.toBeInstanceOf(SquareApiError);
     });
 
     it('maps HTTP errors', async () => {
       respond(401, { errors: [{ category: 'AUTHENTICATION_ERROR', code: 'UNAUTHORIZED' }] });
 
-      await expect(createSquareOAuthClient(config).revokeToken({ merchantId: 'M' })).rejects.toBeInstanceOf(
-        SquareAuthError
-      );
+      await expect(
+        createSquareOAuthClient(config).revokeToken({ merchantId: 'M' })
+      ).rejects.toBeInstanceOf(SquareAuthError);
     });
+  });
+});
+
+describe('required OAuth options', () => {
+  it.each([
+    ['clientId', { clientId: '', state: 's' }],
+    ['state', { clientId: 'c', state: '' }],
+  ])('names the missing %s in the message and field', (field, options) => {
+    let thrown: unknown;
+    try {
+      buildAuthorizeUrl(options);
+    } catch (error) {
+      thrown = error;
+    }
+    expect(thrown).toBeInstanceOf(SquareValidationError);
+    expect(thrown).toMatchObject({ message: `${field} is required`, field, code: 'INVALID_VALUE' });
   });
 });

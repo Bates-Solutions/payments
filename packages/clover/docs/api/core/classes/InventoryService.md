@@ -6,7 +6,7 @@
 
 # Class: InventoryService
 
-Defined in: [core/services/inventory.service.ts:236](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L236)
+Defined in: [clover/src/core/services/inventory.service.ts:236](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L236)
 
 Inventory service wrapping Clover's Platform
 [inventory](https://docs.clover.com/dev/reference/inventorygetitems) API:
@@ -31,7 +31,7 @@ console.log(item?.name, item?.itemStock?.quantity);
 
 > **new InventoryService**(`http`): `InventoryService`
 
-Defined in: [core/services/inventory.service.ts:237](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L237)
+Defined in: [clover/src/core/services/inventory.service.ts:237](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L237)
 
 #### Parameters
 
@@ -49,7 +49,7 @@ Defined in: [core/services/inventory.service.ts:237](https://github.com/Bates-So
 
 > **createItem**(`options`): `Promise`\<[`Item`](../interfaces/Item.md)\>
 
-Defined in: [core/services/inventory.service.ts:378](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L378)
+Defined in: [clover/src/core/services/inventory.service.ts:378](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L378)
 
 Create an item.
 
@@ -74,7 +74,7 @@ When `name` is empty or `price` / `cost`
 
 > **findItemsByCode**(`options`): `Promise`\<[`Item`](../interfaces/Item.md)[]\>
 
-Defined in: [core/services/inventory.service.ts:328](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L328)
+Defined in: [clover/src/core/services/inventory.service.ts:328](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L328)
 
 Find items by product code (UPC / EAN barcode) or SKU, without listing
 the whole inventory. Pages through every match and returns each item
@@ -112,7 +112,7 @@ const items = await clover.inventory.findItemsByCode({
 
 > **getItem**(`itemId`, `options?`): `Promise`\<[`Item`](../interfaces/Item.md)\>
 
-Defined in: [core/services/inventory.service.ts:298](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L298)
+Defined in: [clover/src/core/services/inventory.service.ts:298](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L298)
 
 Retrieve an item by ID.
 
@@ -136,7 +136,7 @@ Retrieve an item by ID.
 
 > **getItemStock**(`itemId`): `Promise`\<[`ItemStock`](../interfaces/ItemStock.md)\>
 
-Defined in: [core/services/inventory.service.ts:436](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L436)
+Defined in: [clover/src/core/services/inventory.service.ts:436](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L436)
 
 Get an item's stock level.
 
@@ -162,7 +162,7 @@ const { quantity } = await clover.inventory.getItemStock('ITEM_1');
 
 > **listItems**(`options?`): `Promise`\<[`PaginatedResponse`](../interfaces/PaginatedResponse.md)\<[`Item`](../interfaces/Item.md)\>\>
 
-Defined in: [core/services/inventory.service.ts:274](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L274)
+Defined in: [clover/src/core/services/inventory.service.ts:274](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L274)
 
 List items with offset-based pagination (Clover allows up to 1000 per
 page). Use `filter` to narrow the list and `expand: ['itemStock']` to get
@@ -194,7 +194,7 @@ const { data } = await clover.inventory.listItems({
 
 > **updateItem**(`itemId`, `options`): `Promise`\<[`Item`](../interfaces/Item.md)\>
 
-Defined in: [core/services/inventory.service.ts:407](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L407)
+Defined in: [clover/src/core/services/inventory.service.ts:407](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L407)
 
 Update an item. Only the fields you pass are sent. Stock is not changed
 here; use [InventoryService.updateItemStock](#updateitemstock).
@@ -224,7 +224,7 @@ When no field is given, or `price` /
 
 > **updateItemStock**(`itemId`, `options`): `Promise`\<[`ItemStock`](../interfaces/ItemStock.md)\>
 
-Defined in: [core/services/inventory.service.ts:459](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L459)
+Defined in: [clover/src/core/services/inventory.service.ts:459](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L459)
 
 Set an item's stock level. `quantity` replaces the current count; to add
 a delivery, read the stock first and send the new total.

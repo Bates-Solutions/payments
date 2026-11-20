@@ -8,7 +8,7 @@
 
 > **OrderExpand** = `"lineItems"` \| `"lineItems.discounts"` \| `"lineItems.modifications"` \| `"payments"` \| `"payment.tender"` \| `"payment.cardTransaction"` \| `"refunds"` \| `"credits"` \| `"voids"` \| `"employee"` \| `"customers"` \| `"discounts"` \| `"serviceCharge"` \| `"orderType"` \| `string` & `object`
 
-Defined in: [core/services/orders.service.ts:11](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L11)
+Defined in: [clover/src/core/services/orders.service.ts:11](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/orders.service.ts#L11)
 
 Related data Clover can embed in an order response (`expand`).
 

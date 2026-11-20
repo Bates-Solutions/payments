@@ -72,10 +72,7 @@ export type {
 export { InvoicesService } from './services/invoices.service.js';
 export { LoyaltyService } from './services/loyalty.service.js';
 export { CheckoutService } from './services/checkout.service.js';
-export {
-  GiftCardsService,
-  GiftCardActivitiesService,
-} from './services/gift-cards.service.js';
+export { GiftCardsService, GiftCardActivitiesService } from './services/gift-cards.service.js';
 export { LocationsService } from './services/locations.service.js';
 export { OAuthService } from './services/oauth.service.js';
 export type { Location } from './services/locations.service.js';
@@ -124,6 +121,8 @@ export {
   isRetryableSquareError,
 } from './errors.js';
 export type { SquareErrorCode } from './errors.js';
+// Core's base class, so `instanceof PaymentsError` works without installing core.
+export { PaymentsError } from '@bates-solutions/payments-core/errors';
 
 // Utils
 export { toCents, fromCents, formatMoney, createIdempotencyKey } from './utils.js';

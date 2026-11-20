@@ -6,7 +6,7 @@
 
 # Interface: ExpressWebhookOptions
 
-Defined in: [server/middleware/express.ts:22](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/middleware/express.ts#L22)
+Defined in: [clover/src/server/middleware/express.ts:22](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/middleware/express.ts#L22)
 
 Options for the Express webhook middleware.
 
@@ -20,7 +20,7 @@ Options for the Express webhook middleware.
 
 > `optional` **autoRespond?**: `boolean`
 
-Defined in: [server/middleware/express.ts:27](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/middleware/express.ts#L27)
+Defined in: [clover/src/server/middleware/express.ts:27](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/middleware/express.ts#L27)
 
 Whether to send the response automatically.
 
@@ -36,7 +36,7 @@ true
 
 > **handlers**: [`WebhookHandlers`](../type-aliases/WebhookHandlers.md)
 
-Defined in: [server/types.ts:43](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/types.ts#L43)
+Defined in: [clover/src/server/types.ts:43](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/types.ts#L43)
 
 Event handlers by type
 
@@ -50,7 +50,7 @@ Event handlers by type
 
 > **signingSecret**: `string`
 
-Defined in: [server/types.ts:41](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/types.ts#L41)
+Defined in: [clover/src/server/types.ts:41](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/types.ts#L41)
 
 Clover webhook signing secret
 
@@ -64,7 +64,7 @@ Clover webhook signing secret
 
 > `optional` **throwOnInvalidSignature?**: `boolean`
 
-Defined in: [server/types.ts:56](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/types.ts#L56)
+Defined in: [clover/src/server/types.ts:56](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/types.ts#L56)
 
 Whether a signature verification failure throws (vs returning an error
 result) in [createWebhookProcessor](../functions/createWebhookProcessor.md). Either way an invalid signature
@@ -86,7 +86,7 @@ true
 
 > `optional` **tolerance?**: `number`
 
-Defined in: [server/types.ts:33](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/types.ts#L33)
+Defined in: [clover/src/server/types.ts:33](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/types.ts#L33)
 
 Maximum allowed difference (seconds) between the signature timestamp and
 now. Set to `0` to disable the timestamp check.
@@ -107,7 +107,7 @@ now. Set to `0` to disable the timestamp check.
 
 > `optional` **verificationCode?**: `string`
 
-Defined in: [server/types.ts:49](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/types.ts#L49)
+Defined in: [clover/src/server/types.ts:49](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/types.ts#L49)
 
 The verification code Clover expects echoed during the initial webhook
 URL handshake. When set, the framework handlers answer the handshake

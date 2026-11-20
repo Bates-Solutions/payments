@@ -8,7 +8,7 @@
 
 > **createWebhookHandler**(`config`): (`request`) => `Promise`\<`Response`\>
 
-Defined in: [server/middleware/web.ts:32](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/middleware/web.ts#L32)
+Defined in: [stripe/src/server/middleware/web.ts:32](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/middleware/web.ts#L32)
 
 Create a framework-neutral webhook handler built on the Web platform.
 

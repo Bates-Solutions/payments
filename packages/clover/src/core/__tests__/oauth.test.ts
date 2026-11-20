@@ -29,7 +29,11 @@ function makeClient(fetchImpl: ReturnType<typeof vi.fn>, environment?: 'sandbox'
 
 function lastCall(fetchImpl: ReturnType<typeof vi.fn>) {
   const [url, init] = fetchImpl.mock.calls[0] as [URL, RequestInit];
-  return { url: String(url), init, body: JSON.parse(init.body as string) as Record<string, string> };
+  return {
+    url: String(url),
+    init,
+    body: JSON.parse(init.body as string) as Record<string, string>,
+  };
 }
 
 describe('buildAuthorizeUrl', () => {
@@ -189,5 +193,21 @@ describe('CloverOAuthClient', () => {
         `Clover returned an invalid ${field}`
       );
     });
+  });
+});
+
+describe('required OAuth options', () => {
+  it.each([
+    ['clientId', { clientId: '', state: 's' }],
+    ['state', { clientId: 'c', state: '' }],
+  ])('names the missing %s in the message and field', (field, options) => {
+    let thrown: unknown;
+    try {
+      buildAuthorizeUrl(options);
+    } catch (error) {
+      thrown = error;
+    }
+    expect(thrown).toBeInstanceOf(CloverValidationError);
+    expect(thrown).toMatchObject({ message: `${field} is required`, field, code: 'INVALID_VALUE' });
   });
 });

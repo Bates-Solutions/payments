@@ -8,7 +8,7 @@
 
 > **createExpressWebhookHandler**(`config`): `RequestHandler`
 
-Defined in: [server/middleware/express.ts:58](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/middleware/express.ts#L58)
+Defined in: [stripe/src/server/middleware/express.ts:58](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/middleware/express.ts#L58)
 
 Create Express middleware for handling Stripe webhooks.
 

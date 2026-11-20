@@ -6,7 +6,7 @@
 
 # Interface: ItemStock
 
-Defined in: [core/services/inventory.service.ts:32](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L32)
+Defined in: [clover/src/core/services/inventory.service.ts:32](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L32)
 
 Stock level of an item (`/v3/merchants/{mId}/item_stocks/{itemId}`).
 
@@ -16,7 +16,7 @@ Stock level of an item (`/v3/merchants/{mId}/item_stocks/{itemId}`).
 
 > `optional` **item?**: `object`
 
-Defined in: [core/services/inventory.service.ts:34](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L34)
+Defined in: [clover/src/core/services/inventory.service.ts:34](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L34)
 
 The item this stock belongs to
 
@@ -30,7 +30,7 @@ The item this stock belongs to
 
 > `optional` **modifiedTime?**: `number`
 
-Defined in: [core/services/inventory.service.ts:42](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L42)
+Defined in: [clover/src/core/services/inventory.service.ts:42](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L42)
 
 Last modified, in milliseconds since the epoch
 
@@ -40,7 +40,7 @@ Last modified, in milliseconds since the epoch
 
 > `optional` **quantity?**: `number`
 
-Defined in: [core/services/inventory.service.ts:36](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L36)
+Defined in: [clover/src/core/services/inventory.service.ts:36](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L36)
 
 Current count in stock. Can be fractional for `PER_UNIT` items.
 
@@ -50,7 +50,7 @@ Current count in stock. Can be fractional for `PER_UNIT` items.
 
 > `optional` **stockAlertThreshold?**: `number`
 
-Defined in: [core/services/inventory.service.ts:40](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L40)
+Defined in: [clover/src/core/services/inventory.service.ts:40](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L40)
 
 Low stock alert threshold (only when the merchant uses low stock alerts)
 
@@ -60,7 +60,7 @@ Low stock alert threshold (only when the merchant uses low stock alerts)
 
 > `optional` **stockCount?**: `number`
 
-Defined in: [core/services/inventory.service.ts:38](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L38)
+Defined in: [clover/src/core/services/inventory.service.ts:38](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L38)
 
 #### Deprecated
 

@@ -6,7 +6,7 @@
 
 # Class: StripePaymentError
 
-Defined in: [core/errors.ts:87](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L87)
+Defined in: [stripe/src/core/errors.ts:81](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L81)
 
 Payment processing errors (card declines, etc.)
 
@@ -20,7 +20,7 @@ Payment processing errors (card declines, etc.)
 
 > **new StripePaymentError**(`message`, `code`, `options?`): `StripePaymentError`
 
-Defined in: [core/errors.ts:92](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L92)
+Defined in: [stripe/src/core/errors.ts:86](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L86)
 
 #### Parameters
 
@@ -56,7 +56,9 @@ Defined in: [core/errors.ts:92](https://github.com/Bates-Solutions/payments/blob
 
 > `readonly` **code**: [`StripeErrorCode`](../type-aliases/StripeErrorCode.md)
 
-Defined in: [core/errors.ts:28](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L28)
+Defined in: [payments-core/dist/errors/payments-error.d.ts:27](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/dist/errors/payments-error.d.ts#L27)
+
+Normalized error code. Each provider defines its own union.
 
 #### Inherited from
 
@@ -68,7 +70,7 @@ Defined in: [core/errors.ts:28](https://github.com/Bates-Solutions/payments/blob
 
 > `readonly` `optional` **declineCode?**: `string`
 
-Defined in: [core/errors.ts:90](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L90)
+Defined in: [stripe/src/core/errors.ts:84](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L84)
 
 Stripe decline code (e.g. `insufficient_funds`), when present
 
@@ -78,11 +80,13 @@ Stripe decline code (e.g. `insufficient_funds`), when present
 
 > `readonly` `optional` **details?**: `unknown`
 
-Defined in: [core/errors.ts:30](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L30)
+Defined in: [payments-core/dist/errors/payments-error.d.ts:31](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/dist/errors/payments-error.d.ts#L31)
+
+The raw error body or other context, if any.
 
 #### Inherited from
 
-[`StripeError`](StripeError.md).[`details`](StripeError.md#details)
+[`PaymentsError`](PaymentsError.md).[`details`](PaymentsError.md#details)
 
 ***
 
@@ -90,7 +94,7 @@ Defined in: [core/errors.ts:30](https://github.com/Bates-Solutions/payments/blob
 
 > `readonly` `optional` **paymentIntentId?**: `string`
 
-Defined in: [core/errors.ts:88](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L88)
+Defined in: [stripe/src/core/errors.ts:82](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L82)
 
 ***
 
@@ -98,8 +102,10 @@ Defined in: [core/errors.ts:88](https://github.com/Bates-Solutions/payments/blob
 
 > `readonly` `optional` **statusCode?**: `number`
 
-Defined in: [core/errors.ts:29](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/errors.ts#L29)
+Defined in: [payments-core/dist/errors/payments-error.d.ts:29](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/dist/errors/payments-error.d.ts#L29)
+
+HTTP status of the response that caused the error, if any.
 
 #### Inherited from
 
-[`StripeError`](StripeError.md).[`statusCode`](StripeError.md#statuscode)
+[`PaymentsError`](PaymentsError.md).[`statusCode`](PaymentsError.md#statuscode)

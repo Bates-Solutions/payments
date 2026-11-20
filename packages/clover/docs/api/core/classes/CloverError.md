@@ -6,13 +6,15 @@
 
 # Class: CloverError
 
-Defined in: [core/errors.ts:22](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L22)
+Defined in: [clover/src/core/errors.ts:26](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L26)
 
-Base Clover error class
+Base Clover error class. It extends core's `PaymentsError`, so
+`error instanceof PaymentsError` catches any provider's error, as long as the
+providers resolve the same copy of `@bates-solutions/payments-core`.
 
 ## Extends
 
-- `Error`
+- [`PaymentsError`](PaymentsError.md)\<[`CloverErrorCode`](../type-aliases/CloverErrorCode.md)\>
 
 ## Extended by
 
@@ -27,7 +29,7 @@ Base Clover error class
 
 > **new CloverError**(`message`, `code?`, `statusCode?`, `details?`): `CloverError`
 
-Defined in: [core/errors.ts:27](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L27)
+Defined in: [clover/src/core/errors.ts:27](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L27)
 
 #### Parameters
 
@@ -53,7 +55,7 @@ Defined in: [core/errors.ts:27](https://github.com/Bates-Solutions/payments/blob
 
 #### Overrides
 
-`Error.constructor`
+[`PaymentsError`](PaymentsError.md).[`constructor`](PaymentsError.md#constructor)
 
 ## Properties
 
@@ -61,7 +63,13 @@ Defined in: [core/errors.ts:27](https://github.com/Bates-Solutions/payments/blob
 
 > `readonly` **code**: [`CloverErrorCode`](../type-aliases/CloverErrorCode.md)
 
-Defined in: [core/errors.ts:23](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L23)
+Defined in: [payments-core/dist/errors/payments-error.d.ts:27](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/../../payments-core/dist/errors/payments-error.d.ts#L27)
+
+Normalized error code. Each provider defines its own union.
+
+#### Inherited from
+
+[`PaymentsError`](PaymentsError.md).[`code`](PaymentsError.md#code-1)
 
 ***
 
@@ -69,7 +77,13 @@ Defined in: [core/errors.ts:23](https://github.com/Bates-Solutions/payments/blob
 
 > `readonly` `optional` **details?**: `unknown`
 
-Defined in: [core/errors.ts:25](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L25)
+Defined in: [payments-core/dist/errors/payments-error.d.ts:31](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/../../payments-core/dist/errors/payments-error.d.ts#L31)
+
+The raw error body or other context, if any.
+
+#### Inherited from
+
+[`PaymentsError`](PaymentsError.md).[`details`](PaymentsError.md#details)
 
 ***
 
@@ -77,4 +91,10 @@ Defined in: [core/errors.ts:25](https://github.com/Bates-Solutions/payments/blob
 
 > `readonly` `optional` **statusCode?**: `number`
 
-Defined in: [core/errors.ts:24](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/errors.ts#L24)
+Defined in: [payments-core/dist/errors/payments-error.d.ts:29](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/../../payments-core/dist/errors/payments-error.d.ts#L29)
+
+HTTP status of the response that caused the error, if any.
+
+#### Inherited from
+
+[`PaymentsError`](PaymentsError.md).[`statusCode`](PaymentsError.md#statuscode)

@@ -79,6 +79,8 @@ export {
   cloverErrorFromResponse,
 } from './errors.js';
 export type { CloverErrorCode } from './errors.js';
+// Core's base class, so `instanceof PaymentsError` works without installing core.
+export { PaymentsError } from '@bates-solutions/payments-core/errors';
 
 // Utils
 export { toCents, fromCents, formatMoney, createIdempotencyKey } from './utils.js';

@@ -1,6 +1,12 @@
+import { requireNonEmpty as requireNonEmptyOption } from '@bates-solutions/payments-core/errors';
 import { SquareClient as SdkClient, SquareEnvironment as SdkEnvironment } from 'square';
 import type { SquareEnvironment } from './types/index.js';
-import { assertNoResponseErrors, parseSquareError, SquareError, SquareValidationError } from './errors.js';
+import {
+  assertNoResponseErrors,
+  parseSquareError,
+  SquareError,
+  SquareValidationError,
+} from './errors.js';
 
 /**
  * Square OAuth permission (scope) names.
@@ -356,7 +362,10 @@ export class SquareOAuthClient {
       merchantId,
       refreshToken,
       ...(response.refreshTokenExpiresAt && {
-        refreshTokenExpiresAt: parseSquareDate(response.refreshTokenExpiresAt, 'refresh_token_expires_at'),
+        refreshTokenExpiresAt: parseSquareDate(
+          response.refreshTokenExpiresAt,
+          'refresh_token_expires_at'
+        ),
       }),
     };
   }
@@ -392,8 +401,6 @@ export function parseSquareDate(value: string, field: string): Date {
   return date;
 }
 
-function requireNonEmpty(value: string | undefined, field: string): void {
-  if (!value) {
-    throw new SquareValidationError(`${field} is required`, field);
-  }
+function requireNonEmpty(value: string | undefined, field: string): asserts value is string {
+  requireNonEmptyOption(value, field, (message, name) => new SquareValidationError(message, name));
 }

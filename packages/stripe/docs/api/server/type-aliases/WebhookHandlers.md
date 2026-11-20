@@ -8,7 +8,7 @@
 
 > **WebhookHandlers** = `{ [K in WebhookEventType]?: WebhookHandler<Extract<Stripe.Event, { type: K }>> }`
 
-Defined in: [server/types.ts:37](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/types.ts#L37)
+Defined in: [stripe/src/server/types.ts:37](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/types.ts#L37)
 
 Map of event types to their handlers. Each handler receives the event
 narrowed to its specific type.

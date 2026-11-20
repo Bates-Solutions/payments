@@ -32,7 +32,7 @@ It targets both Clover hosts transparently:
 - **No vendor SDK** – A tiny `fetch` client; the only dependency is the family's own `@bates-solutions/payments-core`
 - **Type-Safe** – Full TypeScript types for inputs and results
 - **OAuth** – Authorize URL plus code exchange and refresh for Clover's expiring v2 tokens
-- **Typed Errors** – `parseCloverError` normalizes HTTP failures into a small class hierarchy
+- **Typed Errors** – `CloverError` extends `PaymentsError` (also exported), so one `instanceof PaymentsError` check covers all three provider packages when they resolve the same copy of `@bates-solutions/payments-core`; `parseCloverError` normalizes HTTP failures into a small class hierarchy
 - **Edge-ready webhooks** – WebCrypto signature verification that runs on Node, **Deno**, Bun, and Workers, plus Express and Lambda adapters, and the Clover URL-verification handshake handled for you
 
 ## Requirements
@@ -226,7 +226,7 @@ All three follow one architecture, so the mental model transfers directly:
 
 - **Same client shape** — a `create<Vendor>Client({ ... })` factory returns a client exposing one readonly service per API domain (e.g. `client.customers`, `client.payments`).
 - **One service class per domain** (`src/core/services/<name>.service.ts`): input validation throws a `<Vendor>ValidationError`, every API call is wrapped `try/catch → parse<Vendor>Error`, mutating calls accept an `idempotencyKey`, and money is passed as integer minor units.
-- **Normalized error hierarchy** — a `<Vendor>Error` base with `…ApiError` / `…AuthError` / `…PaymentError` / `…ValidationError` subclasses and a single `parse<Vendor>Error` mapper.
+- **Normalized error hierarchy** — a `<Vendor>Error` base (extending core's `PaymentsError`) with `…ApiError` / `…AuthError` / `…PaymentError` / `…ValidationError` subclasses and a single `parse<Vendor>Error` mapper.
 - **Standalone `./server` webhook module** — signature verification plus a typed handler-map dispatch, with adapters for **Express** and **AWS Lambda** (plus **Next.js** on stripe & squareup, and a framework-neutral **Web/edge** handler on stripe & clover).
 - **ESM + TypeScript source**, dual subpath exports (`.` for the client, `./server` for webhooks), Vitest tests against mocked I/O, and published to **JSR** via GitHub OIDC.
 

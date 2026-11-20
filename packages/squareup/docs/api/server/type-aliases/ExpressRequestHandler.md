@@ -8,7 +8,7 @@
 
 > **ExpressRequestHandler** = (`req`, `res`, `next`) => `void` \| `Promise`\<`void`\>
 
-Defined in: [server/middleware/express.ts:42](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L42)
+Defined in: [squareup/src/server/middleware/express.ts:42](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L42)
 
 Minimal structural stand-in for the Express `RequestHandler`.
 

@@ -6,7 +6,7 @@
 
 # Interface: ListInvoicesOptions
 
-Defined in: [core/services/invoices.service.ts:79](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L79)
+Defined in: [stripe/src/core/services/invoices.service.ts:79](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L79)
 
 Options for listing invoices.
 
@@ -16,7 +16,7 @@ Options for listing invoices.
 
 > `optional` **customerId?**: `string`
 
-Defined in: [core/services/invoices.service.ts:80](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L80)
+Defined in: [stripe/src/core/services/invoices.service.ts:80](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L80)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [core/services/invoices.service.ts:80](https://github.com/Bates-Solu
 
 > `optional` **limit?**: `number`
 
-Defined in: [core/services/invoices.service.ts:83](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L83)
+Defined in: [stripe/src/core/services/invoices.service.ts:83](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L83)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [core/services/invoices.service.ts:83](https://github.com/Bates-Solu
 
 > `optional` **startingAfter?**: `string`
 
-Defined in: [core/services/invoices.service.ts:84](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L84)
+Defined in: [stripe/src/core/services/invoices.service.ts:84](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L84)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [core/services/invoices.service.ts:84](https://github.com/Bates-Solu
 
 > `optional` **status?**: `Status`
 
-Defined in: [core/services/invoices.service.ts:82](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L82)
+Defined in: [stripe/src/core/services/invoices.service.ts:82](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L82)
 
 ***
 
@@ -48,4 +48,4 @@ Defined in: [core/services/invoices.service.ts:82](https://github.com/Bates-Solu
 
 > `optional` **subscriptionId?**: `string`
 
-Defined in: [core/services/invoices.service.ts:81](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L81)
+Defined in: [stripe/src/core/services/invoices.service.ts:81](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/invoices.service.ts#L81)

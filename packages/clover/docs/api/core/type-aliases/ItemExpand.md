@@ -8,7 +8,7 @@
 
 > **ItemExpand** = `"tags"` \| `"categories"` \| `"taxRates"` \| `"modifierGroups"` \| `"itemStock"` \| `"options"` \| `"ageRestricted"` \| `string` & `object`
 
-Defined in: [core/services/inventory.service.ts:18](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L18)
+Defined in: [clover/src/core/services/inventory.service.ts:18](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L18)
 
 Related data Clover can embed in an item response (`expand`).
 

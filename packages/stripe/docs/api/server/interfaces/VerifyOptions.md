@@ -6,7 +6,7 @@
 
 # Interface: VerifyOptions
 
-Defined in: [server/types.ts:44](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/types.ts#L44)
+Defined in: [stripe/src/server/types.ts:44](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/types.ts#L44)
 
 Options controlling signature verification.
 
@@ -21,7 +21,7 @@ Options controlling signature verification.
 
 > `optional` **tolerance?**: `number`
 
-Defined in: [server/types.ts:50](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/types.ts#L50)
+Defined in: [stripe/src/server/types.ts:50](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/types.ts#L50)
 
 Maximum allowed difference (seconds) between the signature timestamp and
 now. Set to `0` to disable the timestamp check.

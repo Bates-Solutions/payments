@@ -8,7 +8,7 @@
 
 > **WebhookHandler** = (`event`) => `void` \| `Promise`\<`void`\>
 
-Defined in: [server/types.ts:17](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/types.ts#L17)
+Defined in: [clover/src/server/types.ts:17](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/server/types.ts#L17)
 
 Handler for a webhook event.
 

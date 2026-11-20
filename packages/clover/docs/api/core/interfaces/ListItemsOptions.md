@@ -6,7 +6,7 @@
 
 # Interface: ListItemsOptions
 
-Defined in: [core/services/inventory.service.ts:85](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L85)
+Defined in: [clover/src/core/services/inventory.service.ts:85](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L85)
 
 Options for `inventory.listItems()`.
 
@@ -20,7 +20,7 @@ Options for `inventory.listItems()`.
 
 > `optional` **expand?**: [`ItemExpand`](../type-aliases/ItemExpand.md)[]
 
-Defined in: [core/services/inventory.service.ts:94](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L94)
+Defined in: [clover/src/core/services/inventory.service.ts:94](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L94)
 
 Related data to embed, e.g. `['itemStock']`
 
@@ -30,7 +30,7 @@ Related data to embed, e.g. `['itemStock']`
 
 > `optional` **filter?**: `string`[]
 
-Defined in: [core/services/inventory.service.ts:92](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L92)
+Defined in: [clover/src/core/services/inventory.service.ts:92](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/inventory.service.ts#L92)
 
 Raw Clover filters, each `field<op>value`, e.g. `['sku=PICKLE-1',
 'hidden=false']`. Several filters are combined with AND.
@@ -45,7 +45,7 @@ https://docs.clover.com/docs/applying-filters
 
 > `optional` **limit?**: `number`
 
-Defined in: [core/types/index.ts:29](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/types/index.ts#L29)
+Defined in: [clover/src/core/types/index.ts:29](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/types/index.ts#L29)
 
 Maximum number of records to return
 
@@ -59,7 +59,7 @@ Maximum number of records to return
 
 > `optional` **offset?**: `number`
 
-Defined in: [core/types/index.ts:31](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/types/index.ts#L31)
+Defined in: [clover/src/core/types/index.ts:31](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/types/index.ts#L31)
 
 Number of records to skip
 

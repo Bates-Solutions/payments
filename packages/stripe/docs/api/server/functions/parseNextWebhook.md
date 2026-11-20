@@ -8,7 +8,7 @@
 
 > **parseNextWebhook**(`request`, `signingSecret`, `options?`): `Promise`\<`Event`\>
 
-Defined in: [server/middleware/nextjs.ts:175](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/middleware/nextjs.ts#L175)
+Defined in: [stripe/src/server/middleware/nextjs.ts:175](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/middleware/nextjs.ts#L175)
 
 Verify and parse a webhook event from a Next.js request.
 

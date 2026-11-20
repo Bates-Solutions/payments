@@ -8,6 +8,6 @@
 
 > **UpdateCustomerOptions** = [`CreateCustomerOptions`](../interfaces/CreateCustomerOptions.md)
 
-Defined in: [core/services/customers.service.ts:37](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L37)
+Defined in: [clover/src/core/services/customers.service.ts:37](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L37)
 
 Options for updating a customer.

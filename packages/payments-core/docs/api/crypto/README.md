@@ -6,11 +6,17 @@
 
 # crypto
 
-WebCrypto primitives for webhook signature checks: HMAC-SHA256, constant-time
-compare, hex and base64 encoding, and the timestamped `t=…,v1=…` header
-scheme. No Node built-ins.
+WebCrypto primitives: HMAC-SHA256, constant-time compare, hex and base64
+encoding, the timestamped `t=…,v1=…` header scheme, and random idempotency
+keys. No Node built-ins.
 
 ## References
+
+### createIdempotencyKey
+
+Re-exports [createIdempotencyKey](../index/functions/createIdempotencyKey.md)
+
+***
 
 ### fromBase64
 

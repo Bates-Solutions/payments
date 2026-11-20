@@ -8,7 +8,7 @@
 
 > **getChargeId**(`event`): `string` \| `undefined`
 
-Defined in: [server/webhook.ts:240](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/webhook.ts#L240)
+Defined in: [stripe/src/server/webhook.ts:240](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/webhook.ts#L240)
 
 Extract the Charge ID from a webhook event, when present.
 

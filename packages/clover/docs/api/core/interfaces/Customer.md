@@ -6,7 +6,7 @@
 
 # Interface: Customer
 
-Defined in: [core/services/customers.service.ts:9](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L9)
+Defined in: [clover/src/core/services/customers.service.ts:9](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L9)
 
 A Clover Platform customer (`/v3/merchants/{mId}/customers`).
 
@@ -16,7 +16,7 @@ A Clover Platform customer (`/v3/merchants/{mId}/customers`).
 
 > `optional` **emailAddresses?**: `object`[]
 
-Defined in: [core/services/customers.service.ts:13](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L13)
+Defined in: [clover/src/core/services/customers.service.ts:13](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L13)
 
 #### emailAddress
 
@@ -28,7 +28,7 @@ Defined in: [core/services/customers.service.ts:13](https://github.com/Bates-Sol
 
 > `optional` **firstName?**: `string`
 
-Defined in: [core/services/customers.service.ts:11](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L11)
+Defined in: [clover/src/core/services/customers.service.ts:11](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L11)
 
 ***
 
@@ -36,7 +36,7 @@ Defined in: [core/services/customers.service.ts:11](https://github.com/Bates-Sol
 
 > `optional` **id?**: `string`
 
-Defined in: [core/services/customers.service.ts:10](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L10)
+Defined in: [clover/src/core/services/customers.service.ts:10](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L10)
 
 ***
 
@@ -44,7 +44,7 @@ Defined in: [core/services/customers.service.ts:10](https://github.com/Bates-Sol
 
 > `optional` **lastName?**: `string`
 
-Defined in: [core/services/customers.service.ts:12](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L12)
+Defined in: [clover/src/core/services/customers.service.ts:12](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L12)
 
 ***
 
@@ -52,7 +52,7 @@ Defined in: [core/services/customers.service.ts:12](https://github.com/Bates-Sol
 
 > `optional` **marketingAllowed?**: `boolean`
 
-Defined in: [core/services/customers.service.ts:15](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L15)
+Defined in: [clover/src/core/services/customers.service.ts:15](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L15)
 
 ***
 
@@ -60,7 +60,7 @@ Defined in: [core/services/customers.service.ts:15](https://github.com/Bates-Sol
 
 > `optional` **metadata?**: `Record`\<`string`, `unknown`\>
 
-Defined in: [core/services/customers.service.ts:16](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L16)
+Defined in: [clover/src/core/services/customers.service.ts:16](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L16)
 
 ***
 
@@ -68,7 +68,7 @@ Defined in: [core/services/customers.service.ts:16](https://github.com/Bates-Sol
 
 > `optional` **phoneNumbers?**: `object`[]
 
-Defined in: [core/services/customers.service.ts:14](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L14)
+Defined in: [clover/src/core/services/customers.service.ts:14](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/services/customers.service.ts#L14)
 
 #### phoneNumber
 

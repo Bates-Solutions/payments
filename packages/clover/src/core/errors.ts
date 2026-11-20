@@ -1,3 +1,5 @@
+import { PaymentsError } from '@bates-solutions/payments-core/errors';
+
 /**
  * Normalized Clover error codes
  */
@@ -17,26 +19,19 @@ export type CloverErrorCode =
   | 'UNKNOWN';
 
 /**
- * Base Clover error class
+ * Base Clover error class. It extends core's `PaymentsError`, so
+ * `error instanceof PaymentsError` catches any provider's error, as long as the
+ * providers resolve the same copy of `@bates-solutions/payments-core`.
  */
-export class CloverError extends Error {
-  public readonly code: CloverErrorCode;
-  public readonly statusCode?: number;
-  public readonly details?: unknown;
-
+export class CloverError extends PaymentsError<CloverErrorCode> {
   constructor(
     message: string,
     code: CloverErrorCode = 'UNKNOWN',
     statusCode?: number,
     details?: unknown
   ) {
-    super(message);
+    super(message, code, statusCode, details);
     this.name = 'CloverError';
-    this.code = code;
-    this.statusCode = statusCode;
-    this.details = details;
-
-    Error.captureStackTrace(this, this.constructor);
   }
 }
 
@@ -128,7 +123,13 @@ export class CloverValidationError extends CloverError {
  */
 interface CloverErrorBody {
   message?: string;
-  error?: { code?: string; message?: string; type?: string; decline_code?: string; charge?: string };
+  error?: {
+    code?: string;
+    message?: string;
+    type?: string;
+    decline_code?: string;
+    charge?: string;
+  };
 }
 
 function mapStatus(status: number): CloverErrorCode {
@@ -166,7 +167,8 @@ export function cloverErrorFromResponse(
 ): CloverError {
   const parsed = (body ?? {}) as CloverErrorBody;
   const inner = parsed.error;
-  const message = inner?.message ?? parsed.message ?? `Clover API error (HTTP ${status.toString()})`;
+  const message =
+    inner?.message ?? parsed.message ?? `Clover API error (HTTP ${status.toString()})`;
   const code = mapStatus(status);
   const reqId = requestId ?? undefined;
 

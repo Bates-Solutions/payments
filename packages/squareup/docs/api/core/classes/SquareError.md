@@ -6,13 +6,15 @@
 
 # Class: SquareError
 
-Defined in: [core/errors.ts:32](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L32)
+Defined in: [squareup/src/core/errors.ts:36](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L36)
 
-Base Square error class
+Base Square error class. It extends core's `PaymentsError`, so
+`error instanceof PaymentsError` catches any provider's error, as long as the
+providers resolve the same copy of `@bates-solutions/payments-core`.
 
 ## Extends
 
-- `Error`
+- [`PaymentsError`](PaymentsError.md)\<[`SquareErrorCode`](../type-aliases/SquareErrorCode.md)\>
 
 ## Extended by
 
@@ -28,7 +30,7 @@ Base Square error class
 
 > **new SquareError**(`message`, `code?`, `statusCode?`, `details?`): `SquareError`
 
-Defined in: [core/errors.ts:37](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L37)
+Defined in: [squareup/src/core/errors.ts:37](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L37)
 
 #### Parameters
 
@@ -54,7 +56,7 @@ Defined in: [core/errors.ts:37](https://github.com/Bates-Solutions/payments/blob
 
 #### Overrides
 
-`Error.constructor`
+[`PaymentsError`](PaymentsError.md).[`constructor`](PaymentsError.md#constructor)
 
 ## Properties
 
@@ -62,7 +64,13 @@ Defined in: [core/errors.ts:37](https://github.com/Bates-Solutions/payments/blob
 
 > `readonly` **code**: [`SquareErrorCode`](../type-aliases/SquareErrorCode.md)
 
-Defined in: [core/errors.ts:33](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L33)
+Defined in: [payments-core/dist/errors/payments-error.d.ts:27](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/../../payments-core/dist/errors/payments-error.d.ts#L27)
+
+Normalized error code. Each provider defines its own union.
+
+#### Inherited from
+
+[`PaymentsError`](PaymentsError.md).[`code`](PaymentsError.md#code-1)
 
 ***
 
@@ -70,7 +78,13 @@ Defined in: [core/errors.ts:33](https://github.com/Bates-Solutions/payments/blob
 
 > `readonly` `optional` **details?**: `unknown`
 
-Defined in: [core/errors.ts:35](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L35)
+Defined in: [payments-core/dist/errors/payments-error.d.ts:31](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/../../payments-core/dist/errors/payments-error.d.ts#L31)
+
+The raw error body or other context, if any.
+
+#### Inherited from
+
+[`PaymentsError`](PaymentsError.md).[`details`](PaymentsError.md#details)
 
 ***
 
@@ -78,4 +92,10 @@ Defined in: [core/errors.ts:35](https://github.com/Bates-Solutions/payments/blob
 
 > `readonly` `optional` **statusCode?**: `number`
 
-Defined in: [core/errors.ts:34](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L34)
+Defined in: [payments-core/dist/errors/payments-error.d.ts:29](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/../../payments-core/dist/errors/payments-error.d.ts#L29)
+
+HTTP status of the response that caused the error, if any.
+
+#### Inherited from
+
+[`PaymentsError`](PaymentsError.md).[`statusCode`](PaymentsError.md#statuscode)

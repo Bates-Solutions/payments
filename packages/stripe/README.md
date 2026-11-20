@@ -26,7 +26,7 @@ A thin, consistent wrapper over the official [`stripe`](https://www.npmjs.com/pa
 
 - **Simplified APIs** – Less boilerplate over payments, subscriptions, hosted checkout, and billing
 - **Type-Safe** – Full TypeScript support; wraps Stripe's own types
-- **Typed Errors** – `parseStripeError` normalizes Stripe errors into a small class hierarchy
+- **Typed Errors** – `StripeError` extends `PaymentsError` (also exported), so one `instanceof PaymentsError` check covers all three provider packages when they resolve the same copy of `@bates-solutions/payments-core`; `parseStripeError` normalizes Stripe errors into a small class hierarchy
 - **Edge-ready webhooks** – WebCrypto signature verification that runs on Node, **Deno**, Bun, and Workers, plus Express / Next.js / Lambda adapters
 - **Version-stable subscriptions** – Normalized shape with `Date` period fields, absorbing Stripe's API churn
 - **Escape Hatch** – `client.sdk` exposes the underlying Stripe instance for anything not wrapped
@@ -259,7 +259,7 @@ All three follow one architecture, so the mental model transfers directly:
 
 - **Same client shape** — a `create<Vendor>Client({ ... })` factory returns a client exposing one readonly service per API domain (e.g. `client.customers`, `client.payments`).
 - **One service class per domain** (`src/core/services/<name>.service.ts`): input validation throws a `<Vendor>ValidationError`, every API call is wrapped `try/catch → parse<Vendor>Error`, mutating calls accept an `idempotencyKey`, and money is passed as integer minor units.
-- **Normalized error hierarchy** — a `<Vendor>Error` base with `…ApiError` / `…AuthError` / `…PaymentError` / `…ValidationError` subclasses and a single `parse<Vendor>Error` mapper.
+- **Normalized error hierarchy** — a `<Vendor>Error` base (extending core's `PaymentsError`) with `…ApiError` / `…AuthError` / `…PaymentError` / `…ValidationError` subclasses and a single `parse<Vendor>Error` mapper.
 - **Standalone `./server` webhook module** — signature verification plus a typed handler-map dispatch, with adapters for **Express** and **AWS Lambda** (plus **Next.js** on stripe & squareup, and a framework-neutral **Web/edge** handler on stripe & clover).
 - **ESM + TypeScript source**, dual subpath exports (`.` for the client, `./server` for webhooks), Vitest tests against mocked I/O, and published to **JSR** via GitHub OIDC.
 
