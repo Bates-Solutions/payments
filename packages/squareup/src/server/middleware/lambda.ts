@@ -72,8 +72,12 @@ export interface LambdaWebhookConfig {
   signatureKey: WebhookSignatureKey;
   /** Event handlers by type */
   handlers: LambdaWebhookHandlers;
-  /** URL where webhooks are received (for signature verification) */
-  notificationUrl?: string;
+  /**
+   * The exact notification URL registered on the webhook subscription.
+   * Required: Square signs `notificationUrl + rawBody`, so without it no real
+   * delivery verifies.
+   */
+  notificationUrl: string;
   /** Custom CORS headers (merged with defaults) */
   corsHeaders?: Record<string, string>;
   /** Logger instance (defaults to console) */
@@ -106,8 +110,20 @@ function normalizeHeaders(
  * Handles CORS preflight, signature verification, event parsing,
  * routing to handlers, and entity ID extraction.
  *
+ * Responses:
+ * - `204` for a CORS preflight (`OPTIONS`)
+ * - `400` when the body is missing or is not JSON
+ * - `401` when the signature header is missing or the signature is invalid
+ * - `500` when a handler (or `onUnhandledEvent`) throws, so Square retries the delivery
+ * - `200` with `{ success: true, eventId, ...ids }` once the handler has run
+ *
+ * Square retries a delivery that fails, so make handlers idempotent (for
+ * example, keyed on `event.event_id`).
+ *
  * @param config - Lambda webhook configuration
  * @returns Lambda handler function
+ *
+ * @throws {Error} When `notificationUrl` is missing
  *
  * @example
  * ```typescript
@@ -115,6 +131,7 @@ function normalizeHeaders(
  *
  * export const handler = createLambdaWebhookHandler({
  *   signatureKey: process.env.SQUARE_WEBHOOK_SIGNATURE_KEY!,
+ *   notificationUrl: 'https://api.example.com/webhooks/square',
  *   handlers: {
  *     'payment.completed': async (event, context) => {
  *       await processPayment(event.data.id, context.orderId);
@@ -126,6 +143,13 @@ function normalizeHeaders(
 export function createLambdaWebhookHandler(
   config: LambdaWebhookConfig
 ): (proxyEvent: LambdaProxyEvent) => Promise<LambdaProxyResult> {
+  // Untyped callers can still leave it out; fail at startup, not per request.
+  if (typeof config.notificationUrl !== 'string' || config.notificationUrl === '') {
+    throw new Error(
+      'notificationUrl is required: Square signs notificationUrl + body, so set it to the URL registered on the webhook subscription'
+    );
+  }
+
   const corsHeaders = { ...DEFAULT_CORS_HEADERS, ...config.corsHeaders };
   const logger = config.logger === false ? undefined : (config.logger ?? defaultLogger);
 
@@ -220,9 +244,10 @@ export function createLambdaWebhookHandler(
         error: error instanceof Error ? error.message : 'Unknown error',
       });
 
-      // Return 200 on handler errors — Square retries on 5xx
+      // A 5xx makes Square retry the delivery, so a failed handler gets
+      // another chance instead of the event being dropped.
       return {
-        statusCode: 200,
+        statusCode: 500,
         headers: corsHeaders,
         body: JSON.stringify({
           success: false,
