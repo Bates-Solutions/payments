@@ -30,8 +30,8 @@ export type SquareErrorCode =
 
 /**
  * Base Square error class. It extends core's `PaymentsError`, so
- * `error instanceof PaymentsError` catches any provider's error, as long as the
- * providers resolve the same copy of `@bates-solutions/payments-core`.
+ * `error instanceof PaymentsError` catches any provider's error, even when the
+ * providers install different copies of `@bates-solutions/payments-core`.
  */
 export class SquareError extends PaymentsError<SquareErrorCode> {
   constructor(
