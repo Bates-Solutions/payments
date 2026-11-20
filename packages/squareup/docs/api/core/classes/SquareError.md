@@ -102,9 +102,9 @@ HTTP status of the response that caused the error, if any.
 
 ## Methods
 
-### notHasInstance()
+### \[hasInstance\]()
 
-> `static` **notHasInstance**(`value`): `boolean`
+> `static` **\[hasInstance\]**(`value`): `boolean`
 
 Defined in: [payments-core/dist/errors/payments-error.d.ts:43](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/../../payments-core/dist/errors/payments-error.d.ts#L43)
 
@@ -129,4 +129,4 @@ keeps narrowing `instanceof SquareError` to `SquareError`.
 
 #### Inherited from
 
-[`PaymentsError`](PaymentsError.md).[`notHasInstance`](PaymentsError.md#nothasinstance)
+[`PaymentsError`](PaymentsError.md).[`[hasInstance]`](PaymentsError.md#hasinstance)

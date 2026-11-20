@@ -113,9 +113,9 @@ HTTP status of the response that caused the error, if any.
 
 ## Methods
 
-### notHasInstance()
+### \[hasInstance\]()
 
-> `static` **notHasInstance**(`value`): `boolean`
+> `static` **\[hasInstance\]**(`value`): `boolean`
 
 Defined in: [payments-core/dist/errors/payments-error.d.ts:43](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/dist/errors/payments-error.d.ts#L43)
 
