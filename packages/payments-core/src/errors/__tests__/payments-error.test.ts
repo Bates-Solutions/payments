@@ -89,3 +89,62 @@ describe('PaymentsError', () => {
     }
   });
 });
+
+describe('instanceof PaymentsError across copies of payments-core', () => {
+  // A second copy, as when two providers install different core versions:
+  // resetModules makes the import evaluate the module again, with its own class.
+  async function loadSecondCopy(): Promise<typeof PaymentsError> {
+    vi.resetModules();
+    const copy = await import('../payments-error');
+    expect(copy.PaymentsError).not.toBe(PaymentsError);
+    return copy.PaymentsError;
+  }
+
+  it('matches an error from another copy', async () => {
+    const OtherPaymentsError = await loadSecondCopy();
+    class OtherProviderError extends OtherPaymentsError<Code> {}
+
+    expect(new OtherPaymentsError('boom', 'X')).toBeInstanceOf(PaymentsError);
+    expect(new OtherProviderError('boom', 'UNKNOWN')).toBeInstanceOf(PaymentsError);
+    expect(new ProviderApiError('missing')).toBeInstanceOf(OtherPaymentsError);
+  });
+
+  it('keeps subclass checks to the real prototype chain', async () => {
+    const OtherPaymentsError = await loadSecondCopy();
+    class OtherProviderError extends OtherPaymentsError<Code> {}
+    class SiblingError extends PaymentsError<Code> {}
+
+    expect(new OtherProviderError('boom', 'UNKNOWN')).not.toBeInstanceOf(ProviderError);
+    expect(new SiblingError('boom', 'UNKNOWN')).not.toBeInstanceOf(ProviderError);
+    expect(new ProviderError('boom')).not.toBeInstanceOf(ProviderApiError);
+    expect(new ProviderApiError('missing')).toBeInstanceOf(ProviderError);
+  });
+
+  it('rejects values that are not payments errors', () => {
+    for (const value of [
+      new Error('plain'),
+      { code: 'X', statusCode: 500 },
+      Object.create(null),
+      null,
+      undefined,
+      'PaymentsError',
+      42,
+      () => undefined,
+    ]) {
+      expect(value instanceof PaymentsError).toBe(false);
+    }
+  });
+
+  it('adds nothing to the error own keys or JSON', () => {
+    const error = new PaymentsError('boom', 'X');
+    expect(Object.getOwnPropertySymbols(error)).toEqual([]);
+    expect(JSON.stringify(error)).toBe('{"code":"X","name":"PaymentsError"}');
+    const brand = Symbol.for('@bates-solutions/payments-core/PaymentsError');
+    expect(Object.getOwnPropertyDescriptor(PaymentsError.prototype, brand)).toEqual({
+      value: true,
+      writable: false,
+      enumerable: false,
+      configurable: false,
+    });
+  });
+});
