@@ -1,6 +1,6 @@
 {
   "name": "@bates-solutions/stripe",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "TypeScript wrapper for the Stripe API with webhook support for Node.js backends",
   "type": "module",
   "main": "./dist/core/index.js",
@@ -48,17 +48,17 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mbates/stripe.git"
+    "url": "git+https://github.com/Bates-Solutions/stripe.git"
   },
   "bugs": {
-    "url": "https://github.com/mbates/stripe/issues"
+    "url": "https://github.com/Bates-Solutions/stripe/issues"
   },
-  "homepage": "https://github.com/mbates/stripe#readme",
+  "homepage": "https://github.com/Bates-Solutions/stripe#readme",
   "engines": {
     "node": ">=22"
   },
   "peerDependencies": {
-    "stripe": ">=17 <19"
+    "stripe": ">=22.4 <24"
   },
   "devDependencies": {
     "stripe": "^23.1.0"

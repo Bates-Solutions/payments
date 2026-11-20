@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: CreateSetupIntentOptions
 
-Defined in: [stripe/src/core/services/setup-intents.service.ts:14](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L14)
+Defined in: [stripe/src/core/services/setup-intents.service.ts:15](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L15)
 
 Options for creating a SetupIntent
 
@@ -16,7 +16,7 @@ Options for creating a SetupIntent
 
 > `optional` **confirm?**: `boolean`
 
-Defined in: [stripe/src/core/services/setup-intents.service.ts:36](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L36)
+Defined in: [stripe/src/core/services/setup-intents.service.ts:37](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L37)
 
 Confirm immediately. Requires `paymentMethod`.
 
@@ -32,7 +32,7 @@ false
 
 > `optional` **customerId?**: `string`
 
-Defined in: [stripe/src/core/services/setup-intents.service.ts:16](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L16)
+Defined in: [stripe/src/core/services/setup-intents.service.ts:17](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L17)
 
 Customer the saved payment method is attached to on success
 
@@ -42,7 +42,7 @@ Customer the saved payment method is attached to on success
 
 > `optional` **description?**: `string`
 
-Defined in: [stripe/src/core/services/setup-intents.service.ts:43](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L43)
+Defined in: [stripe/src/core/services/setup-intents.service.ts:44](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L44)
 
 Arbitrary description
 
@@ -52,7 +52,7 @@ Arbitrary description
 
 > `optional` **idempotencyKey?**: `string`
 
-Defined in: [stripe/src/core/services/setup-intents.service.ts:47](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L47)
+Defined in: [stripe/src/core/services/setup-intents.service.ts:48](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L48)
 
 Idempotency key (defaults to a generated UUID)
 
@@ -62,7 +62,7 @@ Idempotency key (defaults to a generated UUID)
 
 > `optional` **metadata?**: `Record`\<`string`, `string`\>
 
-Defined in: [stripe/src/core/services/setup-intents.service.ts:45](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L45)
+Defined in: [stripe/src/core/services/setup-intents.service.ts:46](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L46)
 
 Key/value metadata
 
@@ -72,7 +72,7 @@ Key/value metadata
 
 > `optional` **paymentMethod?**: `string`
 
-Defined in: [stripe/src/core/services/setup-intents.service.ts:31](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L31)
+Defined in: [stripe/src/core/services/setup-intents.service.ts:32](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L32)
 
 An existing payment method to set up (e.g. from Stripe.js)
 
@@ -82,7 +82,7 @@ An existing payment method to set up (e.g. from Stripe.js)
 
 > `optional` **paymentMethodTypes?**: `string`[]
 
-Defined in: [stripe/src/core/services/setup-intents.service.ts:29](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L29)
+Defined in: [stripe/src/core/services/setup-intents.service.ts:30](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L30)
 
 Payment method types to accept, e.g. `['card']`. Sent as
 `allowed_payment_method_types`. When omitted, Stripe
@@ -94,7 +94,7 @@ uses the types enabled in your Dashboard (automatic payment methods).
 
 > `optional` **returnUrl?**: `string`
 
-Defined in: [stripe/src/core/services/setup-intents.service.ts:41](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L41)
+Defined in: [stripe/src/core/services/setup-intents.service.ts:42](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L42)
 
 Where to send the customer after a redirect-based authentication. Only
 used when confirming here, so it requires `confirm: true`.
@@ -105,7 +105,7 @@ used when confirming here, so it requires `confirm: true`.
 
 > `optional` **usage?**: `"off_session"` \| `"on_session"`
 
-Defined in: [stripe/src/core/services/setup-intents.service.ts:23](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L23)
+Defined in: [stripe/src/core/services/setup-intents.service.ts:24](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L24)
 
 How the saved payment method will be used. `off_session` (charging the
 customer when they aren't present) asks for the authentication needed up

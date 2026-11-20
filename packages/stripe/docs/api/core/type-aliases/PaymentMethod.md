@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -8,6 +8,6 @@
 
 > **PaymentMethod** = `Stripe.PaymentMethod`
 
-Defined in: [stripe/src/core/services/payment-methods.service.ts:9](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/payment-methods.service.ts#L9)
+Defined in: [stripe/src/core/services/payment-methods.service.ts:10](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/payment-methods.service.ts#L10)
 
 A Stripe PaymentMethod (a saved card, bank account, wallet, ...)

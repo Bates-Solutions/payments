@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: ConnectedAccountGrant
 
-Defined in: [stripe/src/core/services/oauth.service.ts:44](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L44)
+Defined in: [stripe/src/core/services/oauth.service.ts:45](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L45)
 
 Result of exchanging an authorization code.
 
@@ -20,7 +20,7 @@ deliberately not returned: store `stripeUserId` and act on the account with
 
 > `optional` **livemode?**: `boolean`
 
-Defined in: [stripe/src/core/services/oauth.service.ts:50](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L50)
+Defined in: [stripe/src/core/services/oauth.service.ts:51](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L51)
 
 Whether the grant is for live mode
 
@@ -30,7 +30,7 @@ Whether the grant is for live mode
 
 > `optional` **scope?**: `string`
 
-Defined in: [stripe/src/core/services/oauth.service.ts:48](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L48)
+Defined in: [stripe/src/core/services/oauth.service.ts:49](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L49)
 
 Scope that was granted
 
@@ -40,6 +40,6 @@ Scope that was granted
 
 > **stripeUserId**: `string`
 
-Defined in: [stripe/src/core/services/oauth.service.ts:46](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L46)
+Defined in: [stripe/src/core/services/oauth.service.ts:47](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L47)
 
 The connected account's ID (`acct_…`)

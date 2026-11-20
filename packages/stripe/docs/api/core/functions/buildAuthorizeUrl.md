@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **buildAuthorizeUrl**(`options`): `string`
 
-Defined in: [stripe/src/core/services/oauth.service.ts:91](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L91)
+Defined in: [stripe/src/core/services/oauth.service.ts:90](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L90)
 
 Build the URL that sends a user to Stripe to connect their existing Stripe
 account to your platform (Connect OAuth, Standard accounts). Pure function,
