@@ -1,7 +1,7 @@
 // Run with `npm run test:scripts` (node --test).
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { after, describe, it } from 'node:test';
@@ -308,4 +308,19 @@ describe('CLI', () => {
       (error) => error.status === 1 && /--paths <json> or --all/.test(String(error.stderr))
     );
   });
+});
+
+describe('the committed versions', () => {
+  // A re-import that resolves a package.json conflict can drop the source's version;
+  // releasePlan would then refuse the package at release time.
+  const root = join(dirname(fileURLToPath(import.meta.url)), '..');
+  const manifest = JSON.parse(readFileSync(join(root, '.release-please-manifest.json'), 'utf8'));
+
+  for (const pkg of readdirSync(join(root, 'packages'))) {
+    it(`agree for ${pkg} in package.json, jsr.json and the manifest`, () => {
+      const { version } = readRelease(root, pkg);
+      const released = manifest[`packages/${pkg}`];
+      if (released !== undefined) assert.equal(version, released);
+    });
+  }
 });

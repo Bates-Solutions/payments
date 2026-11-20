@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: BuildAuthorizeUrlOptions
 
-Defined in: [stripe/src/core/services/oauth.service.ts:13](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L13)
+Defined in: [stripe/src/core/services/oauth.service.ts:14](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L14)
 
 Options for [buildAuthorizeUrl](../functions/buildAuthorizeUrl.md)
 
@@ -16,7 +16,7 @@ Options for [buildAuthorizeUrl](../functions/buildAuthorizeUrl.md)
 
 > `optional` **alwaysPrompt?**: `boolean`
 
-Defined in: [stripe/src/core/services/oauth.service.ts:32](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L32)
+Defined in: [stripe/src/core/services/oauth.service.ts:33](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L33)
 
 Force the account picker even if the user is already connected
 
@@ -26,7 +26,7 @@ Force the account picker even if the user is already connected
 
 > **clientId**: `string`
 
-Defined in: [stripe/src/core/services/oauth.service.ts:15](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L15)
+Defined in: [stripe/src/core/services/oauth.service.ts:16](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L16)
 
 Your platform's Connect client ID (`ca_…`, Dashboard → Connect settings)
 
@@ -36,7 +36,7 @@ Your platform's Connect client ID (`ca_…`, Dashboard → Connect settings)
 
 > `optional` **email?**: `string`
 
-Defined in: [stripe/src/core/services/oauth.service.ts:34](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L34)
+Defined in: [stripe/src/core/services/oauth.service.ts:35](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L35)
 
 Prefill the email field on the Stripe sign-up form
 
@@ -46,7 +46,7 @@ Prefill the email field on the Stripe sign-up form
 
 > `optional` **redirectUri?**: `string`
 
-Defined in: [stripe/src/core/services/oauth.service.ts:28](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L28)
+Defined in: [stripe/src/core/services/oauth.service.ts:29](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L29)
 
 Must match a redirect URI configured in your Connect settings, if set
 
@@ -56,7 +56,7 @@ Must match a redirect URI configured in your Connect settings, if set
 
 > `optional` **scope?**: [`ConnectOAuthScope`](../type-aliases/ConnectOAuthScope.md)
 
-Defined in: [stripe/src/core/services/oauth.service.ts:26](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L26)
+Defined in: [stripe/src/core/services/oauth.service.ts:27](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L27)
 
 #### Default
 
@@ -70,7 +70,7 @@ Defined in: [stripe/src/core/services/oauth.service.ts:26](https://github.com/Ba
 
 > **state**: `string`
 
-Defined in: [stripe/src/core/services/oauth.service.ts:24](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L24)
+Defined in: [stripe/src/core/services/oauth.service.ts:25](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L25)
 
 Unguessable CSRF token, random per attempt (e.g. `crypto.randomUUID()`),
 returned unchanged on the redirect. Store it server side, then in the
@@ -85,6 +85,6 @@ check passes when both are `undefined`.
 
 > `optional` **stripeLanding?**: `"login"` \| `"register"`
 
-Defined in: [stripe/src/core/services/oauth.service.ts:30](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L30)
+Defined in: [stripe/src/core/services/oauth.service.ts:31](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L31)
 
 Which page the user lands on: sign in (`login`) or create an account (`register`)

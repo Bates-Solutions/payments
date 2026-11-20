@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: ListSetupIntentsOptions
 
-Defined in: [stripe/src/core/services/setup-intents.service.ts:53](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L53)
+Defined in: [stripe/src/core/services/setup-intents.service.ts:54](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L54)
 
 Options for listing SetupIntents
 
@@ -16,7 +16,7 @@ Options for listing SetupIntents
 
 > `optional` **customerId?**: `string`
 
-Defined in: [stripe/src/core/services/setup-intents.service.ts:54](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L54)
+Defined in: [stripe/src/core/services/setup-intents.service.ts:55](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L55)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [stripe/src/core/services/setup-intents.service.ts:54](https://githu
 
 > `optional` **limit?**: `number`
 
-Defined in: [stripe/src/core/services/setup-intents.service.ts:56](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L56)
+Defined in: [stripe/src/core/services/setup-intents.service.ts:57](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L57)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [stripe/src/core/services/setup-intents.service.ts:56](https://githu
 
 > `optional` **paymentMethodId?**: `string`
 
-Defined in: [stripe/src/core/services/setup-intents.service.ts:55](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L55)
+Defined in: [stripe/src/core/services/setup-intents.service.ts:56](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L56)
 
 ***
 
@@ -40,4 +40,4 @@ Defined in: [stripe/src/core/services/setup-intents.service.ts:55](https://githu
 
 > `optional` **startingAfter?**: `string`
 
-Defined in: [stripe/src/core/services/setup-intents.service.ts:57](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L57)
+Defined in: [stripe/src/core/services/setup-intents.service.ts:58](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/setup-intents.service.ts#L58)

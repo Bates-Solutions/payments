@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: ListPaymentMethodsOptions
 
-Defined in: [stripe/src/core/services/payment-methods.service.ts:14](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/payment-methods.service.ts#L14)
+Defined in: [stripe/src/core/services/payment-methods.service.ts:15](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/payment-methods.service.ts#L15)
 
 Options for listing payment methods
 
@@ -16,7 +16,7 @@ Options for listing payment methods
 
 > `optional` **customerId?**: `string`
 
-Defined in: [stripe/src/core/services/payment-methods.service.ts:16](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/payment-methods.service.ts#L16)
+Defined in: [stripe/src/core/services/payment-methods.service.ts:17](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/payment-methods.service.ts#L17)
 
 Only payment methods attached to this customer
 
@@ -26,7 +26,7 @@ Only payment methods attached to this customer
 
 > `optional` **limit?**: `number`
 
-Defined in: [stripe/src/core/services/payment-methods.service.ts:19](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/payment-methods.service.ts#L19)
+Defined in: [stripe/src/core/services/payment-methods.service.ts:20](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/payment-methods.service.ts#L20)
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: [stripe/src/core/services/payment-methods.service.ts:19](https://git
 
 > `optional` **startingAfter?**: `string`
 
-Defined in: [stripe/src/core/services/payment-methods.service.ts:20](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/payment-methods.service.ts#L20)
+Defined in: [stripe/src/core/services/payment-methods.service.ts:21](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/payment-methods.service.ts#L21)
 
 ***
 
@@ -42,6 +42,6 @@ Defined in: [stripe/src/core/services/payment-methods.service.ts:20](https://git
 
 > `optional` **type?**: `Type`
 
-Defined in: [stripe/src/core/services/payment-methods.service.ts:18](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/payment-methods.service.ts#L18)
+Defined in: [stripe/src/core/services/payment-methods.service.ts:19](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/payment-methods.service.ts#L19)
 
 Only payment methods of this type, e.g. `'card'`

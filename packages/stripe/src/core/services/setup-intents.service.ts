@@ -1,3 +1,4 @@
+import { requireNonEmpty } from '@bates-solutions/payments-core/errors';
 import type Stripe from 'stripe';
 import type { PaginatedResponse } from '../types/index.js';
 import { parseStripeError, StripeValidationError } from '../errors.js';
@@ -57,10 +58,8 @@ export interface ListSetupIntentsOptions {
   startingAfter?: string;
 }
 
-function requireId(value: string | undefined, field: string): void {
-  if (!value) {
-    throw new StripeValidationError(`${field} is required`, field);
-  }
+function requireId(value: string | undefined, field: string): asserts value is string {
+  requireNonEmpty(value, field, (message, name) => new StripeValidationError(message, name));
 }
 
 /**

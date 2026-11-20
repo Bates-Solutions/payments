@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v1.0.3**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: DeauthorizeOptions
 
-Defined in: [stripe/src/core/services/oauth.service.ts:56](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L56)
+Defined in: [stripe/src/core/services/oauth.service.ts:57](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L57)
 
 Options for [OAuthService.deauthorize](../classes/OAuthService.md#deauthorize)
 
@@ -16,7 +16,7 @@ Options for [OAuthService.deauthorize](../classes/OAuthService.md#deauthorize)
 
 > `optional` **clientId?**: `string`
 
-Defined in: [stripe/src/core/services/oauth.service.ts:61](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L61)
+Defined in: [stripe/src/core/services/oauth.service.ts:62](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/services/oauth.service.ts#L62)
 
 Connect client ID (`ca_…`). Defaults to `connectClientId` from the client
 config.
