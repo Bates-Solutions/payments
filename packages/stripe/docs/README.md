@@ -35,6 +35,6 @@ Complete API reference generated from source code with TypeDoc:
 
 ## Additional Resources
 
-- [GitHub Repository](https://github.com/Bates-Solutions/stripe)
+- [GitHub Repository](https://github.com/Bates-Solutions/payments/tree/main/packages/stripe)
 - [Stripe API Documentation](https://docs.stripe.com/api)
-- [Releases](https://github.com/Bates-Solutions/stripe/releases)
+- [Releases](https://github.com/Bates-Solutions/payments/releases?q=stripe-v)

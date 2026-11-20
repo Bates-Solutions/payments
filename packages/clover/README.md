@@ -216,9 +216,9 @@ This library is one of three sibling payment-API wrappers from Bates Solutions t
 
 | Library | Wraps | Install (JSR) | Source |
 | --- | --- | --- | --- |
-| [`@bates-solutions/stripe`](https://jsr.io/@bates-solutions/stripe) | Stripe | `jsr:@bates-solutions/stripe` | [GitHub](https://github.com/Bates-Solutions/stripe) |
-| [`@bates-solutions/squareup`](https://jsr.io/@bates-solutions/squareup) | Square | `jsr:@bates-solutions/squareup` | [GitHub](https://github.com/Bates-Solutions/squareup) |
-| **[`@bates-solutions/clover`](https://jsr.io/@bates-solutions/clover)** _(this package)_ | Clover | `jsr:@bates-solutions/clover` | [GitHub](https://github.com/Bates-Solutions/clover) |
+| [`@bates-solutions/stripe`](https://jsr.io/@bates-solutions/stripe) | Stripe | `jsr:@bates-solutions/stripe` | [GitHub](https://github.com/Bates-Solutions/payments/tree/main/packages/stripe) |
+| [`@bates-solutions/squareup`](https://jsr.io/@bates-solutions/squareup) | Square | `jsr:@bates-solutions/squareup` | [GitHub](https://github.com/Bates-Solutions/payments/tree/main/packages/squareup) |
+| **[`@bates-solutions/clover`](https://jsr.io/@bates-solutions/clover)** _(this package)_ | Clover | `jsr:@bates-solutions/clover` | [GitHub](https://github.com/Bates-Solutions/payments/tree/main/packages/clover) |
 
 ### How they're related
 

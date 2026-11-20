@@ -47,6 +47,6 @@ See also the [Quick Reference](./api-reference.md) for a summary of all exports.
 
 ## Additional Resources
 
-- [GitHub Repository](https://github.com/Bates-Solutions/squareup)
+- [GitHub Repository](https://github.com/Bates-Solutions/payments/tree/main/packages/squareup)
 - [Square Developer Documentation](https://developer.squareup.com/docs)
 - [Changelog](../CHANGELOG.md)
