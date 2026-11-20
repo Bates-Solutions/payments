@@ -1,9 +1,9 @@
-import { requireNonEmpty as requireNonEmptyOption } from '@bates-solutions/payments-core/errors';
 import { SquareClient as SdkClient, SquareEnvironment as SdkEnvironment } from 'square';
 import type { SquareEnvironment } from './types/index.js';
 import {
   assertNoResponseErrors,
   parseSquareError,
+  requireNonEmpty,
   SquareError,
   SquareValidationError,
 } from './errors.js';
@@ -399,8 +399,4 @@ export function parseSquareDate(value: string, field: string): Date {
     throw new SquareError(`Square returned an invalid ${field}`);
   }
   return date;
-}
-
-function requireNonEmpty(value: string | undefined, field: string): asserts value is string {
-  requireNonEmptyOption(value, field, (message, name) => new SquareValidationError(message, name));
 }

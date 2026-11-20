@@ -1,4 +1,7 @@
-import { PaymentsError } from '@bates-solutions/payments-core/errors';
+import {
+  PaymentsError,
+  requireNonEmpty as requireNonEmptyOption,
+} from '@bates-solutions/payments-core/errors';
 
 /**
  * Square error codes
@@ -102,6 +105,19 @@ export class SquareValidationError extends SquareError {
     this.name = 'SquareValidationError';
     this.field = field;
   }
+}
+
+/**
+ * Throw a {@link SquareValidationError} naming `field` when a required string
+ * option is missing or empty.
+ *
+ * @internal
+ */
+export function requireNonEmpty(
+  value: string | undefined,
+  field: string
+): asserts value is string {
+  requireNonEmptyOption(value, field, (message, name) => new SquareValidationError(message, name));
 }
 
 /**
