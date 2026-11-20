@@ -1,3 +1,4 @@
+import { requireNonEmpty as requireNonEmptyOption } from '@bates-solutions/payments-core/errors';
 import type Stripe from 'stripe';
 import { parseStripeError, StripeError, StripeValidationError } from '../errors.js';
 
@@ -63,10 +64,8 @@ export interface DeauthorizeOptions {
 
 const AUTHORIZE_URL = 'https://connect.stripe.com/oauth/authorize';
 
-function requireNonEmpty(value: string | undefined, field: string): void {
-  if (!value) {
-    throw new StripeValidationError(`${field} is required`, field);
-  }
+function requireNonEmpty(value: string | undefined, field: string): asserts value is string {
+  requireNonEmptyOption(value, field, (message, name) => new StripeValidationError(message, name));
 }
 
 /**
