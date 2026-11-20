@@ -10,6 +10,7 @@ body:
         - "@bates-solutions/squareup"
         - "@bates-solutions/stripe"
         - "@bates-solutions/clover"
+        - "@bates-solutions/payments-core"
     validations:
       required: true
 

@@ -14,7 +14,7 @@ npm run dev        # in this package: compile in watch mode
 
 ## Before you open a pull request
 
-Always run the full check suite locally — CI runs the same:
+Run these in the package while you work:
 
 ```bash
 npm run typecheck  # tsc --noEmit
@@ -23,7 +23,9 @@ npm test           # vitest run
 ```
 
 `npm run lint:fix` auto-fixes most style issues, and `npm run test:coverage`
-reports coverage.
+reports coverage. Before you push, run `npm run check` at the repo root. It runs
+lint, typecheck, build and tests for every package plus the script tests. CI
+also checks coverage, the TypeDoc build and a JSR publish dry run.
 
 ## Conventions
 
