@@ -71,13 +71,13 @@ Normalized error code. Each provider defines its own union.
 
 > `readonly` `optional` **details?**: `unknown`
 
-Defined in: [payments-core/dist/errors/payments-error.d.ts:31](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/../../payments-core/dist/errors/payments-error.d.ts#L31)
+Defined in: [payments-core/src/errors/payments-error.ts:34](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/../../payments-core/src/errors/payments-error.ts#L34)
 
 The raw error body or other context, if any.
 
 #### Inherited from
 
-[`PaymentsError`](PaymentsError.md).[`details`](PaymentsError.md#details)
+[`SquareError`](SquareError.md).[`details`](SquareError.md#details)
 
 ***
 
@@ -85,10 +85,10 @@ The raw error body or other context, if any.
 
 > `readonly` `optional` **statusCode?**: `number`
 
-Defined in: [payments-core/dist/errors/payments-error.d.ts:29](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/../../payments-core/dist/errors/payments-error.d.ts#L29)
+Defined in: [payments-core/src/errors/payments-error.ts:32](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/../../payments-core/src/errors/payments-error.ts#L32)
 
 HTTP status of the response that caused the error, if any.
 
 #### Inherited from
 
-[`PaymentsError`](PaymentsError.md).[`statusCode`](PaymentsError.md#statuscode)
+[`SquareError`](SquareError.md).[`statusCode`](SquareError.md#statuscode)

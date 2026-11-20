@@ -1,6 +1,14 @@
 // Run with `npm run test:scripts` (node --test).
 import assert from 'node:assert/strict';
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { after, describe, it } from 'node:test';
@@ -196,6 +204,34 @@ describe('the packages in this repo', () => {
         config.sourceLinkTemplate,
         `${REPO_URL}/blob/{gitRevision}/packages/${dir}/src/{path}#L{line}`
       );
+    });
+
+    const pkg = JSON.parse(readFileSync(join(REPO_ROOT, 'packages', dir, 'package.json'), 'utf8'));
+    if (pkg.dependencies?.['@bates-solutions/payments-core']) {
+      // Core's package.json points TypeScript at dist/*.d.ts, which is not committed, so
+      // without this mapping the docs for re-exported core symbols link to dist and 404.
+      it(`${dir}: typedoc reads payments-core from its source, not dist`, () => {
+        const config = JSON.parse(
+          readFileSync(join(REPO_ROOT, 'packages', dir, 'typedoc.json'), 'utf8')
+        );
+        assert.deepEqual(config.compilerOptions, {
+          rootDir: '..',
+          paths: {
+            '@bates-solutions/payments-core': ['../payments-core/src/index.ts'],
+            '@bates-solutions/payments-core/*': ['../payments-core/src/*/index.ts'],
+          },
+        });
+      });
+    }
+
+    it(`${dir}: the committed API docs link to no dist files`, () => {
+      const apiDir = join(REPO_ROOT, 'packages', dir, 'docs', 'api');
+      if (!existsSync(apiDir)) return;
+      const files = readdirSync(apiDir, { recursive: true }).filter((f) => f.endsWith('.md'));
+      const offenders = files.filter((f) =>
+        /\/dist\/[^)\s]*\.d\.ts/.test(readFileSync(join(apiDir, f), 'utf8'))
+      );
+      assert.deepEqual(offenders, []);
     });
   }
 });
