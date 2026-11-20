@@ -123,8 +123,9 @@ export {
   SquareValidationError,
   SquareNetworkError,
   isRetryableSquareError,
+  declineReason,
 } from './errors.js';
-export type { SquareErrorCode } from './errors.js';
+export type { DeclineReason, SquareErrorCode } from './errors.js';
 // Core's base class, so `instanceof PaymentsError` works without installing core.
 export { PaymentsError } from '@bates-solutions/payments-core/errors';
 

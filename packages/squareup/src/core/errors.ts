@@ -82,13 +82,28 @@ export class SquareAuthError extends SquareError {
 }
 
 /**
- * Payment processing errors
+ * Payment processing errors, such as a card decline. `code` is the normalized
+ * code (`UNKNOWN` for Square codes outside {@link SquareErrorCode}); `errors`
+ * keeps Square's raw entries, which {@link declineReason} reads.
  */
 export class SquarePaymentError extends SquareError {
   public readonly paymentId?: string;
+  /** Square's error entries, with the raw `code` (for example `INSUFFICIENT_FUNDS`). */
+  public readonly errors: Array<{
+    category: string;
+    code: string;
+    detail?: string;
+    field?: string;
+  }>;
 
-  constructor(message: string, code: SquareErrorCode, paymentId?: string) {
-    super(message, code, 400);
+  constructor(
+    message: string,
+    code: SquareErrorCode,
+    paymentId?: string,
+    errors: Array<{ category: string; code: string; detail?: string; field?: string }> = []
+  ) {
+    super(message, code, 400, errors.length > 0 ? errors : undefined);
+    this.errors = errors;
     this.name = 'SquarePaymentError';
     this.paymentId = paymentId;
   }
@@ -264,7 +279,7 @@ function fromErrorEntries(errors: SquareErrorEntry[], statusCode: number): Squar
   }
 
   if (firstError?.category === 'PAYMENT_METHOD_ERROR') {
-    return new SquarePaymentError(message, code);
+    return new SquarePaymentError(message, code, undefined, errors);
   }
 
   return new SquareApiError(message, code, statusCode, errors);
@@ -300,4 +315,120 @@ function mapErrorCode(code?: string): SquareErrorCode {
   };
 
   return codeMap[code] ?? 'UNKNOWN';
+}
+
+/**
+ * What a card decline means for charging the same card again.
+ */
+export interface DeclineReason {
+  /** Square's error code, for example `GENERIC_DECLINE` or `INSUFFICIENT_FUNDS`. */
+  code: string;
+  /**
+   * Whether charging the same card again later, without the buyer doing
+   * anything, can succeed. When `false`, ask the buyer for another card (or to
+   * fix this one) instead of retrying: repeated attempts on a hard decline
+   * can get the merchant flagged by the card networks.
+   *
+   * A retry of a declined charge is a new payment attempt, so give it a new
+   * idempotency key: Square answers a reused key with the original decline.
+   */
+  retryable: boolean;
+}
+
+/**
+ * Retry policy per Square decline code, following Square's guidance for
+ * charging cards on file. Codes not listed are treated as not retryable.
+ *
+ * Retryable:
+ * - `INSUFFICIENT_FUNDS`: retry after a few days (for example after payday);
+ *   not right away.
+ * - `TRANSACTION_LIMIT`: the card's spending limit; retry later (or for less).
+ * - `TEMPORARY_ERROR`: a transient Square error; retry soon.
+ *
+ * Everything else needs the buyer: a new card (expired, invalid or
+ * unsupported card), corrected details (CVV, postal code, address), or a call
+ * to the issuer (`CARD_DECLINED_CALL_ISSUER`, `GENERIC_DECLINE`).
+ */
+const DECLINE_RETRYABLE: Readonly<Record<string, boolean>> = {
+  INSUFFICIENT_FUNDS: true,
+  TRANSACTION_LIMIT: true,
+  TEMPORARY_ERROR: true,
+
+  GENERIC_DECLINE: false,
+  CARD_DECLINED: false,
+  CARD_DECLINED_CALL_ISSUER: false,
+  CARD_DECLINED_VERIFICATION_REQUIRED: false,
+  CVV_FAILURE: false,
+  VERIFY_CVV_FAILURE: false,
+  ADDRESS_VERIFICATION_FAILURE: false,
+  VERIFY_AVS_FAILURE: false,
+  INVALID_POSTAL_CODE: false,
+  CARD_EXPIRED: false,
+  EXPIRATION_FAILURE: false,
+  INVALID_EXPIRATION: false,
+  BAD_EXPIRATION: false,
+  INVALID_ACCOUNT: false,
+  INVALID_CARD: false,
+  INVALID_CARD_DATA: false,
+  PAN_FAILURE: false,
+  CARD_NOT_SUPPORTED: false,
+  ACCOUNT_UNUSABLE: false,
+  CURRENCY_MISMATCH: false,
+  INSUFFICIENT_PERMISSIONS: false,
+  CARDHOLDER_INSUFFICIENT_PERMISSIONS: false,
+  PAYMENT_LIMIT_EXCEEDED: false,
+  CARD_TOKEN_EXPIRED: false,
+  CARD_TOKEN_USED: false,
+};
+
+/**
+ * Classify a failed charge: Square's decline code and whether charging the
+ * same card again later can succeed.
+ *
+ * Returns `undefined` when `error` is not a card decline (not a
+ * {@link SquarePaymentError}, and no `PAYMENT_METHOD_ERROR` entry on a
+ * {@link SquareApiError}). Unknown codes are not retryable.
+ *
+ * | Code | `retryable` |
+ * | --- | --- |
+ * | `INSUFFICIENT_FUNDS` | `true`, after a few days |
+ * | `TRANSACTION_LIMIT` | `true`, later |
+ * | `TEMPORARY_ERROR` | `true`, soon |
+ * | `GENERIC_DECLINE`, `CVV_FAILURE`, `CARD_EXPIRED`, `INVALID_ACCOUNT`, ... | `false` |
+ * | any other code | `false` |
+ *
+ * This is about the card. Network failures and 5xx responses are a separate
+ * question: see {@link isRetryableSquareError}.
+ *
+ * @example
+ * ```typescript
+ * try {
+ *   await square.payments.create({ sourceId: cardId, customerId, amount, idempotencyKey });
+ * } catch (error) {
+ *   const decline = declineReason(error);
+ *   if (decline?.retryable) {
+ *     await scheduleRetry(subscriptionId, { inDays: 3, reason: decline.code });
+ *   } else if (decline) {
+ *     await askForNewCard(customerId, decline.code);
+ *   } else {
+ *     throw error;
+ *   }
+ * }
+ * ```
+ */
+export function declineReason(error: unknown): DeclineReason | undefined {
+  let code: string | undefined;
+
+  if (error instanceof SquarePaymentError || error instanceof SquareApiError) {
+    code = error.errors.find((entry) => entry.category === 'PAYMENT_METHOD_ERROR')?.code;
+  }
+  // A SquarePaymentError built without entries still carries a typed code.
+  if (code === undefined && error instanceof SquarePaymentError && error.code !== 'UNKNOWN') {
+    code = error.code;
+  }
+  if (code === undefined) {
+    return undefined;
+  }
+
+  return { code, retryable: DECLINE_RETRYABLE[code] ?? false };
 }
