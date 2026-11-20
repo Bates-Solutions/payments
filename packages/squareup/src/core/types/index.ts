@@ -342,3 +342,62 @@ export interface ListCardsOptions {
   /** The `cursor` from a previous page. */
   cursor?: string;
 }
+
+/**
+ * A refund of a payment, as the Refunds API returns it.
+ */
+export interface PaymentRefund {
+  id: string;
+  /** `PENDING`, `COMPLETED`, `REJECTED` or `FAILED`. */
+  status?: string | null;
+  locationId?: string | null;
+  amountMoney: { amount?: bigint | null; currency?: string };
+  paymentId?: string | null;
+  orderId?: string | null;
+  reason?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+/**
+ * Options for `refunds.refundPayment()`.
+ */
+export interface RefundPaymentOptions {
+  /** The payment to refund. */
+  paymentId: string;
+  /**
+   * How much to refund, in the smallest currency unit (cents). At most the
+   * payment total minus what is already refunded. `currency` defaults to the
+   * client's `defaultCurrency` and must match the payment's.
+   */
+  amountMoney: { amount: number | bigint; currency?: CurrencyCode };
+  /**
+   * Required. Square refunds once per key, so a retry with the same key cannot
+   * refund twice. At most 45 characters.
+   */
+  idempotencyKey: string;
+  /** Why the payment is refunded, shown to the seller. */
+  reason?: string;
+}
+
+/**
+ * Options for `refunds.list()`.
+ */
+export interface ListRefundsOptions {
+  /** Only refunds created at or after this time (RFC 3339). Default: one year ago. */
+  beginTime?: string;
+  /** Only refunds created before this time (RFC 3339). Default: now. */
+  endTime?: string;
+  /** Order by creation time. Default `DESC` (newest first). */
+  sortOrder?: 'ASC' | 'DESC';
+  /** Only refunds at this location. Default: every location. */
+  locationId?: string;
+  /** Only refunds with this status, for example `COMPLETED`. */
+  status?: string;
+  /** Only refunds of payments with this source type, for example `CARD`. */
+  sourceType?: string;
+  /** Page size (Square caps it at 100). */
+  limit?: number;
+  /** The `cursor` from a previous page. */
+  cursor?: string;
+}

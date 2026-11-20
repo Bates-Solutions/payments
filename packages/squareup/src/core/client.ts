@@ -17,6 +17,7 @@ import { LocationsService } from './services/locations.service.js';
 import { WebhookSubscriptionsService } from './services/webhook-subscriptions.service.js';
 import { OAuthService } from './services/oauth.service.js';
 import { CardsService } from './services/cards.service.js';
+import { RefundsService } from './services/refunds.service.js';
 
 /**
  * Configuration options for the Square client
@@ -72,6 +73,8 @@ export class SquareClient {
   public readonly payments: PaymentsService;
   /** Cards on file (`cards.create()`, `get`, `list`, `disable`) */
   public readonly cards: CardsService;
+  /** Refunds (`refunds.refundPayment()`, `get`, `list`) */
+  public readonly refunds: RefundsService;
   public readonly orders: OrdersService;
   public readonly customers: CustomersService;
   public readonly customerGroups: CustomerGroupsService;
@@ -119,6 +122,7 @@ export class SquareClient {
     // Initialize services
     this.payments = new PaymentsService(this.client, locationId, defaultCurrency);
     this.cards = new CardsService(this.client);
+    this.refunds = new RefundsService(this.client, defaultCurrency);
     this.orders = new OrdersService(this.client, locationId, defaultCurrency);
     this.customers = new CustomersService(this.client);
     this.customerGroups = new CustomerGroupsService(this.client);

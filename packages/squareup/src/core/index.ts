@@ -43,6 +43,7 @@ export type {
 // Services
 export { PaymentsService } from './services/payments.service.js';
 export { CardsService } from './services/cards.service.js';
+export { RefundsService } from './services/refunds.service.js';
 export { OrdersService } from './services/orders.service.js';
 export { CustomersService } from './services/customers.service.js';
 export type {
