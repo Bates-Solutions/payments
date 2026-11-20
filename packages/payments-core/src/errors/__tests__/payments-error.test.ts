@@ -120,6 +120,17 @@ describe('instanceof PaymentsError across copies of payments-core', () => {
     expect(new ProviderApiError('missing')).toBeInstanceOf(ProviderError);
   });
 
+  it('counts subclass prototypes, from any copy, but not the PaymentsError prototypes', async () => {
+    const OtherPaymentsError = await loadSecondCopy();
+    class OtherProviderError extends OtherPaymentsError<Code> {}
+
+    expect(ProviderError.prototype instanceof PaymentsError).toBe(true);
+    expect(ProviderApiError.prototype instanceof PaymentsError).toBe(true);
+    expect(OtherProviderError.prototype instanceof PaymentsError).toBe(true);
+    expect(PaymentsError.prototype instanceof PaymentsError).toBe(false);
+    expect(OtherPaymentsError.prototype instanceof PaymentsError).toBe(false);
+  });
+
   it('rejects values that are not payments errors', () => {
     for (const value of [
       new Error('plain'),
