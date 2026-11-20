@@ -46,7 +46,7 @@ Defined in: [clover/src/core/errors.ts:113](https://github.com/Bates-Solutions/p
 
 > `readonly` **code**: [`CloverErrorCode`](../type-aliases/CloverErrorCode.md)
 
-Defined in: [payments-core/dist/errors/payments-error.d.ts:27](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/../../payments-core/dist/errors/payments-error.d.ts#L27)
+Defined in: [payments-core/src/errors/payments-error.ts:30](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/../../payments-core/src/errors/payments-error.ts#L30)
 
 Normalized error code. Each provider defines its own union.
 
@@ -60,13 +60,13 @@ Normalized error code. Each provider defines its own union.
 
 > `readonly` `optional` **details?**: `unknown`
 
-Defined in: [payments-core/dist/errors/payments-error.d.ts:31](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/../../payments-core/dist/errors/payments-error.d.ts#L31)
+Defined in: [payments-core/src/errors/payments-error.ts:34](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/../../payments-core/src/errors/payments-error.ts#L34)
 
 The raw error body or other context, if any.
 
 #### Inherited from
 
-[`PaymentsError`](PaymentsError.md).[`details`](PaymentsError.md#details)
+[`CloverError`](CloverError.md).[`details`](CloverError.md#details)
 
 ***
 
@@ -82,10 +82,10 @@ Defined in: [clover/src/core/errors.ts:111](https://github.com/Bates-Solutions/p
 
 > `readonly` `optional` **statusCode?**: `number`
 
-Defined in: [payments-core/dist/errors/payments-error.d.ts:29](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/../../payments-core/dist/errors/payments-error.d.ts#L29)
+Defined in: [payments-core/src/errors/payments-error.ts:32](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/../../payments-core/src/errors/payments-error.ts#L32)
 
 HTTP status of the response that caused the error, if any.
 
 #### Inherited from
 
-[`PaymentsError`](PaymentsError.md).[`statusCode`](PaymentsError.md#statuscode)
+[`CloverError`](CloverError.md).[`statusCode`](CloverError.md#statuscode)

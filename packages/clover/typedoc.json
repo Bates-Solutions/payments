@@ -12,6 +12,13 @@
   "disableGit": true,
   "gitRevision": "main",
   "sourceLinkTemplate": "https://github.com/Bates-Solutions/payments/blob/{gitRevision}/packages/clover/src/{path}#L{line}",
+  "compilerOptions": {
+    "rootDir": "..",
+    "paths": {
+      "@bates-solutions/payments-core": ["../payments-core/src/index.ts"],
+      "@bates-solutions/payments-core/*": ["../payments-core/src/*/index.ts"]
+    }
+  },
   "excludePrivate": true,
   "excludeInternal": true,
   "excludeExternals": true,

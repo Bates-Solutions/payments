@@ -1,6 +1,14 @@
 // Run with `npm run test:scripts` (node --test).
 import assert from 'node:assert/strict';
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { after, describe, it } from 'node:test';
@@ -15,6 +23,34 @@ import {
 } from './build-site.mjs';
 
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+
+/**
+ * The `types` file of a package.json `exports` value: a `.d.ts` string, or a
+ * `types` condition at any depth of a conditions object.
+ */
+function typesOf(target) {
+  if (typeof target === 'string') return target.endsWith('.d.ts') ? target : undefined;
+  if (target === null || typeof target !== 'object') return undefined;
+  if (typeof target.types === 'string') return target.types;
+  for (const value of Object.values(target)) {
+    const found = typesOf(value);
+    if (found) return found;
+  }
+  return undefined;
+}
+
+/** Resolves a module specifier with tsconfig `paths` (an exact key, else one `*`). */
+function resolvePath(paths, specifier) {
+  if (paths[specifier]) return paths[specifier][0];
+  for (const [pattern, [target]] of Object.entries(paths)) {
+    const [prefix, suffix] = pattern.split('*');
+    if (suffix === undefined) continue;
+    if (specifier.startsWith(prefix) && specifier.endsWith(suffix)) {
+      return target.replace('*', specifier.slice(prefix.length, specifier.length - suffix.length));
+    }
+  }
+  return undefined;
+}
 
 const tempDirs = [];
 after(() => {
@@ -196,6 +232,44 @@ describe('the packages in this repo', () => {
         config.sourceLinkTemplate,
         `${REPO_URL}/blob/{gitRevision}/packages/${dir}/src/{path}#L{line}`
       );
+    });
+
+    const pkg = JSON.parse(readFileSync(join(REPO_ROOT, 'packages', dir, 'package.json'), 'utf8'));
+    if (pkg.dependencies?.['@bates-solutions/payments-core']) {
+      // Core's package.json points TypeScript at dist/*.d.ts, which is not committed, so
+      // without this mapping the docs for re-exported core symbols link to dist and 404.
+      it(`${dir}: typedoc reads every payments-core export from its source, not dist`, () => {
+        const { compilerOptions = {} } = JSON.parse(
+          readFileSync(join(REPO_ROOT, 'packages', dir, 'typedoc.json'), 'utf8')
+        );
+        assert.equal(compilerOptions.rootDir, '..', 'core source must be inside rootDir');
+        const paths = compilerOptions.paths ?? {};
+        const core = JSON.parse(
+          readFileSync(join(REPO_ROOT, 'packages', 'payments-core', 'package.json'), 'utf8')
+        );
+        // A missed mapping is silent: TypeScript falls back to dist, so check each export.
+        for (const [subpath, target] of Object.entries(core.exports)) {
+          const types = typesOf(target);
+          // A non-code export (./package.json) has no types and needs no mapping.
+          if (types === undefined && typeof target === 'string') continue;
+          assert.ok(types?.endsWith('.d.ts'), `${subpath}: no "types" condition in exports`);
+          const specifier = `@bates-solutions/payments-core${subpath.slice(1)}`;
+          const mapped = resolvePath(paths, specifier);
+          const expected = types.replace(/^\.\/dist\//, 'src/').replace(/\.d\.ts$/, '.ts');
+          assert.equal(mapped, `../payments-core/${expected}`, specifier);
+          assert.ok(existsSync(join(REPO_ROOT, 'packages', dir, mapped)), `${mapped} exists`);
+        }
+      });
+    }
+
+    it(`${dir}: the committed API docs link to no dist files`, () => {
+      const apiDir = join(REPO_ROOT, 'packages', dir, 'docs', 'api');
+      if (!existsSync(apiDir)) return;
+      const files = readdirSync(apiDir, { recursive: true }).filter((f) => f.endsWith('.md'));
+      const offenders = files.filter((f) =>
+        /\/dist\/[^)\s]*\.d\.ts/.test(readFileSync(join(apiDir, f), 'utf8'))
+      );
+      assert.deepEqual(offenders, []);
     });
   }
 });

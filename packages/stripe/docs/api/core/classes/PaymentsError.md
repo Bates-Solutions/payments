@@ -6,7 +6,7 @@
 
 # Class: PaymentsError\<Code\>
 
-Defined in: [payments-core/dist/errors/payments-error.d.ts:25](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/dist/errors/payments-error.d.ts#L25)
+Defined in: [payments-core/src/errors/payments-error.ts:28](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/src/errors/payments-error.ts#L28)
 
 Base class for the errors each provider package throws (`SquareError`,
 `StripeError`, `CloverError`). It carries a provider-specific `code`, plus the
@@ -52,7 +52,7 @@ The provider's union of error codes.
 
 > **new PaymentsError**\<`Code`\>(`message`, `code`, `statusCode?`, `details?`): `PaymentsError`\<`Code`\>
 
-Defined in: [payments-core/dist/errors/payments-error.d.ts:32](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/dist/errors/payments-error.d.ts#L32)
+Defined in: [payments-core/src/errors/payments-error.ts:36](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/src/errors/payments-error.ts#L36)
 
 #### Parameters
 
@@ -86,7 +86,7 @@ Defined in: [payments-core/dist/errors/payments-error.d.ts:32](https://github.co
 
 > `readonly` **code**: `Code`
 
-Defined in: [payments-core/dist/errors/payments-error.d.ts:27](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/dist/errors/payments-error.d.ts#L27)
+Defined in: [payments-core/src/errors/payments-error.ts:30](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/src/errors/payments-error.ts#L30)
 
 Normalized error code. Each provider defines its own union.
 
@@ -96,7 +96,7 @@ Normalized error code. Each provider defines its own union.
 
 > `readonly` `optional` **details?**: `unknown`
 
-Defined in: [payments-core/dist/errors/payments-error.d.ts:31](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/dist/errors/payments-error.d.ts#L31)
+Defined in: [payments-core/src/errors/payments-error.ts:34](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/src/errors/payments-error.ts#L34)
 
 The raw error body or other context, if any.
 
@@ -106,6 +106,6 @@ The raw error body or other context, if any.
 
 > `readonly` `optional` **statusCode?**: `number`
 
-Defined in: [payments-core/dist/errors/payments-error.d.ts:29](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/dist/errors/payments-error.d.ts#L29)
+Defined in: [payments-core/src/errors/payments-error.ts:32](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/src/errors/payments-error.ts#L32)
 
 HTTP status of the response that caused the error, if any.

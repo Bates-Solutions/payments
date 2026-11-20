@@ -8,7 +8,7 @@
 
 > **createIdempotencyKey**(): `string`
 
-Defined in: [payments-core/dist/crypto/random.d.ts:13](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/../../payments-core/dist/crypto/random.d.ts#L13)
+Defined in: [payments-core/src/crypto/random.ts:13](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/../../payments-core/src/crypto/random.ts#L13)
 
 Create a random idempotency key: a version 4 UUID from WebCrypto's
 `randomUUID`, so it runs on Node 22+, Deno, Bun and Workers.
