@@ -274,3 +274,71 @@ export interface SearchRecentOrdersOptions {
   limit?: number;
   cursor?: string;
 }
+
+/**
+ * Re-export of the Square SDK `Address` type, used for card billing addresses.
+ */
+export type { Address } from 'square';
+
+/**
+ * A card on file, as the Cards API returns it.
+ */
+export interface Card {
+  id?: string;
+  /** For example `VISA`, `MASTERCARD` or `AMERICAN_EXPRESS`. */
+  cardBrand?: string;
+  last4?: string;
+  expMonth?: bigint | null;
+  expYear?: bigint | null;
+  cardholderName?: string | null;
+  billingAddress?: import('square').Address;
+  /** Identifies the card number across customers and merchants. */
+  fingerprint?: string;
+  customerId?: string | null;
+  merchantId?: string;
+  referenceId?: string | null;
+  /** `false` once the card is disabled; a disabled card cannot be charged. */
+  enabled?: boolean;
+  /** `CREDIT`, `DEBIT` or `UNKNOWN_CARD_TYPE`. */
+  cardType?: string;
+  /** `PREPAID`, `NOT_PREPAID` or `UNKNOWN_PREPAID_TYPE`. */
+  prepaidType?: string;
+  bin?: string;
+  createdAt?: string;
+  disabledAt?: string;
+  version?: bigint;
+}
+
+/**
+ * Options for `cards.create()`: store a card on file for a customer.
+ */
+export interface CreateCardOptions {
+  /**
+   * The card to store: a card nonce from the Web Payments SDK, or the ID of a
+   * payment made with the card.
+   */
+  sourceId: string;
+  /** The customer the card belongs to. */
+  customerId: string;
+  /**
+   * Required. Square stores the card once per key, so a retry with the same
+   * key cannot create a second card. At most 45 characters.
+   */
+  idempotencyKey: string;
+  cardholderName?: string;
+  billingAddress?: import('square').Address;
+  /** Your own ID for the card, for example a user ID. */
+  referenceId?: string;
+}
+
+/**
+ * Options for `cards.list()`.
+ */
+export interface ListCardsOptions {
+  /** Only the cards of this customer. By default, every card of the merchant. */
+  customerId?: string;
+  /** Include disabled cards. Default `false`. */
+  includeDisabled?: boolean;
+  /** The `cursor` from a previous page. */
+  cursor?: string;
+}

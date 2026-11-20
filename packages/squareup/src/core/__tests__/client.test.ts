@@ -55,6 +55,18 @@ describe('SquareClient', () => {
       expect(typeof client.payments.list).toBe('function');
     });
 
+    it('should expose cards service', () => {
+      const client = createSquareClient({
+        accessToken: 'test-token',
+      });
+
+      expect(client.cards).toBeDefined();
+      expect(typeof client.cards.create).toBe('function');
+      expect(typeof client.cards.get).toBe('function');
+      expect(typeof client.cards.list).toBe('function');
+      expect(typeof client.cards.disable).toBe('function');
+    });
+
     it('should expose orders service', () => {
       const client = createSquareClient({
         accessToken: 'test-token',
