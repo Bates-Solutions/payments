@@ -46,7 +46,7 @@ Defined in: [stripe/src/core/errors.ts:104](https://github.com/Bates-Solutions/p
 
 > `readonly` **code**: [`StripeErrorCode`](../type-aliases/StripeErrorCode.md)
 
-Defined in: [payments-core/dist/errors/payments-error.d.ts:27](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/dist/errors/payments-error.d.ts#L27)
+Defined in: [payments-core/dist/errors/payments-error.d.ts:28](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/dist/errors/payments-error.d.ts#L28)
 
 Normalized error code. Each provider defines its own union.
 
@@ -60,7 +60,7 @@ Normalized error code. Each provider defines its own union.
 
 > `readonly` `optional` **details?**: `unknown`
 
-Defined in: [payments-core/dist/errors/payments-error.d.ts:31](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/dist/errors/payments-error.d.ts#L31)
+Defined in: [payments-core/dist/errors/payments-error.d.ts:32](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/dist/errors/payments-error.d.ts#L32)
 
 The raw error body or other context, if any.
 
@@ -82,10 +82,32 @@ Defined in: [stripe/src/core/errors.ts:102](https://github.com/Bates-Solutions/p
 
 > `readonly` `optional` **statusCode?**: `number`
 
-Defined in: [payments-core/dist/errors/payments-error.d.ts:29](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/dist/errors/payments-error.d.ts#L29)
+Defined in: [payments-core/dist/errors/payments-error.d.ts:30](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/dist/errors/payments-error.d.ts#L30)
 
 HTTP status of the response that caused the error, if any.
 
 #### Inherited from
 
 [`PaymentsError`](PaymentsError.md).[`statusCode`](PaymentsError.md#statuscode)
+
+## Methods
+
+### \[hasInstance\]()
+
+> `static` **\[hasInstance\]**(`value`): `boolean`
+
+Defined in: [payments-core/dist/errors/payments-error.d.ts:33](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/../../payments-core/dist/errors/payments-error.d.ts#L33)
+
+#### Parameters
+
+##### value
+
+`unknown`
+
+#### Returns
+
+`boolean`
+
+#### Inherited from
+
+[`StripeError`](StripeError.md).[`[hasInstance]`](StripeError.md#hasinstance)

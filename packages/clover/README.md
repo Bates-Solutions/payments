@@ -32,7 +32,7 @@ It targets both Clover hosts transparently:
 - **No vendor SDK** – A tiny `fetch` client; the only dependency is the family's own `@bates-solutions/payments-core`
 - **Type-Safe** – Full TypeScript types for inputs and results
 - **OAuth** – Authorize URL plus code exchange and refresh for Clover's expiring v2 tokens
-- **Typed Errors** – `CloverError` extends `PaymentsError` (also exported), so one `instanceof PaymentsError` check covers all three provider packages when they resolve the same copy of `@bates-solutions/payments-core`; `parseCloverError` normalizes HTTP failures into a small class hierarchy
+- **Typed Errors** – `CloverError` extends `PaymentsError` (also exported), so one `instanceof PaymentsError` check covers all three provider packages, even when they install different copies of `@bates-solutions/payments-core`; `parseCloverError` normalizes HTTP failures into a small class hierarchy
 - **Edge-ready webhooks** – WebCrypto signature verification that runs on Node, **Deno**, Bun, and Workers, plus Express and Lambda adapters, and the Clover URL-verification handshake handled for you
 
 ## Requirements

@@ -26,7 +26,7 @@ A thin, consistent wrapper over the official [`stripe`](https://www.npmjs.com/pa
 
 - **Simplified APIs** – Less boilerplate over payments, subscriptions, hosted checkout, and billing
 - **Type-Safe** – Full TypeScript support; wraps Stripe's own types
-- **Typed Errors** – `StripeError` extends `PaymentsError` (also exported), so one `instanceof PaymentsError` check covers all three provider packages when they resolve the same copy of `@bates-solutions/payments-core`; `parseStripeError` normalizes Stripe errors into a small class hierarchy
+- **Typed Errors** – `StripeError` extends `PaymentsError` (also exported), so one `instanceof PaymentsError` check covers all three provider packages, even when they install different copies of `@bates-solutions/payments-core`; `parseStripeError` normalizes Stripe errors into a small class hierarchy
 - **Edge-ready webhooks** – WebCrypto signature verification that runs on Node, **Deno**, Bun, and Workers, plus Express / Next.js / Lambda adapters
 - **Version-stable subscriptions** – Normalized shape with `Date` period fields, absorbing Stripe's API churn
 - **Escape Hatch** – `client.sdk` exposes the underlying Stripe instance for anything not wrapped

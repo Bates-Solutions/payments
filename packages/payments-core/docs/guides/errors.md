@@ -4,7 +4,7 @@
 
 `SquareError`, `StripeError` and `CloverError` all extend `PaymentsError`, from `./errors`. Each provider package also re-exports it, so an app that uses two providers can handle both in one place.
 
-That needs the providers to resolve the same copy of payments-core. While core is 0.x, a caret range covers one minor only (`^0.1.0` doesn't include 0.2.0), so providers released against different core minors install separate copies, and each copy has its own `PaymentsError` class. Check `npm ls @bates-solutions/payments-core` (or the Deno lockfile) if the check doesn't match.
+This holds even when the providers install separate copies of payments-core. While core is 0.x, a caret range covers one minor only (`^0.1.0` doesn't include 0.2.0), so providers released against different core minors get different copies, each with its own `PaymentsError` class. `PaymentsError` defines `Symbol.hasInstance` to look for a brand (`Symbol.for('@bates-solutions/payments-core/PaymentsError')`) that every copy puts on its prototype, so `instanceof PaymentsError` matches an error from any copy. A check against a provider class, such as `instanceof SquareError`, is an ordinary prototype check: an error matches only the class from the copy of the provider package that threw it.
 
 ```typescript
 import { PaymentsError } from '@bates-solutions/payments-core/errors';
