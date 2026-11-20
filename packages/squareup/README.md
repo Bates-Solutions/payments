@@ -319,6 +319,32 @@ fromCents(1099);          // 10.99
 formatMoney(1099, 'USD'); // "$10.99"
 ```
 
+## Upgrading from 2.x to 3.0
+
+3.0 has two breaking changes. Everything else in 3.0 is additive.
+
+### 1. `idempotencyKey` is required on calls that move money or store a card
+
+`payments.create`, `subscriptions.create`, `cards.create` and `refunds.refundPayment` no longer make up a random key. A random key made on each call can't stop a retry from charging twice, so a missing key is now a type error, and an empty one throws `SquareValidationError`. `cards` and `refunds` are new in 3.0, so only `payments.create` and `subscriptions.create` affect existing code.
+
+Pass a key that stays the same when the same request is retried, for example one derived from your order or checkout ID:
+
+```typescript
+// 2.x
+await square.payments.create({ sourceId, amount: 1099 });
+
+// 3.0
+await square.payments.create({ sourceId, amount: 1099, idempotencyKey: `order-${orderId}` });
+await square.subscriptions.create({ customerId, planVariationId, idempotencyKey: `sub-${userId}-${planVariationId}` });
+```
+
+`createIdempotencyKey()` still makes a random key. Use it only when you store the key with the request and reuse it on a retry. Keys are at most 45 characters. Calls that don't move money (`orders.pay`, gift card activities, invoices, checkout) still default the key.
+
+### 2. The Lambda adapter requires `notificationUrl` and returns `500` when a handler throws
+
+- `createLambdaWebhookHandler` throws at setup when `notificationUrl` is missing or empty. Square signs `notificationUrl + rawBody`, so without it no real delivery could verify. Set it to the URL registered on the webhook subscription, exactly as registered.
+- A handler (or `onUnhandledEvent`) that throws now makes the Lambda return `500`, so Square retries the delivery. 2.x returned `200` and the event was lost. Make handlers idempotent, for example on `event.event_id`, since a retry can run one again.
+
 ## Documentation
 
 - [Getting started](./docs/getting-started/installation.md)
