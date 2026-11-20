@@ -1,7 +1,11 @@
 import type { SquareClient } from 'square';
 import type { CurrencyCode } from '../types/index.js';
-import { assertNoResponseErrors, parseSquareError, SquareValidationError } from '../errors.js';
-import { createIdempotencyKey } from '../utils.js';
+import {
+  assertNoResponseErrors,
+  parseSquareError,
+  requireNonEmpty,
+  SquareValidationError,
+} from '../errors.js';
 
 /**
  * Subscription status types
@@ -123,7 +127,11 @@ export interface CreateSubscriptionOptions {
   timezone?: string;
   priceOverride?: number;
   taxPercentage?: string;
-  idempotencyKey?: string;
+  /**
+   * Required. Square creates the subscription once per key, so a retry with
+   * the same key cannot create (and bill) a second one. At most 45 characters.
+   */
+  idempotencyKey: string;
 }
 
 /**
@@ -135,6 +143,7 @@ export interface CreateSubscriptionOptions {
  * const subscription = await square.subscriptions.create({
  *   customerId: 'CUST_123',
  *   planVariationId: 'PLAN_VAR_123',
+ *   idempotencyKey: createIdempotencyKey(),
  * });
  *
  * // Cancel a subscription
@@ -160,6 +169,7 @@ export class SubscriptionsService {
    *   customerId: 'CUST_123',
    *   planVariationId: 'PLAN_VAR_123',
    *   startDate: '2024-02-01',
+   *   idempotencyKey: 'subscribe-CUST_123-PLAN_VAR_123',
    * });
    * ```
    */
@@ -183,6 +193,8 @@ export class SubscriptionsService {
       );
     }
 
+    requireNonEmpty(options.idempotencyKey, 'idempotencyKey');
+
     options.phases?.forEach((phase, i) => {
       if (phase.ordinal === undefined) return;
       if (typeof phase.ordinal === 'bigint') return;
@@ -196,7 +208,7 @@ export class SubscriptionsService {
 
     try {
       const response = await this.client.subscriptions.create({
-        idempotencyKey: options.idempotencyKey ?? createIdempotencyKey(),
+        idempotencyKey: options.idempotencyKey,
         locationId,
         customerId: options.customerId,
         planVariationId: options.planVariationId,

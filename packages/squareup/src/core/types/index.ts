@@ -89,7 +89,13 @@ export interface CreatePaymentOptions {
   referenceId?: string;
   note?: string;
   autocomplete?: boolean;
-  idempotencyKey?: string;
+  /**
+   * Required. Square takes the payment once per key, so a retry with the same key cannot
+   * charge twice. Reuse a key only to resend the identical request (for example
+   * after a network error); see {@link createIdempotencyKey}. At most 45
+   * characters.
+   */
+  idempotencyKey: string;
   /**
    * Who started the payment. Set `customerInitiated: false` for a charge of a
    * card on file that the buyer did not start (a merchant-initiated

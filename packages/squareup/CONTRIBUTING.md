@@ -34,7 +34,9 @@ also checks coverage, the TypeDoc build and a JSR publish dry run.
 - All Square SDK calls are wrapped in `try/catch` and rethrown through
   `parseSquareError(error)`.
 - Mutating endpoints accept an optional `idempotencyKey` and default to
-  `createIdempotencyKey()`.
+  `createIdempotencyKey()`, except money-moving calls (`payments.create`,
+  `refunds.refundPayment`, `cards.create`, `subscriptions.create`), which
+  require one: a random default would charge twice on a retry.
 - Input validation throws `SquareValidationError`.
 - Money amounts are `bigint` cents, coerced with `BigInt(value)`.
 - Tests live in `src/core/__tests__/`, mirror the service files, and mock the

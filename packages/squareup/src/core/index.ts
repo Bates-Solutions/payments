@@ -10,7 +10,7 @@
  *
  * @example
  * ```ts
- * import { createSquareClient } from '@bates-solutions/squareup';
+ * import { createIdempotencyKey, createSquareClient } from '@bates-solutions/squareup';
  *
  * const square = createSquareClient({
  *   accessToken: process.env.SQUARE_ACCESS_TOKEN!,
@@ -20,6 +20,7 @@
  *   sourceId: 'cnon:card-nonce',
  *   amount: 1000,
  *   currency: 'USD',
+ *   idempotencyKey: createIdempotencyKey(),
  * });
  * ```
  *
