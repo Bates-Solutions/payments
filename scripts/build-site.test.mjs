@@ -24,6 +24,21 @@ import {
 
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
+/**
+ * The `types` file of a package.json `exports` value: a `.d.ts` string, or a
+ * `types` condition at any depth of a conditions object.
+ */
+function typesOf(target) {
+  if (typeof target === 'string') return target.endsWith('.d.ts') ? target : undefined;
+  if (target === null || typeof target !== 'object') return undefined;
+  if (typeof target.types === 'string') return target.types;
+  for (const value of Object.values(target)) {
+    const found = typesOf(value);
+    if (found) return found;
+  }
+  return undefined;
+}
+
 /** Resolves a module specifier with tsconfig `paths` (an exact key, else one `*`). */
 function resolvePath(paths, specifier) {
   if (paths[specifier]) return paths[specifier][0];
@@ -234,9 +249,13 @@ describe('the packages in this repo', () => {
         );
         // A missed mapping is silent: TypeScript falls back to dist, so check each export.
         for (const [subpath, target] of Object.entries(core.exports)) {
+          const types = typesOf(target);
+          // A non-code export (./package.json) has no types and needs no mapping.
+          if (types === undefined && typeof target === 'string') continue;
+          assert.ok(types?.endsWith('.d.ts'), `${subpath}: no "types" condition in exports`);
           const specifier = `@bates-solutions/payments-core${subpath.slice(1)}`;
           const mapped = resolvePath(paths, specifier);
-          const expected = target.types.replace(/^\.\/dist\//, 'src/').replace(/\.d\.ts$/, '.ts');
+          const expected = types.replace(/^\.\/dist\//, 'src/').replace(/\.d\.ts$/, '.ts');
           assert.equal(mapped, `../payments-core/${expected}`, specifier);
           assert.ok(existsSync(join(REPO_ROOT, 'packages', dir, mapped)), `${mapped} exists`);
         }
