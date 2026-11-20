@@ -1,4 +1,8 @@
 import { PaymentsError } from '@bates-solutions/payments-core/errors';
+import { cpSync, mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { dirname, join } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import * as errors from '../errors';
 import * as entry from '../index';
@@ -58,5 +62,22 @@ describe('CloverError and PaymentsError', () => {
     expect(error.name).toBe('CloverError');
     expect(error.statusCode).toBeUndefined();
     expect(error.details).toBeUndefined();
+  });
+
+  it('is a PaymentsError of another copy of payments-core', async () => {
+    // A second copy on disk, as when another provider installs a different core
+    // version: core's built errors entry, copied to a temp directory and imported.
+    const entry = fileURLToPath(import.meta.resolve('@bates-solutions/payments-core/errors'));
+    const dir = mkdtempSync(join(tmpdir(), 'payments-core-copy-'));
+    try {
+      cpSync(dirname(entry), dir, { recursive: true });
+      const copy = (await import(pathToFileURL(join(dir, 'index.js')).href)) as {
+        PaymentsError: typeof PaymentsError;
+      };
+      expect(copy.PaymentsError).not.toBe(PaymentsError);
+      expect(new errors.CloverError('boom')).toBeInstanceOf(copy.PaymentsError);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
   });
 });
