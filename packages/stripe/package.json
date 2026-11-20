@@ -48,12 +48,13 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Bates-Solutions/stripe.git"
+    "url": "git+https://github.com/Bates-Solutions/payments.git",
+    "directory": "packages/stripe"
   },
   "bugs": {
-    "url": "https://github.com/Bates-Solutions/stripe/issues"
+    "url": "https://github.com/Bates-Solutions/payments/issues"
   },
-  "homepage": "https://github.com/Bates-Solutions/stripe#readme",
+  "homepage": "https://github.com/Bates-Solutions/payments/tree/main/packages/stripe#readme",
   "engines": {
     "node": ">=22"
   },

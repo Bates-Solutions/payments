@@ -66,12 +66,13 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Bates-Solutions/squareup.git"
+    "url": "git+https://github.com/Bates-Solutions/payments.git",
+    "directory": "packages/squareup"
   },
   "bugs": {
-    "url": "https://github.com/Bates-Solutions/squareup/issues"
+    "url": "https://github.com/Bates-Solutions/payments/issues"
   },
-  "homepage": "https://github.com/Bates-Solutions/squareup#readme",
+  "homepage": "https://github.com/Bates-Solutions/payments/tree/main/packages/squareup#readme",
   "engines": {
     "node": ">=22"
   },

@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-For each package (`@bates-solutions/squareup`, `@bates-solutions/stripe`, `@bates-solutions/clover`):
+For each package (`@bates-solutions/squareup`, `@bates-solutions/stripe`, `@bates-solutions/clover`, `@bates-solutions/payments-core`):
 
 | Version              | Supported          |
 | -------------------- | ------------------ |
