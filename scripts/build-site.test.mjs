@@ -24,6 +24,19 @@ import {
 
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
+/** Resolves a module specifier with tsconfig `paths` (an exact key, else one `*`). */
+function resolvePath(paths, specifier) {
+  if (paths[specifier]) return paths[specifier][0];
+  for (const [pattern, [target]] of Object.entries(paths)) {
+    const [prefix, suffix] = pattern.split('*');
+    if (suffix === undefined) continue;
+    if (specifier.startsWith(prefix) && specifier.endsWith(suffix)) {
+      return target.replace('*', specifier.slice(prefix.length, specifier.length - suffix.length));
+    }
+  }
+  return undefined;
+}
+
 const tempDirs = [];
 after(() => {
   for (const dir of tempDirs) rmSync(dir, { recursive: true, force: true });
@@ -210,17 +223,23 @@ describe('the packages in this repo', () => {
     if (pkg.dependencies?.['@bates-solutions/payments-core']) {
       // Core's package.json points TypeScript at dist/*.d.ts, which is not committed, so
       // without this mapping the docs for re-exported core symbols link to dist and 404.
-      it(`${dir}: typedoc reads payments-core from its source, not dist`, () => {
-        const config = JSON.parse(
+      it(`${dir}: typedoc reads every payments-core export from its source, not dist`, () => {
+        const { compilerOptions = {} } = JSON.parse(
           readFileSync(join(REPO_ROOT, 'packages', dir, 'typedoc.json'), 'utf8')
         );
-        assert.deepEqual(config.compilerOptions, {
-          rootDir: '..',
-          paths: {
-            '@bates-solutions/payments-core': ['../payments-core/src/index.ts'],
-            '@bates-solutions/payments-core/*': ['../payments-core/src/*/index.ts'],
-          },
-        });
+        assert.equal(compilerOptions.rootDir, '..', 'core source must be inside rootDir');
+        const paths = compilerOptions.paths ?? {};
+        const core = JSON.parse(
+          readFileSync(join(REPO_ROOT, 'packages', 'payments-core', 'package.json'), 'utf8')
+        );
+        // A missed mapping is silent: TypeScript falls back to dist, so check each export.
+        for (const [subpath, target] of Object.entries(core.exports)) {
+          const specifier = `@bates-solutions/payments-core${subpath.slice(1)}`;
+          const mapped = resolvePath(paths, specifier);
+          const expected = target.types.replace(/^\.\/dist\//, 'src/').replace(/\.d\.ts$/, '.ts');
+          assert.equal(mapped, `../payments-core/${expected}`, specifier);
+          assert.ok(existsSync(join(REPO_ROOT, 'packages', dir, mapped)), `${mapped} exists`);
+        }
       });
     }
 
