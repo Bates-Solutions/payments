@@ -177,7 +177,7 @@ function requireMinorUnits(amount: number | bigint, field: string): void {
  * const subscription = await square.subscriptions.create({
  *   customerId: 'CUST_123',
  *   planVariationId: 'PLAN_VAR_123',
- *   idempotencyKey: createIdempotencyKey(),
+ *   idempotencyKey: 'subscribe-CUST_123-PLAN_VAR_123',
  * });
  *
  * // Cancel a subscription

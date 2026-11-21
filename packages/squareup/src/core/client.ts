@@ -61,7 +61,7 @@ export interface SquareClientConfig {
  * const payment = await square.payments.create({
  *   sourceId: 'cnon:card-nonce-ok',
  *   amount: 1000, // $10.00
- *   idempotencyKey: createIdempotencyKey(),
+ *   idempotencyKey: 'order-1042', // one key per order, so a retry can't charge twice
  * });
  * ```
  */

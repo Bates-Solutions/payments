@@ -11,7 +11,7 @@ import { assertNoResponseErrors, parseSquareError, requireNonEmpty } from '../er
  * const card = await square.cards.create({
  *   sourceId: 'cnon:card-nonce-ok',
  *   customerId: 'CUST_123',
- *   idempotencyKey: createIdempotencyKey(),
+ *   idempotencyKey: 'save-card-CUST_123',
  * });
  *
  * await square.cards.disable(card.id!);

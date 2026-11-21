@@ -16,7 +16,7 @@ Refunds of Square payments
 const refund = await square.refunds.refundPayment({
   paymentId: 'PAYMENT_123',
   amountMoney: { amount: 500 }, // $5.00
-  idempotencyKey: createIdempotencyKey(),
+  idempotencyKey: 'refund-PAYMENT_123',
 });
 ```
 

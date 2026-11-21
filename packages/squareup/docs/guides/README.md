@@ -46,7 +46,7 @@ npm install square                        # peer dependency
 ### 2. Backend Setup
 
 ```typescript
-import { createIdempotencyKey, createSquareClient } from '@bates-solutions/squareup';
+import { createSquareClient } from '@bates-solutions/squareup';
 
 const square = createSquareClient({
   accessToken: process.env.SQUARE_ACCESS_TOKEN!,
@@ -58,7 +58,7 @@ const square = createSquareClient({
 const payment = await square.payments.create({
   sourceId: 'cnon:card-nonce-ok',
   amount: 1000,
-  idempotencyKey: createIdempotencyKey(),
+  idempotencyKey: 'order-1042', // one key per order, so a retry can't charge twice
 });
 ```
 

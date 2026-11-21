@@ -17,7 +17,7 @@ Cards on file: store a customer's card, then charge it later with
 const card = await square.cards.create({
   sourceId: 'cnon:card-nonce-ok',
   customerId: 'CUST_123',
-  idempotencyKey: createIdempotencyKey(),
+  idempotencyKey: 'save-card-CUST_123',
 });
 
 await square.cards.disable(card.id!);

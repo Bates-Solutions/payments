@@ -6,7 +6,7 @@
 
 # Interface: DeclineReason
 
-Defined in: [squareup/src/core/errors.ts:323](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L323)
+Defined in: [squareup/src/core/errors.ts:332](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L332)
 
 What a card decline means for charging the same card again.
 
@@ -16,7 +16,7 @@ What a card decline means for charging the same card again.
 
 > **code**: `string`
 
-Defined in: [squareup/src/core/errors.ts:325](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L325)
+Defined in: [squareup/src/core/errors.ts:334](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L334)
 
 Square's error code, for example `GENERIC_DECLINE` or `INSUFFICIENT_FUNDS`.
 
@@ -26,7 +26,7 @@ Square's error code, for example `GENERIC_DECLINE` or `INSUFFICIENT_FUNDS`.
 
 > **retryable**: `boolean`
 
-Defined in: [squareup/src/core/errors.ts:335](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L335)
+Defined in: [squareup/src/core/errors.ts:344](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L344)
 
 Whether charging the same card again later, without the buyer doing
 anything, can succeed. When `false`, ask the buyer for another card (or to

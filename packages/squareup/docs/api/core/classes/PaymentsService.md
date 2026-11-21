@@ -16,7 +16,7 @@ Simplified payments service
 const payment = await square.payments.create({
   sourceId: 'cnon:card-nonce-ok',
   amount: 1000, // $10.00 in cents
-  idempotencyKey: createIdempotencyKey(),
+  idempotencyKey: 'order-1042', // one key per order, so a retry can't charge twice
 });
 ```
 
@@ -145,7 +145,7 @@ When input validation fails, including a missing `idempotencyKey`
 const payment = await square.payments.create({
   sourceId: 'cnon:card-nonce-ok',
   amount: 1000, // $10.00 in cents
-  idempotencyKey: createIdempotencyKey(),
+  idempotencyKey: 'order-1042', // one key per order, so a retry can't charge twice
 });
 
 // Payment with all options

@@ -34,7 +34,8 @@ console.log(refund.id, refund.status); // 'PENDING' at first
   the same key cannot refund twice. Derive it from what the refund is for (an
   order and a reason, a support ticket), or store the key before the call. At
   most 45 characters.
-- A missing or empty `paymentId` or `idempotencyKey`, or a non-positive amount,
+- A missing or empty `paymentId` or `idempotencyKey`, or an amount that is not a
+  whole number greater than 0 (in the smallest currency unit),
   throws a `SquareValidationError` naming the field.
 
 A refund starts `PENDING`. Square sends a `refund.updated` webhook when it

@@ -7,7 +7,7 @@ checkout.
 ## Setup
 
 ```typescript
-import { createIdempotencyKey, createSquareClient } from '@bates-solutions/squareup';
+import { createSquareClient } from '@bates-solutions/squareup';
 
 const square = createSquareClient({
   accessToken: process.env.SQUARE_ACCESS_TOKEN!,
@@ -27,7 +27,7 @@ const card = await square.cards.create({
   // Required
   sourceId: 'cnon:card-nonce-ok',
   customerId: 'CUST_123',
-  idempotencyKey: createIdempotencyKey(),
+  idempotencyKey: 'save-card-CUST_123-cnon-ok', // one key per card being saved
 
   // Optional
   cardholderName: 'Amelia Earhart',
