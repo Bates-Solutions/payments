@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v3.0.0**](../../README.md)
 
 ***
 
@@ -8,7 +8,9 @@
 
 > **CustomerWebhookEvent** = [`WebhookEvent`](../interfaces/WebhookEvent.md)\<[`CustomerWebhookObject`](../interfaces/CustomerWebhookObject.md)\> & `object`
 
-Defined in: [squareup/src/server/types.ts:225](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L225)
+Defined in: [squareup/src/server/types.ts:228](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L228)
+
+A webhook event for a customer, with `type` narrowed to its event types.
 
 ## Type Declaration
 

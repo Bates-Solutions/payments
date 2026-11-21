@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v3.0.0**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **ExpressRequestHandler** = (`req`, `res`, `next`) => `void` \| `Promise`\<`void`\>
 
-Defined in: [squareup/src/server/middleware/express.ts:42](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L42)
+Defined in: [squareup/src/server/middleware/express.ts:70](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L70)
 
 Minimal structural stand-in for the Express `RequestHandler`.
 

@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v3.0.0**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **parseNextWebhook**(`request`, `signatureKey`, `notificationUrl?`): `Promise`\<[`WebhookEvent`](../interfaces/WebhookEvent.md)\<`unknown`\>\>
 
-Defined in: [squareup/src/server/middleware/nextjs.ts:242](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/nextjs.ts#L242)
+Defined in: [squareup/src/server/middleware/nextjs.ts:267](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/nextjs.ts#L267)
 
 Utility to parse webhook event from Next.js request
 

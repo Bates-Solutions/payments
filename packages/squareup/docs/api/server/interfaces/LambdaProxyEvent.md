@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v3.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: LambdaProxyEvent
 
-Defined in: [squareup/src/server/middleware/lambda.ts:14](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L14)
+Defined in: [squareup/src/server/middleware/lambda.ts:40](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L40)
 
 Minimal API Gateway proxy event shape (avoids aws-lambda dependency)
 
@@ -16,7 +16,7 @@ Minimal API Gateway proxy event shape (avoids aws-lambda dependency)
 
 > **body**: `string` \| `null`
 
-Defined in: [squareup/src/server/middleware/lambda.ts:17](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L17)
+Defined in: [squareup/src/server/middleware/lambda.ts:43](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L43)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [squareup/src/server/middleware/lambda.ts:17](https://github.com/Bat
 
 > `optional` **headers?**: `Record`\<`string`, `string` \| `undefined`\> \| `null`
 
-Defined in: [squareup/src/server/middleware/lambda.ts:16](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L16)
+Defined in: [squareup/src/server/middleware/lambda.ts:42](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L42)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [squareup/src/server/middleware/lambda.ts:16](https://github.com/Bat
 
 > **httpMethod**: `string`
 
-Defined in: [squareup/src/server/middleware/lambda.ts:15](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L15)
+Defined in: [squareup/src/server/middleware/lambda.ts:41](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L41)
 
 ***
 
@@ -40,4 +40,4 @@ Defined in: [squareup/src/server/middleware/lambda.ts:15](https://github.com/Bat
 
 > `optional` **isBase64Encoded?**: `boolean`
 
-Defined in: [squareup/src/server/middleware/lambda.ts:18](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L18)
+Defined in: [squareup/src/server/middleware/lambda.ts:44](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L44)

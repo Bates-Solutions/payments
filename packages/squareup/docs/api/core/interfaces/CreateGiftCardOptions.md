@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v3.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: CreateGiftCardOptions
 
-Defined in: [squareup/src/core/services/gift-cards.service.ts:160](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L160)
+Defined in: [squareup/src/core/services/gift-cards.service.ts:165](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L165)
 
 Options for creating a gift card.
 
@@ -23,7 +23,7 @@ GAN handling:
 
 > `optional` **gan?**: `string`
 
-Defined in: [squareup/src/core/services/gift-cards.service.ts:167](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L167)
+Defined in: [squareup/src/core/services/gift-cards.service.ts:172](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L172)
 
 ***
 
@@ -31,7 +31,7 @@ Defined in: [squareup/src/core/services/gift-cards.service.ts:167](https://githu
 
 > `optional` **ganSource?**: [`GiftCardGanSource`](../type-aliases/GiftCardGanSource.md)
 
-Defined in: [squareup/src/core/services/gift-cards.service.ts:168](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L168)
+Defined in: [squareup/src/core/services/gift-cards.service.ts:173](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L173)
 
 ***
 
@@ -39,7 +39,7 @@ Defined in: [squareup/src/core/services/gift-cards.service.ts:168](https://githu
 
 > `optional` **idempotencyKey?**: `string`
 
-Defined in: [squareup/src/core/services/gift-cards.service.ts:169](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L169)
+Defined in: [squareup/src/core/services/gift-cards.service.ts:174](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L174)
 
 ***
 
@@ -47,7 +47,7 @@ Defined in: [squareup/src/core/services/gift-cards.service.ts:169](https://githu
 
 > `optional` **locationId?**: `string`
 
-Defined in: [squareup/src/core/services/gift-cards.service.ts:166](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L166)
+Defined in: [squareup/src/core/services/gift-cards.service.ts:171](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L171)
 
 Location to register the card under. Defaults to the client's configured
 location ID.
@@ -58,4 +58,4 @@ location ID.
 
 > **type**: [`GiftCardType`](../type-aliases/GiftCardType.md)
 
-Defined in: [squareup/src/core/services/gift-cards.service.ts:161](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L161)
+Defined in: [squareup/src/core/services/gift-cards.service.ts:166](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L166)

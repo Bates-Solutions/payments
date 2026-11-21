@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v3.0.0**](../../README.md)
 
 ***
 
@@ -9,3 +9,5 @@
 > **LoyaltyEventType** = `"loyalty.account.created"` \| `"loyalty.account.updated"` \| `"loyalty.program.created"` \| `"loyalty.promotion.created"`
 
 Defined in: [squareup/src/server/types.ts:37](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L37)
+
+Loyalty account, program and promotion webhook event types.

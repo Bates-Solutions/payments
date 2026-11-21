@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v3.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: SquareWebhookRequest
 
-Defined in: [squareup/src/server/middleware/express.ts:58](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L58)
+Defined in: [squareup/src/server/middleware/express.ts:86](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L86)
 
 Request object as seen by the webhook middleware, carrying the Square webhook
 data it attaches.
@@ -27,7 +27,7 @@ with the real Express request: `req: SquareWebhookRequest & express.Request`.
 
 > `optional` **body?**: `unknown`
 
-Defined in: [squareup/src/server/middleware/express.ts:25](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L25)
+Defined in: [squareup/src/server/middleware/express.ts:53](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L53)
 
 Parsed or raw request body (Buffer, string, or parsed JSON).
 
@@ -41,7 +41,7 @@ Parsed or raw request body (Buffer, string, or parsed JSON).
 
 > **headers**: `Record`\<`string`, `string` \| `string`[] \| `undefined`\>
 
-Defined in: [squareup/src/server/middleware/express.ts:27](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L27)
+Defined in: [squareup/src/server/middleware/express.ts:55](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L55)
 
 Request headers, keyed lowercase as Node/Express provide them.
 
@@ -55,7 +55,7 @@ Request headers, keyed lowercase as Node/Express provide them.
 
 > `optional` **rawBody?**: `string`
 
-Defined in: [squareup/src/server/middleware/express.ts:60](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L60)
+Defined in: [squareup/src/server/middleware/express.ts:88](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L88)
 
 The raw request body as a string
 
@@ -65,7 +65,7 @@ The raw request body as a string
 
 > `optional` **squareEvent?**: [`WebhookEvent`](WebhookEvent.md)\<`unknown`\>
 
-Defined in: [squareup/src/server/middleware/express.ts:62](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L62)
+Defined in: [squareup/src/server/middleware/express.ts:90](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L90)
 
 The parsed Square webhook event
 
@@ -75,7 +75,7 @@ The parsed Square webhook event
 
 > **on**(`event`, `listener`): `unknown`
 
-Defined in: [squareup/src/server/middleware/express.ts:29](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L29)
+Defined in: [squareup/src/server/middleware/express.ts:57](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L57)
 
 Node stream event subscription, used to capture the raw body.
 

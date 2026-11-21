@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v3.0.0**](../../README.md)
 
 ***
 
@@ -8,6 +8,6 @@
 
 > **LambdaWebhookHandlers** = `{ [K in WebhookEventType]?: LambdaWebhookHandler }`
 
-Defined in: [squareup/src/server/middleware/lambda.ts:50](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L50)
+Defined in: [squareup/src/server/middleware/lambda.ts:76](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L76)
 
 Map of event types to their Lambda handlers

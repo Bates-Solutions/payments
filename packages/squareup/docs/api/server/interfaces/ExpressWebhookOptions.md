@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v3.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: ExpressWebhookOptions
 
-Defined in: [squareup/src/server/middleware/express.ts:68](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L68)
+Defined in: [squareup/src/server/middleware/express.ts:96](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L96)
 
 Options for the Express webhook middleware
 
@@ -20,7 +20,7 @@ Options for the Express webhook middleware
 
 > `optional` **autoRespond?**: `boolean`
 
-Defined in: [squareup/src/server/middleware/express.ts:78](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L78)
+Defined in: [squareup/src/server/middleware/express.ts:106](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L106)
 
 Whether to send response automatically
 
@@ -64,7 +64,7 @@ URL where webhooks are received (for signature verification)
 
 > `optional` **path?**: `string`
 
-Defined in: [squareup/src/server/middleware/express.ts:73](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L73)
+Defined in: [squareup/src/server/middleware/express.ts:101](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L101)
 
 Path to mount the webhook handler
 

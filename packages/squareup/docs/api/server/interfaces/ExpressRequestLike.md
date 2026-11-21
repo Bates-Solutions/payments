@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v3.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: ExpressRequestLike
 
-Defined in: [squareup/src/server/middleware/express.ts:23](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L23)
+Defined in: [squareup/src/server/middleware/express.ts:51](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L51)
 
 Minimal structural stand-ins for the Express types this middleware touches.
 
@@ -31,7 +31,7 @@ reason. These interfaces are structurally compatible with Express 4 and 5, so
 
 > `optional` **body?**: `unknown`
 
-Defined in: [squareup/src/server/middleware/express.ts:25](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L25)
+Defined in: [squareup/src/server/middleware/express.ts:53](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L53)
 
 Parsed or raw request body (Buffer, string, or parsed JSON).
 
@@ -41,7 +41,7 @@ Parsed or raw request body (Buffer, string, or parsed JSON).
 
 > **headers**: `Record`\<`string`, `string` \| `string`[] \| `undefined`\>
 
-Defined in: [squareup/src/server/middleware/express.ts:27](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L27)
+Defined in: [squareup/src/server/middleware/express.ts:55](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L55)
 
 Request headers, keyed lowercase as Node/Express provide them.
 
@@ -51,7 +51,7 @@ Request headers, keyed lowercase as Node/Express provide them.
 
 > **on**(`event`, `listener`): `unknown`
 
-Defined in: [squareup/src/server/middleware/express.ts:29](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L29)
+Defined in: [squareup/src/server/middleware/express.ts:57](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L57)
 
 Node stream event subscription, used to capture the raw body.
 

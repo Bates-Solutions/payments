@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v3.0.0**](../../README.md)
 
 ***
 
@@ -9,3 +9,5 @@
 > **SubscriptionEventType** = `"subscription.created"` \| `"subscription.updated"`
 
 Defined in: [squareup/src/server/types.ts:26](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L26)
+
+Subscription webhook event types.

@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v3.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: ExpressResponseLike
 
-Defined in: [squareup/src/server/middleware/express.ts:33](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L33)
+Defined in: [squareup/src/server/middleware/express.ts:61](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L61)
 
 Minimal structural stand-in for the Express `Response` methods used here.
 
@@ -16,7 +16,7 @@ Minimal structural stand-in for the Express `Response` methods used here.
 
 > **json**(`body`): `ExpressResponseLike`
 
-Defined in: [squareup/src/server/middleware/express.ts:35](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L35)
+Defined in: [squareup/src/server/middleware/express.ts:63](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L63)
 
 #### Parameters
 
@@ -34,7 +34,7 @@ Defined in: [squareup/src/server/middleware/express.ts:35](https://github.com/Ba
 
 > **status**(`code`): `ExpressResponseLike`
 
-Defined in: [squareup/src/server/middleware/express.ts:34](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L34)
+Defined in: [squareup/src/server/middleware/express.ts:62](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L62)
 
 #### Parameters
 
