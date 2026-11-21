@@ -5,6 +5,29 @@
 
 * **server:** edge runtime webhooks. `createWebhookHandler` (a framework-neutral `(Request) => Promise<Response>` handler for Deno, Supabase Edge Functions, Cloudflare Workers and Bun) and `verifySignatureAsync` (Web Crypto) at the new `@bates-solutions/squareup/server/web` entry point, which pulls in no Node built-ins. Both are also exported from `./server`. `createIdempotencyKey` now uses `globalThis.crypto.randomUUID()`. Additive: the sync `verifySignature` and `parseAndVerifyWebhook` are unchanged ([#163](https://github.com/Bates-Solutions/squareup/pull/163))
 
+## [3.0.0](https://github.com/Bates-Solutions/payments/compare/squareup-v2.6.0...squareup-v3.0.0) (2026-11-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* **squareup:** `idempotencyKey` is now required on `payments.create`, `subscriptions.create`, `cards.create` and `refunds.refundPayment`. These calls no longer make up a random key, so a missing key is a type error and an empty one throws `SquareValidationError`. Pass a key that stays the same across retries of the same request, for example one derived from the order ID. `cards` and `refunds` are new in this release, so existing code changes only on `payments.create` and `subscriptions.create`. See "Upgrading from 2.x to 3.0" in the README.
+* **squareup:** `createLambdaWebhookHandler` now requires `notificationUrl` and throws at setup without it, because Square signs `notificationUrl + rawBody` and no real delivery could verify otherwise. A handler or `onUnhandledEvent` that throws now makes the Lambda return 500 instead of 200, so Square retries the delivery; make handlers idempotent, for example on `event.event_id`.
+
+### Features
+
+* **squareup:** `declineReason(error)` returns Square's decline code and whether charging the same card again later can succeed, and `SquarePaymentError` keeps Square's error entries in `errors` ([#27](https://github.com/Bates-Solutions/payments/issues/27)) ([0102ea7](https://github.com/Bates-Solutions/payments/commit/0102ea7a47b33b611614eecb540b33ca1bd6c0ab))
+* **squareup:** `payments.create` takes `customerDetails`, `buyerEmailAddress`, `statementDescriptionIdentifier` and `verificationToken` ([#27](https://github.com/Bates-Solutions/payments/issues/27)) ([0102ea7](https://github.com/Bates-Solutions/payments/commit/0102ea7a47b33b611614eecb540b33ca1bd6c0ab))
+* **squareup:** `subscriptions.update` can set `priceOverrideMoney` (with its own currency), `taxPercentage` and `cardId` ([#27](https://github.com/Bates-Solutions/payments/issues/27)) ([0102ea7](https://github.com/Bates-Solutions/payments/commit/0102ea7a47b33b611614eecb540b33ca1bd6c0ab))
+* **squareup:** add the cards service. `square.cards` creates, gets, lists and disables cards on file; `create` takes `sourceId`, `customerId` and `idempotencyKey`, plus `cardholderName`, `billingAddress` and `referenceId` ([#27](https://github.com/Bates-Solutions/payments/issues/27)) ([0102ea7](https://github.com/Bates-Solutions/payments/commit/0102ea7a47b33b611614eecb540b33ca1bd6c0ab))
+* **squareup:** add the refunds service. `square.refunds.refundPayment` refunds all or part of a payment (`paymentId`, `amountMoney` and `idempotencyKey` required, `reason` optional), and `get` and `list` read refunds back ([#27](https://github.com/Bates-Solutions/payments/issues/27)) ([0102ea7](https://github.com/Bates-Solutions/payments/commit/0102ea7a47b33b611614eecb540b33ca1bd6c0ab))
+* **squareup:** require an explicit `idempotencyKey` on `payments.create`, `subscriptions.create`, `cards.create` and `refunds.refundPayment` ([#27](https://github.com/Bates-Solutions/payments/issues/27)) ([0102ea7](https://github.com/Bates-Solutions/payments/commit/0102ea7a47b33b611614eecb540b33ca1bd6c0ab))
+* **squareup:** webhook signature key rotation. `signatureKey` takes a string or a list of keys in `verifySignature`, `verifySignatureAsync`, `parseAndVerifyWebhook`, `createWebhookProcessor` and every adapter, and a signature matching any key is valid ([#27](https://github.com/Bates-Solutions/payments/issues/27)) ([0102ea7](https://github.com/Bates-Solutions/payments/commit/0102ea7a47b33b611614eecb540b33ca1bd6c0ab))
+
+
+### Bug Fixes
+
+* **squareup:** the Lambda webhook adapter returns 500 when a handler throws, so Square retries the delivery instead of losing the event, and requires `notificationUrl` ([#27](https://github.com/Bates-Solutions/payments/issues/27)) ([0102ea7](https://github.com/Bates-Solutions/payments/commit/0102ea7a47b33b611614eecb540b33ca1bd6c0ab))
+
 ## [2.6.0](https://github.com/Bates-Solutions/payments/compare/squareup-v2.5.0...squareup-v2.6.0) (2026-11-20)
 
 
