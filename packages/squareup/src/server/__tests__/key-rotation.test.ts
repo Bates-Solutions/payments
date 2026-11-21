@@ -66,6 +66,38 @@ describe('verifySignature with several keys', () => {
   });
 });
 
+describe('a key that is not a string or a list', () => {
+  // Untyped callers: an unset environment variable gives undefined.
+  it.each([undefined, null, 42, {}])('reports %s as a missing key', async (key) => {
+    const signatureKey = key as unknown as string;
+
+    expect(verifySignature(BODY, sign(OLD_KEY), signatureKey, URL_)).toEqual({
+      valid: false,
+      error: 'Missing signature key',
+    });
+    expect(await verifySignatureAsync(BODY, sign(OLD_KEY), signatureKey, URL_)).toEqual({
+      valid: false,
+      error: 'Missing signature key',
+    });
+  });
+
+  it('makes the Lambda handler answer 401, not reject', async () => {
+    const handler = createLambdaWebhookHandler({
+      signatureKey: undefined as unknown as string,
+      notificationUrl: URL_,
+      handlers: {},
+      logger: false,
+    });
+
+    const response = await handler({
+      httpMethod: 'POST',
+      headers: { [SIGNATURE_HEADER]: sign(OLD_KEY) },
+      body: BODY,
+    });
+    expect(response.statusCode).toBe(401);
+  });
+});
+
 describe('verifySignatureAsync with several keys', () => {
   it.each([OLD_KEY, NEW_KEY])('accepts a signature made with %s', async (key) => {
     await expect(verifySignatureAsync(BODY, sign(key), KEYS, URL_)).resolves.toEqual({

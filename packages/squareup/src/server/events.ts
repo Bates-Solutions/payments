@@ -11,8 +11,14 @@ export const SIGNATURE_HEADER = 'x-square-hmacsha256-signature';
  * @internal
  */
 export function signatureKeyList(signatureKey: WebhookSignatureKey): string[] {
-  const keys: readonly unknown[] = typeof signatureKey === 'string' ? [signatureKey] : signatureKey;
-  // Untyped callers can pass anything; only non-empty strings are keys.
+  // Untyped callers can pass anything (undefined from an unset env var, for
+  // example); only non-empty strings are keys, and anything else is no key.
+  const keys: readonly unknown[] =
+    typeof signatureKey === 'string'
+      ? [signatureKey]
+      : Array.isArray(signatureKey)
+        ? (signatureKey as readonly unknown[])
+        : [];
   return keys.filter((key): key is string => typeof key === 'string' && key !== '');
 }
 
