@@ -321,7 +321,7 @@ formatMoney(1099, 'USD'); // "$10.99"
 
 ## Upgrading from 2.x to 3.0
 
-3.0 has two breaking changes. Everything else in 3.0 is additive.
+3.0.0 has two breaking changes. Everything else in it is additive, and the [CHANGELOG](./CHANGELOG.md) lists it all.
 
 ### 1. `idempotencyKey` is required on calls that move money or store a card
 
