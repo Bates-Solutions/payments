@@ -21,4 +21,4 @@ The provider packages build on this and keep their own rules on top:
 
 - `@bates-solutions/stripe`'s `toMinor` follows Stripe's currency list where it differs from ISO 4217. It sends `ISK` and `UGX` as two-decimal values whose decimals are always `00`, treats `MGA` as zero-decimal, and sends `IQD`, `LYD`, `UYI`, `CLF` and `UYW` as two-decimal. It rounds three-decimal amounts to a multiple of 10.
 - `@bates-solutions/squareup`'s `toCents` and `fromCents` use the exponent as it is.
-- `@bates-solutions/clover` supports only two-decimal currencies, so its helpers multiply by 100.
+- `@bates-solutions/clover`'s `toCents`, `fromCents` and `formatMoney` use the exponent as it is, from clover 1.3.0. Every clover `CurrencyCode` is two-decimal.

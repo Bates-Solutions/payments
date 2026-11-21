@@ -1,4 +1,4 @@
-[**@bates-solutions/clover API Reference v1.1.0**](../../README.md)
+[**@bates-solutions/clover API Reference v1.2.1**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: Money
 
-Defined in: [clover/src/core/utils.ts:6](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/utils.ts#L6)
+Defined in: [clover/src/core/utils.ts:8](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/utils.ts#L8)
 
 Money representation
 
@@ -16,7 +16,7 @@ Money representation
 
 > **amount**: `number`
 
-Defined in: [clover/src/core/utils.ts:8](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/utils.ts#L8)
+Defined in: [clover/src/core/utils.ts:10](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/utils.ts#L10)
 
 Amount in cents
 
@@ -26,4 +26,4 @@ Amount in cents
 
 > **currency**: [`CurrencyCode`](../type-aliases/CurrencyCode.md)
 
-Defined in: [clover/src/core/utils.ts:9](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/utils.ts#L9)
+Defined in: [clover/src/core/utils.ts:11](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/utils.ts#L11)

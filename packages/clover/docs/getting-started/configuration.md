@@ -38,5 +38,8 @@ CLOVER_WEBHOOK_SECRET=...
 
 ## Money & currency
 
-Amounts are integer **cents** (`number`); currency codes are **lowercase** ISO
-(e.g. `usd`). Use `toCents` / `fromCents` / `formatMoney` to convert.
+Amounts are integers in the currency's smallest unit (`number`), cents for
+every `CurrencyCode`; currency codes are **lowercase** ISO (e.g. `usd`). Use
+`toCents` / `fromCents` / `formatMoney` to convert. Each takes the currency,
+and the number of decimals follows ISO 4217 through payments-core's
+`minorUnitExponent`.
