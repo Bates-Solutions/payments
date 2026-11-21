@@ -14,7 +14,7 @@ export interface Money {
 /**
  * Minor units per major unit for a currency, from `minorUnitExponent` in
  * payments-core: 1 for `JPY`, 100 for the other supported currencies. Matching
- * is case-insensitive, and an untyped caller's other ISO code gets its own
+ * is case-insensitive, and an untyped caller's other ISO 4217 code gets its own
  * exponent (1000 for `KWD`, 1 for `KRW`).
  *
  * @throws {SquareValidationError} When `currency` is not a non-empty string

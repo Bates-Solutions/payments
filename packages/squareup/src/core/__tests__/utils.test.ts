@@ -174,23 +174,31 @@ describe('currency rules from payments-core', () => {
     expect(fromCents(5124n, 'KWD' as CurrencyCode)).toBe(5.124);
   });
 
-  it.each([undefined, null, ''])(
-    'throws SquareValidationError for a currency of %o',
-    (currency) => {
-      // undefined falls back to the USD default, like every default parameter.
-      if (currency === undefined) {
-        expect(toCents(1, currency)).toBe(100n);
-        return;
+  it('uses the USD default when the currency is undefined', () => {
+    expect(toCents(1, undefined)).toBe(100n);
+    expect(fromCents(100n, undefined)).toBe(1);
+    expect(formatMoney(100n, undefined)).toBe('$1.00');
+  });
+
+  const convert: [string, (currency: CurrencyCode) => unknown][] = [
+    ['toCents', (currency) => toCents(1, currency)],
+    ['fromCents', (currency) => fromCents(100n, currency)],
+    ['formatMoney', (currency) => formatMoney(100n, currency)],
+  ];
+  it.each(
+    convert.flatMap(([name, call]) => [
+      [name, null, call],
+      [name, '', call],
+    ])
+  )('%s throws SquareValidationError for a currency of %o', (_name, currency, call) => {
+    const error: unknown = (() => {
+      try {
+        call(currency as unknown as CurrencyCode);
+      } catch (e) {
+        return e;
       }
-      const error: unknown = (() => {
-        try {
-          toCents(1, currency as unknown as CurrencyCode);
-        } catch (e) {
-          return e;
-        }
-      })();
-      expect(error).toBeInstanceOf(SquareValidationError);
-      expect((error as SquareValidationError).field).toBe('currency');
-    }
-  );
+    })();
+    expect(error).toBeInstanceOf(SquareValidationError);
+    expect((error as SquareValidationError).field).toBe('currency');
+  });
 });
