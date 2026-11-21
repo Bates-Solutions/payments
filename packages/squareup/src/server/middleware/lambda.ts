@@ -1,3 +1,29 @@
+/**
+ * `@bates-solutions/squareup/server/lambda`: Square webhooks for AWS Lambda.
+ *
+ * `createLambdaWebhookHandler` handles an API Gateway proxy event: it verifies
+ * the signature, dispatches the event with the payment, order and customer IDs
+ * extracted, and returns `500` when a handler throws so Square retries the
+ * delivery. `notificationUrl` is required. There is no `aws-lambda`
+ * dependency: the event and result types here are structural.
+ *
+ * @module
+ *
+ * @example
+ * ```typescript
+ * import { createLambdaWebhookHandler } from '@bates-solutions/squareup/server/lambda';
+ *
+ * export const handler = createLambdaWebhookHandler({
+ *   signatureKey: process.env.SQUARE_WEBHOOK_SIGNATURE_KEY!,
+ *   notificationUrl: 'https://api.example.com/webhooks/square',
+ *   handlers: {
+ *     'payment.completed': async (event, context) => {
+ *       console.log('Paid:', event.data.id, context.orderId);
+ *     },
+ *   },
+ * });
+ * ```
+ */
 import {
   verifySignature,
   parseWebhookEvent,

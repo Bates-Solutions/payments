@@ -1,3 +1,31 @@
+/**
+ * `@bates-solutions/squareup/server/express`: Square webhooks for Express.
+ *
+ * `createExpressWebhookHandler` verifies the signature on the raw body and
+ * dispatches the event to your handlers; `rawBodyMiddleware` keeps the raw
+ * body for routes that use a JSON body parser. Express is not a dependency:
+ * the request and response types here are structural.
+ *
+ * @module
+ *
+ * @example
+ * ```typescript
+ * import express from 'express';
+ * import { createExpressWebhookHandler } from '@bates-solutions/squareup/server/express';
+ *
+ * const app = express();
+ * app.use('/webhook', express.raw({ type: 'application/json' }));
+ * app.post('/webhook', createExpressWebhookHandler({
+ *   signatureKey: process.env.SQUARE_WEBHOOK_KEY!,
+ *   notificationUrl: 'https://example.com/webhook',
+ *   handlers: {
+ *     'payment.created': async (event) => {
+ *       console.log('Payment:', event.data.id);
+ *     },
+ *   },
+ * }));
+ * ```
+ */
 import {
   verifySignature,
   parseWebhookEvent,

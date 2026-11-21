@@ -1,3 +1,28 @@
+/**
+ * `@bates-solutions/squareup/server/nextjs`: Square webhooks for Next.js.
+ *
+ * `createNextWebhookHandler` is an App Router route handler,
+ * `createNextPagesWebhookHandler` a Pages Router API route, and
+ * `parseNextWebhook` verifies and parses a request for custom handling.
+ *
+ * @module
+ *
+ * @example
+ * ```typescript
+ * // app/api/webhooks/square/route.ts
+ * import { createNextWebhookHandler } from '@bates-solutions/squareup/server/nextjs';
+ *
+ * export const POST = createNextWebhookHandler({
+ *   signatureKey: process.env.SQUARE_WEBHOOK_KEY!,
+ *   notificationUrl: 'https://example.com/api/webhooks/square',
+ *   handlers: {
+ *     'payment.created': async (event) => {
+ *       console.log('Payment:', event.data.id);
+ *     },
+ *   },
+ * });
+ * ```
+ */
 import {
   verifySignature,
   parseWebhookEvent,
