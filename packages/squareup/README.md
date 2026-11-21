@@ -349,6 +349,7 @@ await square.subscriptions.create({ customerId, planVariationId, idempotencyKey:
 
 - [Getting started](./docs/getting-started/installation.md)
 - [Guides](./docs/guides/README.md)
+- [API reference on JSR](https://jsr.io/@bates-solutions/squareup/doc), generated from the JSDoc on every entry point and export
 - [API reference](https://bates-solutions.github.io/payments/squareup/) (also [in this repo](./docs/api/README.md), as markdown)
 
 ## Related libraries
