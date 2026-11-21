@@ -15,7 +15,7 @@ export interface Money {
  * Minor units per major unit for a currency, from `minorUnitExponent` in
  * payments-core: 1 for `JPY`, 100 for the other supported currencies. Matching
  * is case-insensitive, and an untyped caller's other ISO 4217 code gets its own
- * exponent (1000 for `KWD`, 1 for `KRW`).
+ * multiplier (1000 for `KWD`, 1 for `KRW`).
  *
  * @throws {SquareValidationError} When `currency` is not a non-empty string
  */
@@ -31,7 +31,7 @@ function getCurrencyMultiplier(currency: CurrencyCode): number {
  *
  * The currency's minor unit comes from ISO 4217 through `minorUnitExponent`
  * in payments-core, matched in any case. A code outside `CurrencyCode` gets
- * its own exponent (1000 for `KWD`, 1 for `KRW`).
+ * its own multiplier (1000 for `KWD`, 1 for `KRW`).
  *
  * @param amount - Dollar amount (e.g., 10.50)
  * @param currency - Currency code (default: USD)
@@ -56,7 +56,7 @@ export function toCents(amount: number, currency: CurrencyCode = 'USD'): bigint 
  *
  * The currency's minor unit comes from ISO 4217 through `minorUnitExponent`
  * in payments-core, matched in any case. A code outside `CurrencyCode` gets
- * its own exponent (1000 for `KWD`, 1 for `KRW`).
+ * its own multiplier (1000 for `KWD`, 1 for `KRW`).
  *
  * @param cents - Amount in smallest currency unit
  * @param currency - Currency code (default: USD)

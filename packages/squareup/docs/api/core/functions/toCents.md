@@ -14,7 +14,7 @@ Convert a dollar amount to cents (smallest currency unit)
 
 The currency's minor unit comes from ISO 4217 through `minorUnitExponent`
 in payments-core, matched in any case. A code outside `CurrencyCode` gets
-its own exponent (1000 for `KWD`, 1 for `KRW`).
+its own multiplier (1000 for `KWD`, 1 for `KRW`).
 
 ## Parameters
 
