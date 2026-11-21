@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.0](https://github.com/Bates-Solutions/payments/compare/clover-v1.2.1...clover-v1.3.0) (2026-11-21)
+
+
+### Features
+
+* **clover:** make the money helpers currency-aware ([859349e](https://github.com/Bates-Solutions/payments/commit/859349ec68b906fab66a1f5e23896d1408cbad18))
+* **clover:** make toCents, fromCents and formatMoney currency-aware ([8ac42ca](https://github.com/Bates-Solutions/payments/commit/8ac42ca06ed4303782230605cfd7aacef5455a40))
+
 ## [1.2.1](https://github.com/Bates-Solutions/payments/compare/clover-v1.2.0...clover-v1.2.1) (2026-11-21)
 
 
