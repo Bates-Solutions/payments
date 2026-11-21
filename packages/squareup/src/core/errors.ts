@@ -343,7 +343,6 @@ export interface DeclineReason {
  * - `INSUFFICIENT_FUNDS`: retry after a few days (for example after payday);
  *   not right away.
  * - `TRANSACTION_LIMIT`: the card's spending limit; retry later (or for less).
- * - `TEMPORARY_ERROR`: a transient Square error; retry soon.
  *
  * Everything else needs the buyer: a new card (expired, invalid or
  * unsupported card), corrected details (CVV, postal code, address), or a call
@@ -352,7 +351,6 @@ export interface DeclineReason {
 const DECLINE_RETRYABLE: Readonly<Record<string, boolean>> = {
   INSUFFICIENT_FUNDS: true,
   TRANSACTION_LIMIT: true,
-  TEMPORARY_ERROR: true,
 
   GENERIC_DECLINE: false,
   CARD_DECLINED: false,
@@ -393,12 +391,12 @@ const DECLINE_RETRYABLE: Readonly<Record<string, boolean>> = {
  * | --- | --- |
  * | `INSUFFICIENT_FUNDS` | `true`, after a few days |
  * | `TRANSACTION_LIMIT` | `true`, later |
- * | `TEMPORARY_ERROR` | `true`, soon |
  * | `GENERIC_DECLINE`, `CVV_FAILURE`, `CARD_EXPIRED`, `INVALID_ACCOUNT`, ... | `false` |
  * | any other code | `false` |
  *
- * This is about the card. Network failures and 5xx responses are a separate
- * question: see {@link isRetryableSquareError}.
+ * This is about the card. Network failures, 5xx responses and Square's
+ * `TEMPORARY_ERROR` are a separate question: see {@link isRetryableSquareError},
+ * and retry those with the **same** idempotency key.
  *
  * @example
  * ```typescript

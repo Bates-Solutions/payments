@@ -198,7 +198,6 @@ try {
 |------|-------------|------------|
 | `INSUFFICIENT_FUNDS` | `true` | Retry after a few days |
 | `TRANSACTION_LIMIT` | `true` | Retry later (or for less) |
-| `TEMPORARY_ERROR` | `true` | Retry soon |
 | `GENERIC_DECLINE`, `CARD_DECLINED_CALL_ISSUER` | `false` | Buyer contacts the issuer or uses another card |
 | `CVV_FAILURE`, `ADDRESS_VERIFICATION_FAILURE`, `INVALID_POSTAL_CODE` | `false` | Buyer corrects the details |
 | `CARD_EXPIRED`, `INVALID_ACCOUNT`, `INVALID_CARD`, `CARD_NOT_SUPPORTED` | `false` | Buyer uses another card |
@@ -206,6 +205,10 @@ try {
 
 Retrying a hard decline again and again can get the merchant flagged by the
 card networks, which is why unknown codes are not retryable.
+
+`TEMPORARY_ERROR` is not in the table: it is a transient Square failure, not a
+decline. `isRetryableSquareError` covers it, and Square says to retry it with
+the **same** idempotency key, unlike a retry of a decline.
 
 ### Common Error Codes
 

@@ -27,6 +27,9 @@ describe('declineReason', () => {
     ['INVALID_ACCOUNT', false],
     ['CARD_DECLINED_CALL_ISSUER', false],
     ['CARD_DECLINED_VERIFICATION_REQUIRED', false],
+    // A transient Square failure, not a decline: isRetryableSquareError covers
+    // it, with the same idempotency key.
+    ['TEMPORARY_ERROR', false],
   ])('maps %s to retryable: %s', (code, retryable) => {
     const error = parseSquareError(sdkDecline(code));
 

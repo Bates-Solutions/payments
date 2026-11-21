@@ -83,8 +83,11 @@ const decline = declineReason(error);
 // { code: 'GENERIC_DECLINE', retryable: false }: ask the buyer for another card
 ```
 
-`INSUFFICIENT_FUNDS`, `TRANSACTION_LIMIT` and `TEMPORARY_ERROR` are
-retryable; every other code, including codes this package does not know, is
-not. A later attempt is a new payment, so give it a new idempotency key. See
+`INSUFFICIENT_FUNDS` and `TRANSACTION_LIMIT` are retryable; every other
+code, including codes this package does not know, is not. A later attempt is
+a new payment, so give it a new idempotency key. Square's `TEMPORARY_ERROR` is
+not a decline: it is a transient Square failure, which
+`isRetryableSquareError` covers, and Square says to retry it with the **same**
+key. See
 the [payments guide](./payments.md#declines-retry-later-or-ask-for-another-card)
 for the full table.
