@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.5.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: SquareError
 
-Defined in: [squareup/src/core/errors.ts:36](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L36)
+Defined in: [squareup/src/core/errors.ts:39](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L39)
 
 Base Square error class. It extends core's `PaymentsError`, so
 `error instanceof PaymentsError` catches any provider's error, even when the
@@ -30,7 +30,7 @@ providers install different copies of `@bates-solutions/payments-core`.
 
 > **new SquareError**(`message`, `code?`, `statusCode?`, `details?`): `SquareError`
 
-Defined in: [squareup/src/core/errors.ts:37](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L37)
+Defined in: [squareup/src/core/errors.ts:40](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L40)
 
 #### Parameters
 

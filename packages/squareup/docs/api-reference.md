@@ -19,6 +19,8 @@ Entry points:
 | `createSquareClient`         | Factory for creating a Square API client                    | [→](./api/core/functions/createSquareClient.md) |
 | `SquareClient`               | Client class exposing every service                         | [→](./api/core/classes/SquareClient.md) |
 | `PaymentsService`            | Payment processing operations                               | [→](./api/core/classes/PaymentsService.md) |
+| `CardsService`               | Cards on file: store, get, list, disable                    | [→](./api/core/classes/CardsService.md) |
+| `RefundsService`             | Refund payments; get and list refunds                       | [→](./api/core/classes/RefundsService.md) |
 | `OrdersService`              | Order management with fluent builder                        | [→](./api/core/classes/OrdersService.md) |
 | `OrderBuilder`               | Fluent builder for order line items and pricing             | [→](./api/core/classes/OrderBuilder.md) |
 | `CustomersService`           | Customer CRUD, list, and search                             | [→](./api/core/classes/CustomersService.md) |
@@ -92,10 +94,11 @@ import {
   SquarePaymentError,
   SquareValidationError,
   isRetryableSquareError,
+  declineReason,
 } from '@bates-solutions/squareup';
 
 try {
-  await client.payments.create({ ... });
+  await client.payments.create({ ...options, idempotencyKey });
 } catch (error) {
   if (error instanceof SquareValidationError) {
     console.log('Invalid input:', error.message);
@@ -103,6 +106,8 @@ try {
     console.log('Check your access token');
   } else if (error instanceof SquarePaymentError) {
     console.log('Payment declined or failed');
+    // declineReason(error): { code, retryable } for charging the card again later
+    console.log(declineReason(error));
   } else if (error instanceof SquareNetworkError) {
     console.log('No response (NETWORK_ERROR or TIMEOUT):', error.code);
   } else if (error instanceof SquareApiError) {
@@ -125,6 +130,8 @@ try {
 | `SquareError`            | Base class for all of the above                    |
 
 `isRetryableSquareError(error)` returns `true` for network failures, timeouts, 408, 429 and 5xx. [→](./api/core/functions/isRetryableSquareError.md)
+
+`declineReason(error)` returns Square's decline code and whether charging the same card again later can succeed (`INSUFFICIENT_FUNDS` yes; `GENERIC_DECLINE` and unknown codes no). [→](./api/core/functions/declineReason.md)
 
 ## Configuration
 

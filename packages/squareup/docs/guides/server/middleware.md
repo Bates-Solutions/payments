@@ -72,8 +72,9 @@ signature, `500` when the body is not JSON or a handler throws, and `200` with
 
 `./server/web` also exports `verifySignatureAsync`, `parseWebhookEvent`,
 `processWebhookEvent` and `SIGNATURE_HEADER` for custom edge handling. The
-Express, Next.js and Lambda adapters below are unchanged and keep using the
-synchronous, Node `crypto` based `verifySignature`.
+Express, Next.js and Lambda adapters below use the synchronous, Node `crypto`
+based `verifySignature`. Every adapter accepts `signatureKey` as one key or a
+list of keys while you rotate it.
 
 ## Express Middleware
 
@@ -219,6 +220,7 @@ app.post('/api/payments', async (req, res) => {
   const payment = await square.payments.create({
     sourceId: req.body.sourceId,
     amount: req.body.amount,
+    idempotencyKey: req.body.idempotencyKey, // sent by the client, reused on retries
   });
   res.json(payment);
 });
@@ -465,6 +467,38 @@ interface WebhookResponse {
 }
 ```
 
+## AWS Lambda
+
+`createLambdaWebhookHandler` takes an API Gateway proxy event and returns a
+proxy result. It handles CORS preflight, base64 bodies and header case, and
+passes each handler the payment, order and customer IDs it found in the event.
+
+```typescript
+import { createLambdaWebhookHandler } from '@bates-solutions/squareup/server/lambda';
+
+export const handler = createLambdaWebhookHandler({
+  signatureKey: process.env.SQUARE_WEBHOOK_KEY!, // or [newKey, oldKey] while rotating
+  notificationUrl: 'https://api.example.com/webhooks/square', // required
+  handlers: {
+    'payment.updated': async (event, context) => {
+      await markPaid(event.data.id, context.orderId);
+    },
+  },
+  onUnhandledEvent: async (event) => {
+    console.info('Ignored', event.type);
+  },
+});
+```
+
+`notificationUrl` is required: Square signs `notificationUrl + rawBody`, so
+without it no real delivery verifies. The factory throws at startup when it is
+missing.
+
+Responses: `204` for `OPTIONS`, `400` for a missing or non-JSON body, `401`
+for a missing or invalid signature, `500` when a handler or
+`onUnhandledEvent` throws (so Square retries the delivery), and `200` with
+`{ success: true, eventId, paymentId, orderId, customerId }` otherwise.
+
 ## Error Responses
 
 The middleware returns standard error responses:
@@ -474,7 +508,7 @@ The middleware returns standard error responses:
 | 200 | Success |
 | 401 | Missing/invalid signature |
 | 405 | Wrong HTTP method (Web handler, Pages Router) |
-| 500 | Handler error |
+| 500 | Handler error (Square retries the delivery) |
 
 ## Testing Locally
 
@@ -536,7 +570,7 @@ test('webhook handler', async () => {
 2. **Verify first** - Check signature before any processing
 3. **Idempotency** - Store and check `event_id` to prevent duplicates
 4. **Quick response** - Return 200 quickly, process async if needed
-5. **Error handling** - Catch errors to prevent 500s (Square will retry)
+5. **Error handling** - Let a handler throw when the event should be retried: every adapter returns 500 and Square redelivers. Catch errors you do not want retried
 6. **Logging** - Log all received webhooks for debugging
 
 ## Next Steps

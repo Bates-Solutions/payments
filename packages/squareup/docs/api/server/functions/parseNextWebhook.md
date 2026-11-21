@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.5.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
 
 ***
 
@@ -24,9 +24,9 @@ The incoming request
 
 ### signatureKey
 
-`string`
+[`WebhookSignatureKey`](../type-aliases/WebhookSignatureKey.md)
 
-Your webhook signature key
+Your webhook signature key, or a list of keys during rotation
 
 ### notificationUrl?
 

@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.5.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: UpdateOrderOptions
 
-Defined in: [squareup/src/core/types/index.ts:213](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L213)
+Defined in: [squareup/src/core/types/index.ts:243](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L243)
 
 Options for `orders.update()`. Square applies them as a sparse update: only
 the fields you set change.
@@ -17,7 +17,7 @@ the fields you set change.
 
 > `optional` **fieldsToClear?**: `string`[]
 
-Defined in: [squareup/src/core/types/index.ts:228](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L228)
+Defined in: [squareup/src/core/types/index.ts:258](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L258)
 
 Fields to remove, as Square dot paths, e.g.
 `'fulfillments[FULFILLMENT_UID].shipment_details.tracking_url'`.
@@ -28,7 +28,7 @@ Fields to remove, as Square dot paths, e.g.
 
 > `optional` **fulfillments?**: [`UpdateOrderFulfillmentInput`](UpdateOrderFulfillmentInput.md)[]
 
-Defined in: [squareup/src/core/types/index.ts:223](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L223)
+Defined in: [squareup/src/core/types/index.ts:253](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L253)
 
 Fulfillments to change, each matched on `uid`.
 
@@ -38,7 +38,7 @@ Fulfillments to change, each matched on `uid`.
 
 > `optional` **idempotencyKey?**: `string`
 
-Defined in: [squareup/src/core/types/index.ts:233](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L233)
+Defined in: [squareup/src/core/types/index.ts:263](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L263)
 
 Reuse it only when resending the identical request; a retry with a new
 `version` needs a new key.
@@ -49,7 +49,7 @@ Reuse it only when resending the identical request; a retry with a new
 
 > `optional` **referenceId?**: `string`
 
-Defined in: [squareup/src/core/types/index.ts:219](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L219)
+Defined in: [squareup/src/core/types/index.ts:249](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L249)
 
 ***
 
@@ -57,7 +57,7 @@ Defined in: [squareup/src/core/types/index.ts:219](https://github.com/Bates-Solu
 
 > `optional` **state?**: `OrderState`
 
-Defined in: [squareup/src/core/types/index.ts:221](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L221)
+Defined in: [squareup/src/core/types/index.ts:251](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L251)
 
 Order state, e.g. `'CANCELED'` to cancel an open order or DRAFT template.
 
@@ -67,7 +67,7 @@ Order state, e.g. `'CANCELED'` to cancel an open order or DRAFT template.
 
 > **version**: `number`
 
-Defined in: [squareup/src/core/types/index.ts:218](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L218)
+Defined in: [squareup/src/core/types/index.ts:248](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L248)
 
 The order's current version. Square rejects a stale one, which is how a
 concurrent change is detected.

@@ -28,6 +28,7 @@ The simplest way to create a payment:
 const payment = await square.payments.create({
   sourceId: 'cnon:card-nonce-ok', // Payment source token
   amount: 1000, // $10.00 in cents
+  idempotencyKey: 'order-1042', // one key per order, so a retry can't charge twice
 });
 
 console.log('Payment ID:', payment.id);
@@ -41,6 +42,7 @@ const payment = await square.payments.create({
   // Required
   sourceId: 'cnon:card-nonce-ok',
   amount: 2500, // $25.00
+  idempotencyKey: 'order-1042', // see Idempotency below // see Idempotency below
 
   // Optional
   currency: 'USD', // Default: USD
@@ -49,6 +51,10 @@ const payment = await square.payments.create({
   referenceId: 'ext-ref-789', // Your external reference
   note: 'Payment for services', // Visible on receipt
   autocomplete: true, // Default: true (capture immediately)
+  buyerEmailAddress: 'buyer@example.com', // Receipt and risk checks
+  statementDescriptionIdentifier: 'ORDER456', // Added to the name on the card statement
+  customerDetails: { customerInitiated: true, sellerKeyedIn: false },
+  verificationToken: undefined, // Legacy verifyBuyer() token; Square deprecated verifyBuyer()
 });
 ```
 
@@ -62,6 +68,7 @@ const authorized = await square.payments.create({
   sourceId: 'cnon:card-nonce-ok',
   amount: 5000,
   autocomplete: false, // Don't capture yet
+  idempotencyKey: 'order-1043-authorize',
 });
 
 console.log('Authorized:', authorized.id);
@@ -71,6 +78,23 @@ console.log('Authorized:', authorized.id);
 const completed = await square.payments.complete(authorized.id!);
 console.log('Captured:', completed.status);
 // completed.status === 'COMPLETED'
+```
+
+### Charging a Card on File
+
+Store the card once with [`cards.create()`](./cards.md), then charge its ID.
+For a charge the buyer did not start (a renewal, a usage bill), say so with
+`customerDetails.customerInitiated: false`; card networks treat these
+merchant-initiated charges differently.
+
+```typescript
+const payment = await square.payments.create({
+  sourceId: card.id!, // ccof:...
+  customerId: card.customerId!,
+  amount: 1500,
+  customerDetails: { customerInitiated: false, sellerKeyedIn: false },
+  idempotencyKey: `renewal-${subscriptionId}-${period}`,
+});
 ```
 
 ## Getting Payment Details
@@ -122,6 +146,7 @@ try {
   const payment = await square.payments.create({
     sourceId: 'invalid-token',
     amount: 1000,
+    idempotencyKey: 'order-1042',
   });
 } catch (error) {
   if (error instanceof SquarePaymentError) {
@@ -144,6 +169,48 @@ try {
 
 See [Errors and Retries](./errors.md) for network failures, timeouts and safe retries.
 
+### Declines: retry later, or ask for another card?
+
+`SquarePaymentError.code` is normalized, so it is `UNKNOWN` for many Square
+decline codes. `declineReason(error)` reads Square's own code and says whether
+charging the same card again later can succeed:
+
+```typescript
+import { declineReason } from '@bates-solutions/squareup';
+
+try {
+  await square.payments.create({ sourceId: card.id!, customerId, amount, idempotencyKey });
+} catch (error) {
+  const decline = declineReason(error); // undefined when it is not a decline
+  if (decline?.retryable) {
+    // INSUFFICIENT_FUNDS: try again in a few days, with a new idempotency key
+    await scheduleRetry({ inDays: 3, reason: decline.code });
+  } else if (decline) {
+    // GENERIC_DECLINE, CVV_FAILURE, CARD_EXPIRED, ...: the buyer must act
+    await askForNewCard(customerId, decline.code);
+  } else {
+    throw error;
+  }
+}
+```
+
+| Code | `retryable` | What to do |
+|------|-------------|------------|
+| `INSUFFICIENT_FUNDS` | `true` | Retry after a few days |
+| `TRANSACTION_LIMIT` | `true` | Retry later (or for less) |
+| `GENERIC_DECLINE`, `CARD_DECLINED_CALL_ISSUER` | `false` | Buyer contacts the issuer or uses another card |
+| `CVV_FAILURE`, `ADDRESS_VERIFICATION_FAILURE`, `INVALID_POSTAL_CODE` | `false` | Buyer corrects the details |
+| `CARD_EXPIRED`, `INVALID_ACCOUNT`, `INVALID_CARD`, `CARD_NOT_SUPPORTED` | `false` | Buyer uses another card |
+| any other code | `false` | Treat as a hard decline |
+
+Retrying a hard decline again and again can get the merchant flagged by the
+card networks, which is why unknown codes are not retryable.
+
+`TEMPORARY_ERROR` is not in the table: it is a transient Square failure, not a
+decline. `declineReason` returns `undefined` for it, `isRetryableSquareError`
+returns `true`, and Square says to retry it with
+the **same** idempotency key, unlike a retry of a decline.
+
 ### Common Error Codes
 
 | Code | Description |
@@ -158,24 +225,36 @@ See [Errors and Retries](./errors.md) for network failures, timeouts and safe re
 
 ## Idempotency
 
-All payment requests automatically generate an idempotency key, but you can provide your own:
+`idempotencyKey` is **required** on every money-moving call:
+`payments.create`, `refunds.refundPayment`, `cards.create` and
+`subscriptions.create`. Leaving it out is a type error, and a
+`SquareValidationError` (`field: 'idempotencyKey'`) at runtime. There is no
+random default: a fresh key on a retry after a timeout would charge twice.
+
+Square processes a key once, so derive the key from what the payment is for,
+or create one and store it before you call:
 
 ```typescript
 const payment = await square.payments.create({
   sourceId: 'cnon:card-nonce-ok',
   amount: 1000,
-  idempotencyKey: 'order-123-payment-attempt-1',
+  orderId: 'ORDER_123',
+  idempotencyKey: 'order-123-payment', // same key on every retry of this payment
 });
 ```
 
-Using idempotency keys prevents duplicate charges if a request is retried.
+Reuse a key only to resend the identical request. A new attempt (for example
+after a decline) needs a new key. Keys are at most 45 characters.
+
+> **Upgrading:** before this release, `payments.create` and
+> `subscriptions.create` made up a key when you left it out. Pass one now.
 
 ## Best Practices
 
 1. **Always use HTTPS** - Payment tokens are sensitive
 2. **Validate amounts** - Ensure amount > 0 before calling
 3. **Handle errors gracefully** - Show user-friendly messages
-4. **Use idempotency keys** - Prevent duplicate charges
+4. **Keep idempotency keys** - Store the key with the order so a retry reuses it
 5. **Store payment IDs** - Keep records for refunds/disputes
 6. **Test in sandbox** - Use test cards before going live
 
@@ -193,4 +272,6 @@ Use any future expiration date and any 3-digit CVV.
 ## Next Steps
 
 - [Orders Guide](./orders.md) - Create orders with payments
-- [Customers Guide](./customers.md) - Save cards on file
+- [Cards on File](./cards.md) - Save cards and charge them later
+- [Refunds](./refunds.md) - Refund payments
+- [Customers Guide](./customers.md) - Customer records

@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.5.0**](../README.md)
+[**@bates-solutions/squareup API Reference v2.6.0**](../README.md)
 
 ***
 
@@ -28,11 +28,13 @@ const payment = await square.payments.create({
   sourceId: 'cnon:card-nonce',
   amount: 1000,
   currency: 'USD',
+  idempotencyKey: 'order-1042', // one key per order, so a retry can't charge twice
 });
 ```
 
 ## Classes
 
+- [CardsService](classes/CardsService.md)
 - [CatalogService](classes/CatalogService.md)
 - [CheckoutService](classes/CheckoutService.md)
 - [CustomerGroupsService](classes/CustomerGroupsService.md)
@@ -48,6 +50,7 @@ const payment = await square.payments.create({
 - [OrdersService](classes/OrdersService.md)
 - [PaymentsError](classes/PaymentsError.md)
 - [PaymentsService](classes/PaymentsService.md)
+- [RefundsService](classes/RefundsService.md)
 - [SquareApiError](classes/SquareApiError.md)
 - [SquareAuthError](classes/SquareAuthError.md)
 - [SquareClient](classes/SquareClient.md)
@@ -65,6 +68,8 @@ const payment = await square.payments.create({
 - [AdjustDecrementActivityDetails](interfaces/AdjustDecrementActivityDetails.md)
 - [AdjustIncrementActivityDetails](interfaces/AdjustIncrementActivityDetails.md)
 - [BuildAuthorizeUrlOptions](interfaces/BuildAuthorizeUrlOptions.md)
+- [Card](interfaces/Card.md)
+- [CreateCardOptions](interfaces/CreateCardOptions.md)
 - [CreateCustomerOptions](interfaces/CreateCustomerOptions.md)
 - [CreateGiftCardActivityOptions](interfaces/CreateGiftCardActivityOptions.md)
 - [CreateGiftCardOptions](interfaces/CreateGiftCardOptions.md)
@@ -73,14 +78,17 @@ const payment = await square.payments.create({
 - [CreateSubscriptionOptions](interfaces/CreateSubscriptionOptions.md)
 - [CreateWebhookSubscriptionOptions](interfaces/CreateWebhookSubscriptionOptions.md)
 - [Customer](interfaces/Customer.md)
+- [DeclineReason](interfaces/DeclineReason.md)
 - [FindVariationsByCodeOptions](interfaces/FindVariationsByCodeOptions.md)
 - [FindVariationsByCodeResult](interfaces/FindVariationsByCodeResult.md)
 - [GiftCard](interfaces/GiftCard.md)
 - [GiftCardActivity](interfaces/GiftCardActivity.md)
 - [LineItemInput](interfaces/LineItemInput.md)
+- [ListCardsOptions](interfaces/ListCardsOptions.md)
 - [ListCustomersOptions](interfaces/ListCustomersOptions.md)
 - [ListGiftCardActivitiesOptions](interfaces/ListGiftCardActivitiesOptions.md)
 - [ListGiftCardsOptions](interfaces/ListGiftCardsOptions.md)
+- [ListRefundsOptions](interfaces/ListRefundsOptions.md)
 - [ListWebhookSubscriptionsOptions](interfaces/ListWebhookSubscriptionsOptions.md)
 - [LoadActivityDetails](interfaces/LoadActivityDetails.md)
 - [Location](interfaces/Location.md)
@@ -93,7 +101,9 @@ const payment = await square.payments.create({
 - [OrderPricingOptions](interfaces/OrderPricingOptions.md)
 - [PaginatedResponse](interfaces/PaginatedResponse.md)
 - [PaginationOptions](interfaces/PaginationOptions.md)
+- [PaymentRefund](interfaces/PaymentRefund.md)
 - [RedeemActivityDetails](interfaces/RedeemActivityDetails.md)
+- [RefundPaymentOptions](interfaces/RefundPaymentOptions.md)
 - [SearchCustomersOptions](interfaces/SearchCustomersOptions.md)
 - [SearchOrdersOptions](interfaces/SearchOrdersOptions.md)
 - [SearchRecentOrdersOptions](interfaces/SearchRecentOrdersOptions.md)
@@ -105,6 +115,7 @@ const payment = await square.payments.create({
 - [UpdateCustomerOptions](interfaces/UpdateCustomerOptions.md)
 - [UpdateOrderFulfillmentInput](interfaces/UpdateOrderFulfillmentInput.md)
 - [UpdateOrderOptions](interfaces/UpdateOrderOptions.md)
+- [UpdateSubscriptionOptions](interfaces/UpdateSubscriptionOptions.md)
 - [UpdateWebhookSubscriptionOptions](interfaces/UpdateWebhookSubscriptionOptions.md)
 
 ## Type Aliases
@@ -141,6 +152,7 @@ const payment = await square.payments.create({
 - [createIdempotencyKey](functions/createIdempotencyKey.md)
 - [createSquareClient](functions/createSquareClient.md)
 - [createSquareOAuthClient](functions/createSquareOAuthClient.md)
+- [declineReason](functions/declineReason.md)
 - [formatMoney](functions/formatMoney.md)
 - [fromCents](functions/fromCents.md)
 - [isCurrencyCode](functions/isCurrencyCode.md)

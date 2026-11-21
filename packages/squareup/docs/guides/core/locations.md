@@ -64,6 +64,7 @@ await square.payments.create({
   sourceId: 'cnon:card-nonce-ok',
   amount: 1000,
   currency,
+  idempotencyKey: createIdempotencyKey(),
 });
 ```
 

@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.5.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **getOrderId**(`event`): `string` \| `undefined`
 
-Defined in: [squareup/src/server/webhook.ts:209](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/webhook.ts#L209)
+Defined in: [squareup/src/server/webhook.ts:214](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/webhook.ts#L214)
 
 Extract the order ID from a webhook event
 

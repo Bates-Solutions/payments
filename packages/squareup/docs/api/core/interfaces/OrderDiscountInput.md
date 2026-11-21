@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.5.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: OrderDiscountInput
 
-Defined in: [squareup/src/core/types/index.ts:140](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L140)
+Defined in: [squareup/src/core/types/index.ts:170](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L170)
 
 An order discount. Reference an existing `CatalogDiscount` by
 `catalogObjectId` (keeps the catalog authoritative — the price tracks the
@@ -22,7 +22,7 @@ https://developer.squareup.com/docs/orders-api/discounts
 
 > `optional` **amountMoney?**: `object`
 
-Defined in: [squareup/src/core/types/index.ts:150](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L150)
+Defined in: [squareup/src/core/types/index.ts:180](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L180)
 
 Fixed amount (for amount types).
 
@@ -40,7 +40,7 @@ Fixed amount (for amount types).
 
 > `optional` **catalogObjectId?**: `string`
 
-Defined in: [squareup/src/core/types/index.ts:144](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L144)
+Defined in: [squareup/src/core/types/index.ts:174](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L174)
 
 Reference an existing `CatalogDiscount` by id.
 
@@ -50,7 +50,7 @@ Reference an existing `CatalogDiscount` by id.
 
 > `optional` **name?**: `string`
 
-Defined in: [squareup/src/core/types/index.ts:145](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L145)
+Defined in: [squareup/src/core/types/index.ts:175](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L175)
 
 ***
 
@@ -58,7 +58,7 @@ Defined in: [squareup/src/core/types/index.ts:145](https://github.com/Bates-Solu
 
 > `optional` **percentage?**: `string`
 
-Defined in: [squareup/src/core/types/index.ts:148](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L148)
+Defined in: [squareup/src/core/types/index.ts:178](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L178)
 
 Percentage as a string, e.g. `"7.25"` (for percentage types).
 
@@ -68,7 +68,7 @@ Percentage as a string, e.g. `"7.25"` (for percentage types).
 
 > `optional` **scope?**: [`OrderDiscountScope`](../type-aliases/OrderDiscountScope.md)
 
-Defined in: [squareup/src/core/types/index.ts:156](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L156)
+Defined in: [squareup/src/core/types/index.ts:186](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L186)
 
 `ORDER` applies to the whole order (Square auto-applies to every line);
 `LINE_ITEM` applies only to lines that list this discount's `uid` in their
@@ -80,7 +80,7 @@ Defined in: [squareup/src/core/types/index.ts:156](https://github.com/Bates-Solu
 
 > `optional` **type?**: [`OrderDiscountType`](../type-aliases/OrderDiscountType.md)
 
-Defined in: [squareup/src/core/types/index.ts:146](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L146)
+Defined in: [squareup/src/core/types/index.ts:176](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L176)
 
 ***
 
@@ -88,6 +88,6 @@ Defined in: [squareup/src/core/types/index.ts:146](https://github.com/Bates-Solu
 
 > `optional` **uid?**: `string`
 
-Defined in: [squareup/src/core/types/index.ts:142](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L142)
+Defined in: [squareup/src/core/types/index.ts:172](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L172)
 
 Client-side id; reference it from a line item's `appliedDiscounts`.

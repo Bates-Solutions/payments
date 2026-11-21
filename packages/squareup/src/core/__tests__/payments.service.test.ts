@@ -36,6 +36,7 @@ describe('PaymentsService', () => {
       const result = await service.create({
         sourceId: 'cnon:card-nonce-ok',
         amount: 1000,
+        idempotencyKey: 'test-key',
       });
 
       expect(result).toEqual(mockPayment);
@@ -49,6 +50,38 @@ describe('PaymentsService', () => {
       );
     });
 
+    it('should pass customer details, buyer email, statement text and verification token', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ payment: { id: 'PAY_123' } }),
+      });
+
+      const service = new PaymentsService(client, defaultLocationId);
+      await service.create({
+        sourceId: 'ccof:CARD_123',
+        amount: 1000,
+        customerId: 'CUST_123',
+        orderId: 'ORDER_123',
+        note: 'Renewal',
+        customerDetails: { customerInitiated: false, sellerKeyedIn: false },
+        buyerEmailAddress: 'buyer@example.com',
+        statementDescriptionIdentifier: 'RENEWAL',
+        verificationToken: 'verf:TOKEN',
+        idempotencyKey: 'test-key',
+      });
+
+      expect(client.payments.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          customerId: 'CUST_123',
+          orderId: 'ORDER_123',
+          note: 'Renewal',
+          customerDetails: { customerInitiated: false, sellerKeyedIn: false },
+          buyerEmailAddress: 'buyer@example.com',
+          statementDescriptionIdentifier: 'RENEWAL',
+          verificationToken: 'verf:TOKEN',
+        })
+      );
+    });
+
     it('should fall back to the client default currency (issue #119)', async () => {
       const client = createMockClient({
         create: vi.fn().mockResolvedValue({ payment: { id: 'PAY_123' } }),
@@ -56,7 +89,7 @@ describe('PaymentsService', () => {
 
       // Third constructor arg is the client's configured defaultCurrency.
       const service = new PaymentsService(client, defaultLocationId, 'CAD');
-      await service.create({ sourceId: 'cnon:card-nonce-ok', amount: 1000 });
+      await service.create({ sourceId: 'cnon:card-nonce-ok', amount: 1000, idempotencyKey: 'test-key' });
 
       expect(client.payments.create).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -75,6 +108,7 @@ describe('PaymentsService', () => {
         sourceId: 'cnon:card-nonce-ok',
         amount: 1000,
         currency: 'EUR',
+        idempotencyKey: 'test-key',
       });
 
       expect(client.payments.create).toHaveBeenCalledWith(
@@ -118,7 +152,7 @@ describe('PaymentsService', () => {
       const service = new PaymentsService(client, defaultLocationId);
 
       await expect(
-        service.create({ sourceId: '', amount: 1000 })
+        service.create({ sourceId: '', amount: 1000, idempotencyKey: 'test-key' })
       ).rejects.toThrow(SquareValidationError);
     });
 
@@ -127,7 +161,7 @@ describe('PaymentsService', () => {
       const service = new PaymentsService(client, defaultLocationId);
 
       await expect(
-        service.create({ sourceId: 'cnon:card-nonce-ok', amount: 0 })
+        service.create({ sourceId: 'cnon:card-nonce-ok', amount: 0, idempotencyKey: 'test-key' })
       ).rejects.toThrow(SquareValidationError);
     });
 
@@ -136,7 +170,7 @@ describe('PaymentsService', () => {
       const service = new PaymentsService(client, defaultLocationId);
 
       await expect(
-        service.create({ sourceId: 'cnon:card-nonce-ok', amount: -100 })
+        service.create({ sourceId: 'cnon:card-nonce-ok', amount: -100, idempotencyKey: 'test-key' })
       ).rejects.toThrow(SquareValidationError);
     });
 
@@ -145,7 +179,7 @@ describe('PaymentsService', () => {
       const service = new PaymentsService(client); // No default location
 
       await expect(
-        service.create({ sourceId: 'cnon:card-nonce-ok', amount: 1000 })
+        service.create({ sourceId: 'cnon:card-nonce-ok', amount: 1000, idempotencyKey: 'test-key' })
       ).rejects.toThrow(SquareValidationError);
     });
 
@@ -157,7 +191,7 @@ describe('PaymentsService', () => {
       const service = new PaymentsService(client, defaultLocationId);
 
       await expect(
-        service.create({ sourceId: 'cnon:card-nonce-ok', amount: 1000 })
+        service.create({ sourceId: 'cnon:card-nonce-ok', amount: 1000, idempotencyKey: 'test-key' })
       ).rejects.toThrow('Payment was not created');
     });
 
@@ -174,7 +208,7 @@ describe('PaymentsService', () => {
       const service = new PaymentsService(client, defaultLocationId);
 
       await expect(
-        service.create({ sourceId: 'cnon:card-nonce-ok', amount: 1000 })
+        service.create({ sourceId: 'cnon:card-nonce-ok', amount: 1000, idempotencyKey: 'test-key' })
       ).rejects.toThrow(SquareApiError);
     });
   });

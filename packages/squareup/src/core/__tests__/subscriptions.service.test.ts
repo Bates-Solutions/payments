@@ -32,6 +32,7 @@ describe('SubscriptionsService', () => {
       const result = await service.create({
         customerId: 'CUST_123',
         planVariationId: 'PLAN_VAR_123',
+        idempotencyKey: 'test-key',
       });
 
       expect(result).toEqual(mockSubscription);
@@ -52,6 +53,7 @@ describe('SubscriptionsService', () => {
         timezone: 'America/New_York',
         priceOverride: 1500,
         taxPercentage: '10',
+        idempotencyKey: 'test-key',
       });
 
       expect(client.subscriptions.create).toHaveBeenCalledWith(
@@ -72,7 +74,7 @@ describe('SubscriptionsService', () => {
       const service = new SubscriptionsService(client);
 
       await expect(
-        service.create({ customerId: 'CUST_123', planVariationId: 'PLAN_VAR_123' })
+        service.create({ customerId: 'CUST_123', planVariationId: 'PLAN_VAR_123', idempotencyKey: 'test-key' })
       ).rejects.toThrow(SquareValidationError);
     });
 
@@ -81,7 +83,7 @@ describe('SubscriptionsService', () => {
       const service = new SubscriptionsService(client, defaultLocationId);
 
       await expect(
-        service.create({ customerId: '', planVariationId: 'PLAN_VAR_123' })
+        service.create({ customerId: '', planVariationId: 'PLAN_VAR_123', idempotencyKey: 'test-key' })
       ).rejects.toThrow(SquareValidationError);
     });
 
@@ -90,7 +92,7 @@ describe('SubscriptionsService', () => {
       const service = new SubscriptionsService(client, defaultLocationId);
 
       await expect(
-        service.create({ customerId: 'CUST_123', planVariationId: '' })
+        service.create({ customerId: 'CUST_123', planVariationId: '', idempotencyKey: 'test-key' })
       ).rejects.toThrow(SquareValidationError);
     });
 
@@ -99,7 +101,7 @@ describe('SubscriptionsService', () => {
 
       const service = new SubscriptionsService(client, defaultLocationId);
       await expect(
-        service.create({ customerId: 'CUST_123', planVariationId: 'PLAN_VAR_123' })
+        service.create({ customerId: 'CUST_123', planVariationId: 'PLAN_VAR_123', idempotencyKey: 'test-key' })
       ).rejects.toThrow('Subscription was not created');
     });
 
@@ -113,6 +115,7 @@ describe('SubscriptionsService', () => {
       const result = await service.create({
         customerId: 'CUST_123',
         phases: [{ orderTemplateId: 'ORDER_TEMPLATE_1' }],
+        idempotencyKey: 'test-key',
       });
 
       expect(result).toEqual(mockSubscription);
@@ -135,6 +138,7 @@ describe('SubscriptionsService', () => {
           { ordinal: 0, orderTemplateId: 'T0' },
           { ordinal: 1, orderTemplateId: 'T1' },
         ],
+        idempotencyKey: 'test-key',
       });
 
       const call = (client.subscriptions.create as ReturnType<typeof vi.fn>).mock.calls[0][0];
@@ -151,6 +155,7 @@ describe('SubscriptionsService', () => {
       await service.create({
         customerId: 'CUST_123',
         phases: [{ ordinal: BigInt(5), orderTemplateId: 'T' }],
+        idempotencyKey: 'test-key',
       });
 
       const call = (client.subscriptions.create as ReturnType<typeof vi.fn>).mock.calls[0][0];
@@ -167,6 +172,7 @@ describe('SubscriptionsService', () => {
         customerId: 'CUST_123',
         planVariationId: 'PLAN_VAR_X',
         phases: [{ orderTemplateId: 'T' }],
+        idempotencyKey: 'test-key',
       });
 
       expect(client.subscriptions.create).toHaveBeenCalledWith(
@@ -182,7 +188,7 @@ describe('SubscriptionsService', () => {
       const service = new SubscriptionsService(client, defaultLocationId);
 
       await expect(
-        service.create({ customerId: 'CUST_123' })
+        service.create({ customerId: 'CUST_123', idempotencyKey: 'test-key' })
       ).rejects.toThrow(SquareValidationError);
     });
 
@@ -191,7 +197,7 @@ describe('SubscriptionsService', () => {
       const service = new SubscriptionsService(client, defaultLocationId);
 
       await expect(
-        service.create({ customerId: 'CUST_123', phases: [] })
+        service.create({ customerId: 'CUST_123', phases: [], idempotencyKey: 'test-key' })
       ).rejects.toThrow(SquareValidationError);
     });
 
@@ -203,6 +209,7 @@ describe('SubscriptionsService', () => {
         service.create({
           customerId: 'CUST_123',
           phases: [{ ordinal: 1.5, orderTemplateId: 'T' }],
+          idempotencyKey: 'test-key',
         })
       ).rejects.toThrow(SquareValidationError);
     });
@@ -215,6 +222,7 @@ describe('SubscriptionsService', () => {
         service.create({
           customerId: 'CUST_123',
           phases: [{ ordinal: -1, orderTemplateId: 'T' }],
+          idempotencyKey: 'test-key',
         })
       ).rejects.toThrow(SquareValidationError);
     });
@@ -227,6 +235,7 @@ describe('SubscriptionsService', () => {
         service.create({
           customerId: 'CUST_123',
           phases: [{ ordinal: Number.NaN, orderTemplateId: 'T' }],
+          idempotencyKey: 'test-key',
         })
       ).rejects.toThrow(SquareValidationError);
     });
@@ -281,6 +290,87 @@ describe('SubscriptionsService', () => {
 
       const service = new SubscriptionsService(client);
       await expect(service.update('SUB_123', {})).rejects.toThrow('Subscription update failed');
+    });
+
+    it('should send priceOverrideMoney, taxPercentage and cardId', async () => {
+      const client = createMockClient({
+        update: vi.fn().mockResolvedValue({ subscription: { id: 'SUB_123' } }),
+      });
+
+      const service = new SubscriptionsService(client, 'LOC_123', 'CAD');
+      await service.update('SUB_123', {
+        priceOverrideMoney: { amount: 1500, currency: 'USD' },
+        taxPercentage: '8.5',
+        cardId: 'ccof:CARD_456',
+      });
+
+      expect(client.subscriptions.update).toHaveBeenCalledWith({
+        subscriptionId: 'SUB_123',
+        subscription: {
+          priceOverrideMoney: { amount: BigInt(1500), currency: 'USD' },
+          cardId: 'ccof:CARD_456',
+          taxPercentage: '8.5',
+        },
+      });
+    });
+
+    it('should default the priceOverrideMoney currency and allow a zero price', async () => {
+      const client = createMockClient({
+        update: vi.fn().mockResolvedValue({ subscription: { id: 'SUB_123' } }),
+      });
+
+      const service = new SubscriptionsService(client, 'LOC_123', 'CAD');
+      await service.update('SUB_123', { priceOverrideMoney: { amount: 0 } });
+
+      expect(client.subscriptions.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          subscription: expect.objectContaining({
+            priceOverrideMoney: { amount: BigInt(0), currency: 'CAD' },
+          }) as unknown,
+        })
+      );
+    });
+
+    it('should reject both price override fields together', async () => {
+      const client = createMockClient();
+      const service = new SubscriptionsService(client);
+
+      await expect(
+        service.update('SUB_123', { priceOverride: 100, priceOverrideMoney: { amount: 100 } })
+      ).rejects.toThrow(SquareValidationError);
+      expect(client.subscriptions.update).not.toHaveBeenCalled();
+    });
+
+    it('should reject a negative priceOverrideMoney amount', async () => {
+      const service = new SubscriptionsService(createMockClient());
+
+      await expect(
+        service.update('SUB_123', { priceOverrideMoney: { amount: -1 } })
+      ).rejects.toThrow(SquareValidationError);
+    });
+
+    it.each([
+      [{ priceOverrideMoney: { amount: 15.5 } }, 'priceOverrideMoney.amount'],
+      [{ priceOverrideMoney: { amount: Number.NaN } }, 'priceOverrideMoney.amount'],
+      [{ priceOverrideMoney: { amount: BigInt(-1) } }, 'priceOverrideMoney.amount'],
+      [{ priceOverride: -5 }, 'priceOverride'],
+      [{ priceOverride: 9.99 }, 'priceOverride'],
+    ])('should reject %o as a SquareValidationError on %s', async (options, field) => {
+      const client = createMockClient();
+      const service = new SubscriptionsService(client);
+
+      const error: unknown = await service.update('SUB_123', options).catch((e: unknown) => e);
+      expect(error).toBeInstanceOf(SquareValidationError);
+      expect((error as SquareValidationError).field).toBe(field);
+      expect(client.subscriptions.update).not.toHaveBeenCalled();
+    });
+
+    it('should require a subscription ID', async () => {
+      const service = new SubscriptionsService(createMockClient());
+
+      await expect(service.update('', { cardId: 'ccof:CARD' })).rejects.toThrow(
+        SquareValidationError
+      );
     });
   });
 

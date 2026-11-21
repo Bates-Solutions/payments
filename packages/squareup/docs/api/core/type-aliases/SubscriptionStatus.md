@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.5.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
 
 ***
 
@@ -8,6 +8,6 @@
 
 > **SubscriptionStatus** = `"PENDING"` \| `"ACTIVE"` \| `"CANCELED"` \| `"DEACTIVATED"` \| `"PAUSED"`
 
-Defined in: [squareup/src/core/services/subscriptions.service.ts:9](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L9)
+Defined in: [squareup/src/core/services/subscriptions.service.ts:13](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/subscriptions.service.ts#L13)
 
 Subscription status types

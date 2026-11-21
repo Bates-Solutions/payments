@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.5.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: SquareNetworkError
 
-Defined in: [squareup/src/core/errors.ts:115](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L115)
+Defined in: [squareup/src/core/errors.ts:146](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L146)
 
 The request never got an HTTP response: a connection failure (DNS, reset,
 `fetch failed`) or a client-side timeout. Square may or may not have
@@ -25,7 +25,7 @@ such as an OAuth `client_secret` are not exposed.
 
 > **new SquareNetworkError**(`message`, `code`, `options?`): `SquareNetworkError`
 
-Defined in: [squareup/src/core/errors.ts:118](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L118)
+Defined in: [squareup/src/core/errors.ts:149](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L149)
 
 #### Parameters
 
@@ -57,7 +57,7 @@ Defined in: [squareup/src/core/errors.ts:118](https://github.com/Bates-Solutions
 
 > `readonly` **code**: `"NETWORK_ERROR"` \| `"TIMEOUT"`
 
-Defined in: [squareup/src/core/errors.ts:116](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L116)
+Defined in: [squareup/src/core/errors.ts:147](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L147)
 
 Normalized error code. Each provider defines its own union.
 

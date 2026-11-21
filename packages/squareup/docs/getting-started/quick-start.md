@@ -35,6 +35,7 @@ const payment = await square.payments.create({
   sourceId: 'cnon:card-nonce-ok', // Test card nonce
   amount: 1000, // $10.00 in cents
   currency: 'USD',
+  idempotencyKey: 'order-1042', // one key per order, so a retry can't charge twice
 });
 
 console.log('Payment ID:', payment.id);

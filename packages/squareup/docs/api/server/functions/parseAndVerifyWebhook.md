@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.5.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **parseAndVerifyWebhook**(`rawBody`, `signature`, `signatureKey`, `notificationUrl?`): [`ParsedWebhookRequest`](../interfaces/ParsedWebhookRequest.md)
 
-Defined in: [squareup/src/server/webhook.ts:110](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/webhook.ts#L110)
+Defined in: [squareup/src/server/webhook.ts:115](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/webhook.ts#L115)
 
 Parse and verify a webhook request
 
@@ -28,9 +28,9 @@ The signature from headers
 
 ### signatureKey
 
-`string`
+[`WebhookSignatureKey`](../type-aliases/WebhookSignatureKey.md)
 
-Your webhook signature key
+Your webhook signature key, or a list of keys during rotation
 
 ### notificationUrl?
 

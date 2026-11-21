@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.5.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **OrderDiscountType** = `"FIXED_PERCENTAGE"` \| `"FIXED_AMOUNT"` \| `"VARIABLE_PERCENTAGE"` \| `"VARIABLE_AMOUNT"`
 
-Defined in: [squareup/src/core/types/index.ts:122](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L122)
+Defined in: [squareup/src/core/types/index.ts:152](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L152)
 
 Discount type. `FIXED_*` uses the exact `percentage`/`amountMoney` given;
 `VARIABLE_*` is resolved from the referenced catalog discount.

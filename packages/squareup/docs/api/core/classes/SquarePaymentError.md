@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.5.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
 
 ***
 
@@ -6,9 +6,11 @@
 
 # Class: SquarePaymentError
 
-Defined in: [squareup/src/core/errors.ts:84](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L84)
+Defined in: [squareup/src/core/errors.ts:89](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L89)
 
-Payment processing errors
+Payment processing errors, such as a card decline. `code` is the normalized
+code (`UNKNOWN` for Square codes outside [SquareErrorCode](../type-aliases/SquareErrorCode.md)); `errors`
+keeps Square's raw entries, which [declineReason](../functions/declineReason.md) reads.
 
 ## Extends
 
@@ -18,9 +20,9 @@ Payment processing errors
 
 ### Constructor
 
-> **new SquarePaymentError**(`message`, `code`, `paymentId?`): `SquarePaymentError`
+> **new SquarePaymentError**(`message`, `code`, `paymentId?`, `errors?`): `SquarePaymentError`
 
-Defined in: [squareup/src/core/errors.ts:87](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L87)
+Defined in: [squareup/src/core/errors.ts:99](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L99)
 
 #### Parameters
 
@@ -35,6 +37,10 @@ Defined in: [squareup/src/core/errors.ts:87](https://github.com/Bates-Solutions/
 ##### paymentId?
 
 `string`
+
+##### errors?
+
+`object`[] = `[]`
 
 #### Returns
 
@@ -74,11 +80,37 @@ The raw error body or other context, if any.
 
 ***
 
+### errors
+
+> `readonly` **errors**: `object`[]
+
+Defined in: [squareup/src/core/errors.ts:92](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L92)
+
+Square's error entries, with the raw `code` (for example `INSUFFICIENT_FUNDS`).
+
+#### category
+
+> **category**: `string`
+
+#### code
+
+> **code**: `string`
+
+#### detail?
+
+> `optional` **detail?**: `string`
+
+#### field?
+
+> `optional` **field?**: `string`
+
+***
+
 ### paymentId?
 
 > `readonly` `optional` **paymentId?**: `string`
 
-Defined in: [squareup/src/core/errors.ts:85](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L85)
+Defined in: [squareup/src/core/errors.ts:90](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L90)
 
 ***
 

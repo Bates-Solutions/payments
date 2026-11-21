@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.5.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
 
 ***
 
@@ -36,7 +36,7 @@ true
 
 > **handlers**: [`WebhookHandlers`](../type-aliases/WebhookHandlers.md)
 
-Defined in: [squareup/src/server/types.ts:115](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L115)
+Defined in: [squareup/src/server/types.ts:122](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L122)
 
 Event handlers by type
 
@@ -50,7 +50,7 @@ Event handlers by type
 
 > `optional` **notificationUrl?**: `string`
 
-Defined in: [squareup/src/server/types.ts:117](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L117)
+Defined in: [squareup/src/server/types.ts:124](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L124)
 
 URL where webhooks are received (for signature verification)
 
@@ -78,11 +78,11 @@ Path to mount the webhook handler
 
 ### signatureKey
 
-> **signatureKey**: `string`
+> **signatureKey**: [`WebhookSignatureKey`](../type-aliases/WebhookSignatureKey.md)
 
-Defined in: [squareup/src/server/types.ts:113](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L113)
+Defined in: [squareup/src/server/types.ts:120](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L120)
 
-Square webhook signature key
+Square webhook signature key, or a list of keys during rotation
 
 #### Inherited from
 
@@ -94,7 +94,7 @@ Square webhook signature key
 
 > `optional` **throwOnInvalidSignature?**: `boolean`
 
-Defined in: [squareup/src/server/types.ts:125](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L125)
+Defined in: [squareup/src/server/types.ts:132](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L132)
 
 How `createWebhookProcessor` reports an invalid signature. When `true`
 (default) it throws (surfaced as `{ success: false, error }`); when `false`

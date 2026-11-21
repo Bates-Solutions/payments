@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.5.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
 
 ***
 
@@ -16,7 +16,7 @@ Configuration for Lambda webhook handling
 
 > `optional` **corsHeaders?**: `Record`\<`string`, `string`\>
 
-Defined in: [squareup/src/server/middleware/lambda.ts:78](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L78)
+Defined in: [squareup/src/server/middleware/lambda.ts:82](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L82)
 
 Custom CORS headers (merged with defaults)
 
@@ -36,19 +36,21 @@ Event handlers by type
 
 > `optional` **logger?**: `false` \| [`WebhookLogger`](WebhookLogger.md)
 
-Defined in: [squareup/src/server/middleware/lambda.ts:80](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L80)
+Defined in: [squareup/src/server/middleware/lambda.ts:84](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L84)
 
 Logger instance (defaults to console)
 
 ***
 
-### notificationUrl?
+### notificationUrl
 
-> `optional` **notificationUrl?**: `string`
+> **notificationUrl**: `string`
 
-Defined in: [squareup/src/server/middleware/lambda.ts:76](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L76)
+Defined in: [squareup/src/server/middleware/lambda.ts:80](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L80)
 
-URL where webhooks are received (for signature verification)
+The exact notification URL registered on the webhook subscription.
+Required: Square signs `notificationUrl + rawBody`, so without it no real
+delivery verifies.
 
 ***
 
@@ -56,7 +58,7 @@ URL where webhooks are received (for signature verification)
 
 > `optional` **onUnhandledEvent?**: (`event`, `context`) => `void` \| `Promise`\<`void`\>
 
-Defined in: [squareup/src/server/middleware/lambda.ts:82](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L82)
+Defined in: [squareup/src/server/middleware/lambda.ts:86](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L86)
 
 Callback for events with no registered handler
 
@@ -78,8 +80,8 @@ Callback for events with no registered handler
 
 ### signatureKey
 
-> **signatureKey**: `string`
+> **signatureKey**: [`WebhookSignatureKey`](../type-aliases/WebhookSignatureKey.md)
 
 Defined in: [squareup/src/server/middleware/lambda.ts:72](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L72)
 
-Square webhook signature key
+Square webhook signature key, or a list of keys during rotation

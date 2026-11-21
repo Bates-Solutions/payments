@@ -1,9 +1,26 @@
-import type { WebhookConfig, WebhookEvent } from './types.js';
+import type { WebhookConfig, WebhookEvent, WebhookSignatureKey } from './types.js';
 
 /**
  * Header name for Square webhook signature
  */
 export const SIGNATURE_HEADER = 'x-square-hmacsha256-signature';
+
+/**
+ * The non-empty keys of a {@link WebhookSignatureKey}, as a list.
+ *
+ * @internal
+ */
+export function signatureKeyList(signatureKey: WebhookSignatureKey): string[] {
+  // Untyped callers can pass anything (undefined from an unset env var, for
+  // example); only non-empty strings are keys, and anything else is no key.
+  const keys: readonly unknown[] =
+    typeof signatureKey === 'string'
+      ? [signatureKey]
+      : Array.isArray(signatureKey)
+        ? (signatureKey as readonly unknown[])
+        : [];
+  return keys.filter((key): key is string => typeof key === 'string' && key !== '');
+}
 
 /**
  * Parse a webhook request body into a typed event

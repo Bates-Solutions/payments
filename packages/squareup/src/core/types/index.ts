@@ -89,7 +89,37 @@ export interface CreatePaymentOptions {
   referenceId?: string;
   note?: string;
   autocomplete?: boolean;
-  idempotencyKey?: string;
+  /**
+   * Required. Square takes the payment once per key, so a retry with the same key cannot
+   * charge twice. Reuse a key only to resend the identical request (for example
+   * after a network error); see {@link createIdempotencyKey}. At most 45
+   * characters.
+   */
+  idempotencyKey: string;
+  /**
+   * Who started the payment. Set `customerInitiated: false` for a charge of a
+   * card on file that the buyer did not start (a merchant-initiated
+   * transaction, such as a renewal); `sellerKeyedIn: true` when the seller
+   * typed in the card details.
+   */
+  customerDetails?: {
+    customerInitiated?: boolean;
+    sellerKeyedIn?: boolean;
+  };
+  /** The buyer's email address, for the receipt and risk checks. */
+  buyerEmailAddress?: string;
+  /**
+   * Text added to the seller's name on the buyer's card statement (Square
+   * truncates the combined text to the card network's limit).
+   */
+  statementDescriptionIdentifier?: string;
+  /**
+   * A buyer verification token from the Web Payments SDK `verifyBuyer()`.
+   * Square has deprecated `verifyBuyer()` (`tokenize()` now runs buyer
+   * verification itself), so new integrations should leave this unset; it is
+   * kept for integrations that still send one.
+   */
+  verificationToken?: string;
 }
 
 /**
@@ -272,5 +302,132 @@ export interface SearchRecentOrdersOptions {
   since?: Date;
   until?: Date;
   limit?: number;
+  cursor?: string;
+}
+
+/**
+ * Re-export of the Square SDK `Address` type, used for card billing addresses.
+ */
+export type { Address } from 'square';
+
+/**
+ * A card on file, as the Cards API returns it.
+ */
+export interface Card {
+  id?: string;
+  /** For example `VISA`, `MASTERCARD` or `AMERICAN_EXPRESS`. */
+  cardBrand?: string;
+  last4?: string;
+  expMonth?: bigint | null;
+  expYear?: bigint | null;
+  cardholderName?: string | null;
+  billingAddress?: import('square').Address;
+  /** Identifies the card number across customers and merchants. */
+  fingerprint?: string;
+  customerId?: string | null;
+  merchantId?: string;
+  referenceId?: string | null;
+  /** `false` once the card is disabled; a disabled card cannot be charged. */
+  enabled?: boolean;
+  /** `CREDIT`, `DEBIT` or `UNKNOWN_CARD_TYPE`. */
+  cardType?: string;
+  /** `PREPAID`, `NOT_PREPAID` or `UNKNOWN_PREPAID_TYPE`. */
+  prepaidType?: string;
+  bin?: string;
+  createdAt?: string;
+  disabledAt?: string;
+  version?: bigint;
+}
+
+/**
+ * Options for `cards.create()`: store a card on file for a customer.
+ */
+export interface CreateCardOptions {
+  /**
+   * The card to store: a card nonce from the Web Payments SDK, or the ID of a
+   * payment made with the card.
+   */
+  sourceId: string;
+  /** The customer the card belongs to. */
+  customerId: string;
+  /**
+   * Required. Square stores the card once per key, so a retry with the same
+   * key cannot create a second card. At most 45 characters.
+   */
+  idempotencyKey: string;
+  cardholderName?: string;
+  billingAddress?: import('square').Address;
+  /** Your own ID for the card, for example a user ID. */
+  referenceId?: string;
+}
+
+/**
+ * Options for `cards.list()`.
+ */
+export interface ListCardsOptions {
+  /** Only the cards of this customer. By default, every card of the merchant. */
+  customerId?: string;
+  /** Include disabled cards. Default `false`. */
+  includeDisabled?: boolean;
+  /** The `cursor` from a previous page. */
+  cursor?: string;
+}
+
+/**
+ * A refund of a payment, as the Refunds API returns it.
+ */
+export interface PaymentRefund {
+  id: string;
+  /** `PENDING`, `COMPLETED`, `REJECTED` or `FAILED`. */
+  status?: string | null;
+  locationId?: string | null;
+  amountMoney: { amount?: bigint | null; currency?: string };
+  paymentId?: string | null;
+  orderId?: string | null;
+  reason?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+/**
+ * Options for `refunds.refundPayment()`.
+ */
+export interface RefundPaymentOptions {
+  /** The payment to refund. */
+  paymentId: string;
+  /**
+   * How much to refund, in the smallest currency unit (cents). At most the
+   * payment total minus what is already refunded. `currency` defaults to the
+   * client's `defaultCurrency` and must match the payment's.
+   */
+  amountMoney: { amount: number | bigint; currency?: CurrencyCode };
+  /**
+   * Required. Square refunds once per key, so a retry with the same key cannot
+   * refund twice. At most 45 characters.
+   */
+  idempotencyKey: string;
+  /** Why the payment is refunded, shown to the seller. */
+  reason?: string;
+}
+
+/**
+ * Options for `refunds.list()`.
+ */
+export interface ListRefundsOptions {
+  /** Only refunds created at or after this time (RFC 3339). Default: one year ago. */
+  beginTime?: string;
+  /** Only refunds created before this time (RFC 3339). Default: now. */
+  endTime?: string;
+  /** Order by creation time. Default `DESC` (newest first). */
+  sortOrder?: 'ASC' | 'DESC';
+  /** Only refunds at this location. Default: every location. */
+  locationId?: string;
+  /** Only refunds with this status, for example `COMPLETED`. */
+  status?: string;
+  /** Only refunds of payments with this source type, for example `CARD`. */
+  sourceType?: string;
+  /** Page size (Square caps it at 100). */
+  limit?: number;
+  /** The `cursor` from a previous page. */
   cursor?: string;
 }

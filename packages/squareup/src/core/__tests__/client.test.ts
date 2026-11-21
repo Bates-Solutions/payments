@@ -55,6 +55,29 @@ describe('SquareClient', () => {
       expect(typeof client.payments.list).toBe('function');
     });
 
+    it('should expose cards service', () => {
+      const client = createSquareClient({
+        accessToken: 'test-token',
+      });
+
+      expect(client.cards).toBeDefined();
+      expect(typeof client.cards.create).toBe('function');
+      expect(typeof client.cards.get).toBe('function');
+      expect(typeof client.cards.list).toBe('function');
+      expect(typeof client.cards.disable).toBe('function');
+    });
+
+    it('should expose refunds service', () => {
+      const client = createSquareClient({
+        accessToken: 'test-token',
+      });
+
+      expect(client.refunds).toBeDefined();
+      expect(typeof client.refunds.refundPayment).toBe('function');
+      expect(typeof client.refunds.get).toBe('function');
+      expect(typeof client.refunds.list).toBe('function');
+    });
+
     it('should expose orders service', () => {
       const client = createSquareClient({
         accessToken: 'test-token',

@@ -88,7 +88,7 @@ const cases: Case[] = [
   ['payments.get', (s) => s.payments.get('PAY')],
   ['payments.cancel', (s) => s.payments.cancel('PAY')],
   ['payments.list', (s) => s.payments.list()],
-  ['payments.create', (s) => s.payments.create({ sourceId: 'cnon:card-nonce-ok', amount: 100 })],
+  ['payments.create', (s) => s.payments.create({ sourceId: 'cnon:card-nonce-ok', amount: 100, idempotencyKey: 'test-key' })],
   ['payments.complete', (s) => s.payments.complete('PAY')],
   // subscriptions
   ['subscriptions.get', (s) => s.subscriptions.get('SUB')],

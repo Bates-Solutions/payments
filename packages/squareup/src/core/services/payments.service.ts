@@ -1,7 +1,11 @@
 import type { SquareClient } from 'square';
 import type { CreatePaymentOptions, CurrencyCode } from '../types/index.js';
-import { assertNoResponseErrors, parseSquareError, SquareValidationError } from '../errors.js';
-import { createIdempotencyKey } from '../utils.js';
+import {
+  assertNoResponseErrors,
+  parseSquareError,
+  requireNonEmpty,
+  SquareValidationError,
+} from '../errors.js';
 
 /**
  * Payment object type from Square API
@@ -31,6 +35,7 @@ export interface Payment {
  * const payment = await square.payments.create({
  *   sourceId: 'cnon:card-nonce-ok',
  *   amount: 1000, // $10.00 in cents
+ *   idempotencyKey: 'order-1042', // one key per order, so a retry can't charge twice
  * });
  * ```
  */
@@ -48,7 +53,7 @@ export class PaymentsService {
    * @returns Created payment
    *
    * @throws {SquarePaymentError} When payment processing fails
-   * @throws {SquareValidationError} When input validation fails
+   * @throws {SquareValidationError} When input validation fails, including a missing `idempotencyKey`
    *
    * @example
    * ```typescript
@@ -56,6 +61,7 @@ export class PaymentsService {
    * const payment = await square.payments.create({
    *   sourceId: 'cnon:card-nonce-ok',
    *   amount: 1000, // $10.00 in cents
+   *   idempotencyKey: 'order-1042', // one key per order, so a retry can't charge twice
    * });
    *
    * // Payment with all options
@@ -67,6 +73,18 @@ export class PaymentsService {
    *   orderId: 'ORDER_123',
    *   note: 'Payment for order #123',
    *   autocomplete: true,
+   *   buyerEmailAddress: 'buyer@example.com',
+   *   statementDescriptionIdentifier: 'ORDER123',
+   *   idempotencyKey: 'order-123-payment',
+   * });
+   *
+   * // Merchant-initiated charge of a card on file (e.g. a renewal)
+   * const payment = await square.payments.create({
+   *   sourceId: 'ccof:CARD_123',
+   *   customerId: 'CUST_123',
+   *   amount: 1000,
+   *   customerDetails: { customerInitiated: false, sellerKeyedIn: false },
+   *   idempotencyKey: 'renewal-SUB_123-2026-12',
    * });
    * ```
    */
@@ -78,6 +96,7 @@ export class PaymentsService {
     if (options.amount <= 0) {
       throw new SquareValidationError('amount must be greater than 0', 'amount');
     }
+    requireNonEmpty(options.idempotencyKey, 'idempotencyKey');
 
     const locationId = this.defaultLocationId;
     if (!locationId) {
@@ -92,7 +111,7 @@ export class PaymentsService {
     try {
       const response = await this.client.payments.create({
         sourceId: options.sourceId,
-        idempotencyKey: options.idempotencyKey ?? createIdempotencyKey(),
+        idempotencyKey: options.idempotencyKey,
         amountMoney: {
           amount: BigInt(options.amount),
           currency,
@@ -103,6 +122,10 @@ export class PaymentsService {
         note: options.note,
         autocomplete: options.autocomplete ?? true,
         locationId,
+        customerDetails: options.customerDetails,
+        buyerEmailAddress: options.buyerEmailAddress,
+        statementDescriptionIdentifier: options.statementDescriptionIdentifier,
+        verificationToken: options.verificationToken,
       });
       assertNoResponseErrors(response);
 

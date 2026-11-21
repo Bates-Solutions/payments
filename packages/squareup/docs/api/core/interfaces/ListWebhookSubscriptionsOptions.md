@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.5.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
 
 ***
 
@@ -40,6 +40,6 @@ Defined in: [squareup/src/core/services/webhook-subscriptions.service.ts:63](htt
 
 ### sortOrder?
 
-> `optional` **sortOrder?**: `"DESC"` \| `"ASC"`
+> `optional` **sortOrder?**: `"ASC"` \| `"DESC"`
 
 Defined in: [squareup/src/core/services/webhook-subscriptions.service.ts:62](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/webhook-subscriptions.service.ts#L62)

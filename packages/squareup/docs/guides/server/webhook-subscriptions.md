@@ -63,4 +63,4 @@ If the create-time `signatureKey` wasn't persisted, rotate to get a fresh one â€
 const { signatureKey } = await square.webhooks.subscriptions.rotateSignatureKey('wbhk_123');
 ```
 
-Rotating **invalidates the previous key**, so deploy the new one before Square signs the next delivery with it.
+Rotating **invalidates the previous key**. To avoid a gap, deploy the webhook handler with both keys, `signatureKey: [newKey, oldKey]` (see [Rotating the signature key](./webhooks.md#rotating-the-signature-key)), then remove the old key. A delivery that fails verification in between gets a 401, and Square retries it.

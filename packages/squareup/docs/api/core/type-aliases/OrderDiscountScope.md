@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.5.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
 
 ***
 
@@ -8,6 +8,6 @@
 
 > **OrderDiscountScope** = `"ORDER"` \| `"LINE_ITEM"`
 
-Defined in: [squareup/src/core/types/index.ts:131](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L131)
+Defined in: [squareup/src/core/types/index.ts:161](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L161)
 
 Whether a discount applies to the whole order or to specific line items.

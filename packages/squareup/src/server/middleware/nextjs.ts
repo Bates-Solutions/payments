@@ -4,7 +4,7 @@ import {
   processWebhookEvent,
   SIGNATURE_HEADER,
 } from '../webhook.js';
-import type { WebhookConfig, WebhookEvent } from '../types.js';
+import type { WebhookConfig, WebhookEvent, WebhookSignatureKey } from '../types.js';
 
 /**
  * Response type for Next.js webhook handlers
@@ -213,7 +213,7 @@ function getRawBody(req: NodeReadable): Promise<string> {
  * Use this for custom handling when you don't want automatic processing
  *
  * @param request - The incoming request
- * @param signatureKey - Your webhook signature key
+ * @param signatureKey - Your webhook signature key, or a list of keys during rotation
  * @param notificationUrl - Optional URL for signature verification
  * @returns Parsed webhook event
  * @throws Error if verification fails
@@ -241,7 +241,7 @@ function getRawBody(req: NodeReadable): Promise<string> {
  */
 export async function parseNextWebhook(
   request: Request,
-  signatureKey: string,
+  signatureKey: WebhookSignatureKey,
   notificationUrl?: string
 ): Promise<WebhookEvent> {
   const rawBody = await request.text();

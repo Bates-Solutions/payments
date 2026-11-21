@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.5.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **verifySignatureAsync**(`rawBody`, `signature`, `signatureKey`, `notificationUrl?`): `Promise`\<[`WebhookVerificationResult`](../interfaces/WebhookVerificationResult.md)\>
 
-Defined in: [squareup/src/server/webcrypto.ts:39](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/webcrypto.ts#L39)
+Defined in: [squareup/src/server/webcrypto.ts:40](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/webcrypto.ts#L40)
 
 Verify a Square webhook signature with WebCrypto (edge-safe, async).
 
@@ -37,9 +37,9 @@ The signature from the x-square-hmacsha256-signature header
 
 ### signatureKey
 
-`string`
+[`WebhookSignatureKey`](../type-aliases/WebhookSignatureKey.md)
 
-Your webhook signature key from Square
+Your webhook signature key from Square, or a list of keys while you rotate it (any match is valid)
 
 ### notificationUrl?
 

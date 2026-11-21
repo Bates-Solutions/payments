@@ -3,9 +3,11 @@ import { createHmac } from 'crypto';
 import { createLambdaWebhookHandler } from '../lambda.js';
 import type { LambdaProxyEvent } from '../lambda.js';
 
-function generateSignature(body: string, key: string, url?: string): string {
-  const stringToSign = url ? url + body : body;
-  return createHmac('sha256', key).update(stringToSign).digest('base64');
+const notificationUrl = 'https://example.com/webhook';
+
+// Square signs notificationUrl + body; pass url '' to sign the body alone.
+function generateSignature(body: string, key: string, url = notificationUrl): string {
+  return createHmac('sha256', key).update(url + body).digest('base64');
 }
 
 const signatureKey = 'test-key';
@@ -38,7 +40,7 @@ function createEvent(overrides: Partial<LambdaProxyEvent> = {}): LambdaProxyEven
 
 describe('createLambdaWebhookHandler', () => {
   it('should handle OPTIONS preflight', async () => {
-    const handler = createLambdaWebhookHandler({ signatureKey, handlers: {} });
+    const handler = createLambdaWebhookHandler({ signatureKey, notificationUrl, handlers: {} });
     const result = await handler(createEvent({ httpMethod: 'OPTIONS', body: null }));
 
     expect(result.statusCode).toBe(204);
@@ -46,7 +48,7 @@ describe('createLambdaWebhookHandler', () => {
   });
 
   it('should return 401 for missing signature', async () => {
-    const handler = createLambdaWebhookHandler({ signatureKey, handlers: {} });
+    const handler = createLambdaWebhookHandler({ signatureKey, notificationUrl, handlers: {} });
     const result = await handler(createEvent({ headers: {} }));
 
     expect(result.statusCode).toBe(401);
@@ -54,7 +56,7 @@ describe('createLambdaWebhookHandler', () => {
   });
 
   it('should return 400 for missing body', async () => {
-    const handler = createLambdaWebhookHandler({ signatureKey, handlers: {} });
+    const handler = createLambdaWebhookHandler({ signatureKey, notificationUrl, handlers: {} });
     const result = await handler(createEvent({ body: null }));
 
     expect(result.statusCode).toBe(400);
@@ -62,7 +64,7 @@ describe('createLambdaWebhookHandler', () => {
   });
 
   it('should handle null headers gracefully', async () => {
-    const handler = createLambdaWebhookHandler({ signatureKey, handlers: {} });
+    const handler = createLambdaWebhookHandler({ signatureKey, notificationUrl, handlers: {} });
     const result = await handler({ httpMethod: 'POST', headers: null, body: rawBody });
 
     expect(result.statusCode).toBe(401);
@@ -71,7 +73,7 @@ describe('createLambdaWebhookHandler', () => {
 
   it('should return 400 for malformed JSON body', async () => {
     const badBody = 'not-json';
-    const handler = createLambdaWebhookHandler({ signatureKey, handlers: {} });
+    const handler = createLambdaWebhookHandler({ signatureKey, notificationUrl, handlers: {} });
     const result = await handler(createEvent({
       body: badBody,
       headers: {
@@ -84,7 +86,7 @@ describe('createLambdaWebhookHandler', () => {
   });
 
   it('should return 401 for invalid signature', async () => {
-    const handler = createLambdaWebhookHandler({ signatureKey, handlers: {} });
+    const handler = createLambdaWebhookHandler({ signatureKey, notificationUrl, handlers: {} });
     const result = await handler(createEvent({
       headers: { 'x-square-hmacsha256-signature': 'invalid' },
     }));
@@ -97,6 +99,7 @@ describe('createLambdaWebhookHandler', () => {
     const paymentHandler = vi.fn();
     const handler = createLambdaWebhookHandler({
       signatureKey,
+      notificationUrl,
       handlers: { 'payment.completed': paymentHandler },
     });
 
@@ -110,7 +113,7 @@ describe('createLambdaWebhookHandler', () => {
   });
 
   it('should extract entity IDs into response', async () => {
-    const handler = createLambdaWebhookHandler({ signatureKey, handlers: {} });
+    const handler = createLambdaWebhookHandler({ signatureKey, notificationUrl, handlers: {} });
     const result = await handler(createEvent());
 
     const body = JSON.parse(result.body);
@@ -123,6 +126,7 @@ describe('createLambdaWebhookHandler', () => {
     const paymentHandler = vi.fn();
     const handler = createLambdaWebhookHandler({
       signatureKey,
+      notificationUrl,
       handlers: { 'payment.completed': paymentHandler },
     });
 
@@ -138,9 +142,10 @@ describe('createLambdaWebhookHandler', () => {
     );
   });
 
-  it('should return 200 on handler errors', async () => {
+  it('should return 500 when a handler throws, so Square retries', async () => {
     const handler = createLambdaWebhookHandler({
       signatureKey,
+      notificationUrl,
       handlers: {
         'payment.completed': () => { throw new Error('Handler failed'); },
       },
@@ -148,15 +153,30 @@ describe('createLambdaWebhookHandler', () => {
 
     const result = await handler(createEvent());
 
-    expect(result.statusCode).toBe(200);
+    expect(result.statusCode).toBe(500);
     const body = JSON.parse(result.body);
     expect(body.success).toBe(false);
     expect(body.error).toBe('Handler failed');
   });
 
+  it('should return 500 when onUnhandledEvent throws', async () => {
+    const handler = createLambdaWebhookHandler({
+      signatureKey,
+      notificationUrl,
+      handlers: {},
+      logger: false,
+      onUnhandledEvent: () => Promise.reject(new Error('queue down')),
+    });
+
+    const result = await handler(createEvent());
+
+    expect(result.statusCode).toBe(500);
+    expect(JSON.parse(result.body).error).toBe('queue down');
+  });
+
   it('should handle base64 encoded body', async () => {
     const base64Body = Buffer.from(rawBody).toString('base64');
-    const handler = createLambdaWebhookHandler({ signatureKey, handlers: {} });
+    const handler = createLambdaWebhookHandler({ signatureKey, notificationUrl, handlers: {} });
     const result = await handler(createEvent({
       body: base64Body,
       isBase64Encoded: true,
@@ -170,7 +190,7 @@ describe('createLambdaWebhookHandler', () => {
   });
 
   it('should normalize header case', async () => {
-    const handler = createLambdaWebhookHandler({ signatureKey, handlers: {} });
+    const handler = createLambdaWebhookHandler({ signatureKey, notificationUrl, handlers: {} });
     const result = await handler(createEvent({
       headers: {
         'X-Square-Hmacsha256-Signature': generateSignature(rawBody, signatureKey),
@@ -183,6 +203,7 @@ describe('createLambdaWebhookHandler', () => {
   it('should use custom CORS headers', async () => {
     const handler = createLambdaWebhookHandler({
       signatureKey,
+      notificationUrl,
       handlers: {},
       corsHeaders: { 'Access-Control-Allow-Origin': 'https://example.com' },
     });
@@ -192,31 +213,33 @@ describe('createLambdaWebhookHandler', () => {
     expect(result.headers['Access-Control-Allow-Origin']).toBe('https://example.com');
   });
 
-  it('should support notification URL for verification', async () => {
-    const notificationUrl = 'https://example.com/webhook';
-    const handler = createLambdaWebhookHandler({
-      signatureKey,
-      handlers: {},
-      notificationUrl,
-    });
+  it('should verify against notificationUrl + body', async () => {
+    const handler = createLambdaWebhookHandler({ signatureKey, notificationUrl, handlers: {} });
 
-    // Signature without URL should fail
-    const result1 = await handler(createEvent());
+    // A signature over the body alone (no URL) fails
+    const result1 = await handler(createEvent({
+      headers: { 'x-square-hmacsha256-signature': generateSignature(rawBody, signatureKey, '') },
+    }));
     expect(result1.statusCode).toBe(401);
 
-    // Signature with URL should succeed
-    const result2 = await handler(createEvent({
-      headers: {
-        'x-square-hmacsha256-signature': generateSignature(rawBody, signatureKey, notificationUrl),
-      },
-    }));
+    // A signature over notificationUrl + body succeeds
+    const result2 = await handler(createEvent());
     expect(result2.statusCode).toBe(200);
+  });
+
+  it.each([undefined, ''])('should throw at creation when notificationUrl is %j', (url) => {
+    const config = { signatureKey, handlers: {}, notificationUrl: url };
+
+    expect(() =>
+      createLambdaWebhookHandler(config as unknown as Parameters<typeof createLambdaWebhookHandler>[0])
+    ).toThrow('notificationUrl is required');
   });
 
   it('should log received events', async () => {
     const logger = { info: vi.fn(), error: vi.fn() };
     const handler = createLambdaWebhookHandler({
       signatureKey,
+      notificationUrl,
       handlers: { 'payment.completed': vi.fn() },
       logger,
     });
@@ -233,6 +256,7 @@ describe('createLambdaWebhookHandler', () => {
     const logger = { info: vi.fn(), error: vi.fn() };
     const handler = createLambdaWebhookHandler({
       signatureKey,
+      notificationUrl,
       handlers: {},
       logger,
     });
@@ -249,6 +273,7 @@ describe('createLambdaWebhookHandler', () => {
     const onUnhandled = vi.fn();
     const handler = createLambdaWebhookHandler({
       signatureKey,
+      notificationUrl,
       handlers: {},
       onUnhandledEvent: onUnhandled,
     });
@@ -265,6 +290,7 @@ describe('createLambdaWebhookHandler', () => {
     const onUnhandled = vi.fn();
     const handler = createLambdaWebhookHandler({
       signatureKey,
+      notificationUrl,
       handlers: { 'payment.completed': vi.fn() },
       onUnhandledEvent: onUnhandled,
     });
@@ -278,6 +304,7 @@ describe('createLambdaWebhookHandler', () => {
     const logger = { info: vi.fn(), error: vi.fn() };
     const handler = createLambdaWebhookHandler({
       signatureKey,
+      notificationUrl,
       handlers: { 'payment.completed': () => { throw new Error('boom'); } },
       logger,
     });
@@ -295,6 +322,7 @@ describe('createLambdaWebhookHandler', () => {
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     const handler = createLambdaWebhookHandler({
       signatureKey,
+      notificationUrl,
       handlers: { 'payment.completed': () => { throw new Error('test'); } },
     });
 
@@ -316,6 +344,7 @@ describe('createLambdaWebhookHandler', () => {
     const infoSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
     const handler = createLambdaWebhookHandler({
       signatureKey,
+      notificationUrl,
       handlers: {},
     });
 
@@ -333,6 +362,7 @@ describe('createLambdaWebhookHandler', () => {
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     const handler = createLambdaWebhookHandler({
       signatureKey,
+      notificationUrl,
       handlers: {},
       logger: false,
     });
@@ -350,13 +380,14 @@ describe('createLambdaWebhookHandler', () => {
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     const handler = createLambdaWebhookHandler({
       signatureKey,
+      notificationUrl,
       handlers: { 'payment.completed': () => { throw new Error('boom'); } },
       logger: false,
     });
 
     const result = await handler(createEvent());
 
-    expect(result.statusCode).toBe(200);
+    expect(result.statusCode).toBe(500);
     expect(JSON.parse(result.body).success).toBe(false);
     expect(infoSpy).not.toHaveBeenCalled();
     expect(errorSpy).not.toHaveBeenCalled();

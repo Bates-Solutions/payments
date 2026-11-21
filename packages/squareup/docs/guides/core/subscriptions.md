@@ -32,6 +32,7 @@ const subscription = await square.subscriptions.create({
   planVariationId: 'PLAN_VAR_MONTHLY_30',
   startDate: '2026-05-01',
   cardId: 'CARD_ON_FILE_ID',
+  idempotencyKey: 'subscribe-CUST_123-PLAN_VAR_MONTHLY_30', // one key per signup
 });
 ```
 
@@ -66,6 +67,7 @@ const subscription = await square.subscriptions.create({
   phases: [{ orderTemplateId: template.id! }],
   startDate: '2026-05-01',
   cardId: 'CARD_RETAILER_42',
+  idempotencyKey: 'subscribe-CUST_RETAILER_42',
 });
 ```
 
@@ -83,6 +85,7 @@ await square.subscriptions.create({
     { ordinal: 1, orderTemplateId: 'TEMPLATE_REGULAR' },
   ],
   startDate: '2026-05-01',
+  idempotencyKey: 'subscribe-CUST_123-intro',
 });
 ```
 
@@ -97,6 +100,7 @@ await square.subscriptions.create({
   customerId: 'CUST_123',
   planVariationId: 'PLAN_VAR_RELATIVE_NET30',
   phases: [{ orderTemplateId: template.id! }],
+  idempotencyKey: 'subscribe-CUST_123-net30',
 });
 ```
 
@@ -112,12 +116,18 @@ console.log('Charged through:', subscription.chargedThroughDate);
 ## Updating a Subscription
 
 ```typescript
+// Only the fields you set change. Square's UpdateSubscription takes no
+// idempotency key, so update takes none.
 const updated = await square.subscriptions.update('SUB_123', {
-  priceOverride: 1800,  // cents
-  cardId: 'NEW_CARD_ID',
+  priceOverrideMoney: { amount: 1800, currency: 'USD' }, // cents; currency defaults to the client's
+  cardId: 'ccof:NEW_CARD_ID', // e.g. from cards.create()
   taxPercentage: '8.5',
 });
 ```
+
+`priceOverrideMoney` allows `amount: 0` (a free subscription). The older
+`priceOverride` (cents in the client's `defaultCurrency`) still works, but
+ignores `0`; set one or the other, not both.
 
 ## Pausing and Resuming
 
@@ -192,6 +202,7 @@ try {
   await square.subscriptions.create({
     customerId: 'CUST_123',
     // missing both planVariationId and phases
+    idempotencyKey: 'subscribe-CUST_123',
   });
 } catch (error) {
   if (error instanceof SquareValidationError) {
@@ -205,7 +216,7 @@ try {
 ## Best Practices
 
 1. **One of `planVariationId` or `phases[]` is required** — pass both only for `RELATIVE`-priced plans.
-2. **Use stable idempotency keys** — `createIdempotencyKey()` generates a UUID by default; override with a deterministic key (e.g. `sub-${customerId}-${yyyyMm}`) if retries might fire twice.
+2. **Use stable idempotency keys**: `subscriptions.create` requires one. Derive it from the signup (e.g. `sub-${customerId}-${planVariationId}`) so a retry can not create a second subscription. `createIdempotencyKey()` makes a random key, which is safe only if you store it and reuse it on the retry.
 3. **Card on file before creating** — subscriptions need a saved card. Create one via the raw SDK (`square.sdk.cards.create`) and pass its `id` as `cardId`.
 4. **Template the customer** — set `customerId` on the order template too. Pricing rules gated by customer group only fire when the subscription customer matches.
 5. **Keep templates small** — one template per retailer is the typical pattern; more flexible than one giant shared template.

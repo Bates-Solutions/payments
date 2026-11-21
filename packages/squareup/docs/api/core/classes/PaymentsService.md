@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.5.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Class: PaymentsService
 
-Defined in: [squareup/src/core/services/payments.service.ts:37](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/payments.service.ts#L37)
+Defined in: [squareup/src/core/services/payments.service.ts:42](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/payments.service.ts#L42)
 
 Simplified payments service
 
@@ -16,6 +16,7 @@ Simplified payments service
 const payment = await square.payments.create({
   sourceId: 'cnon:card-nonce-ok',
   amount: 1000, // $10.00 in cents
+  idempotencyKey: 'order-1042', // one key per order, so a retry can't charge twice
 });
 ```
 
@@ -25,7 +26,7 @@ const payment = await square.payments.create({
 
 > **new PaymentsService**(`client`, `defaultLocationId?`, `defaultCurrency?`): `PaymentsService`
 
-Defined in: [squareup/src/core/services/payments.service.ts:38](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/payments.service.ts#L38)
+Defined in: [squareup/src/core/services/payments.service.ts:43](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/payments.service.ts#L43)
 
 #### Parameters
 
@@ -51,7 +52,7 @@ Defined in: [squareup/src/core/services/payments.service.ts:38](https://github.c
 
 > **cancel**(`paymentId`): `Promise`\<`Payment`\>
 
-Defined in: [squareup/src/core/services/payments.service.ts:156](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/payments.service.ts#L156)
+Defined in: [squareup/src/core/services/payments.service.ts:179](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/payments.service.ts#L179)
 
 Cancel a payment
 
@@ -81,7 +82,7 @@ const payment = await square.payments.cancel('PAYMENT_123');
 
 > **complete**(`paymentId`): `Promise`\<`Payment`\>
 
-Defined in: [squareup/src/core/services/payments.service.ts:182](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/payments.service.ts#L182)
+Defined in: [squareup/src/core/services/payments.service.ts:205](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/payments.service.ts#L205)
 
 Complete a payment (for payments created with autocomplete: false)
 
@@ -111,7 +112,7 @@ const payment = await square.payments.complete('PAYMENT_123');
 
 > **create**(`options`): `Promise`\<`Payment`\>
 
-Defined in: [squareup/src/core/services/payments.service.ts:73](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/payments.service.ts#L73)
+Defined in: [squareup/src/core/services/payments.service.ts:91](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/payments.service.ts#L91)
 
 Create a payment
 
@@ -135,7 +136,7 @@ When payment processing fails
 
 #### Throws
 
-When input validation fails
+When input validation fails, including a missing `idempotencyKey`
 
 #### Example
 
@@ -144,6 +145,7 @@ When input validation fails
 const payment = await square.payments.create({
   sourceId: 'cnon:card-nonce-ok',
   amount: 1000, // $10.00 in cents
+  idempotencyKey: 'order-1042', // one key per order, so a retry can't charge twice
 });
 
 // Payment with all options
@@ -155,6 +157,18 @@ const payment = await square.payments.create({
   orderId: 'ORDER_123',
   note: 'Payment for order #123',
   autocomplete: true,
+  buyerEmailAddress: 'buyer@example.com',
+  statementDescriptionIdentifier: 'ORDER123',
+  idempotencyKey: 'order-123-payment',
+});
+
+// Merchant-initiated charge of a card on file (e.g. a renewal)
+const payment = await square.payments.create({
+  sourceId: 'ccof:CARD_123',
+  customerId: 'CUST_123',
+  amount: 1000,
+  customerDetails: { customerInitiated: false, sellerKeyedIn: false },
+  idempotencyKey: 'renewal-SUB_123-2026-12',
 });
 ```
 
@@ -164,7 +178,7 @@ const payment = await square.payments.create({
 
 > **get**(`paymentId`): `Promise`\<`Payment`\>
 
-Defined in: [squareup/src/core/services/payments.service.ts:130](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/payments.service.ts#L130)
+Defined in: [squareup/src/core/services/payments.service.ts:153](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/payments.service.ts#L153)
 
 Get a payment by ID
 
@@ -194,7 +208,7 @@ const payment = await square.payments.get('PAYMENT_123');
 
 > **list**(`options?`): `Promise`\<`Payment`[]\>
 
-Defined in: [squareup/src/core/services/payments.service.ts:210](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/payments.service.ts#L210)
+Defined in: [squareup/src/core/services/payments.service.ts:233](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/payments.service.ts#L233)
 
 List payments with optional filters
 

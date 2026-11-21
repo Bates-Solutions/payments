@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.5.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: OrderPricingOptions
 
-Defined in: [squareup/src/core/types/index.ts:99](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L99)
+Defined in: [squareup/src/core/types/index.ts:129](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L129)
 
 Pricing options for an order. Controls automatic application of discounts
 (pricing rules) and taxes.
@@ -17,7 +17,7 @@ Pricing options for an order. Controls automatic application of discounts
 
 > `optional` **autoApplyDiscounts?**: `boolean`
 
-Defined in: [squareup/src/core/types/index.ts:111](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L111)
+Defined in: [squareup/src/core/types/index.ts:141](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L141)
 
 Apply catalog pricing rules (incl. customer-group-gated wholesale rules)
 automatically at calculation time.
@@ -35,6 +35,6 @@ auto-application.
 
 > `optional` **autoApplyTaxes?**: `boolean`
 
-Defined in: [squareup/src/core/types/index.ts:115](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L115)
+Defined in: [squareup/src/core/types/index.ts:145](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/types/index.ts#L145)
 
 Apply all enabled taxes at the location automatically.

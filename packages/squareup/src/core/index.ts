@@ -20,6 +20,7 @@
  *   sourceId: 'cnon:card-nonce',
  *   amount: 1000,
  *   currency: 'USD',
+ *   idempotencyKey: 'order-1042', // one key per order, so a retry can't charge twice
  * });
  * ```
  *
@@ -42,6 +43,8 @@ export type {
 
 // Services
 export { PaymentsService } from './services/payments.service.js';
+export { CardsService } from './services/cards.service.js';
+export { RefundsService } from './services/refunds.service.js';
 export { OrdersService } from './services/orders.service.js';
 export { CustomersService } from './services/customers.service.js';
 export type {
@@ -68,6 +71,7 @@ export type {
   SubscriptionPlan,
   SubscriptionPhaseInput,
   CreateSubscriptionOptions,
+  UpdateSubscriptionOptions,
 } from './services/subscriptions.service.js';
 export { InvoicesService } from './services/invoices.service.js';
 export { LoyaltyService } from './services/loyalty.service.js';
@@ -119,8 +123,9 @@ export {
   SquareValidationError,
   SquareNetworkError,
   isRetryableSquareError,
+  declineReason,
 } from './errors.js';
-export type { SquareErrorCode } from './errors.js';
+export type { DeclineReason, SquareErrorCode } from './errors.js';
 // Core's base class, so `instanceof PaymentsError` works without installing core.
 export { PaymentsError } from '@bates-solutions/payments-core/errors';
 
