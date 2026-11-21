@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1](https://github.com/Bates-Solutions/payments/compare/stripe-v2.1.0...stripe-v2.1.1) (2026-11-21)
+
+
+### Documentation
+
+* **stripe:** document every export on JSR, and link the JSR API reference ([3b1a36a](https://github.com/Bates-Solutions/payments/commit/3b1a36aba70a61f265ba739ccc8b9b5e0d299ee4))
+
 ## [2.1.0](https://github.com/Bates-Solutions/payments/compare/stripe-v2.0.0...stripe-v2.1.0) (2026-11-20)
 
 
