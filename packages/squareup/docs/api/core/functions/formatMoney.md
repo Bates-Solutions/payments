@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v3.0.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v3.0.1**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **formatMoney**(`cents`, `currency?`, `locale?`): `string`
 
-Defined in: [squareup/src/core/utils.ts:79](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/utils.ts#L79)
+Defined in: [squareup/src/core/utils.ts:95](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/utils.ts#L95)
 
 Format money for display
 
@@ -37,6 +37,10 @@ Locale for formatting (default: en-US)
 `string`
 
 Formatted currency string
+
+## Throws
+
+When `currency` is not a string, or is empty or only whitespace
 
 ## Example
 

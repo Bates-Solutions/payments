@@ -1,5 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { toCents, fromCents, formatMoney, createIdempotencyKey, toSquareMoney } from '../utils.js';
+import { SquareValidationError } from '../errors.js';
+import type { CurrencyCode } from '../types/index.js';
 
 describe('Money Utilities', () => {
   describe('toCents', () => {
@@ -148,5 +150,56 @@ describe('toSquareMoney', () => {
       amount: BigInt(1000),
       currency: 'JPY',
     });
+  });
+});
+
+describe('currency rules from payments-core', () => {
+  it('keeps JPY zero-decimal and the other supported currencies two-decimal', () => {
+    expect(toCents(1000, 'JPY')).toBe(1000n);
+    expect(fromCents(1000n, 'JPY')).toBe(1000);
+    for (const currency of ['USD', 'CAD', 'GBP', 'EUR', 'AUD'] as const) {
+      expect(toCents(10.5, currency)).toBe(1050n);
+      expect(fromCents(1050n, currency)).toBe(10.5);
+    }
+  });
+
+  it('matches the currency in any case', () => {
+    expect(toCents(1000, 'jpy' as CurrencyCode)).toBe(1000n);
+    expect(fromCents(5124n, 'jpy' as CurrencyCode)).toBe(5124);
+    expect(fromCents(1050n, 'usd' as CurrencyCode)).toBe(10.5);
+  });
+
+  it('uses the ISO exponent for codes outside CurrencyCode', () => {
+    expect(toCents(5000, 'KRW' as CurrencyCode)).toBe(5000n);
+    expect(toCents(5.124, 'KWD' as CurrencyCode)).toBe(5124n);
+    expect(fromCents(5124n, 'KWD' as CurrencyCode)).toBe(5.124);
+  });
+
+  it('uses the USD default when the currency is undefined', () => {
+    expect(toCents(1, undefined)).toBe(100n);
+    expect(fromCents(100n, undefined)).toBe(1);
+    expect(formatMoney(100n, undefined)).toBe('$1.00');
+  });
+
+  const convert: [string, (currency: CurrencyCode) => unknown][] = [
+    ['toCents', (currency) => toCents(1, currency)],
+    ['fromCents', (currency) => fromCents(100n, currency)],
+    ['formatMoney', (currency) => formatMoney(100n, currency)],
+  ];
+  it.each(
+    convert.flatMap(([name, call]) => [
+      [name, null, call],
+      [name, '', call],
+    ])
+  )('%s throws SquareValidationError for a currency of %o', (_name, currency, call) => {
+    const error: unknown = (() => {
+      try {
+        call(currency as unknown as CurrencyCode);
+      } catch (e) {
+        return e;
+      }
+    })();
+    expect(error).toBeInstanceOf(SquareValidationError);
+    expect((error as SquareValidationError).field).toBe('currency');
   });
 });

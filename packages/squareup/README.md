@@ -317,7 +317,10 @@ import { toCents, fromCents, formatMoney } from '@bates-solutions/squareup';
 toCents(10.99);           // 1099
 fromCents(1099);          // 10.99
 formatMoney(1099, 'USD'); // "$10.99"
+toCents(1000, 'JPY');     // 1000n (JPY has no minor unit)
 ```
+
+`toCents` and `fromCents` take the number of decimal places from `minorUnitExponent` in `@bates-solutions/payments-core`: none for `JPY`, two for the other supported currencies. Codes match in any case, and a `null` or empty currency throws `SquareValidationError`.
 
 ## Upgrading from 2.x to 3.0
 

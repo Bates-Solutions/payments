@@ -9,7 +9,8 @@
 Edge-safe primitives shared by `@bates-solutions/squareup`,
 `@bates-solutions/stripe` and `@bates-solutions/clover`. Everything here runs
 on Node 22+, Deno, Bun and Workers: no `node:*` imports, `Buffer` or
-`process`. Each area is also its own entry point (`./crypto`, `./errors`).
+`process`. Each area is also its own entry point (`./crypto`, `./currency`,
+`./errors`).
 
 ## Classes
 
@@ -22,6 +23,7 @@ on Node 22+, Deno, Bun and Workers: no `node:*` imports, `Buffer` or
 
 ## Type Aliases
 
+- [MinorUnitExponent](type-aliases/MinorUnitExponent.md)
 - [TimestampedHmacFailure](type-aliases/TimestampedHmacFailure.md)
 - [TimestampedHmacResult](type-aliases/TimestampedHmacResult.md)
 
@@ -30,6 +32,7 @@ on Node 22+, Deno, Bun and Workers: no `node:*` imports, `Buffer` or
 - [createIdempotencyKey](functions/createIdempotencyKey.md)
 - [fromBase64](functions/fromBase64.md)
 - [hmacSha256](functions/hmacSha256.md)
+- [minorUnitExponent](functions/minorUnitExponent.md)
 - [parseTimestampedSignatureHeader](functions/parseTimestampedSignatureHeader.md)
 - [requireNonEmpty](functions/requireNonEmpty.md)
 - [timingSafeEqual](functions/timingSafeEqual.md)

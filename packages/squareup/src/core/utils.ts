@@ -1,4 +1,6 @@
 import { createHash } from 'node:crypto';
+import { minorUnitExponent } from '@bates-solutions/payments-core/currency';
+import { SquareValidationError } from './errors.js';
 import type { CurrencyCode } from './types/index.js';
 
 /**
@@ -10,23 +12,31 @@ export interface Money {
 }
 
 /**
- * Zero-decimal currencies that don't use fractional units
- */
-const ZERO_DECIMAL_CURRENCIES: CurrencyCode[] = ['JPY'];
-
-/**
- * Get the multiplier for a currency
+ * Minor units per major unit for a currency, from `minorUnitExponent` in
+ * payments-core: 1 for `JPY`, 100 for the other supported currencies. Matching
+ * is case-insensitive, and an untyped caller's other ISO 4217 code gets its own
+ * exponent (1000 for `KWD`, 1 for `KRW`).
+ *
+ * @throws {SquareValidationError} When `currency` is not a non-empty string
  */
 function getCurrencyMultiplier(currency: CurrencyCode): number {
-  return ZERO_DECIMAL_CURRENCIES.includes(currency) ? 1 : 100;
+  if (typeof currency !== 'string' || currency.trim() === '') {
+    throw new SquareValidationError('currency must be a non-empty string', 'currency');
+  }
+  return 10 ** minorUnitExponent(currency);
 }
 
 /**
  * Convert a dollar amount to cents (smallest currency unit)
  *
+ * The currency's minor unit comes from ISO 4217 through `minorUnitExponent`
+ * in payments-core, matched in any case. A code outside `CurrencyCode` gets
+ * its own exponent (1000 for `KWD`, 1 for `KRW`).
+ *
  * @param amount - Dollar amount (e.g., 10.50)
  * @param currency - Currency code (default: USD)
  * @returns Amount in smallest currency unit (e.g., 1050 for $10.50 USD)
+ * @throws {SquareValidationError} When `currency` is not a string, or is empty or only whitespace
  *
  * @example
  * ```typescript
@@ -44,9 +54,14 @@ export function toCents(amount: number, currency: CurrencyCode = 'USD'): bigint 
 /**
  * Convert cents (smallest currency unit) to dollar amount
  *
+ * The currency's minor unit comes from ISO 4217 through `minorUnitExponent`
+ * in payments-core, matched in any case. A code outside `CurrencyCode` gets
+ * its own exponent (1000 for `KWD`, 1 for `KRW`).
+ *
  * @param cents - Amount in smallest currency unit
  * @param currency - Currency code (default: USD)
  * @returns Dollar amount
+ * @throws {SquareValidationError} When `currency` is not a string, or is empty or only whitespace
  *
  * @example
  * ```typescript
@@ -68,6 +83,7 @@ export function fromCents(cents: bigint | number, currency: CurrencyCode = 'USD'
  * @param currency - Currency code (default: USD)
  * @param locale - Locale for formatting (default: en-US)
  * @returns Formatted currency string
+ * @throws {SquareValidationError} When `currency` is not a string, or is empty or only whitespace
  *
  * @example
  * ```typescript
