@@ -95,16 +95,20 @@ describe('RefundsService', () => {
       expect(client.refunds.refundPayment).not.toHaveBeenCalled();
     });
 
-    it.each([0, -100, BigInt(0)])('should reject a non-positive amount (%s)', async (amount) => {
-      const client = createMockClient();
-      const service = new RefundsService(client);
+    it.each([0, -100, BigInt(0), 4.5, Number.NaN])(
+      'should reject an amount that is not a positive whole number (%s)',
+      async (amount) => {
+        const client = createMockClient();
+        const service = new RefundsService(client);
 
-      const error: unknown = await service
-        .refundPayment({ ...validOptions, amountMoney: { amount } })
-        .catch((e: unknown) => e);
-      expect(error).toBeInstanceOf(SquareValidationError);
-      expect((error as SquareValidationError).field).toBe('amountMoney.amount');
-    });
+        const error: unknown = await service
+          .refundPayment({ ...validOptions, amountMoney: { amount } })
+          .catch((e: unknown) => e);
+        expect(error).toBeInstanceOf(SquareValidationError);
+        expect((error as SquareValidationError).field).toBe('amountMoney.amount');
+        expect(client.refunds.refundPayment).not.toHaveBeenCalled();
+      }
+    );
 
     it('should throw when no refund is returned', async () => {
       const client = createMockClient({ refundPayment: vi.fn().mockResolvedValue({}) });

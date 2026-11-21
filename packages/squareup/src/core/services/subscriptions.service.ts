@@ -156,6 +156,19 @@ export interface UpdateSubscriptionOptions {
 }
 
 /**
+ * Throw unless `amount` is a whole, non-negative number of minor units.
+ */
+function requireMinorUnits(amount: number | bigint, field: string): void {
+  const ok = typeof amount === 'bigint' ? amount >= 0n : Number.isSafeInteger(amount) && amount >= 0;
+  if (!ok) {
+    throw new SquareValidationError(
+      `${field} must be a whole, non-negative amount in the smallest currency unit`,
+      field
+    );
+  }
+}
+
+/**
  * Subscriptions service for managing Square subscriptions
  *
  * @example
@@ -298,7 +311,7 @@ export class SubscriptionsService {
    * @param options - Update options
    * @returns Updated subscription
    *
-   * @throws {SquareValidationError} When both price override fields are set, or the amount is negative
+   * @throws {SquareValidationError} When both price override fields are set, or an amount is negative or not a whole number
    *
    * @example
    * ```typescript
@@ -319,11 +332,11 @@ export class SubscriptionsService {
         'priceOverrideMoney'
       );
     }
-    if (options.priceOverrideMoney !== undefined && options.priceOverrideMoney.amount < 0) {
-      throw new SquareValidationError(
-        'priceOverrideMoney.amount must not be negative',
-        'priceOverrideMoney.amount'
-      );
+    if (options.priceOverrideMoney !== undefined) {
+      requireMinorUnits(options.priceOverrideMoney.amount, 'priceOverrideMoney.amount');
+    }
+    if (options.priceOverride !== undefined) {
+      requireMinorUnits(options.priceOverride, 'priceOverride');
     }
 
     const priceOverrideMoney =

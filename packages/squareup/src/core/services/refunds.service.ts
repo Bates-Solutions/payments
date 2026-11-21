@@ -54,9 +54,10 @@ export class RefundsService {
   async refundPayment(options: RefundPaymentOptions): Promise<PaymentRefund> {
     requireNonEmpty(options.paymentId, 'paymentId');
     requireNonEmpty(options.idempotencyKey, 'idempotencyKey');
-    if (!(options.amountMoney.amount > 0)) {
+    const { amount } = options.amountMoney;
+    if (typeof amount === 'bigint' ? amount <= 0n : !(Number.isSafeInteger(amount) && amount > 0)) {
       throw new SquareValidationError(
-        'amountMoney.amount must be greater than 0',
+        'amountMoney.amount must be a whole amount greater than 0, in the smallest currency unit',
         'amountMoney.amount'
       );
     }

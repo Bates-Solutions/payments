@@ -349,6 +349,22 @@ describe('SubscriptionsService', () => {
       ).rejects.toThrow(SquareValidationError);
     });
 
+    it.each([
+      [{ priceOverrideMoney: { amount: 15.5 } }, 'priceOverrideMoney.amount'],
+      [{ priceOverrideMoney: { amount: Number.NaN } }, 'priceOverrideMoney.amount'],
+      [{ priceOverrideMoney: { amount: BigInt(-1) } }, 'priceOverrideMoney.amount'],
+      [{ priceOverride: -5 }, 'priceOverride'],
+      [{ priceOverride: 9.99 }, 'priceOverride'],
+    ])('should reject %o as a SquareValidationError on %s', async (options, field) => {
+      const client = createMockClient();
+      const service = new SubscriptionsService(client);
+
+      const error: unknown = await service.update('SUB_123', options).catch((e: unknown) => e);
+      expect(error).toBeInstanceOf(SquareValidationError);
+      expect((error as SquareValidationError).field).toBe(field);
+      expect(client.subscriptions.update).not.toHaveBeenCalled();
+    });
+
     it('should require a subscription ID', async () => {
       const service = new SubscriptionsService(createMockClient());
 
