@@ -1,5 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { toCents, fromCents, formatMoney, createIdempotencyKey, toSquareMoney } from '../utils.js';
+import { SquareValidationError } from '../errors.js';
+import type { CurrencyCode } from '../types/index.js';
 
 describe('Money Utilities', () => {
   describe('toCents', () => {
@@ -149,4 +151,46 @@ describe('toSquareMoney', () => {
       currency: 'JPY',
     });
   });
+});
+
+describe('currency rules from payments-core', () => {
+  it('keeps JPY zero-decimal and the other supported currencies two-decimal', () => {
+    expect(toCents(1000, 'JPY')).toBe(1000n);
+    expect(fromCents(1000n, 'JPY')).toBe(1000);
+    for (const currency of ['USD', 'CAD', 'GBP', 'EUR', 'AUD'] as const) {
+      expect(toCents(10.5, currency)).toBe(1050n);
+      expect(fromCents(1050n, currency)).toBe(10.5);
+    }
+  });
+
+  it('matches the currency in any case', () => {
+    expect(toCents(1000, 'jpy' as CurrencyCode)).toBe(1000n);
+    expect(fromCents(1050n, 'usd' as CurrencyCode)).toBe(10.5);
+  });
+
+  it('uses the ISO exponent for codes outside CurrencyCode', () => {
+    expect(toCents(5000, 'KRW' as CurrencyCode)).toBe(5000n);
+    expect(toCents(5.124, 'KWD' as CurrencyCode)).toBe(5124n);
+    expect(fromCents(5124n, 'KWD' as CurrencyCode)).toBe(5.124);
+  });
+
+  it.each([undefined, null, ''])(
+    'throws SquareValidationError for a currency of %o',
+    (currency) => {
+      // undefined falls back to the USD default, like every default parameter.
+      if (currency === undefined) {
+        expect(toCents(1, currency)).toBe(100n);
+        return;
+      }
+      const error: unknown = (() => {
+        try {
+          toCents(1, currency as unknown as CurrencyCode);
+        } catch (e) {
+          return e;
+        }
+      })();
+      expect(error).toBeInstanceOf(SquareValidationError);
+      expect((error as SquareValidationError).field).toBe('currency');
+    }
+  );
 });

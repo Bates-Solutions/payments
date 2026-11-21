@@ -1,4 +1,6 @@
 import { createHash } from 'node:crypto';
+import { minorUnitExponent } from '@bates-solutions/payments-core/currency';
+import { SquareValidationError } from './errors.js';
 import type { CurrencyCode } from './types/index.js';
 
 /**
@@ -10,15 +12,18 @@ export interface Money {
 }
 
 /**
- * Zero-decimal currencies that don't use fractional units
- */
-const ZERO_DECIMAL_CURRENCIES: CurrencyCode[] = ['JPY'];
-
-/**
- * Get the multiplier for a currency
+ * Minor units per major unit for a currency, from `minorUnitExponent` in
+ * payments-core: 1 for `JPY`, 100 for the other supported currencies. Matching
+ * is case-insensitive, and an untyped caller's other ISO code gets its own
+ * exponent (1000 for `KWD`, 1 for `KRW`).
+ *
+ * @throws {SquareValidationError} When `currency` is not a non-empty string
  */
 function getCurrencyMultiplier(currency: CurrencyCode): number {
-  return ZERO_DECIMAL_CURRENCIES.includes(currency) ? 1 : 100;
+  if (typeof currency !== 'string' || currency.trim() === '') {
+    throw new SquareValidationError('currency must be a non-empty string', 'currency');
+  }
+  return 10 ** minorUnitExponent(currency);
 }
 
 /**

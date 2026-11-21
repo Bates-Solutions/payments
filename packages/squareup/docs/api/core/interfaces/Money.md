@@ -6,7 +6,7 @@
 
 # Interface: Money
 
-Defined in: [squareup/src/core/utils.ts:7](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/utils.ts#L7)
+Defined in: [squareup/src/core/utils.ts:9](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/utils.ts#L9)
 
 Money representation
 
@@ -16,7 +16,7 @@ Money representation
 
 > **amount**: `bigint`
 
-Defined in: [squareup/src/core/utils.ts:8](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/utils.ts#L8)
+Defined in: [squareup/src/core/utils.ts:10](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/utils.ts#L10)
 
 ***
 
@@ -24,4 +24,4 @@ Defined in: [squareup/src/core/utils.ts:8](https://github.com/Bates-Solutions/pa
 
 > **currency**: `"USD"` \| `"CAD"` \| `"GBP"` \| `"EUR"` \| `"AUD"` \| `"JPY"`
 
-Defined in: [squareup/src/core/utils.ts:9](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/utils.ts#L9)
+Defined in: [squareup/src/core/utils.ts:11](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/utils.ts#L11)
