@@ -202,7 +202,10 @@ import { toCents, fromCents, formatMoney } from '@bates-solutions/clover';
 toCents(10.99);           // 1099
 fromCents(1099);          // 10.99
 formatMoney(1099, 'usd'); // "$10.99"
+toCents(10.99, 'cad');    // 1099
 ```
+
+`toCents` and `fromCents` take an optional currency (default `usd`). The number of decimals comes from `minorUnitExponent` in `@bates-solutions/payments-core/currency`, which follows ISO 4217 and matches codes in any case. Every `CurrencyCode` has two decimals, so typed calls behave as before. A `null`, empty or non-string currency throws `CloverValidationError`.
 
 ## Documentation
 
