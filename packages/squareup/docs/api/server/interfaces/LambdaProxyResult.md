@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v3.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: LambdaProxyResult
 
-Defined in: [squareup/src/server/middleware/lambda.ts:24](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L24)
+Defined in: [squareup/src/server/middleware/lambda.ts:50](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L50)
 
 API Gateway proxy result shape
 
@@ -16,7 +16,7 @@ API Gateway proxy result shape
 
 > **body**: `string`
 
-Defined in: [squareup/src/server/middleware/lambda.ts:27](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L27)
+Defined in: [squareup/src/server/middleware/lambda.ts:53](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L53)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [squareup/src/server/middleware/lambda.ts:27](https://github.com/Bat
 
 > **headers**: `Record`\<`string`, `string`\>
 
-Defined in: [squareup/src/server/middleware/lambda.ts:26](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L26)
+Defined in: [squareup/src/server/middleware/lambda.ts:52](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L52)
 
 ***
 
@@ -32,4 +32,4 @@ Defined in: [squareup/src/server/middleware/lambda.ts:26](https://github.com/Bat
 
 > **statusCode**: `number`
 
-Defined in: [squareup/src/server/middleware/lambda.ts:25](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L25)
+Defined in: [squareup/src/server/middleware/lambda.ts:51](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L51)

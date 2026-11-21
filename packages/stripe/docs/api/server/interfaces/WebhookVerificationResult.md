@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.1.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: WebhookVerificationResult
 
-Defined in: [stripe/src/server/types.ts:83](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/types.ts#L83)
+Defined in: [stripe/src/server/types.ts:90](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/types.ts#L90)
 
 Result of webhook signature verification.
 
@@ -16,7 +16,7 @@ Result of webhook signature verification.
 
 > `optional` **error?**: `string`
 
-Defined in: [stripe/src/server/types.ts:87](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/types.ts#L87)
+Defined in: [stripe/src/server/types.ts:94](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/types.ts#L94)
 
 Error message if invalid
 
@@ -26,6 +26,6 @@ Error message if invalid
 
 > **valid**: `boolean`
 
-Defined in: [stripe/src/server/types.ts:85](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/types.ts#L85)
+Defined in: [stripe/src/server/types.ts:92](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/types.ts#L92)
 
 Whether the signature is valid

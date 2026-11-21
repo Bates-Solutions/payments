@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v3.0.0**](../../README.md)
 
 ***
 
@@ -9,3 +9,5 @@
 > **OrderEventType** = `"order.created"` \| `"order.updated"` \| `"order.fulfillment.updated"`
 
 Defined in: [squareup/src/server/types.ts:14](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L14)
+
+Order webhook event types.

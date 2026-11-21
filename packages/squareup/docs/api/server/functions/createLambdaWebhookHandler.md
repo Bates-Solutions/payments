@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v3.0.0**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **createLambdaWebhookHandler**(`config`): (`proxyEvent`) => `Promise`\<[`LambdaProxyResult`](../interfaces/LambdaProxyResult.md)\>
 
-Defined in: [squareup/src/server/middleware/lambda.ts:143](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L143)
+Defined in: [squareup/src/server/middleware/lambda.ts:169](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L169)
 
 Create an AWS Lambda handler for Square webhooks
 

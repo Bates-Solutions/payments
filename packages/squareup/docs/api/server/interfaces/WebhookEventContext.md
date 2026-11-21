@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v3.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: WebhookEventContext
 
-Defined in: [squareup/src/server/middleware/lambda.ts:33](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L33)
+Defined in: [squareup/src/server/middleware/lambda.ts:59](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L59)
 
 Context passed to Lambda webhook handlers with auto-extracted entity IDs
 
@@ -16,7 +16,7 @@ Context passed to Lambda webhook handlers with auto-extracted entity IDs
 
 > `optional` **customerId?**: `string`
 
-Defined in: [squareup/src/server/middleware/lambda.ts:36](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L36)
+Defined in: [squareup/src/server/middleware/lambda.ts:62](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L62)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [squareup/src/server/middleware/lambda.ts:36](https://github.com/Bat
 
 > `optional` **orderId?**: `string`
 
-Defined in: [squareup/src/server/middleware/lambda.ts:35](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L35)
+Defined in: [squareup/src/server/middleware/lambda.ts:61](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L61)
 
 ***
 
@@ -32,4 +32,4 @@ Defined in: [squareup/src/server/middleware/lambda.ts:35](https://github.com/Bat
 
 > `optional` **paymentId?**: `string`
 
-Defined in: [squareup/src/server/middleware/lambda.ts:34](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L34)
+Defined in: [squareup/src/server/middleware/lambda.ts:60](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/lambda.ts#L60)

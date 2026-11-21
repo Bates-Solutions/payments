@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v3.0.0**](../../README.md)
 
 ***
 
@@ -10,8 +10,4 @@
 
 Defined in: [squareup/src/server/types.ts:8](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L8)
 
-Square Webhook Event Types
-
-## See
-
-https://developer.squareup.com/reference/square/webhooks
+Payment webhook event types.

@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v3.0.0**](../../README.md)
 
 ***
 
@@ -9,3 +9,5 @@
 > **InvoiceEventType** = `"invoice.created"` \| `"invoice.updated"` \| `"invoice.published"` \| `"invoice.payment_made"` \| `"invoice.canceled"`
 
 Defined in: [squareup/src/server/types.ts:29](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/types.ts#L29)
+
+Invoice webhook event types.

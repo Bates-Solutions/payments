@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v3.0.0**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **createWebhookHandler**(`config`): (`request`) => `Promise`\<`Response`\>
 
-Defined in: [squareup/src/server/middleware/web.ts:65](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/web.ts#L65)
+Defined in: [squareup/src/server/middleware/web.ts:91](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/web.ts#L91)
 
 Create a framework-neutral webhook handler built on the Web platform.
 

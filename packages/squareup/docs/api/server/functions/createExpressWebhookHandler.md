@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v3.0.0**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **createExpressWebhookHandler**(`config`): [`ExpressRequestHandler`](../type-aliases/ExpressRequestHandler.md)
 
-Defined in: [squareup/src/server/middleware/express.ts:113](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L113)
+Defined in: [squareup/src/server/middleware/express.ts:141](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/express.ts#L141)
 
 Create Express middleware for handling Square webhooks
 

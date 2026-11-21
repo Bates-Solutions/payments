@@ -4,28 +4,28 @@
  * @see https://developer.squareup.com/reference/square/webhooks
  */
 
-// Payment Events
+/** Payment webhook event types. */
 export type PaymentEventType = 'payment.created' | 'payment.updated' | 'payment.completed';
 
-// Refund Events
+/** Refund webhook event types. */
 export type RefundEventType = 'refund.created' | 'refund.updated';
 
-// Order Events
+/** Order webhook event types. */
 export type OrderEventType =
   | 'order.created'
   | 'order.updated'
   | 'order.fulfillment.updated';
 
-// Customer Events
+/** Customer webhook event types. */
 export type CustomerEventType =
   | 'customer.created'
   | 'customer.updated'
   | 'customer.deleted';
 
-// Subscription Events
+/** Subscription webhook event types. */
 export type SubscriptionEventType = 'subscription.created' | 'subscription.updated';
 
-// Invoice Events
+/** Invoice webhook event types. */
 export type InvoiceEventType =
   | 'invoice.created'
   | 'invoice.updated'
@@ -33,23 +33,23 @@ export type InvoiceEventType =
   | 'invoice.payment_made'
   | 'invoice.canceled';
 
-// Loyalty Events
+/** Loyalty account, program and promotion webhook event types. */
 export type LoyaltyEventType =
   | 'loyalty.account.created'
   | 'loyalty.account.updated'
   | 'loyalty.program.created'
   | 'loyalty.promotion.created';
 
-// Catalog Events
+/** Catalog webhook event types. */
 export type CatalogEventType = 'catalog.version.updated';
 
-// Inventory Events
+/** Inventory webhook event types. */
 export type InventoryEventType = 'inventory.count.updated';
 
-// Team Events
+/** Team member webhook event types. */
 export type TeamEventType = 'team_member.created' | 'team_member.updated';
 
-// Labor Events
+/** Labor (timecard) webhook event types. */
 export type LaborEventType = 'labor.timecard.created' | 'labor.timecard.updated';
 
 /**
@@ -216,12 +216,15 @@ export interface CustomerWebhookObject {
 export type PaymentWebhookEvent = WebhookEvent<PaymentWebhookObject> & {
   type: PaymentEventType;
 };
+/** A webhook event for an order, with `type` narrowed to its event types. */
 export type OrderWebhookEvent = WebhookEvent<OrderWebhookObject> & {
   type: OrderEventType;
 };
+/** A webhook event for a refund, with `type` narrowed to its event types. */
 export type RefundWebhookEvent = WebhookEvent<RefundWebhookObject> & {
   type: RefundEventType;
 };
+/** A webhook event for a customer, with `type` narrowed to its event types. */
 export type CustomerWebhookEvent = WebhookEvent<CustomerWebhookObject> & {
   type: CustomerEventType;
 };

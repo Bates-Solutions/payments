@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v3.0.0**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **createNextPagesWebhookHandler**(`config`): (`req`, `res`) => `Promise`\<`void`\>
 
-Defined in: [squareup/src/server/middleware/nextjs.ts:140](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/nextjs.ts#L140)
+Defined in: [squareup/src/server/middleware/nextjs.ts:165](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/nextjs.ts#L165)
 
 Create a Next.js Pages Router API handler
 

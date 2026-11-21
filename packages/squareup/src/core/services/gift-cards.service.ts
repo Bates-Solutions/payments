@@ -114,6 +114,7 @@ export interface GiftCardActivity {
   adjustDecrementActivityDetails?: AdjustDecrementActivityDetails;
 }
 
+/** Details of an `ACTIVATE` activity: the amount loaded when the card is activated, and the order or payment instruments it came from. */
 export interface ActivateActivityDetails {
   amountMoney?: { amount?: bigint; currency?: string };
   orderId?: string;
@@ -122,6 +123,7 @@ export interface ActivateActivityDetails {
   buyerPaymentInstrumentIds?: string[];
 }
 
+/** Details of a `LOAD` activity: the amount added to an active card, and the order or payment instruments it came from. */
 export interface LoadActivityDetails {
   amountMoney?: { amount?: bigint; currency?: string };
   orderId?: string;
@@ -130,6 +132,7 @@ export interface LoadActivityDetails {
   buyerPaymentInstrumentIds?: string[];
 }
 
+/** Details of a `REDEEM` activity: the amount spent from the card, and the payment it paid for. */
 export interface RedeemActivityDetails {
   amountMoney: { amount?: bigint; currency?: string };
   paymentId?: string;
@@ -137,11 +140,13 @@ export interface RedeemActivityDetails {
   status?: 'PENDING' | 'COMPLETED' | 'CANCELED';
 }
 
+/** Details of an `ADJUST_INCREMENT` activity: an amount added to the balance by hand, with the reason. */
 export interface AdjustIncrementActivityDetails {
   amountMoney: { amount: bigint | number; currency: string };
   reason: AdjustIncrementReason;
 }
 
+/** Details of an `ADJUST_DECREMENT` activity: an amount taken off the balance by hand, with the reason. */
 export interface AdjustDecrementActivityDetails {
   amountMoney: { amount: bigint | number; currency: string };
   reason: AdjustDecrementReason;

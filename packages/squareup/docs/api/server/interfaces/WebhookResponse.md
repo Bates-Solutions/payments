@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v3.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: WebhookResponse
 
-Defined in: [squareup/src/server/middleware/nextjs.ts:12](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/nextjs.ts#L12)
+Defined in: [squareup/src/server/middleware/nextjs.ts:37](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/nextjs.ts#L37)
 
 Response type for Next.js webhook handlers
 
@@ -16,7 +16,7 @@ Response type for Next.js webhook handlers
 
 > **body**: `Record`\<`string`, `unknown`\>
 
-Defined in: [squareup/src/server/middleware/nextjs.ts:14](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/nextjs.ts#L14)
+Defined in: [squareup/src/server/middleware/nextjs.ts:39](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/nextjs.ts#L39)
 
 ***
 
@@ -24,4 +24,4 @@ Defined in: [squareup/src/server/middleware/nextjs.ts:14](https://github.com/Bat
 
 > **status**: `number`
 
-Defined in: [squareup/src/server/middleware/nextjs.ts:13](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/nextjs.ts#L13)
+Defined in: [squareup/src/server/middleware/nextjs.ts:38](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/middleware/nextjs.ts#L38)

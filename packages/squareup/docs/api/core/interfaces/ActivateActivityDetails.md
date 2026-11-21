@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v3.0.0**](../../README.md)
 
 ***
 
@@ -6,7 +6,9 @@
 
 # Interface: ActivateActivityDetails
 
-Defined in: [squareup/src/core/services/gift-cards.service.ts:117](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L117)
+Defined in: [squareup/src/core/services/gift-cards.service.ts:118](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L118)
+
+Details of an `ACTIVATE` activity: the amount loaded when the card is activated, and the order or payment instruments it came from.
 
 ## Properties
 
@@ -14,7 +16,7 @@ Defined in: [squareup/src/core/services/gift-cards.service.ts:117](https://githu
 
 > `optional` **amountMoney?**: `object`
 
-Defined in: [squareup/src/core/services/gift-cards.service.ts:118](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L118)
+Defined in: [squareup/src/core/services/gift-cards.service.ts:119](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L119)
 
 #### amount?
 
@@ -30,7 +32,7 @@ Defined in: [squareup/src/core/services/gift-cards.service.ts:118](https://githu
 
 > `optional` **buyerPaymentInstrumentIds?**: `string`[]
 
-Defined in: [squareup/src/core/services/gift-cards.service.ts:122](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L122)
+Defined in: [squareup/src/core/services/gift-cards.service.ts:123](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L123)
 
 ***
 
@@ -38,7 +40,7 @@ Defined in: [squareup/src/core/services/gift-cards.service.ts:122](https://githu
 
 > `optional` **lineItemUid?**: `string`
 
-Defined in: [squareup/src/core/services/gift-cards.service.ts:120](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L120)
+Defined in: [squareup/src/core/services/gift-cards.service.ts:121](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L121)
 
 ***
 
@@ -46,7 +48,7 @@ Defined in: [squareup/src/core/services/gift-cards.service.ts:120](https://githu
 
 > `optional` **orderId?**: `string`
 
-Defined in: [squareup/src/core/services/gift-cards.service.ts:119](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L119)
+Defined in: [squareup/src/core/services/gift-cards.service.ts:120](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L120)
 
 ***
 
@@ -54,4 +56,4 @@ Defined in: [squareup/src/core/services/gift-cards.service.ts:119](https://githu
 
 > `optional` **referenceId?**: `string`
 
-Defined in: [squareup/src/core/services/gift-cards.service.ts:121](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L121)
+Defined in: [squareup/src/core/services/gift-cards.service.ts:122](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/gift-cards.service.ts#L122)

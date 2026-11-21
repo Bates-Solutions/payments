@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v3.0.0**](../../README.md)
 
 ***
 
@@ -10,6 +10,14 @@
 
 Defined in: [squareup/src/core/errors.ts:236](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L236)
 
+Whether retrying the failed call could succeed: a network failure or
+timeout, a request timeout (408), rate limiting (429), a Square server
+error (5xx), or a response carrying Square's `TEMPORARY_ERROR` code, whatever
+its status. Validation, auth and other 4xx errors return `false`.
+
+For a mutating call, retry with the **same** `idempotencyKey`. Otherwise a
+request that reached Square before the failure can be applied twice.
+
 ## Parameters
 
 ### error
@@ -19,3 +27,18 @@ Defined in: [squareup/src/core/errors.ts:236](https://github.com/Bates-Solutions
 ## Returns
 
 `boolean`
+
+## Example
+
+```typescript
+const idempotencyKey = createIdempotencyKey();
+try {
+  await square.payments.create({ sourceId, amount, idempotencyKey });
+} catch (error) {
+  if (isRetryableSquareError(error)) {
+    await square.payments.create({ sourceId, amount, idempotencyKey }); // same key
+  } else {
+    throw error;
+  }
+}
+```

@@ -1,3 +1,29 @@
+/**
+ * `@bates-solutions/squareup/server/web`: Square webhooks on the Web platform.
+ *
+ * A framework-neutral handler that takes a standard `Request` and returns a
+ * standard `Response`, verifying the signature with Web Crypto. It imports no
+ * Node built-ins, so it runs on Deno, Supabase Edge Functions, Cloudflare
+ * Workers and Bun. Also exports `verifySignatureAsync`, `parseWebhookEvent`,
+ * `processWebhookEvent` and `SIGNATURE_HEADER`.
+ *
+ * @module
+ *
+ * @example
+ * ```typescript
+ * import { createWebhookHandler } from '@bates-solutions/squareup/server/web';
+ *
+ * Deno.serve(createWebhookHandler({
+ *   signatureKey: Deno.env.get('SQUARE_WEBHOOK_KEY')!,
+ *   notificationUrl: 'https://example.com/webhook',
+ *   handlers: {
+ *     'payment.created': async (event) => {
+ *       console.log('Payment:', event.data.id);
+ *     },
+ *   },
+ * }));
+ * ```
+ */
 // Only Node-free modules here: this file is the `./server/web` entry point.
 import { SIGNATURE_HEADER, parseWebhookEvent, processWebhookEvent } from '../events.js';
 import { verifySignatureAsync } from '../webcrypto.js';
