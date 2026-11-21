@@ -8,7 +8,7 @@
 
 > **toUnixTime**(`value`, `field?`): `number`
 
-Defined in: [stripe/src/core/utils.ts:249](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/utils.ts#L249)
+Defined in: [stripe/src/core/utils.ts:218](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/utils.ts#L218)
 
 Convert a JS `Date` to Unix seconds, the time format Stripe expects. A
 number is taken to be Unix seconds already and passed through.

@@ -8,7 +8,7 @@
 
 > **fromMinor**(`minor`, `currency?`): `number`
 
-Defined in: [stripe/src/core/utils.ts:172](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/utils.ts#L172)
+Defined in: [stripe/src/core/utils.ts:141](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/utils.ts#L141)
 
 Convert an amount in the smallest currency unit to a major-unit amount.
 

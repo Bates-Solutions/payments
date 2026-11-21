@@ -1,3 +1,4 @@
+import { minorUnitExponent } from '@bates-solutions/payments-core/currency';
 import { StripeValidationError } from './errors.js';
 import type { CurrencyCode, TimeRange } from './types/index.js';
 
@@ -11,43 +12,7 @@ export interface Money {
 }
 
 /**
- * Zero-decimal currencies: the Stripe `amount` is the whole-unit amount, with
- * no multiplication (500 JPY is `500`).
- *
- * This is Stripe's documented zero-decimal list minus `ugx`, which Stripe's
- * special-cases table says must still be sent as a two-decimal value (see
- * {@link WHOLE_UNIT_TWO_DECIMAL_CURRENCIES}).
- *
- * @see https://docs.stripe.com/currencies#zero-decimal
- */
-const ZERO_DECIMAL_CURRENCIES: ReadonlySet<string> = new Set([
-  'bif',
-  'clp',
-  'djf',
-  'gnf',
-  'jpy',
-  'kmf',
-  'krw',
-  'mga',
-  'pyg',
-  'rwf',
-  'vnd',
-  'vuv',
-  'xaf',
-  'xof',
-  'xpf',
-]);
-
-/**
- * Three-decimal currencies: the Stripe `amount` is in thousandths, and Stripe
- * requires it to end in `0` (a multiple of 10), so 5.124 KWD is sent as `5120`.
- *
- * @see https://docs.stripe.com/currencies
- */
-const THREE_DECIMAL_CURRENCIES: ReadonlySet<string> = new Set(['bhd', 'jod', 'kwd', 'omr', 'tnd']);
-
-/**
- * Currencies that are zero-decimal in practice but that Stripe still takes as
+ * Currencies that ISO 4217 makes zero-decimal but that Stripe still takes as
  * a two-decimal value whose decimal part is always `00`, for backward
  * compatibility: 5 ISK is sent as `500`. Fractions cannot be charged, so the
  * major amount is rounded to a whole unit first.
@@ -71,6 +36,10 @@ interface CurrencyRule {
  * Get the minor-unit rule for a currency. Matching is case-insensitive;
  * unknown currencies are treated as two-decimal, Stripe's default.
  *
+ * The exponent comes from `minorUnitExponent` in payments-core. On top of it,
+ * Stripe takes `isk` and `ugx` as two-decimal values, and three-decimal
+ * amounts must end in `0`.
+ *
  * @throws {StripeValidationError} If `currency` is not a non-empty string
  */
 function getCurrencyRule(currency: string): CurrencyRule {
@@ -78,17 +47,17 @@ function getCurrencyRule(currency: string): CurrencyRule {
   if (typeof currency !== 'string' || currency.trim() === '') {
     throw new StripeValidationError('currency must be a non-empty string', 'currency');
   }
-  const code = currency.toLowerCase();
-  if (ZERO_DECIMAL_CURRENCIES.has(code)) {
-    return { multiplier: 1, step: 1 };
-  }
-  if (THREE_DECIMAL_CURRENCIES.has(code)) {
-    return { multiplier: 1000, step: 10 };
-  }
-  if (WHOLE_UNIT_TWO_DECIMAL_CURRENCIES.has(code)) {
+  if (WHOLE_UNIT_TWO_DECIMAL_CURRENCIES.has(currency.toLowerCase())) {
     return { multiplier: 100, step: 100 };
   }
-  return { multiplier: 100, step: 1 };
+  switch (minorUnitExponent(currency)) {
+    case 0:
+      return { multiplier: 1, step: 1 };
+    case 3:
+      return { multiplier: 1000, step: 10 };
+    default:
+      return { multiplier: 100, step: 1 };
+  }
 }
 
 /**
