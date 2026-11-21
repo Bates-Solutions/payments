@@ -1,6 +1,6 @@
 {
   "name": "@bates-solutions/clover",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "TypeScript wrapper for the Clover Ecommerce & Platform APIs with webhook support for Node.js and edge runtimes",
   "type": "module",
   "main": "./dist/core/index.js",
@@ -61,6 +61,6 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@bates-solutions/payments-core": "^0.1.0"
+    "@bates-solutions/payments-core": "^0.2.0"
   }
 }

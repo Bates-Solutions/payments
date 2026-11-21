@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.0](https://github.com/Bates-Solutions/payments/compare/payments-core-v0.1.0...payments-core-v0.2.0) (2026-11-21)
+
+
+### Features
+
+* **payments-core:** add minorUnitExponent for the decimal places of each currency ([5945de8](https://github.com/Bates-Solutions/payments/commit/5945de8c1e7b32e874fb619047cace90836d605d))
+* **payments-core:** currency rules in core, used by squareup and stripe (S10) ([380e212](https://github.com/Bates-Solutions/payments/commit/380e212949687baa98257b36f5fbeb6e7e576f18))
+
 ## 0.1.0 (2026-11-20)
 
 
