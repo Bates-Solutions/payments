@@ -7,5 +7,6 @@
 ## Modules
 
 - [crypto](crypto/README.md)
+- [currency](currency/README.md)
 - [errors](errors/README.md)
 - [index](index/README.md)
