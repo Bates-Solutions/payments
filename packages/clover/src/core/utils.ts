@@ -14,7 +14,7 @@ export interface Money {
 /**
  * Minor units per major unit for a currency, from `minorUnitExponent` in
  * payments-core: 100 for every `CurrencyCode`. Matching is case-insensitive,
- * and an untyped caller's other ISO 4217 code gets its own exponent (1 for
+ * and an untyped caller's other ISO 4217 code gets its own multiplier (1 for
  * `jpy`, 1000 for `kwd`).
  *
  * @throws {CloverValidationError} When `currency` is not a string, or is empty or only whitespace
@@ -31,7 +31,7 @@ function getCurrencyMultiplier(currency: CurrencyCode): number {
  *
  * The currency's minor unit comes from ISO 4217 through `minorUnitExponent`
  * in payments-core, matched in any case. Every `CurrencyCode` has two
- * decimals; a code outside it gets its own exponent (1 for `jpy`, 1000 for
+ * decimals; a code outside it gets its own multiplier (1 for `jpy`, 1000 for
  * `kwd`).
  *
  * @param amount - Major-unit amount (e.g. 10.50 dollars)
@@ -56,7 +56,7 @@ export function toCents(amount: number, currency: CurrencyCode = 'usd'): number 
  *
  * The currency's minor unit comes from ISO 4217 through `minorUnitExponent`
  * in payments-core, matched in any case. Every `CurrencyCode` has two
- * decimals; a code outside it gets its own exponent (1 for `jpy`, 1000 for
+ * decimals; a code outside it gets its own multiplier (1 for `jpy`, 1000 for
  * `kwd`).
  *
  * @param cents - Amount in the smallest unit
@@ -77,6 +77,10 @@ export function fromCents(cents: number, currency: CurrencyCode = 'usd'): number
 /**
  * Format money for display.
  *
+ * The amount is read with `fromCents`, so it follows the same ISO 4217 rules:
+ * every `CurrencyCode` has two decimals, and an untyped caller's `jpy` shows
+ * `1000` as `¥1,000`.
+ *
  * @param cents - Amount in the currency's smallest unit
  * @param currency - Currency code (default: usd)
  * @param locale - Locale for formatting (default: en-US)
@@ -86,6 +90,7 @@ export function fromCents(cents: number, currency: CurrencyCode = 'usd'): number
  * @example
  * ```typescript
  * formatMoney(1050); // "$10.50"
+ * formatMoney(1050, 'gbp', 'en-GB'); // "£10.50"
  * ```
  */
 export function formatMoney(

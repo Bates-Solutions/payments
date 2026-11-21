@@ -14,7 +14,7 @@ Convert a major-unit amount to cents (the currency's smallest unit).
 
 The currency's minor unit comes from ISO 4217 through `minorUnitExponent`
 in payments-core, matched in any case. Every `CurrencyCode` has two
-decimals; a code outside it gets its own exponent (1 for `jpy`, 1000 for
+decimals; a code outside it gets its own multiplier (1 for `jpy`, 1000 for
 `kwd`).
 
 ## Parameters
