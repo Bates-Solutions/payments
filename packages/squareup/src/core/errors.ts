@@ -209,9 +209,9 @@ export function parseSquareError(error: unknown): SquareError {
 
 /**
  * Whether retrying the failed call could succeed: a network failure or
- * timeout, a request timeout (408), rate limiting (429), or a Square server
- * error (5xx). Validation,
- * auth and other 4xx errors return `false`.
+ * timeout, a request timeout (408), rate limiting (429), a Square server
+ * error (5xx), or a response carrying Square's `TEMPORARY_ERROR` code, whatever
+ * its status. Validation, auth and other 4xx errors return `false`.
  *
  * For a mutating call, retry with the **same** `idempotencyKey`. Otherwise a
  * request that reached Square before the failure can be applied twice.
@@ -230,9 +230,18 @@ export function parseSquareError(error: unknown): SquareError {
  * }
  * ```
  */
+/** Square's code for a transient failure on its side, not a decline. */
+const TEMPORARY_ERROR = 'TEMPORARY_ERROR';
+
 export function isRetryableSquareError(error: unknown): boolean {
   if (error instanceof SquareNetworkError) return true;
   if (!(error instanceof SquareError) || error instanceof SquareValidationError) return false;
+  if (
+    (error instanceof SquarePaymentError || error instanceof SquareApiError) &&
+    error.errors.some((entry) => entry.code === TEMPORARY_ERROR)
+  ) {
+    return true;
+  }
 
   const { statusCode } = error;
   return (
@@ -385,7 +394,8 @@ const DECLINE_RETRYABLE: Readonly<Record<string, boolean>> = {
  *
  * Returns `undefined` when `error` is not a card decline (not a
  * {@link SquarePaymentError}, and no `PAYMENT_METHOD_ERROR` entry on a
- * {@link SquareApiError}). Unknown codes are not retryable.
+ * {@link SquareApiError}), and for Square's `TEMPORARY_ERROR`, which is a
+ * transient failure rather than a decline. Unknown codes are not retryable.
  *
  * | Code | `retryable` |
  * | --- | --- |
@@ -424,7 +434,7 @@ export function declineReason(error: unknown): DeclineReason | undefined {
   if (code === undefined && error instanceof SquarePaymentError && error.code !== 'UNKNOWN') {
     code = error.code;
   }
-  if (code === undefined) {
+  if (code === undefined || code === TEMPORARY_ERROR) {
     return undefined;
   }
 

@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   declineReason,
+  isRetryableSquareError,
   parseSquareError,
   SquareApiError,
   SquareError,
@@ -27,9 +28,6 @@ describe('declineReason', () => {
     ['INVALID_ACCOUNT', false],
     ['CARD_DECLINED_CALL_ISSUER', false],
     ['CARD_DECLINED_VERIFICATION_REQUIRED', false],
-    // A transient Square failure, not a decline: isRetryableSquareError covers
-    // it, with the same idempotency key.
-    ['TEMPORARY_ERROR', false],
   ])('maps %s to retryable: %s', (code, retryable) => {
     const error = parseSquareError(sdkDecline(code));
 
@@ -43,6 +41,19 @@ describe('declineReason', () => {
     expect(error.code).toBe('UNKNOWN');
     expect(error.errors[0]?.code).toBe('INSUFFICIENT_FUNDS');
     expect(declineReason(error)?.code).toBe('INSUFFICIENT_FUNDS');
+  });
+
+  it.each([
+    ['a 402 PAYMENT_METHOD_ERROR', sdkDecline('TEMPORARY_ERROR')],
+    [
+      'a 500 API_ERROR',
+      { statusCode: 500, body: { errors: [{ category: 'API_ERROR', code: 'TEMPORARY_ERROR' }] } },
+    ],
+  ])('treats TEMPORARY_ERROR in %s as retryable, not as a decline', (_shape, raw) => {
+    const error = parseSquareError(raw);
+
+    expect(declineReason(error)).toBeUndefined();
+    expect(isRetryableSquareError(error)).toBe(true);
   });
 
   it('treats an unknown code as not retryable', () => {

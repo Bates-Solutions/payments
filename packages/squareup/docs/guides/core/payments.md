@@ -11,7 +11,7 @@ This guide covers how to process payments using the Square API with `@bates-solu
 ## Setup
 
 ```typescript
-import { createIdempotencyKey, createSquareClient } from '@bates-solutions/squareup';
+import { createSquareClient } from '@bates-solutions/squareup';
 
 const square = createSquareClient({
   accessToken: process.env.SQUARE_ACCESS_TOKEN!,
@@ -28,7 +28,7 @@ The simplest way to create a payment:
 const payment = await square.payments.create({
   sourceId: 'cnon:card-nonce-ok', // Payment source token
   amount: 1000, // $10.00 in cents
-  idempotencyKey: createIdempotencyKey(),
+  idempotencyKey: 'order-1042', // one key per order, so a retry can't charge twice
 });
 
 console.log('Payment ID:', payment.id);
@@ -42,7 +42,7 @@ const payment = await square.payments.create({
   // Required
   sourceId: 'cnon:card-nonce-ok',
   amount: 2500, // $25.00
-  idempotencyKey: createIdempotencyKey(), // see Idempotency below
+  idempotencyKey: 'order-1042', // see Idempotency below // see Idempotency below
 
   // Optional
   currency: 'USD', // Default: USD
@@ -68,7 +68,7 @@ const authorized = await square.payments.create({
   sourceId: 'cnon:card-nonce-ok',
   amount: 5000,
   autocomplete: false, // Don't capture yet
-  idempotencyKey: createIdempotencyKey(),
+  idempotencyKey: 'order-1043-authorize',
 });
 
 console.log('Authorized:', authorized.id);
@@ -146,7 +146,7 @@ try {
   const payment = await square.payments.create({
     sourceId: 'invalid-token',
     amount: 1000,
-    idempotencyKey: createIdempotencyKey(),
+    idempotencyKey: 'order-1042',
   });
 } catch (error) {
   if (error instanceof SquarePaymentError) {
@@ -207,7 +207,8 @@ Retrying a hard decline again and again can get the merchant flagged by the
 card networks, which is why unknown codes are not retryable.
 
 `TEMPORARY_ERROR` is not in the table: it is a transient Square failure, not a
-decline. `isRetryableSquareError` covers it, and Square says to retry it with
+decline. `declineReason` returns `undefined` for it, `isRetryableSquareError`
+returns `true`, and Square says to retry it with
 the **same** idempotency key, unlike a retry of a decline.
 
 ### Common Error Codes
