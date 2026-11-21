@@ -352,6 +352,7 @@ toUnixTime(new Date('2026-03-01T00:00:00Z')); // 1772323200 (Stripe's time forma
 
 - [Getting started](./docs/getting-started/installation.md)
 - [Guides](./docs/guides/README.md)
+- [API reference on JSR](https://jsr.io/@bates-solutions/stripe/doc), generated from the JSDoc on every entry point and export
 - [API reference](https://bates-solutions.github.io/payments/stripe/) (also [in this repo](./docs/api/README.md), as markdown)
 
 ## Related libraries
