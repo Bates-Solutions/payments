@@ -1,9 +1,4 @@
-## [2.5.0](https://github.com/Bates-Solutions/squareup/compare/v2.4.0...v2.5.0) (2026-11-08)
-
-
-### Features
-
-* **server:** edge runtime webhooks. `createWebhookHandler` (a framework-neutral `(Request) => Promise<Response>` handler for Deno, Supabase Edge Functions, Cloudflare Workers and Bun) and `verifySignatureAsync` (Web Crypto) at the new `@bates-solutions/squareup/server/web` entry point, which pulls in no Node built-ins. Both are also exported from `./server`. `createIdempotencyKey` now uses `globalThis.crypto.randomUUID()`. Additive: the sync `verifySignature` and `parseAndVerifyWebhook` are unchanged ([#163](https://github.com/Bates-Solutions/squareup/pull/163))
+# Changelog
 
 ## [3.0.0](https://github.com/Bates-Solutions/payments/compare/squareup-v2.6.0...squareup-v3.0.0) (2026-11-21)
 
@@ -43,6 +38,13 @@
 
 * **payments-core:** address PR review feedback ([d371287](https://github.com/Bates-Solutions/payments/commit/d37128768f64e85ebe520145b984dd5103714fcb))
 * **squareup:** accept the same signatures in verifySignatureAsync as in verifySignature ([791d5b7](https://github.com/Bates-Solutions/payments/commit/791d5b716df8b6b47ecf3a579570753f53a0f224))
+
+## [2.5.0](https://github.com/Bates-Solutions/squareup/compare/v2.4.0...v2.5.0) (2026-11-08)
+
+
+### Features
+
+* **server:** edge runtime webhooks. `createWebhookHandler` (a framework-neutral `(Request) => Promise<Response>` handler for Deno, Supabase Edge Functions, Cloudflare Workers and Bun) and `verifySignatureAsync` (Web Crypto) at the new `@bates-solutions/squareup/server/web` entry point, which pulls in no Node built-ins. Both are also exported from `./server`. `createIdempotencyKey` now uses `globalThis.crypto.randomUUID()`. Additive: the sync `verifySignature` and `parseAndVerifyWebhook` are unchanged ([#163](https://github.com/Bates-Solutions/squareup/pull/163))
 
 ## [2.4.0](https://github.com/Bates-Solutions/squareup/compare/v2.3.0...v2.4.0) (2026-11-08)
 
