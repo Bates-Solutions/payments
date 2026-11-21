@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.1](https://github.com/Bates-Solutions/payments/compare/squareup-v3.0.0...squareup-v3.0.1) (2026-11-21)
+
+
+### Documentation
+
+* **squareup:** document every entry point and export on JSR, and link the JSR API reference ([46a4835](https://github.com/Bates-Solutions/payments/commit/46a48350e787eea55f154fa3d7f301e64b82e8f6))
+
 ## [3.0.0](https://github.com/Bates-Solutions/payments/compare/squareup-v2.6.0...squareup-v3.0.0) (2026-11-21)
 
 
