@@ -25,6 +25,23 @@ export interface Money {
  */
 const WHOLE_UNIT_TWO_DECIMAL_CURRENCIES: ReadonlySet<string> = new Set(['isk', 'ugx']);
 
+/**
+ * Where Stripe's currency list differs from ISO 4217 beyond `isk` and `ugx`:
+ * Stripe lists `mga` as zero-decimal (ISO gives it two decimals), and does not
+ * list `iqd` and `lyd` (ISO: three decimals) or `uyi`, `clf` and `uyw` (ISO:
+ * zero and four decimals), so those use Stripe's two-decimal default.
+ *
+ * @see https://docs.stripe.com/currencies#zero-decimal
+ */
+const STRIPE_ZERO_DECIMAL_CURRENCIES: ReadonlySet<string> = new Set(['mga']);
+const STRIPE_TWO_DECIMAL_CURRENCIES: ReadonlySet<string> = new Set([
+  'iqd',
+  'lyd',
+  'uyi',
+  'clf',
+  'uyw',
+]);
+
 interface CurrencyRule {
   /** Minor units per major unit */
   multiplier: number;
@@ -36,9 +53,11 @@ interface CurrencyRule {
  * Get the minor-unit rule for a currency. Matching is case-insensitive;
  * unknown currencies are treated as two-decimal, Stripe's default.
  *
- * The exponent comes from `minorUnitExponent` in payments-core. On top of it,
- * Stripe takes `isk` and `ugx` as two-decimal values, and three-decimal
- * amounts must end in `0`.
+ * The exponent comes from `minorUnitExponent` in payments-core (ISO 4217),
+ * after Stripe's own exceptions: `isk` and `ugx` as two-decimal values in whole
+ * units, `mga` as zero-decimal, and `iqd`, `lyd`, `uyi`, `clf` and `uyw` as
+ * two-decimal. Three-decimal amounts must end in `0`. The code is lowercased
+ * first, as Stripe matched it before.
  *
  * @throws {StripeValidationError} If `currency` is not a non-empty string
  */
@@ -47,10 +66,17 @@ function getCurrencyRule(currency: string): CurrencyRule {
   if (typeof currency !== 'string' || currency.trim() === '') {
     throw new StripeValidationError('currency must be a non-empty string', 'currency');
   }
-  if (WHOLE_UNIT_TWO_DECIMAL_CURRENCIES.has(currency.toLowerCase())) {
+  const code = currency.toLowerCase();
+  if (WHOLE_UNIT_TWO_DECIMAL_CURRENCIES.has(code)) {
     return { multiplier: 100, step: 100 };
   }
-  switch (minorUnitExponent(currency)) {
+  if (STRIPE_ZERO_DECIMAL_CURRENCIES.has(code)) {
+    return { multiplier: 1, step: 1 };
+  }
+  if (STRIPE_TWO_DECIMAL_CURRENCIES.has(code)) {
+    return { multiplier: 100, step: 1 };
+  }
+  switch (minorUnitExponent(code)) {
     case 0:
       return { multiplier: 1, step: 1 };
     case 3:

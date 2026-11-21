@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v2.1.0**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.1.1**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **formatMoney**(`minor`, `currency?`, `locale?`): `string`
 
-Defined in: [stripe/src/core/utils.ts:166](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/utils.ts#L166)
+Defined in: [stripe/src/core/utils.ts:192](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/utils.ts#L192)
 
 Format money for display.
 

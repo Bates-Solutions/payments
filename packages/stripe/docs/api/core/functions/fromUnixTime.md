@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v2.1.0**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.1.1**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **fromUnixTime**(`seconds`): `Date` \| `undefined`
 
-Defined in: [stripe/src/core/utils.ts:196](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/utils.ts#L196)
+Defined in: [stripe/src/core/utils.ts:222](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/utils.ts#L222)
 
 Convert a Unix timestamp (seconds) to a JS `Date`.
 

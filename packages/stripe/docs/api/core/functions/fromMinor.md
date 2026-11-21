@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v2.1.0**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.1.1**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **fromMinor**(`minor`, `currency?`): `number`
 
-Defined in: [stripe/src/core/utils.ts:141](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/utils.ts#L141)
+Defined in: [stripe/src/core/utils.ts:167](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/core/utils.ts#L167)
 
 Convert an amount in the smallest currency unit to a major-unit amount.
 
