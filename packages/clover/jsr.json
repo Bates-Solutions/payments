@@ -1,6 +1,6 @@
 {
   "name": "@bates-solutions/clover",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "exports": {
     ".": "./src/core/index.ts",
     "./server": "./src/server/index.ts"

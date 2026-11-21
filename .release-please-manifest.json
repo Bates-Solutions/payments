@@ -1,6 +1,6 @@
 {
-  "packages/clover": "1.2.0",
-  "packages/squareup": "3.0.1",
-  "packages/stripe": "2.1.1",
-  "packages/payments-core": "0.1.0"
+  "packages/clover": "1.2.1",
+  "packages/squareup": "3.1.0",
+  "packages/stripe": "2.2.0",
+  "packages/payments-core": "0.2.0"
 }

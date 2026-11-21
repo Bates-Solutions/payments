@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.2.0](https://github.com/Bates-Solutions/payments/compare/stripe-v2.1.1...stripe-v2.2.0) (2026-11-21)
+
+
+### Features
+
+* **payments-core:** currency rules in core, used by squareup and stripe (S10) ([380e212](https://github.com/Bates-Solutions/payments/commit/380e212949687baa98257b36f5fbeb6e7e576f18))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @bates-solutions/payments-core bumped from ^0.1.0 to ^0.2.0
+
 ## [2.1.1](https://github.com/Bates-Solutions/payments/compare/stripe-v2.1.0...stripe-v2.1.1) (2026-11-21)
 
 

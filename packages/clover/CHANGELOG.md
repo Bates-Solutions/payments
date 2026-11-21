@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.2.1](https://github.com/Bates-Solutions/payments/compare/clover-v1.2.0...clover-v1.2.1) (2026-11-21)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @bates-solutions/payments-core bumped from ^0.1.0 to ^0.2.0
+
 ## [1.2.0](https://github.com/Bates-Solutions/payments/compare/clover-v1.1.0...clover-v1.2.0) (2026-11-20)
 
 

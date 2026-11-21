@@ -1,6 +1,6 @@
 {
   "name": "@bates-solutions/payments-core",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Edge-safe primitives shared by the Bates Solutions payment provider libraries: HMAC-SHA256, constant-time compare, encoding and idempotency keys over WebCrypto, and a base error class",
   "type": "module",
   "sideEffects": false,

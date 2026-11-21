@@ -1,5 +1,24 @@
 # Changelog
 
+## [3.1.0](https://github.com/Bates-Solutions/payments/compare/squareup-v3.0.1...squareup-v3.1.0) (2026-11-21)
+
+
+### Features
+
+* **payments-core:** currency rules in core, used by squareup and stripe (S10) ([380e212](https://github.com/Bates-Solutions/payments/commit/380e212949687baa98257b36f5fbeb6e7e576f18))
+
+
+### Bug Fixes
+
+* **squareup:** take currency exponents from payments-core, matching codes in any case ([c3dd35d](https://github.com/Bates-Solutions/payments/commit/c3dd35d7eede34f3267b42521497afa7f5d03bfe))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @bates-solutions/payments-core bumped from ^0.1.0 to ^0.2.0
+
 ## [3.0.1](https://github.com/Bates-Solutions/payments/compare/squareup-v3.0.0...squareup-v3.0.1) (2026-11-21)
 
 
