@@ -1,6 +1,6 @@
 {
   "name": "@bates-solutions/stripe",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "TypeScript wrapper for the Stripe API with webhook support for Node.js backends",
   "type": "module",
   "main": "./dist/core/index.js",
