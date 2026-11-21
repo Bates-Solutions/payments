@@ -165,6 +165,7 @@ describe('currency rules from payments-core', () => {
 
   it('matches the currency in any case', () => {
     expect(toCents(1000, 'jpy' as CurrencyCode)).toBe(1000n);
+    expect(fromCents(5124n, 'jpy' as CurrencyCode)).toBe(5124);
     expect(fromCents(1050n, 'usd' as CurrencyCode)).toBe(10.5);
   });
 
