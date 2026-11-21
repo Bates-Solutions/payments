@@ -6,7 +6,7 @@
 
 # Type Alias: MinorUnitExponent
 
-> **MinorUnitExponent** = `0` \| `2` \| `3`
+> **MinorUnitExponent** = `0` \| `2` \| `3` \| `4`
 
 Defined in: [currency/minor-units.ts:5](https://github.com/Bates-Solutions/payments/blob/main/packages/payments-core/src/currency/minor-units.ts#L5)
 
