@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.1.0**](../../README.md)
 
 ***
 
@@ -8,4 +8,6 @@
 
 > **InvoicePaymentFailedEvent** = `Extract`\<`Stripe.Event`, \{ `type`: `"invoice.payment_failed"`; \}\>
 
-Defined in: [stripe/src/server/types.ts:78](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/types.ts#L78)
+Defined in: [stripe/src/server/types.ts:83](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/types.ts#L83)
+
+The `invoice.payment_failed` event.

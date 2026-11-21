@@ -1,4 +1,4 @@
-[**@bates-solutions/stripe API Reference v2.0.0**](../../README.md)
+[**@bates-solutions/stripe API Reference v2.1.0**](../../README.md)
 
 ***
 
@@ -8,4 +8,6 @@
 
 > **SubscriptionCreatedEvent** = `Extract`\<`Stripe.Event`, \{ `type`: `"customer.subscription.created"`; \}\>
 
-Defined in: [stripe/src/server/types.ts:74](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/types.ts#L74)
+Defined in: [stripe/src/server/types.ts:75](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/types.ts#L75)
+
+The `customer.subscription.created` event.
