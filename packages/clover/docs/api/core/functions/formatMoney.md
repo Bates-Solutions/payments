@@ -1,4 +1,4 @@
-[**@bates-solutions/clover API Reference v1.1.0**](../../README.md)
+[**@bates-solutions/clover API Reference v1.2.1**](../../README.md)
 
 ***
 
@@ -8,9 +8,13 @@
 
 > **formatMoney**(`cents`, `currency?`, `locale?`): `string`
 
-Defined in: [clover/src/core/utils.ts:56](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/utils.ts#L56)
+Defined in: [clover/src/core/utils.ts:96](https://github.com/Bates-Solutions/payments/blob/main/packages/clover/src/core/utils.ts#L96)
 
 Format money for display.
+
+The amount is read with `fromCents`, so it follows the same ISO 4217 rules:
+every `CurrencyCode` has two decimals, and an untyped caller's `jpy` shows
+`1000` as `¥1,000`.
 
 ## Parameters
 
@@ -18,7 +22,7 @@ Format money for display.
 
 `number`
 
-Amount in cents
+Amount in the currency's smallest unit
 
 ### currency?
 
@@ -38,8 +42,13 @@ Locale for formatting (default: en-US)
 
 Formatted currency string
 
+## Throws
+
+When `currency` is not a string, or is empty or only whitespace
+
 ## Example
 
 ```typescript
 formatMoney(1050); // "$10.50"
+formatMoney(1050, 'gbp', 'en-GB'); // "£10.50"
 ```
