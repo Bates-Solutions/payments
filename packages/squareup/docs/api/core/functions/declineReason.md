@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.5.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **declineReason**(`error`): [`DeclineReason`](../interfaces/DeclineReason.md) \| `undefined`
 
-Defined in: [squareup/src/core/errors.ts:419](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L419)
+Defined in: [squareup/src/core/errors.ts:417](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/errors.ts#L417)
 
 Classify a failed charge: Square's decline code and whether charging the
 same card again later can succeed.
@@ -21,12 +21,12 @@ Returns `undefined` when `error` is not a card decline (not a
 | --- | --- |
 | `INSUFFICIENT_FUNDS` | `true`, after a few days |
 | `TRANSACTION_LIMIT` | `true`, later |
-| `TEMPORARY_ERROR` | `true`, soon |
 | `GENERIC_DECLINE`, `CVV_FAILURE`, `CARD_EXPIRED`, `INVALID_ACCOUNT`, ... | `false` |
 | any other code | `false` |
 
-This is about the card. Network failures and 5xx responses are a separate
-question: see [isRetryableSquareError](isRetryableSquareError.md).
+This is about the card. Network failures, 5xx responses and Square's
+`TEMPORARY_ERROR` are a separate question: see [isRetryableSquareError](isRetryableSquareError.md),
+and retry those with the **same** idempotency key.
 
 ## Parameters
 

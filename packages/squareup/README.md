@@ -338,7 +338,7 @@ await square.payments.create({ sourceId, amount: 1099, idempotencyKey: `order-${
 await square.subscriptions.create({ customerId, planVariationId, idempotencyKey: `sub-${userId}-${planVariationId}` });
 ```
 
-`createIdempotencyKey()` still makes a random key. Use it only when you store the key with the request and reuse it on a retry. Keys are at most 45 characters. Calls that don't move money (`orders.pay`, gift card activities, invoices, checkout) still default the key.
+`createIdempotencyKey()` still makes a random key. Use it only when you store the key with the request and reuse it on a retry. Keys are at most 45 characters. The other calls that take a key (`orders.pay`, gift card activities, invoices, checkout and catalog) still default it to a random one, so pass your own when a retry must not repeat the call. `orders.pay` and gift card `LOAD` and `ACTIVATE` activities move money.
 
 ### 2. The Lambda adapter requires `notificationUrl` and returns `500` when a handler throws
 

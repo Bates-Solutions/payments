@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.5.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
 
 ***
 
@@ -48,7 +48,7 @@ Defined in: [squareup/src/core/services/refunds.service.ts:28](https://github.co
 
 > **get**(`refundId`): `Promise`\<[`PaymentRefund`](../interfaces/PaymentRefund.md)\>
 
-Defined in: [squareup/src/core/services/refunds.service.ts:97](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/refunds.service.ts#L97)
+Defined in: [squareup/src/core/services/refunds.service.ts:98](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/refunds.service.ts#L98)
 
 Get a refund by ID
 
@@ -78,7 +78,7 @@ const refund = await square.refunds.get('REFUND_123');
 
 > **list**(`options?`): `Promise`\<\{ `cursor?`: `string`; `refunds`: [`PaymentRefund`](../interfaces/PaymentRefund.md)[]; \}\>
 
-Defined in: [squareup/src/core/services/refunds.service.ts:126](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/refunds.service.ts#L126)
+Defined in: [squareup/src/core/services/refunds.service.ts:127](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/services/refunds.service.ts#L127)
 
 List refunds, one page at a time
 

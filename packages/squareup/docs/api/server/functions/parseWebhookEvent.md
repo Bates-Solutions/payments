@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v2.5.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v2.6.0**](../../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **parseWebhookEvent**(`rawBody`): [`WebhookEvent`](../interfaces/WebhookEvent.md)
 
-Defined in: [squareup/src/server/events.ts:32](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/events.ts#L32)
+Defined in: [squareup/src/server/events.ts:38](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/server/events.ts#L38)
 
 Parse a webhook request body into a typed event
 
