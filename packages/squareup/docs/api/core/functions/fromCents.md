@@ -1,4 +1,4 @@
-[**@bates-solutions/squareup API Reference v3.0.0**](../../README.md)
+[**@bates-solutions/squareup API Reference v3.0.1**](../../README.md)
 
 ***
 
@@ -8,9 +8,13 @@
 
 > **fromCents**(`cents`, `currency?`): `number`
 
-Defined in: [squareup/src/core/utils.ts:63](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/utils.ts#L63)
+Defined in: [squareup/src/core/utils.ts:73](https://github.com/Bates-Solutions/payments/blob/main/packages/squareup/src/core/utils.ts#L73)
 
 Convert cents (smallest currency unit) to dollar amount
+
+The currency's minor unit comes from ISO 4217 through `minorUnitExponent`
+in payments-core, matched in any case. A code outside `CurrencyCode` gets
+its own exponent (1000 for `KWD`, 1 for `KRW`).
 
 ## Parameters
 
@@ -31,6 +35,10 @@ Currency code (default: USD)
 `number`
 
 Dollar amount
+
+## Throws
+
+When `currency` is not a string, or is empty or only whitespace
 
 ## Example
 

@@ -29,9 +29,14 @@ function getCurrencyMultiplier(currency: CurrencyCode): number {
 /**
  * Convert a dollar amount to cents (smallest currency unit)
  *
+ * The currency's minor unit comes from ISO 4217 through `minorUnitExponent`
+ * in payments-core, matched in any case. A code outside `CurrencyCode` gets
+ * its own exponent (1000 for `KWD`, 1 for `KRW`).
+ *
  * @param amount - Dollar amount (e.g., 10.50)
  * @param currency - Currency code (default: USD)
  * @returns Amount in smallest currency unit (e.g., 1050 for $10.50 USD)
+ * @throws {SquareValidationError} When `currency` is not a string, or is empty or only whitespace
  *
  * @example
  * ```typescript
@@ -49,9 +54,14 @@ export function toCents(amount: number, currency: CurrencyCode = 'USD'): bigint 
 /**
  * Convert cents (smallest currency unit) to dollar amount
  *
+ * The currency's minor unit comes from ISO 4217 through `minorUnitExponent`
+ * in payments-core, matched in any case. A code outside `CurrencyCode` gets
+ * its own exponent (1000 for `KWD`, 1 for `KRW`).
+ *
  * @param cents - Amount in smallest currency unit
  * @param currency - Currency code (default: USD)
  * @returns Dollar amount
+ * @throws {SquareValidationError} When `currency` is not a string, or is empty or only whitespace
  *
  * @example
  * ```typescript
@@ -73,6 +83,7 @@ export function fromCents(cents: bigint | number, currency: CurrencyCode = 'USD'
  * @param currency - Currency code (default: USD)
  * @param locale - Locale for formatting (default: en-US)
  * @returns Formatted currency string
+ * @throws {SquareValidationError} When `currency` is not a string, or is empty or only whitespace
  *
  * @example
  * ```typescript
