@@ -65,11 +65,13 @@ export interface WebhookConfig extends VerifyOptions {
   throwOnInvalidSignature?: boolean;
 }
 
-/**
- * Convenience aliases for the subscription-lifecycle events, each narrowed to
- * its concrete `data.object` type. Handy for typing standalone handler
- * functions without re-deriving the `Extract<…>`.
+/*
+ * Convenience aliases for the checkout, subscription and invoice events, each
+ * narrowed to its concrete `data.object` type. Handy for typing standalone
+ * handler functions without re-deriving the `Extract<...>`.
  */
+
+/** The `checkout.session.completed` event. */
 export type CheckoutSessionCompletedEvent = Extract<Stripe.Event, { type: 'checkout.session.completed' }>;
 /** The `customer.subscription.created` event. */
 export type SubscriptionCreatedEvent = Extract<Stripe.Event, { type: 'customer.subscription.created' }>;

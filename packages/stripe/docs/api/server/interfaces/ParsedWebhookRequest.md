@@ -6,7 +6,7 @@
 
 # Interface: ParsedWebhookRequest
 
-Defined in: [stripe/src/server/types.ts:98](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/types.ts#L98)
+Defined in: [stripe/src/server/types.ts:100](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/types.ts#L100)
 
 A parsed and verified webhook request.
 
@@ -16,7 +16,7 @@ A parsed and verified webhook request.
 
 > **event**: `Event`
 
-Defined in: [stripe/src/server/types.ts:104](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/types.ts#L104)
+Defined in: [stripe/src/server/types.ts:106](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/types.ts#L106)
 
 The parsed event
 
@@ -26,7 +26,7 @@ The parsed event
 
 > **rawBody**: `string`
 
-Defined in: [stripe/src/server/types.ts:100](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/types.ts#L100)
+Defined in: [stripe/src/server/types.ts:102](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/types.ts#L102)
 
 The raw request body
 
@@ -36,6 +36,6 @@ The raw request body
 
 > **signature**: `string`
 
-Defined in: [stripe/src/server/types.ts:102](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/types.ts#L102)
+Defined in: [stripe/src/server/types.ts:104](https://github.com/Bates-Solutions/payments/blob/main/packages/stripe/src/server/types.ts#L104)
 
 The signature from the `stripe-signature` header
