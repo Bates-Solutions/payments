@@ -129,6 +129,10 @@ export class OrdersService {
       builder.addDiscounts(options.discounts);
     }
 
+    if (options.taxes && options.taxes.length > 0) {
+      builder.addTaxes(options.taxes);
+    }
+
     if (options.customerId) {
       builder.withCustomer(options.customerId);
     }
@@ -156,11 +160,13 @@ export class OrdersService {
    * Get an order by ID
    *
    * @param orderId - Order ID
-   * @returns Order details
+   * @returns Order details, including its `tenders` (the payments applied to
+   *   it) and each tax's `appliedMoney`
    *
    * @example
    * ```typescript
    * const order = await square.orders.get('ORDER_123');
+   * const paid = (order.tenders?.length ?? 0) > 0;
    * ```
    */
   async get(orderId: string): Promise<Order> {

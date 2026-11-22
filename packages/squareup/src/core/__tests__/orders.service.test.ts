@@ -164,6 +164,106 @@ describe('OrdersService', () => {
       expect(arg.order.lineItems[0].appliedDiscounts).toEqual([{ discountUid: 'w' }]);
     });
 
+    it('forwards ad hoc taxes and returns the applied tax amount (issue #40)', async () => {
+      const created = {
+        id: 'O',
+        taxes: [
+          {
+            uid: 'tax-gst',
+            name: 'GST',
+            percentage: '5',
+            type: 'ADDITIVE',
+            scope: 'ORDER',
+            appliedMoney: { amount: 125n, currency: 'CAD' },
+          },
+        ],
+        totalTaxMoney: { amount: 125n, currency: 'CAD' },
+      };
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: created }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId, 'CAD');
+      const order = await service.create({
+        lineItems: [{ name: 'Design fee', amount: 2500 }],
+        taxes: [{ uid: 'tax-gst', name: 'GST', percentage: '5', type: 'ADDITIVE', scope: 'ORDER' }],
+        pricingOptions: { autoApplyTaxes: false, autoApplyDiscounts: false },
+        state: 'OPEN',
+      });
+
+      const arg = (client.orders.create as ReturnType<typeof vi.fn>).mock.calls[0][0] as {
+        order: { taxes?: unknown[]; pricingOptions?: unknown };
+      };
+      expect(arg.order.taxes).toEqual([
+        { uid: 'tax-gst', name: 'GST', percentage: '5', type: 'ADDITIVE', scope: 'ORDER' },
+      ]);
+      expect(arg.order.pricingOptions).toEqual({ autoApplyTaxes: false, autoApplyDiscounts: false });
+      expect(order.taxes?.[0].appliedMoney?.amount).toBe(125n);
+      expect(order.totalTaxMoney?.amount).toBe(125n);
+    });
+
+    it('forwards a LINE_ITEM tax with the line that applies it', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      await service.create({
+        lineItems: [
+          { name: 'Taxed', amount: 1000, appliedTaxes: [{ taxUid: 'hst' }] },
+          { name: 'Exempt', amount: 500 },
+        ],
+        taxes: [{ uid: 'hst', name: 'HST', percentage: '13', scope: 'LINE_ITEM' }],
+      });
+
+      const arg = (client.orders.create as ReturnType<typeof vi.fn>).mock.calls[0][0] as {
+        order: { lineItems: Array<{ appliedTaxes?: Array<{ taxUid: string }> }> };
+      };
+      expect(arg.order.lineItems[0].appliedTaxes).toEqual([{ taxUid: 'hst' }]);
+      expect(arg.order.lineItems[1].appliedTaxes).toBeUndefined();
+    });
+
+    it('rejects an ad hoc tax without a percentage, before calling Square', async () => {
+      const client = createMockClient();
+      const service = new OrdersService(client, defaultLocationId);
+
+      await expect(
+        service.create({
+          lineItems: [{ name: 'Coffee', amount: 350 }],
+          taxes: [{ uid: 'gst', name: 'GST' }],
+        })
+      ).rejects.toBeInstanceOf(SquareValidationError);
+      expect(client.orders.create).not.toHaveBeenCalled();
+    });
+
+    it('leaves taxes out when none are given', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      await service.create({ lineItems: [{ name: 'Coffee', amount: 350 }], taxes: [] });
+
+      const arg = (client.orders.create as ReturnType<typeof vi.fn>).mock.calls[0][0] as {
+        order: { taxes?: unknown };
+      };
+      expect(arg.order.taxes).toBeUndefined();
+    });
+
+    it('throws when Square answers 2xx with errors', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({
+          errors: [{ category: 'INVALID_REQUEST_ERROR', code: 'INVALID_VALUE', detail: 'bad tax' }],
+        }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+
+      await expect(
+        service.create({ lineItems: [{ name: 'Coffee', amount: 350 }] })
+      ).rejects.toMatchObject({ name: 'SquareApiError', message: 'bad tax' });
+    });
+
     it('should honor locationId from options over default', async () => {
       const client = createMockClient({
         create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
@@ -211,6 +311,25 @@ describe('OrdersService', () => {
 
       expect(result).toEqual(mockOrder);
       expect(client.orders.get).toHaveBeenCalledWith({ orderId: 'ORDER_123' });
+    });
+
+    it("returns the order's tenders, so a caller can tell it has been paid", async () => {
+      const mockOrder = {
+        id: 'ORDER_123',
+        state: 'COMPLETED',
+        tenders: [
+          { id: 'T1', type: 'CARD', paymentId: 'PAY_1', amountMoney: { amount: 2625n, currency: 'CAD' } },
+        ],
+      };
+      const client = createMockClient({
+        get: vi.fn().mockResolvedValue({ order: mockOrder }),
+      });
+
+      const service = new OrdersService(client, defaultLocationId);
+      const result = await service.get('ORDER_123');
+
+      expect(result.tenders?.[0].paymentId).toBe('PAY_1');
+      expect(result.tenders?.[0].amountMoney?.amount).toBe(2625n);
     });
 
     it('should throw if order not found', async () => {

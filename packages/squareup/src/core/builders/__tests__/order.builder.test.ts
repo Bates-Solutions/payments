@@ -226,6 +226,7 @@ describe('OrderBuilder', () => {
           },
         ],
         discounts: [],
+        taxes: [],
         customerId: 'CUST_123',
         referenceId: 'REF_123',
         tipAmount: BigInt(100),
@@ -539,6 +540,146 @@ describe('OrderBuilder', () => {
 
       await expect(builder.build()).rejects.toThrow(/apply to nothing/i);
       expect(client.orders.create).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('taxes', () => {
+    function sentOrder(client: SquareClient) {
+      return (
+        (client.orders.create as ReturnType<typeof vi.fn>).mock.calls[0][0] as {
+          order: {
+            taxes?: Array<Record<string, unknown>>;
+            lineItems: Array<{ appliedTaxes?: Array<{ taxUid: string }> }>;
+          };
+        }
+      ).order;
+    }
+
+    it('sends an ad hoc ORDER tax as given (issue #40)', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
+      });
+
+      await new OrderBuilder(client, locationId, 'CAD')
+        .addItem({ name: 'Design fee', amount: 2500 })
+        .addTax({ uid: 'tax-gst', name: 'GST', percentage: '5', type: 'ADDITIVE', scope: 'ORDER' })
+        .withPricingOptions({ autoApplyTaxes: false })
+        .build();
+
+      expect(sentOrder(client).taxes).toEqual([
+        { uid: 'tax-gst', name: 'GST', percentage: '5', type: 'ADDITIVE', scope: 'ORDER' },
+      ]);
+    });
+
+    it('accepts a catalog tax without a percentage', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
+      });
+
+      await new OrderBuilder(client, locationId)
+        .addItem({ name: 'X', amount: 100 })
+        .addTaxes([{ uid: 'state', catalogObjectId: 'TAX_1', scope: 'ORDER' }])
+        .build();
+
+      expect(sentOrder(client).taxes).toEqual([
+        { uid: 'state', catalogObjectId: 'TAX_1', scope: 'ORDER' },
+      ]);
+    });
+
+    it('sends a LINE_ITEM tax only on the lines that apply it', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
+      });
+
+      await new OrderBuilder(client, locationId)
+        .addItem({ name: 'Taxed', amount: 1000, appliedTaxes: [{ taxUid: 'hst' }] })
+        .addItem({ name: 'Exempt', amount: 500 })
+        .addTax({ uid: 'hst', name: 'HST', percentage: '13', scope: 'LINE_ITEM' })
+        .build();
+
+      const order = sentOrder(client);
+      expect(order.lineItems[0].appliedTaxes).toEqual([{ taxUid: 'hst' }]);
+      expect(order.lineItems[1].appliedTaxes).toBeUndefined();
+    });
+
+    it('omits taxes entirely when none are added', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({ order: { id: 'O' } }),
+      });
+
+      await new OrderBuilder(client, locationId).addItem({ name: 'X', amount: 100 }).build();
+
+      expect(sentOrder(client).taxes).toBeUndefined();
+    });
+
+    it.each([undefined, '', 'five', '5%', '-5', '.5'])(
+      'rejects an ad hoc tax with percentage %j',
+      (percentage) => {
+        const builder = new OrderBuilder(createMockClient(), locationId);
+        expect(() => builder.addTax({ uid: 'gst', name: 'GST', percentage })).toThrow(
+          SquareValidationError
+        );
+      }
+    );
+
+    it('accepts a decimal percentage', () => {
+      const builder = new OrderBuilder(createMockClient(), locationId);
+      builder.addTax({ uid: 'qst', name: 'QST', percentage: '9.975' });
+      expect(builder.preview().taxes).toEqual([{ uid: 'qst', name: 'QST', percentage: '9.975' }]);
+    });
+
+    it('throws when a line references a tax uid not in the order', async () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId).addItem({
+        name: 'X',
+        amount: 100,
+        appliedTaxes: [{ taxUid: 'missing' }],
+      });
+
+      await expect(builder.build()).rejects.toThrow(/tax 'missing'/);
+      expect(client.orders.create).not.toHaveBeenCalled();
+    });
+
+    it('throws when a LINE_ITEM tax is referenced by no line item', async () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId)
+        .addItem({ name: 'X', amount: 100 })
+        .addTax({ uid: 'orphan', name: 'PST', percentage: '7', scope: 'LINE_ITEM' });
+
+      await expect(builder.build()).rejects.toThrow(/apply to nothing/i);
+      expect(client.orders.create).not.toHaveBeenCalled();
+    });
+
+    it('throws when a LINE_ITEM tax has no uid to reference', async () => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId)
+        .addItem({ name: 'X', amount: 100 })
+        .addTax({ name: 'PST', percentage: '7', scope: 'LINE_ITEM' });
+
+      await expect(builder.build()).rejects.toThrow(/apply to nothing/i);
+    });
+
+    it('reset clears the taxes', () => {
+      const builder = new OrderBuilder(createMockClient(), locationId)
+        .addItem({ name: 'X', amount: 100 })
+        .addTax({ uid: 'gst', name: 'GST', percentage: '5' });
+
+      builder.reset();
+      expect(builder.preview().taxes).toEqual([]);
+    });
+  });
+
+  describe('build response errors', () => {
+    it('throws when Square answers 2xx with errors instead of an order', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockResolvedValue({
+          errors: [{ category: 'INVALID_REQUEST_ERROR', code: 'INVALID_VALUE', detail: 'bad tax' }],
+        }),
+      });
+
+      await expect(
+        new OrderBuilder(client, locationId).addItem({ name: 'X', amount: 100 }).build()
+      ).rejects.toThrow(SquareApiError);
     });
   });
 

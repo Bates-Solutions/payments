@@ -4,8 +4,9 @@ import type {
   LineItemInput,
   OrderDiscountInput,
   OrderPricingOptions,
+  OrderTaxInput,
 } from '../types/index.js';
-import { parseSquareError, SquareValidationError } from '../errors.js';
+import { assertNoResponseErrors, parseSquareError, SquareValidationError } from '../errors.js';
 import { createIdempotencyKey } from '../utils.js';
 
 type OrderState = 'DRAFT' | 'OPEN';
@@ -22,7 +23,52 @@ interface OrderLineItem {
     currency: CurrencyCode;
   };
   appliedDiscounts?: Array<{ discountUid: string }>;
+  appliedTaxes?: Array<{ taxUid: string }>;
   note?: string;
+}
+
+/**
+ * Order-level tax, in the shape Square's `order.taxes` expects.
+ */
+interface OrderTaxRequest {
+  uid?: string;
+  catalogObjectId?: string;
+  name?: string;
+  percentage?: string;
+  type?: OrderTaxInput['type'];
+  scope?: OrderTaxInput['scope'];
+}
+
+/** Money as Square returns it. */
+interface OrderMoney {
+  amount?: bigint;
+  currency?: string;
+}
+
+/**
+ * A tax on a returned order, with the amount Square computed for it.
+ */
+export interface OrderTax {
+  uid?: string;
+  catalogObjectId?: string;
+  name?: string;
+  percentage?: string;
+  type?: string;
+  scope?: string;
+  /** The amount of this tax across the order, as Square computed it. */
+  appliedMoney?: OrderMoney;
+}
+
+/**
+ * A payment (or other tender) applied to an order. An order with no tenders
+ * hasn't been paid.
+ */
+export interface OrderTender {
+  id?: string;
+  type?: string;
+  amountMoney?: OrderMoney;
+  paymentId?: string;
+  createdAt?: string;
 }
 
 /**
@@ -48,10 +94,15 @@ export interface Order {
   customerId?: string;
   lineItems?: OrderLineItem[];
   pricingOptions?: OrderPricingOptions;
+  /** The order's taxes, each with the `appliedMoney` Square computed. */
+  taxes?: OrderTax[];
+  /** Payments applied to the order. Empty or missing until it's paid. */
+  tenders?: OrderTender[];
   totalMoney?: {
     amount?: bigint;
     currency?: string;
   };
+  totalTaxMoney?: OrderMoney;
   state?: string;
   version?: number;
   createdAt?: string;
@@ -75,6 +126,7 @@ export interface Order {
 export class OrderBuilder {
   private lineItems: OrderLineItem[] = [];
   private discounts: OrderDiscount[] = [];
+  private taxes: OrderTaxRequest[] = [];
   private customerId?: string;
   private referenceId?: string;
   private tipAmount?: bigint;
@@ -151,6 +203,10 @@ export class OrderBuilder {
       lineItem.appliedDiscounts = item.appliedDiscounts;
     }
 
+    if (item.appliedTaxes && item.appliedTaxes.length > 0) {
+      lineItem.appliedTaxes = item.appliedTaxes;
+    }
+
     if (item.note) {
       lineItem.note = item.note;
     }
@@ -210,6 +266,54 @@ export class OrderBuilder {
   addDiscounts(discounts: OrderDiscountInput[]): this {
     for (const discount of discounts) {
       this.addDiscount(discount);
+    }
+    return this;
+  }
+
+  /**
+   * Add an order tax. Define an ad hoc tax inline with `name` + `percentage`,
+   * or reference an existing `CatalogTax` by `catalogObjectId`. For a
+   * `LINE_ITEM`-scoped tax, give it a `uid` and reference that from each line's
+   * `appliedTaxes`. To charge only the taxes you add, also set
+   * `withPricingOptions({ autoApplyTaxes: false })`.
+   *
+   * @throws {SquareValidationError} When the tax has neither `catalogObjectId`
+   *   nor a numeric `percentage`
+   *
+   * @example
+   * ```typescript
+   * builder
+   *   .addItem({ name: 'Design fee', amount: 2500 })
+   *   .addTax({ uid: 'gst', name: 'GST', percentage: '5', scope: 'ORDER' })
+   *   .withPricingOptions({ autoApplyTaxes: false });
+   * ```
+   */
+  addTax(tax: OrderTaxInput): this {
+    if (!tax.catalogObjectId) {
+      if (tax.percentage === undefined || !/^\d+(\.\d+)?$/.test(tax.percentage)) {
+        throw new SquareValidationError(
+          `Tax${tax.uid ? ` '${tax.uid}'` : ''} needs a catalogObjectId, or a percentage such as "5" or "7.25"`,
+          'taxes'
+        );
+      }
+    }
+    this.taxes.push({
+      uid: tax.uid,
+      catalogObjectId: tax.catalogObjectId,
+      name: tax.name,
+      percentage: tax.percentage,
+      type: tax.type,
+      scope: tax.scope,
+    });
+    return this;
+  }
+
+  /**
+   * Add multiple order taxes at once.
+   */
+  addTaxes(taxes: OrderTaxInput[]): this {
+    for (const tax of taxes) {
+      this.addTax(tax);
     }
     return this;
   }
@@ -337,6 +441,39 @@ export class OrderBuilder {
   }
 
   /**
+   * The same cross-check for taxes: a line's `appliedTaxes.taxUid` must match
+   * an order tax `uid`, and a `LINE_ITEM`-scoped tax must be referenced by at
+   * least one line.
+   */
+  private validateTaxReferences(): void {
+    const taxUids = new Set(
+      this.taxes.map((t) => t.uid).filter((uid): uid is string => uid !== undefined)
+    );
+    const referencedUids = new Set<string>();
+
+    for (const item of this.lineItems) {
+      for (const applied of item.appliedTaxes ?? []) {
+        if (!taxUids.has(applied.taxUid)) {
+          throw new SquareValidationError(
+            `Line item references tax '${applied.taxUid}', which is not in the order's taxes. Add it with addTax({ uid: '${applied.taxUid}', … }).`,
+            'appliedTaxes'
+          );
+        }
+        referencedUids.add(applied.taxUid);
+      }
+    }
+
+    for (const tax of this.taxes) {
+      if (tax.scope === 'LINE_ITEM' && (!tax.uid || !referencedUids.has(tax.uid))) {
+        throw new SquareValidationError(
+          `LINE_ITEM tax${tax.uid ? ` '${tax.uid}'` : ''} is not referenced by any line item's appliedTaxes, so it would apply to nothing.`,
+          'taxes'
+        );
+      }
+    }
+  }
+
+  /**
    * Build and create the order
    *
    * @returns Created order
@@ -350,6 +487,7 @@ export class OrderBuilder {
     }
 
     this.validateDiscountReferences();
+    this.validateTaxReferences();
 
     try {
       const response = await this.client.orders.create({
@@ -357,6 +495,7 @@ export class OrderBuilder {
           locationId: this.locationId,
           lineItems: this.lineItems,
           discounts: this.discounts.length > 0 ? this.discounts : undefined,
+          taxes: this.taxes.length > 0 ? this.taxes : undefined,
           customerId: this.customerId,
           referenceId: this.referenceId,
           state: this.state,
@@ -364,6 +503,7 @@ export class OrderBuilder {
         },
         idempotencyKey: this.idempotencyKey ?? createIdempotencyKey(),
       });
+      assertNoResponseErrors(response);
 
       if (!response.order) {
         throw new Error('Order was not created');
@@ -383,6 +523,7 @@ export class OrderBuilder {
     locationId: string;
     lineItems: OrderLineItem[];
     discounts: OrderDiscount[];
+    taxes: OrderTaxRequest[];
     customerId?: string;
     referenceId?: string;
     tipAmount?: bigint;
@@ -395,6 +536,7 @@ export class OrderBuilder {
       locationId: this.locationId,
       lineItems: [...this.lineItems],
       discounts: [...this.discounts],
+      taxes: [...this.taxes],
       customerId: this.customerId,
       referenceId: this.referenceId,
       tipAmount: this.tipAmount,
@@ -411,6 +553,7 @@ export class OrderBuilder {
   reset(): this {
     this.lineItems = [];
     this.discounts = [];
+    this.taxes = [];
     this.customerId = undefined;
     this.referenceId = undefined;
     this.tipAmount = undefined;
