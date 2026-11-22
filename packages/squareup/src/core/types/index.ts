@@ -77,7 +77,8 @@ export interface LineItemInput {
   /**
    * References to order-level `taxes` (by their `uid`) that apply to this line
    * item. Required for `LINE_ITEM`-scoped taxes: Square only applies a
-   * line-item tax to a line that lists it here.
+   * line-item tax to a line that lists it here. Each referenced tax must set
+   * `scope: 'LINE_ITEM'`; an `ORDER` tax applies to every line regardless.
    */
   appliedTaxes?: Array<{ taxUid: string }>;
   note?: string;

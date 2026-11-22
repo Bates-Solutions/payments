@@ -640,6 +640,20 @@ describe('OrderBuilder', () => {
       expect(client.orders.create).not.toHaveBeenCalled();
     });
 
+    it.each([
+      ['ORDER', { scope: 'ORDER' as const }],
+      ['unscoped', {}],
+    ])('throws when a line references a %s tax', async (_label, scope) => {
+      const client = createMockClient();
+      const builder = new OrderBuilder(client, locationId)
+        .addItem({ name: 'Taxed', amount: 1000, appliedTaxes: [{ taxUid: 'hst' }] })
+        .addItem({ name: 'Exempt', amount: 500 })
+        .addTax({ uid: 'hst', name: 'HST', percentage: '13', ...scope });
+
+      await expect(builder.build()).rejects.toThrow(/not LINE_ITEM-scoped/);
+      expect(client.orders.create).not.toHaveBeenCalled();
+    });
+
     it('throws when a LINE_ITEM tax is referenced by no line item', async () => {
       const client = createMockClient();
       const builder = new OrderBuilder(client, locationId)

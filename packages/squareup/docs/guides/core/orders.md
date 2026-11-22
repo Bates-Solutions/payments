@@ -157,7 +157,7 @@ order.totalTaxMoney?.amount; // 125n
 
 - `percentage` is a string such as `"5"` or `"9.975"`. An ad hoc tax without a valid one throws a `SquareValidationError`.
 - `type`: `ADDITIVE` (the default) adds the tax on top of the price; `INCLUSIVE` treats it as already in the price.
-- `scope`: an `ORDER` tax applies to every line. A `LINE_ITEM` tax applies only to lines that list its `uid` in `appliedTaxes`, as with discounts; the builder throws a `SquareValidationError` if a reference dangles or a `LINE_ITEM` tax goes unreferenced.
+- `scope`: an `ORDER` tax applies to every line. A `LINE_ITEM` tax applies only to lines that list its `uid` in `appliedTaxes`, as with discounts. The builder throws a `SquareValidationError` if a reference dangles, points at a tax that isn't `LINE_ITEM` (Square would still apply an `ORDER` tax to every line), or a `LINE_ITEM` tax goes unreferenced.
 - To use a catalog tax instead, pass its `catalogObjectId` (no `percentage` needed).
 
 ```typescript

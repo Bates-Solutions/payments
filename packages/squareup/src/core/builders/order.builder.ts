@@ -442,20 +442,28 @@ export class OrderBuilder {
 
   /**
    * The same cross-check for taxes: a line's `appliedTaxes.taxUid` must match
-   * an order tax `uid`, and a `LINE_ITEM`-scoped tax must be referenced by at
-   * least one line.
+   * an order tax `uid` whose scope is `LINE_ITEM`, and a `LINE_ITEM`-scoped
+   * tax must be referenced by at least one line. Square applies an `ORDER` tax
+   * to every line, so a reference to one would not exempt the other lines.
    */
   private validateTaxReferences(): void {
-    const taxUids = new Set(
-      this.taxes.map((t) => t.uid).filter((uid): uid is string => uid !== undefined)
+    const taxesByUid = new Map(
+      this.taxes.filter((t) => t.uid !== undefined).map((t) => [t.uid as string, t])
     );
     const referencedUids = new Set<string>();
 
     for (const item of this.lineItems) {
       for (const applied of item.appliedTaxes ?? []) {
-        if (!taxUids.has(applied.taxUid)) {
+        const tax = taxesByUid.get(applied.taxUid);
+        if (!tax) {
           throw new SquareValidationError(
             `Line item references tax '${applied.taxUid}', which is not in the order's taxes. Add it with addTax({ uid: '${applied.taxUid}', … }).`,
+            'appliedTaxes'
+          );
+        }
+        if (tax.scope !== 'LINE_ITEM') {
+          throw new SquareValidationError(
+            `Line item references tax '${applied.taxUid}', which is not LINE_ITEM-scoped. Square applies an ORDER tax to every line, so set scope: 'LINE_ITEM' on it to tax only the lines that reference it.`,
             'appliedTaxes'
           );
         }
