@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import type { SquareClient } from 'square';
 import { PaymentsService } from '../services/payments.service.js';
-import { SquareValidationError, SquareApiError } from '../errors.js';
+import { SquareValidationError, SquareApiError, SquarePaymentError } from '../errors.js';
 
 // Create mock Square client
 function createMockClient(overrides: Record<string, unknown> = {}): SquareClient {
@@ -210,6 +210,63 @@ describe('PaymentsService', () => {
       await expect(
         service.create({ sourceId: 'cnon:card-nonce-ok', amount: 1000, idempotencyKey: 'test-key' })
       ).rejects.toThrow(SquareApiError);
+    });
+
+    it("carries the declined payment's id, status and creation time (issue #41)", async () => {
+      // A declined CreatePayment: Square's error body includes the FAILED
+      // payment, in snake_case, as the SDK leaves an error body.
+      const client = createMockClient({
+        create: vi.fn().mockRejectedValue({
+          statusCode: 402,
+          body: {
+            errors: [
+              {
+                category: 'PAYMENT_METHOD_ERROR',
+                code: 'GENERIC_DECLINE',
+                detail: 'Authorization error: GENERIC_DECLINE',
+              },
+            ],
+            payment: {
+              id: 'PAY_FAILED_1',
+              status: 'FAILED',
+              created_at: '2026-11-22T10:00:00.000Z',
+              amount_money: { amount: 100, currency: 'CAD' },
+            },
+          },
+        }),
+      });
+
+      const service = new PaymentsService(client, defaultLocationId);
+      const error = await service
+        .create({ sourceId: 'cnon:card-nonce-declined', amount: 100, currency: 'CAD', idempotencyKey: 'k' })
+        .catch((e: unknown) => e);
+
+      expect(error).toBeInstanceOf(SquarePaymentError);
+      expect(error).toMatchObject({
+        paymentId: 'PAY_FAILED_1',
+        paymentStatus: 'FAILED',
+        paymentCreatedAt: '2026-11-22T10:00:00.000Z',
+        errors: [expect.objectContaining({ code: 'GENERIC_DECLINE' })],
+      });
+    });
+
+    it('leaves paymentId unset when the decline has no payment', async () => {
+      const client = createMockClient({
+        create: vi.fn().mockRejectedValue({
+          statusCode: 400,
+          body: { errors: [{ category: 'PAYMENT_METHOD_ERROR', code: 'CVV_FAILURE' }] },
+        }),
+      });
+
+      const service = new PaymentsService(client, defaultLocationId);
+      const error = (await service
+        .create({ sourceId: 'cnon:x', amount: 100, idempotencyKey: 'k' })
+        .catch((e: unknown) => e)) as SquarePaymentError;
+
+      expect(error).toBeInstanceOf(SquarePaymentError);
+      expect(error.paymentId).toBeUndefined();
+      expect(error.paymentStatus).toBeUndefined();
+      expect(error.paymentCreatedAt).toBeUndefined();
     });
   });
 

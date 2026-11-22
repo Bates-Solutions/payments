@@ -92,3 +92,25 @@ not a decline: `declineReason` returns `undefined` for it and
 key. See
 the [payments guide](./payments.md#declines-retry-later-or-ask-for-another-card)
 for the full table.
+
+### The declined payment's id
+
+A declined `payments.create()` still creates a payment, with status `FAILED`,
+and Square later sends `payment.created` / `payment.updated` webhooks for it.
+When Square's error response includes that payment (it does for card
+declines), the `SquarePaymentError` carries its `paymentId`, `paymentStatus`
+and `paymentCreatedAt`. Store the id with the attempt, so a late webhook for
+the failed payment matches that attempt and not a retry opened since:
+
+```typescript
+try {
+  await square.payments.create({ sourceId, amount: 100, currency: 'CAD', idempotencyKey });
+} catch (error) {
+  if (error instanceof SquarePaymentError) {
+    await attempts.markDeclined(attemptId, {
+      paymentId: error.paymentId, // e.g. 'R2B3…'; undefined if Square sent no payment
+      code: error.errors[0]?.code, // e.g. 'GENERIC_DECLINE'
+    });
+  }
+}
+```
