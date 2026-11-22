@@ -49,6 +49,7 @@ const order = await square.orders
   .withTip(100)                  // Add tip ($1.00)
   .withCustomer('CUST_123')      // Associate customer
   .withReference('ext-order-1')  // External reference ID
+  .addTax({ name: 'GST', percentage: '5' }) // Ad hoc tax (see Taxes)
   .build();
 ```
 
@@ -135,6 +136,40 @@ const order = await square.orders.create({
 });
 ```
 
+## Taxes
+
+Add taxes with `taxes` (or the builder's `addTax` / `addTaxes`). An **ad hoc** tax takes a `name` and a `percentage` you decide, with no `CatalogTax` object behind it. To charge only the taxes you list, set `pricingOptions.autoApplyTaxes: false`; otherwise Square also adds the location's enabled taxes.
+
+```typescript
+const order = await square.orders.create({
+  lineItems: [{ name: 'Design fee', amount: 2500 }],
+  taxes: [{ uid: 'tax-gst', name: 'GST', percentage: '5', type: 'ADDITIVE', scope: 'ORDER' }],
+  pricingOptions: { autoApplyTaxes: false, autoApplyDiscounts: false },
+  customerId: 'CUST_123',
+  state: 'OPEN',
+});
+
+// Square computes each tax; check it against your own figure to the cent.
+const gst = order.taxes?.find((t) => t.uid === 'tax-gst');
+gst?.appliedMoney?.amount; // 125n
+order.totalTaxMoney?.amount; // 125n
+```
+
+- `percentage` is a string such as `"5"` or `"9.975"`. An ad hoc tax without a valid one throws a `SquareValidationError`.
+- `type`: `ADDITIVE` (the default) adds the tax on top of the price; `INCLUSIVE` treats it as already in the price.
+- `scope`: an `ORDER` tax applies to every line. A `LINE_ITEM` tax applies only to lines that list its `uid` in `appliedTaxes`, as with discounts. The builder throws a `SquareValidationError` if a reference dangles, points at a tax that isn't `LINE_ITEM` (Square would still apply an `ORDER` tax to every line), or a `LINE_ITEM` tax goes unreferenced.
+- To use a catalog tax instead, pass its `catalogObjectId` (no `percentage` needed).
+
+```typescript
+await square.orders
+  .builder()
+  .addItem({ name: 'Taxed item', amount: 1000, appliedTaxes: [{ taxUid: 'hst' }] })
+  .addItem({ name: 'Exempt item', amount: 500 })
+  .addTax({ uid: 'hst', name: 'HST', percentage: '13', scope: 'LINE_ITEM' })
+  .withPricingOptions({ autoApplyTaxes: false })
+  .build();
+```
+
 ## Order Templates
 
 A **DRAFT** order becomes a reusable template — most commonly the source for a subscription phase (see [Subscriptions Guide](./subscriptions.md#product-driven-subscriptions)).
@@ -202,6 +237,11 @@ console.log('State:', order.state);
 console.log('Total:', order.totalMoney?.amount);
 console.log('Items:', order.lineItems?.length);
 console.log('Customer:', order.customerId);
+console.log('Tax:', order.totalTaxMoney?.amount);
+
+// Payments applied to the order; none means it hasn't been paid.
+const paid = (order.tenders?.length ?? 0) > 0;
+console.log('Paid by:', order.tenders?.map((t) => t.paymentId));
 ```
 
 ## Searching Orders

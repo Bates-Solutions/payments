@@ -291,7 +291,7 @@ delivery; make handlers idempotent (for example on `event.event_id`).
 | `payments`       | Process and manage payments                                    |
 | `cards`          | Cards on file: store, get, list and disable a customer's cards |
 | `refunds`        | Refund payments, and get or list refunds                       |
-| `orders`         | Create and manage orders, incl. DRAFT templates for subscriptions, fulfillment updates and cancelling |
+| `orders`         | Create and manage orders, incl. ad hoc taxes, DRAFT templates for subscriptions, fulfillment updates and cancelling |
 | `customers`      | Customer management                                            |
 | `customerGroups` | Customer groups + group membership (gates pricing rules)       |
 | `catalog`        | Product catalog ops, incl. pricing rules, wholesale pricing and UPC/SKU lookup |

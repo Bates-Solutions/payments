@@ -112,7 +112,7 @@ export type {
 
 // Builders
 export { OrderBuilder } from './builders/order.builder.js';
-export type { Order } from './builders/order.builder.js';
+export type { Order, OrderTax, OrderTender } from './builders/order.builder.js';
 
 // Errors
 export {

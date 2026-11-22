@@ -74,6 +74,13 @@ export interface LineItemInput {
    * a line-item discount to a line that lists it here.
    */
   appliedDiscounts?: Array<{ discountUid: string }>;
+  /**
+   * References to order-level `taxes` (by their `uid`) that apply to this line
+   * item. Required for `LINE_ITEM`-scoped taxes: Square only applies a
+   * line-item tax to a line that lists it here. Each referenced tax must set
+   * `scope: 'LINE_ITEM'`; an `ORDER` tax applies to every line regardless.
+   */
+  appliedTaxes?: Array<{ taxUid: string }>;
   note?: string;
 }
 
@@ -187,12 +194,62 @@ export interface OrderDiscountInput {
 }
 
 /**
+ * How a tax is calculated. `ADDITIVE` adds the tax on top of the price;
+ * `INCLUSIVE` treats it as already included in the price.
+ */
+export type OrderTaxType = 'ADDITIVE' | 'INCLUSIVE';
+
+/**
+ * Whether a tax applies to the whole order or to specific line items.
+ */
+export type OrderTaxScope = 'ORDER' | 'LINE_ITEM';
+
+/**
+ * An order tax. Define an ad hoc tax inline with `name` + `percentage` (for a
+ * rate the caller decides, with no `CatalogTax` object), or reference an
+ * existing `CatalogTax` by `catalogObjectId`.
+ *
+ * To charge only the taxes listed here, also set
+ * `pricingOptions.autoApplyTaxes: false`, so Square doesn't add the location's
+ * enabled taxes on top.
+ *
+ * @see https://developer.squareup.com/docs/orders-api/apply-taxes-and-discounts
+ */
+export interface OrderTaxInput {
+  /**
+   * Client-side id. Reference it from a line item's `appliedTaxes`, and use it
+   * to find this tax's `appliedMoney` on the returned order.
+   */
+  uid?: string;
+  /** Reference an existing `CatalogTax` by id. */
+  catalogObjectId?: string;
+  name?: string;
+  /** Percentage as a string, e.g. `"5"` or `"7.25"`. Required for an ad hoc tax. */
+  percentage?: string;
+  /** Default (Square's): `ADDITIVE`. */
+  type?: OrderTaxType;
+  /**
+   * `ORDER` applies to the whole order (Square auto-applies it to every line);
+   * `LINE_ITEM` applies only to lines that list this tax's `uid` in their
+   * `appliedTaxes`.
+   */
+  scope?: OrderTaxScope;
+}
+
+/**
  * Create order options
  */
 export interface CreateOrderOptions {
   lineItems: LineItemInput[];
   customerId?: string;
   referenceId?: string;
+  /**
+   * Order-level and line-level taxes, ad hoc (`name` + `percentage`) or
+   * referencing a `CatalogTax`. Set `pricingOptions.autoApplyTaxes: false` to
+   * charge only these. The returned order's `taxes[].appliedMoney` gives the
+   * amount Square computed for each.
+   */
+  taxes?: OrderTaxInput[];
   /**
    * Order-level and line-level discounts. Reference `CatalogDiscount` ids to
    * keep pricing authoritative (the number tracks the catalog rather than being
