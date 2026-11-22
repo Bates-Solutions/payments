@@ -96,6 +96,8 @@ here as `<package>-v<version>`.
 
 ## Security
 
+Name the affected package and version in your report.
+
 Please report a vulnerability privately, as described in
 [SECURITY.md](https://github.com/Bates-Solutions/.github/blob/main/SECURITY.md). Don't open a
 public issue for it.
@@ -104,7 +106,8 @@ public issue for it.
 
 Contributions are welcome. See
 [CONTRIBUTING.md](https://github.com/Bates-Solutions/.github/blob/main/CONTRIBUTING.md) and the
-[code of conduct](https://github.com/Bates-Solutions/.github/blob/main/CODE_OF_CONDUCT.md).
+[code of conduct](https://github.com/Bates-Solutions/.github/blob/main/CODE_OF_CONDUCT.md). The
+squareup, stripe and clover packages also have their own `CONTRIBUTING.md` in `packages/<name>/`.
 
 ## License
 
