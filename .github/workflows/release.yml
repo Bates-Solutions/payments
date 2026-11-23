@@ -5,7 +5,10 @@
 # Flow: conventional commits land on main. release-please keeps one release PR open
 # that bumps each changed package's package.json, jsr.json and CHANGELOG.md.
 # Merging it (with a merge commit) tags each package `<pkg>-v<version>` at the merge
-# commit and creates its GitHub release. `verify` then checks each released
+# commit and creates its GitHub release.
+# The repo leaves merge commit messages blank (merge_commit_message: BLANK), so
+# release-please reads each PR's own commits once, not the PR title a second time;
+# see the README's Releases section. `verify` then checks each released
 # package, and `publish` pushes it to JSR, payments-core first.
 # scripts/release-plan.mjs decides what to publish: it skips versions JSR already
 # has (so a rerun never republishes) and, with --require-tags, fails unless each
