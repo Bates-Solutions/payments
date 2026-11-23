@@ -25,10 +25,10 @@ Releases are automated with [release-please](https://github.com/googleapis/relea
 2. On each push to `main`, release-please updates one open release PR. It bumps each changed package's `package.json`, `jsr.json` and `CHANGELOG.md`.
 3. Merging the release PR tags each package and creates its GitHub release. The workflow then publishes those versions to JSR over GitHub OIDC, with provenance. It skips any version JSR already has.
 
-PRs merge with a merge commit (squash and rebase are off, so stacked PRs work). The repo leaves the merge commit's message blank: its subject is GitHub's `Merge pull request #N from …`, which isn't a Conventional Commit, so release-please reads only the PR's own commits. Each of those commits becomes one changelog line, so:
+PRs merge with a merge commit (squash and rebase are off, so stacked PRs work). The repo leaves the merge commit's message blank: its subject is GitHub's `Merge pull request #N from …`, which isn't a Conventional Commit, so release-please reads only the PR's own commits. Each of those commits becomes a changelog line, and so does every further `type(scope): ` paragraph in a commit's message, so:
 
-- Give every commit on the branch the type and scope its changelog line should have. A review fix to a feature that hasn't shipped yet is `test:`, `refactor:` or `chore:`, or is squashed into the feature commit before merging, so it doesn't appear as a separate `fix:`.
-- Don't put a `BEGIN_COMMIT_OVERRIDE` block in the PR body. release-please applies it to every commit in the PR, so a PR with three commits lists each override line three times.
+- Give every commit on the branch the type and scope its changelog line should have. A review fix to a feature that hasn't shipped yet is `test:`, `refactor:` or `chore:`, or is folded into the feature commit with a `fixup` (not `squash`, which keeps the fix's message as a second paragraph that release-please still lists). Folding rewrites the branch, so rebase any PR stacked on it.
+- Don't put a `BEGIN_COMMIT_OVERRIDE` block in the PR body. release-please applies it to every commit in the PR, the merge commit included, so a PR with two branch commits lists each override line three times.
 
 Never bump versions, create tags or run `jsr publish` by hand.
 
