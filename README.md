@@ -89,6 +89,12 @@ Each package has its own version, changelog and tags (`<package>-v<version>`, fo
    publishes those versions to JSR over GitHub OIDC, with provenance. It skips any version JSR
    already has.
 
+PRs merge with a merge commit (squash and rebase are off, so stacked PRs work). The merge commit's subject is GitHub's `Merge pull request #N from …`, which release-please ignores, but its body is the PR title, which release-please parses like any commit message. Each commit on the branch becomes a changelog line, and so does every further `type(scope): ` paragraph in a commit's message, so:
+
+- Don't give the PR title a Conventional Commit type: write `Squareup: support ad hoc order taxes`, not `feat(squareup): support ad hoc order taxes`. A typed title adds a second line for the same change. (GitHub won't leave the merge commit body blank while keeping the `Merge pull request` subject, so the title convention is the fix.) Bot PRs titled `chore(deps): …` are harmless, since `chore` gets no changelog line.
+- Give every commit on the branch the type and scope its changelog line should have. A review fix to a feature that hasn't shipped yet is `test:`, `refactor:` or `chore:`, or is folded into the feature commit with a `fixup` (not `squash`, which keeps the fix's message as a second paragraph that release-please still lists). Folding rewrites the branch, so rebase any PR stacked on it.
+- Don't put a `BEGIN_COMMIT_OVERRIDE` block in the PR body. release-please applies it to every commit in the PR, the merge commit included, so a PR with two branch commits lists each override line three times.
+
 Never bump versions, create tags or run `jsr publish` by hand.
 
 Releases before the move were made from the old repos, which are archived. Their tags were imported
