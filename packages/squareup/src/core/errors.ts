@@ -87,7 +87,18 @@ export class SquareAuthError extends SquareError {
  * keeps Square's raw entries, which {@link declineReason} reads.
  */
 export class SquarePaymentError extends SquareError {
+  /**
+   * The id of the payment Square created for the declined attempt. A declined
+   * `payments.create()` still creates a payment, with status `FAILED`, and
+   * Square later sends `payment.created` / `payment.updated` webhooks for it:
+   * keep this id to match those events to the attempt. Unset when Square's
+   * error response doesn't include the payment.
+   */
   public readonly paymentId?: string;
+  /** The declined payment's status, usually `FAILED`, when Square included the payment. */
+  public readonly paymentStatus?: string;
+  /** When Square created the declined payment (RFC 3339), when it included the payment. */
+  public readonly paymentCreatedAt?: string;
   /** Square's error entries, with the raw `code` (for example `INSUFFICIENT_FUNDS`). */
   public readonly errors: Array<{
     category: string;
@@ -100,12 +111,15 @@ export class SquarePaymentError extends SquareError {
     message: string,
     code: SquareErrorCode,
     paymentId?: string,
-    errors: Array<{ category: string; code: string; detail?: string; field?: string }> = []
+    errors: Array<{ category: string; code: string; detail?: string; field?: string }> = [],
+    payment?: { id?: string; status?: string; createdAt?: string }
   ) {
     super(message, code, 400, errors.length > 0 ? errors : undefined);
     this.errors = errors;
     this.name = 'SquarePaymentError';
-    this.paymentId = paymentId;
+    this.paymentId = paymentId ?? payment?.id;
+    this.paymentStatus = payment?.status;
+    this.paymentCreatedAt = payment?.createdAt;
   }
 }
 
@@ -178,12 +192,16 @@ export function parseSquareError(error: unknown): SquareError {
     if ('statusCode' in error) {
       const sdkError = error as {
         statusCode?: unknown;
-        body?: { errors?: SquareErrorEntry[] };
+        body?: { errors?: SquareErrorEntry[]; payment?: unknown };
       };
 
       // HTTP error response
       if (typeof sdkError.statusCode === 'number') {
-        return fromErrorEntries(sdkError.body?.errors ?? [], sdkError.statusCode);
+        return fromErrorEntries(
+          sdkError.body?.errors ?? [],
+          sdkError.statusCode,
+          declinedPayment(sdkError.body?.payment)
+        );
       }
 
       // The SDK's SquareError without a status code means no response arrived.
@@ -278,7 +296,28 @@ export function assertNoResponseErrors(response: {
   throw fromErrorEntries(entries, 200);
 }
 
-function fromErrorEntries(errors: SquareErrorEntry[], statusCode: number): SquareError {
+type DeclinedPayment = { id?: string; status?: string; createdAt?: string };
+
+/**
+ * The payment in a declined CreatePayment's error body. The SDK leaves an
+ * error body as Square sent it, in snake_case.
+ */
+function declinedPayment(payment: unknown): DeclinedPayment | undefined {
+  if (!payment || typeof payment !== 'object') return undefined;
+  const p = payment as Record<string, unknown>;
+  const str = (v: unknown): string | undefined => (typeof v === 'string' ? v : undefined);
+  return {
+    id: str(p.id),
+    status: str(p.status),
+    createdAt: str(p.created_at) ?? str(p.createdAt),
+  };
+}
+
+function fromErrorEntries(
+  errors: SquareErrorEntry[],
+  statusCode: number,
+  payment?: DeclinedPayment
+): SquareError {
   const firstError = errors[0];
   const message = firstError?.detail ?? 'Square API error';
   const code = mapErrorCode(firstError?.code);
@@ -288,7 +327,7 @@ function fromErrorEntries(errors: SquareErrorEntry[], statusCode: number): Squar
   }
 
   if (firstError?.category === 'PAYMENT_METHOD_ERROR') {
-    return new SquarePaymentError(message, code, undefined, errors);
+    return new SquarePaymentError(message, code, payment?.id, errors, payment);
   }
 
   return new SquareApiError(message, code, statusCode, errors);

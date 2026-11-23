@@ -127,6 +127,47 @@ describe('Error Classes', () => {
       expect(error.message).toBe('Card was declined');
     });
 
+    it("takes the declined payment from the error body's payment", () => {
+      const error = parseSquareError({
+        statusCode: 402,
+        body: {
+          errors: [{ category: 'PAYMENT_METHOD_ERROR', code: 'CARD_DECLINED' }],
+          payment: { id: 'PAY_1', status: 'FAILED', created_at: '2026-11-22T10:00:00Z' },
+        },
+      }) as SquarePaymentError;
+
+      expect(error.paymentId).toBe('PAY_1');
+      expect(error.paymentStatus).toBe('FAILED');
+      expect(error.paymentCreatedAt).toBe('2026-11-22T10:00:00Z');
+    });
+
+    it('ignores a malformed payment in the error body', () => {
+      const error = parseSquareError({
+        statusCode: 402,
+        body: {
+          errors: [{ category: 'PAYMENT_METHOD_ERROR', code: 'CARD_DECLINED' }],
+          payment: { id: 42, status: null },
+        },
+      }) as SquarePaymentError;
+
+      expect(error).toBeInstanceOf(SquarePaymentError);
+      expect(error.paymentId).toBeUndefined();
+      expect(error.paymentStatus).toBeUndefined();
+    });
+
+    it('does not attach a payment to a non-decline error', () => {
+      const error = parseSquareError({
+        statusCode: 400,
+        body: {
+          errors: [{ category: 'INVALID_REQUEST_ERROR', code: 'BAD_REQUEST' }],
+          payment: { id: 'PAY_1' },
+        },
+      });
+
+      expect(error).toBeInstanceOf(SquareApiError);
+      expect(error).not.toHaveProperty('paymentId');
+    });
+
     it('should parse SDK error as general API error', () => {
       const error = parseSquareError({
         statusCode: 404,
@@ -328,5 +369,23 @@ describe('Error Classes', () => {
     ])('is false for a %s', (_label, error) => {
       expect(isRetryableSquareError(error)).toBe(false);
     });
+  });
+});
+
+describe('SquarePaymentError constructor', () => {
+  it('takes the payment id from the payment when no paymentId is passed', () => {
+    const error = new SquarePaymentError('Card declined', 'CARD_DECLINED', undefined, [], {
+      id: 'PAY_1',
+      status: 'FAILED',
+    });
+    expect(error.paymentId).toBe('PAY_1');
+    expect(error.paymentStatus).toBe('FAILED');
+  });
+
+  it('prefers an explicit paymentId', () => {
+    const error = new SquarePaymentError('Card declined', 'CARD_DECLINED', 'PAY_2', [], {
+      id: 'PAY_1',
+    });
+    expect(error.paymentId).toBe('PAY_2');
   });
 });
