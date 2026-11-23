@@ -8,9 +8,10 @@
 # commit and creates its GitHub release. `verify` then checks each released
 # package, and `publish` pushes it to JSR, payments-core first.
 #
-# The repo leaves merge commit messages blank (merge_commit_message: BLANK), so
-# release-please reads each PR's own commits once, not the PR title a second time;
-# see the README's Releases section.
+# A merge commit's body is the PR title (merge_commit_message: PR_TITLE), and
+# release-please parses it like a commit, so PR titles carry no Conventional
+# Commit type; otherwise each change is listed twice. See the README's Releases
+# section.
 #
 # scripts/release-plan.mjs decides what to publish: it skips versions JSR already
 # has (so a rerun never republishes) and, with --require-tags, fails unless each
