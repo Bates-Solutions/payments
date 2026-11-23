@@ -23,8 +23,11 @@ permissions:
 # A PR's runs share a group and a new push cancels the old run. Push runs get a
 # group per commit and are never cancelled: each checks only its own delta from
 # `before`, so a dropped run would leave that delta untested on main.
+# release-please force-pushes its PR and then edits the body seconds later, so the
+# `edited` run would cancel the `synchronize` run on the same SHA and post a
+# failing ci-ok. Its `edited` runs get their own group, so both runs finish.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name == 'push' && github.sha || github.ref }}
+  group: ${{ github.workflow }}-${{ github.event_name == 'push' && github.sha || github.ref }}${{ github.event.action == 'edited' && startsWith(github.head_ref, 'release-please--') && '-edited' || '' }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
