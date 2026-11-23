@@ -112,12 +112,12 @@ export class SquarePaymentError extends SquareError {
     code: SquareErrorCode,
     paymentId?: string,
     errors: Array<{ category: string; code: string; detail?: string; field?: string }> = [],
-    payment?: { status?: string; createdAt?: string }
+    payment?: { id?: string; status?: string; createdAt?: string }
   ) {
     super(message, code, 400, errors.length > 0 ? errors : undefined);
     this.errors = errors;
     this.name = 'SquarePaymentError';
-    this.paymentId = paymentId;
+    this.paymentId = paymentId ?? payment?.id;
     this.paymentStatus = payment?.status;
     this.paymentCreatedAt = payment?.createdAt;
   }

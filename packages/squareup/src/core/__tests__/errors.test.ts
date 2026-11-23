@@ -371,3 +371,21 @@ describe('Error Classes', () => {
     });
   });
 });
+
+describe('SquarePaymentError constructor', () => {
+  it('takes the payment id from the payment when no paymentId is passed', () => {
+    const error = new SquarePaymentError('Card declined', 'CARD_DECLINED', undefined, [], {
+      id: 'PAY_1',
+      status: 'FAILED',
+    });
+    expect(error.paymentId).toBe('PAY_1');
+    expect(error.paymentStatus).toBe('FAILED');
+  });
+
+  it('prefers an explicit paymentId', () => {
+    const error = new SquarePaymentError('Card declined', 'CARD_DECLINED', 'PAY_2', [], {
+      id: 'PAY_1',
+    });
+    expect(error.paymentId).toBe('PAY_2');
+  });
+});
