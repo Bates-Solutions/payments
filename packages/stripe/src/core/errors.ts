@@ -248,6 +248,12 @@ function sentErrorType(error: object, classified: string): string {
   return classified;
 }
 
+/** Removes the `[<requestId>] ` prefix stripe-node 23.2+ adds to `message`. */
+function withoutRequestId(message: string | undefined, requestId: string | undefined) {
+  const prefix = requestId ? `[${requestId}] ` : undefined;
+  return prefix && message?.startsWith(prefix) ? message.slice(prefix.length) : message;
+}
+
 /**
  * Parse a Stripe SDK error (or any thrown value) into a typed exception.
  *
@@ -265,7 +271,13 @@ export function parseStripeError(error: unknown): StripeError {
     const sdkError = error as StripeSdkError;
     const sentType = sentErrorType(sdkError, type);
     // stripe-node defaults missing strings to '', so skip empty values too.
-    const message = [sdkError.message, sdkError.raw?.message].find(Boolean) ?? 'Stripe API error';
+    // From stripe-node 23.2, `message` starts with `[<requestId>] `; prefer
+    // Stripe's own `raw.message` and strip the prefix otherwise (the id is
+    // kept on `requestId`).
+    const message =
+      [sdkError.raw?.message, withoutRequestId(sdkError.message, sdkError.requestId)].find(
+        Boolean
+      ) ?? 'Stripe API error';
     const declineCode = [sdkError.decline_code, sdkError.raw?.decline_code].find(Boolean);
     const apiError = (code: StripeErrorCode, fallbackStatus: number): StripeApiError =>
       new StripeApiError(message, code, sdkError.statusCode ?? fallbackStatus, {

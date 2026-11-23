@@ -307,6 +307,27 @@ describe('parseStripeError edge cases', () => {
     expect(parseStripeError({ type: 'api_error' }).statusCode).toBe(500);
   });
 
+  it('keeps the request id out of the message (stripe-node 23.2 prefixes it)', () => {
+    const err = parseStripeError(
+      fromApi({
+        type: 'card_error',
+        code: 'card_declined',
+        message: 'Your card has insufficient funds.',
+        requestId: 'req_abc',
+        statusCode: 402,
+      })
+    );
+    expect(err.message).toBe('Your card has insufficient funds.');
+  });
+
+  it('falls back to the default message when only a request id is present', () => {
+    const err = parseStripeError(
+      fromApi({ type: 'api_error', requestId: 'req_abc', statusCode: 500 })
+    );
+    expect(err.message).toBe('Stripe API error');
+    expect((err as StripeApiError).requestId).toBe('req_abc');
+  });
+
   it('leaves non-Stripe errors as UNKNOWN', () => {
     const err = parseStripeError(new TypeError('fetch failed'));
     expect(err).toBeInstanceOf(StripeError);
