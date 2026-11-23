@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.1](https://github.com/Bates-Solutions/payments/compare/stripe-v2.2.0...stripe-v2.2.1) (2026-11-23)
+
+
+### Bug Fixes
+
+* **stripe:** keep stripe-node's request id prefix out of error messages ([6b10953](https://github.com/Bates-Solutions/payments/commit/6b109532d27d16b208cae397ef9a40782147040f))
+
 ## [2.2.0](https://github.com/Bates-Solutions/payments/compare/stripe-v2.1.1...stripe-v2.2.0) (2026-11-21)
 
 
