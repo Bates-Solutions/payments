@@ -1,5 +1,20 @@
 # Changelog
 
+## [3.2.0](https://github.com/Bates-Solutions/payments/compare/squareup-v3.1.0...squareup-v3.2.0) (2026-11-23)
+
+
+### Features
+
+* **squareup:** expose the declined payment's status and creation time ([b00d49d](https://github.com/Bates-Solutions/payments/commit/b00d49d6bf094121df47556fe708bad3457587d9))
+* **squareup:** support ad hoc order taxes ([549e99e](https://github.com/Bates-Solutions/payments/commit/549e99efa5c265602728720ebff02c71e1575c6c))
+* **squareup:** support ad hoc order taxes ([e8e968b](https://github.com/Bates-Solutions/payments/commit/e8e968b6cc5385febef49ed3c1448ba294b39e6d)), closes [#40](https://github.com/Bates-Solutions/payments/issues/40)
+
+
+### Bug Fixes
+
+* **squareup:** require LINE_ITEM scope on a tax a line references ([962e988](https://github.com/Bates-Solutions/payments/commit/962e988b73182e6d6cdaeed6336b54b5d358d1b7))
+* **squareup:** set paymentId on SquarePaymentError for a declined payment ([1c1d0f7](https://github.com/Bates-Solutions/payments/commit/1c1d0f7fa015cf5a0d5a44b888d2045c232a6f90)), closes [#41](https://github.com/Bates-Solutions/payments/issues/41)
+
 ## [3.1.0](https://github.com/Bates-Solutions/payments/compare/squareup-v3.0.1...squareup-v3.1.0) (2026-11-21)
 
 
